@@ -1,0 +1,21 @@
+[Unit]
+Description=Urbanrupee marketing site (Django + Gunicorn)
+After=network.target
+
+[Service]
+Type=simple
+User=www
+Group=www
+WorkingDirectory=/www/wwwroot/urbanrupeeHome/backend
+EnvironmentFile=/www/wwwroot/urbanrupeeHome/backend/.env
+ExecStart=/www/wwwroot/urbanrupeeHome/.venv/bin/gunicorn config.wsgi:application \
+  --bind 127.0.0.1:8005 \
+  --workers 3 \
+  --timeout 120 \
+  --access-logfile /www/wwwlogs/urbanrupee-gunicorn.access.log \
+  --error-logfile /www/wwwlogs/urbanrupee-gunicorn.error.log
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
