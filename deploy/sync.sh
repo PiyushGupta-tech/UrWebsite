@@ -32,4 +32,10 @@ else
   echo "systemctl not found — restart $SERVICE manually"
 fi
 
+echo "==> Testimonial videos (not in git — copy once if missing)"
+VIDEO_DIR="$APP_ROOT/frontend/public/videos/testimonials"
+if [ ! -f "$VIDEO_DIR/finlix.mp4" ] || [ ! -f "$VIDEO_DIR/grootspay.mov" ]; then
+  echo "    Upload finlix.mp4 and grootspay.mov to $VIDEO_DIR"
+fi
+
 echo "==> Done"
