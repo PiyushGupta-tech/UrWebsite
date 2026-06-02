@@ -32,7 +32,11 @@ const active = ref(props.page.sections[0]?.id || "introduction");
           <template v-for="section in page.sections" :key="section.id">
             <div v-show="active === section.id">
               <h2>{{ section.title }}</h2>
-              <p>{{ section.body }}</p>
+              <p v-if="section.body" class="privacy-content__body">{{ section.body }}</p>
+              <ul v-if="section.bullets?.length" class="privacy-content__bullets">
+                <li v-for="bullet in section.bullets" :key="bullet">{{ bullet }}</li>
+              </ul>
+              <p v-if="section.closing" class="privacy-content__body">{{ section.closing }}</p>
             </div>
           </template>
         </article>
@@ -82,10 +86,22 @@ const active = ref(props.page.sections[0]?.id || "introduction");
   font-size: 22px;
 }
 
-.privacy-content p {
+.privacy-content__body {
   margin: 0;
   color: var(--text-secondary);
   line-height: 1.7;
+  white-space: pre-line;
+}
+
+.privacy-content__bullets {
+  margin: 12px 0 0;
+  padding-left: 1.25rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.privacy-content__bullets li + li {
+  margin-top: 8px;
 }
 
 @media (min-width: 900px) {

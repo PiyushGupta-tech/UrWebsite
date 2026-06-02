@@ -2,6 +2,7 @@
 import { computed, onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
 import { checkoutMethodHeroFor } from "@/constants/checkoutMethodHero";
+import { customCheckoutMethodHeroFor } from "@/constants/customCheckoutMethodHero";
 import { walletMetricHeroFor } from "@/constants/walletMetricHero";
 import { orchestrationStoryLineFor } from "@/constants/orchestrationStoryHero";
 import PageHero from "./PageHero.vue";
@@ -41,9 +42,17 @@ const syncsOrchestrationHeroCopy = computed(
   () => route.name === "orchestration",
 );
 
-const checkoutMethodDetail = computed(() =>
-  checkoutMethodHeroFor(activeCheckoutMethod.value),
+const showPaymentServicesHeroExtra = computed(
+  () => route.name === "payment-services" && !!props.page?.hero_extra,
 );
+
+const checkoutMethodDetail = computed(() => {
+  const heroFor =
+    route.name === "custom-checkout"
+      ? customCheckoutMethodHeroFor
+      : checkoutMethodHeroFor;
+  return heroFor(activeCheckoutMethod.value);
+});
 
 const walletMetricDetail = computed(() =>
   walletMetricHeroFor(activeWalletMetric.value),
@@ -165,10 +174,37 @@ onMounted(() => {
       :graphic-position="heroGraphicPosition"
     >
       <template
-        v-if="syncsCheckoutHeroCopy || syncsWalletHeroCopy || syncsOrchestrationHeroCopy"
+        v-if="
+          showPaymentServicesHeroExtra ||
+          syncsCheckoutHeroCopy ||
+          syncsWalletHeroCopy ||
+          syncsOrchestrationHeroCopy
+        "
         #copy-extra
       >
-        <Transition name="hero-method" mode="out-in">
+        <div v-if="showPaymentServicesHeroExtra" class="hero-payment-extra">
+          <h3 class="hero-payment-extra__heading">
+            {{ page.hero_extra.why_heading }}
+          </h3>
+          <ul class="hero-payment-extra__list">
+            <li
+              v-for="item in page.hero_extra.why_items"
+              :key="item"
+            >
+              {{ item }}
+            </li>
+          </ul>
+          <h3 class="hero-payment-extra__heading">
+            {{ page.hero_extra.methods_heading }}
+          </h3>
+          <p class="hero-payment-extra__methods">
+            {{ page.hero_extra.methods }}
+          </p>
+          <p class="hero-payment-extra__tagline">
+            {{ page.hero_extra.tagline }}
+          </p>
+        </div>
+        <Transition v-else name="hero-method" mode="out-in">
           <p
             v-if="syncsOrchestrationHeroCopy"
             :key="`orch-${activeOrchestrationStory}`"
@@ -186,6 +222,12 @@ onMounted(() => {
             </p>
             <p class="hero-method-detail__body">
               {{ checkoutMethodDetail.body }}
+            </p>
+            <p
+              v-if="checkoutMethodDetail.bullets_heading"
+              class="hero-method-detail__bullets-head"
+            >
+              {{ checkoutMethodDetail.bullets_heading }}
             </p>
             <ul class="hero-method-detail__bullets">
               <li
@@ -206,6 +248,12 @@ onMounted(() => {
             </p>
             <p class="hero-method-detail__body">
               {{ walletMetricDetail.body }}
+            </p>
+            <p
+              v-if="walletMetricDetail.bullets_heading"
+              class="hero-method-detail__bullets-head"
+            >
+              {{ walletMetricDetail.bullets_heading }}
             </p>
             <ul class="hero-method-detail__bullets">
               <li
@@ -238,8 +286,14 @@ onMounted(() => {
     >
       <div class="container marketing-section">
         <h2 class="marketing-section__title">{{ section.title }}</h2>
+        <h3 v-if="section.subhead" class="marketing-section__subhead">
+          {{ section.subhead }}
+        </h3>
         <p v-if="section.body" class="marketing-section__body">{{ section.body }}</p>
 
+        <h4 v-if="section.bullets_heading" class="marketing-section__bullets-head">
+          {{ section.bullets_heading }}
+        </h4>
         <ul v-if="section.bullets?.length" class="marketing-section__bullets">
           <li v-for="b in section.bullets" :key="b">{{ b }}</li>
         </ul>
@@ -248,7 +302,11 @@ onMounted(() => {
           <span v-for="tag in section.tags" :key="tag" class="tag">{{ tag }}</span>
         </div>
 
-        <div v-if="section.cards?.length" class="marketing-section__cards">
+        <div
+          v-if="section.cards?.length"
+          class="marketing-section__cards"
+          :class="{ 'marketing-section__cards--four': section.cards.length === 4 }"
+        >
           <article v-for="card in section.cards" :key="card.title" class="card marketing-card">
             <h3>{{ card.title }}</h3>
             <p>{{ card.body }}</p>
@@ -297,6 +355,67 @@ onMounted(() => {
 </template>
 
 <style scoped>
+.hero-payment-extra {
+  display: grid;
+  gap: 12px;
+}
+
+.hero-payment-extra__heading {
+  margin: 8px 0 0;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+
+.hero-payment-extra__heading:first-child {
+  margin-top: 0;
+}
+
+.hero-payment-extra__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 8px;
+}
+
+.hero-payment-extra__list li {
+  padding-left: 18px;
+  position: relative;
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.hero-payment-extra__list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 7px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent-blue);
+}
+
+.hero-payment-extra__methods {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+
+.hero-payment-extra__tagline {
+  margin: 4px 0 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
 .hero-orchestration-line {
   margin: 0;
   font-size: 16px;
@@ -318,6 +437,15 @@ onMounted(() => {
   font-size: 15px;
   color: var(--text-secondary);
   line-height: 1.55;
+}
+
+.hero-method-detail__bullets-head {
+  margin: 14px 0 8px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-primary);
 }
 
 .hero-method-detail__bullets {
@@ -381,25 +509,90 @@ onMounted(() => {
 }
 
 .marketing-section {
-  max-width: 800px;
+  position: relative;
+  max-width: 860px;
+  padding: 28px;
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius-card) + 2px);
+  background:
+    radial-gradient(120% 140% at 0% 0%, rgba(6, 182, 212, 0.07) 0%, transparent 48%),
+    var(--bg-page);
+  box-shadow: 0 10px 26px rgba(26, 54, 93, 0.06);
+}
+
+.section--alt .marketing-section {
+  background:
+    radial-gradient(110% 120% at 100% 0%, rgba(26, 54, 93, 0.07) 0%, transparent 45%),
+    var(--bg-surface);
 }
 
 .marketing-section__title {
-  font-size: 24px;
-  margin: 0 0 12px;
+  position: relative;
+  font-size: clamp(30px, 4vw, 40px);
+  margin: 0 0 10px;
+  line-height: 1.15;
+  font-weight: 700;
   letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.marketing-section__title::after {
+  content: "";
+  display: block;
+  width: 72px;
+  height: 3px;
+  margin-top: 12px;
+  border-radius: 999px;
+  background: var(--btn-primary-gradient);
 }
 
 .marketing-section__body {
   margin: 0 0 20px;
   color: var(--text-secondary);
   line-height: 1.65;
+  white-space: pre-line;
+}
+
+.marketing-section__subhead {
+  margin: 0 0 18px;
+  font-size: clamp(18px, 2.2vw, 22px);
+  line-height: 1.45;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--text-secondary);
+}
+
+.marketing-section__bullets-head {
+  margin: 18px 0 8px;
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-primary);
 }
 
 .marketing-section__bullets {
   margin: 0 0 20px;
-  padding-left: 20px;
+  padding: 0;
+  list-style: none;
   color: var(--text-secondary);
+}
+
+.marketing-section__bullets li {
+  position: relative;
+  padding-left: 20px;
+  margin-bottom: 8px;
+}
+
+.marketing-section__bullets li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent-blue);
+  box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.16);
 }
 
 .marketing-section__tags {
@@ -431,9 +624,31 @@ onMounted(() => {
   }
 }
 
+@media (min-width: 960px) {
+  .marketing-section__cards.marketing-section__cards--four {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
 .marketing-card,
 .highlight-card {
   padding: 24px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  background:
+    linear-gradient(180deg, rgba(6, 182, 212, 0.06) 0%, rgba(6, 182, 212, 0) 18%),
+    var(--bg-surface);
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    border-color 0.22s ease;
+}
+
+.marketing-card:hover,
+.highlight-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(6, 182, 212, 0.28);
+  box-shadow: 0 12px 24px rgba(26, 54, 93, 0.09);
 }
 
 .marketing-card h3,
@@ -462,6 +677,9 @@ onMounted(() => {
   gap: 16px;
   padding: 20px;
   align-items: flex-start;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  background: var(--bg-page);
 }
 
 .step-card__num {
@@ -489,7 +707,9 @@ onMounted(() => {
 }
 
 .closing-band {
-  background: var(--bg-muted);
+  background:
+    linear-gradient(120deg, rgba(26, 54, 93, 0.06), rgba(6, 182, 212, 0.06)),
+    var(--bg-muted);
   text-align: center;
 }
 

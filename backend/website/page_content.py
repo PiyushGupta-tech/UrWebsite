@@ -215,37 +215,77 @@ PAGES = {
     },
     "payment-services": {
         "type": "marketing",
-        "title": "Payment Services",
+        "title": "Payment Infrastructure That Powers Growth",
         "intro": (
-            "Comprehensive payment processing solutions designed to streamline transactions, "
-            "enhance user experience, and maximize conversion rates. Urbanrupee's Payment "
-            "Services provide end-to-end payment infrastructure for businesses of all sizes."
+            "Deliver seamless payment experiences with a unified platform built for speed, "
+            "reliability, security, and higher transaction success rates. UrbanRupee helps "
+            "businesses simplify payments, improve conversions, and scale with confidence."
         ),
+        "hero_extra": {
+            "why_heading": "Why UrbanRupee?",
+            "why_items": [
+                "Smart Payment Orchestration – One integration, multiple payment partners.",
+                "Higher Success Rates – Intelligent routing for better transaction approvals.",
+                "Automated Reconciliation – Faster settlements and simplified operations.",
+                "Secure & Reliable – PCI DSS-compliant practices with 99.9% uptime.",
+                "Flexible Checkout – Smooth payment experiences across all channels.",
+            ],
+            "methods_heading": "Supported Payment Methods",
+            "methods": "UPI • Cards • Net Banking • Wallets • EMI & Pay Later",
+            "tagline": "One Platform. Smarter Payments. Faster Growth.",
+        },
         "sections": [
             {
                 "title": "Multi-Channel Payment Processing",
+                "subhead": "Accept Payments Anywhere. Deliver Seamless Experiences Everywhere.",
                 "body": (
-                    "Accept payments across all major channels including UPI, cards, net banking, "
-                    "wallets, and more. Our intelligent routing ensures optimal transaction success "
-                    "rates with real-time fallback mechanisms."
+                    "Enable your business to accept payments across multiple channels through a "
+                    "single, intelligent payment infrastructure. Urbanrupee's Multi-Channel "
+                    "Payment Processing solution supports UPI, cards, net banking, wallets, and "
+                    "emerging payment methods, ensuring a frictionless experience for every "
+                    "customer.\n\n"
+                    "Powered by intelligent transaction routing, real-time failover mechanisms, "
+                    "and enterprise-grade security, our platform maximizes payment success rates "
+                    "while delivering speed, reliability, and scalability for businesses of all "
+                    "sizes."
                 ),
-                "tags": ["UPI Payments", "Card Payments", "Net Banking", "Digital Wallets"],
+                "bullets_heading": "Key Highlights",
+                "bullets": [
+                    "Unified payment acceptance across multiple payment methods",
+                    "Intelligent routing for higher transaction success rates",
+                    "Real-time failover and smart switching capabilities",
+                    "Faster, secure, and reliable transaction processing",
+                    "Seamless customer experience across all channels",
+                    "PCI DSS & ISO 27001 certified infrastructure",
+                    "Scalable architecture built for high-volume transactions",
+                ],
             },
             {
                 "title": "Real-Time Transaction Processing",
+                "subhead": "Speed, Reliability, and Performance at Scale",
                 "body": (
-                    "Experience lightning-fast payment processing with sub-second response times. "
-                    "Our optimized infrastructure handles high-volume transactions seamlessly while "
-                    "maintaining 99.9% uptime."
+                    "Deliver exceptional payment experiences with Urbanrupee's high-performance "
+                    "transaction processing infrastructure. Engineered for speed and resilience, "
+                    "our platform processes transactions in real time, ensuring rapid "
+                    "authorizations, minimal latency, and uninterrupted payment flows even during "
+                    "peak transaction volumes.\n\n"
+                    "Built on enterprise-grade architecture, Urbanrupee enables businesses to "
+                    "handle millions of transactions efficiently while maintaining high "
+                    "availability, operational stability, and a seamless customer experience."
                 ),
-                "tags": ["Sub-second Processing", "High Volume Support", "99.9% Uptime SLA"],
             },
             {
                 "title": "Advanced Payment Features",
+                "subhead": "Intelligent Payment Capabilities Built for Modern Businesses",
                 "body": (
-                    "Leverage advanced payment features including recurring payments, split payments, "
-                    "refund management, and automated reconciliation. Built-in fraud detection and "
-                    "risk management ensure secure transactions."
+                    "Go beyond basic payment processing with a powerful suite of advanced payment "
+                    "features designed to streamline operations, enhance customer experiences, and "
+                    "improve financial efficiency. From recurring billing and split settlements to "
+                    "automated reconciliation and intelligent refund management, Urbanrupee provides "
+                    "the flexibility businesses need to scale with confidence.\n\n"
+                    "Powered by advanced fraud prevention, real-time monitoring, and "
+                    "enterprise-grade security, our platform helps businesses automate complex "
+                    "payment workflows while ensuring every transaction remains secure and compliant."
                 ),
                 "cards": [
                     {"title": "Recurring Payments", "body": "Automated subscription billing"},
@@ -257,15 +297,27 @@ PAGES = {
         "highlights": [
             {
                 "title": "Higher Conversion Rates",
-                "body": "Optimized payment flows and intelligent routing help increase conversion rates by up to 10%.",
+                "body": (
+                    "Drive more successful transactions through smart payment orchestration, "
+                    "optimized customer journeys, and intelligent routing that enhances checkout "
+                    "performance."
+                ),
             },
             {
-                "title": "Enterprise Security",
-                "body": "PCI-DSS compliant infrastructure with end-to-end encryption and fraud detection capabilities.",
+                "title": "Security & Compliance",
+                "body": (
+                    "Operate with confidence on a secure, compliant, and enterprise-ready "
+                    "infrastructure backed by PCI DSS certification, ISO 27001 standards, and "
+                    "advanced risk management frameworks."
+                ),
             },
             {
-                "title": "Easy Integration",
-                "body": "Simple REST APIs and SDKs for seamless integration. Get started in minutes, not days.",
+                "title": "Fast & Flexible Integration",
+                "body": (
+                    "Connect effortlessly with your existing systems through scalable APIs and "
+                    "plug-and-play integrations, helping your business go live quickly and "
+                    "efficiently."
+                ),
             },
         ],
     },
@@ -273,54 +325,131 @@ PAGES = {
         "type": "marketing",
         "title": "AML Detector",
         "intro": (
-            "Advanced Anti-Money Laundering detection system powered by AI and machine learning. "
-            "Protect your business from financial crimes with real-time transaction monitoring "
-            "and intelligent risk assessment."
+            "AI-Powered Anti-Money Laundering & Risk Intelligence\n\n"
+            "Protect your business with Urbanrupee's advanced AML Detection Platform, designed to "
+            "identify, prevent, and manage financial crime risks in real time. Powered by "
+            "artificial intelligence, machine learning, and intelligent behavioral analytics, our "
+            "solution continuously monitors transactions, detects suspicious activities, and helps "
+            "organizations maintain regulatory compliance with confidence."
         ),
         "sections": [
             {
-                "title": "Real-Time Transaction Monitoring",
+                "title": "Intelligent Risk Monitoring",
                 "body": (
-                    "Monitor every transaction in real-time with advanced pattern recognition. "
-                    "Our AI-powered system detects suspicious activities, unusual patterns, and "
-                    "potential money laundering attempts instantly."
+                    "Leverage real-time transaction monitoring and AI-driven risk assessment to "
+                    "identify unusual behavior, suspicious transaction patterns, and potential "
+                    "money laundering activities before they become threats."
                 ),
-                "tags": ["Pattern Detection", "Risk Scoring", "Instant Alerts", "Compliance Ready"],
+                "bullets_heading": "Key Capabilities",
+                "bullets": [
+                    "Real-time transaction surveillance",
+                    "Intelligent risk scoring and profiling",
+                    "Behavioral pattern analysis",
+                    "Automated alert generation",
+                    "Continuous monitoring across payment channels",
+                ],
             },
             {
                 "title": "AI-Powered Risk Assessment",
                 "body": (
-                    "Leverage machine learning algorithms that continuously learn and adapt to new "
-                    "threats. Our system analyzes thousands of data points to provide accurate risk "
-                    "assessments and reduce false positives."
+                    "Our machine learning models analyze thousands of risk indicators, customer "
+                    "behaviors, and transaction attributes to deliver accurate risk assessments "
+                    "while significantly reducing false positives."
                 ),
-                "tags": ["Machine Learning Models", "Behavioral Analytics", "Global Watchlists"],
+                "bullets_heading": "Key Benefits",
+                "bullets": [
+                    "Advanced machine learning algorithms",
+                    "Dynamic risk scoring engine",
+                    "Behavioral intelligence monitoring",
+                    "Global sanctions and watchlist screening",
+                    "Adaptive threat detection capabilities",
+                ],
             },
             {
-                "title": "Compliance & Regulatory Framework",
+                "title": "Compliance & Regulatory Management",
                 "body": (
-                    "Stay compliant with global AML regulations including KYC verification, customer "
-                    "due diligence, transaction reporting, and regulatory submissions."
+                    "Stay ahead of evolving compliance requirements with a comprehensive AML "
+                    "framework that supports customer verification, due diligence, transaction "
+                    "reporting, and regulatory oversight."
                 ),
+                "bullets_heading": "Compliance Features",
                 "cards": [
-                    {"title": "KYC Verification", "body": "Automated identity verification"},
-                    {"title": "CDD/EDD", "body": "Customer due diligence"},
-                    {"title": "Regulatory Reporting", "body": "Automated report generation"},
+                    {
+                        "title": "KYC Verification",
+                        "body": "Secure and automated identity verification to streamline onboarding and compliance checks.",
+                    },
+                    {
+                        "title": "Customer Due Diligence (CDD/EDD)",
+                        "body": "Enhanced customer screening and risk profiling for high-risk entities and transactions.",
+                    },
+                    {
+                        "title": "Regulatory Reporting",
+                        "body": "Automated report generation and audit-ready documentation to support regulatory obligations.",
+                    },
+                ],
+            },
+            {
+                "title": "Real-Time Transaction Monitoring",
+                "body": (
+                    "Monitor every transaction as it happens with millisecond-level response times "
+                    "and intelligent detection capabilities that help mitigate financial crime "
+                    "risks before they impact your business."
+                ),
+                "bullets_heading": "Key Features",
+                "bullets": [
+                    "Pattern Recognition",
+                    "Risk Scoring",
+                    "Instant Alerts",
+                    "Case Management",
+                    "Compliance Monitoring",
+                ],
+            },
+            {
+                "title": "Performance Highlights",
+                "cards": [
+                    {
+                        "title": "< 50ms Detection Time",
+                        "body": "Lightning-fast risk analysis and transaction screening.",
+                    },
+                    {
+                        "title": "Up to 80% Fewer False Positives",
+                        "body": "Improve operational efficiency through intelligent risk filtering.",
+                    },
+                    {
+                        "title": "180+ Countries Supported",
+                        "body": "Global monitoring capabilities for cross-border compliance and risk management.",
+                    },
+                    {
+                        "title": "24/7 Continuous Monitoring",
+                        "body": "Round-the-clock surveillance to detect and respond to emerging threats.",
+                    },
                 ],
             },
         ],
         "highlights": [
             {
+                "title": "Why Choose Urbanrupee AML Detector?",
+                "body": "Built for proactive risk intelligence, global compliance, and enterprise-grade protection.",
+            },
+            {
                 "title": "Real-Time Detection",
-                "body": "Instant detection of suspicious transactions with millisecond-level response times.",
+                "body": "Identify suspicious activities instantly through continuous monitoring and intelligent threat detection.",
             },
             {
-                "title": "Low False Positives",
-                "body": "Advanced ML models reduce false positives by up to 80% while maintaining high detection accuracy.",
+                "title": "Reduced False Positives",
+                "body": "Advanced AI and machine learning models help reduce false alerts while maintaining high detection accuracy.",
             },
             {
-                "title": "Global Coverage",
-                "body": "Monitor transactions across 180+ countries with support for multiple regulatory frameworks.",
+                "title": "Global Compliance Coverage",
+                "body": "Monitor transactions across multiple jurisdictions with support for global regulatory standards and compliance frameworks.",
+            },
+            {
+                "title": "Enterprise-Grade Security",
+                "body": "Secure infrastructure designed to protect sensitive financial data while ensuring regulatory compliance.",
+            },
+            {
+                "title": "Actionable Risk Intelligence",
+                "body": "Transform complex transaction data into meaningful insights that support faster and smarter decision-making.",
             },
         ],
     },
@@ -328,315 +457,1045 @@ PAGES = {
         "type": "marketing",
         "title": "Automatic Reconciliation",
         "intro": (
-            "Automated reconciliation solution that matches transactions across multiple payment "
-            "channels, banks, and systems in real-time. Eliminate manual reconciliation efforts "
-            "and reduce discrepancies with intelligent matching algorithms."
+            "Intelligent Reconciliation. Zero Manual Effort.\n\n"
+            "Streamline your financial operations with Urbanrupee's Automated Reconciliation "
+            "Solution. Designed to eliminate manual intervention, our intelligent reconciliation "
+            "engine automatically matches transactions across payment gateways, banks, wallets, "
+            "merchant accounts, and internal systems in real time. Achieve greater accuracy, "
+            "reduce operational overhead, and gain complete visibility into your financial "
+            "ecosystem."
         ),
         "sections": [
             {
                 "title": "Automated Transaction Matching",
                 "body": (
-                    "Automatically match transactions across multiple sources including payment gateways, "
-                    "banks, wallets, and internal systems."
+                    "Leverage intelligent matching algorithms to automatically reconcile "
+                    "transactions from multiple sources with speed and precision, ensuring "
+                    "financial records remain accurate and up to date."
                 ),
-                "tags": ["Real-Time Matching", "Multi-Source Support", "Fuzzy Matching", "Duplicate Detection"],
+                "bullets_heading": "Key Features",
+                "bullets": [
+                    "Real-time transaction matching",
+                    "Multi-source reconciliation support",
+                    "Intelligent fuzzy matching algorithms",
+                    "Duplicate transaction detection",
+                    "Automated settlement validation",
+                ],
             },
             {
-                "title": "Discrepancy Management",
+                "title": "Intelligent Discrepancy Management",
                 "body": (
-                    "Identify and resolve discrepancies automatically with intelligent exception handling. "
-                    "Get detailed reports on unmatched transactions and reconciliation status."
+                    "Identify, track, and resolve mismatches instantly through automated exception "
+                    "handling and advanced discrepancy management workflows."
                 ),
-                "tags": ["Exception Handling", "Detailed Reports", "Automated Alerts"],
+                "bullets_heading": "Key Features",
+                "bullets": [
+                    "Automated exception detection",
+                    "Smart discrepancy resolution",
+                    "Real-time alerts and notifications",
+                    "Detailed audit trails",
+                    "Comprehensive reconciliation reporting",
+                ],
             },
             {
-                "title": "Comprehensive Reconciliation Features",
-                "body": "From automated matching to detailed reporting, our reconciliation solution handles all aspects of transaction reconciliation.",
+                "title": "Comprehensive Reconciliation Capabilities",
+                "body": (
+                    "Manage the entire reconciliation lifecycle through a centralized platform "
+                    "built for scalability, transparency, and operational efficiency."
+                ),
                 "cards": [
-                    {"title": "Multi-Format Support", "body": "CSV, Excel, XML, JSON"},
-                    {"title": "Bank Integrations", "body": "Direct bank API connections"},
-                    {"title": "Custom Rules", "body": "Configurable matching rules"},
+                    {
+                        "title": "Multi-Format Support",
+                        "body": (
+                            "Seamlessly process and reconcile data across CSV, Excel, XML, JSON, "
+                            "and other standard formats."
+                        ),
+                    },
+                    {
+                        "title": "Bank Integrations",
+                        "body": (
+                            "Connect directly with banking partners and payment providers through "
+                            "secure APIs for real-time reconciliation."
+                        ),
+                    },
+                    {
+                        "title": "Custom Matching Rules",
+                        "body": (
+                            "Configure business-specific reconciliation logic and workflows "
+                            "tailored to your operational requirements."
+                        ),
+                    },
+                ],
+            },
+            {
+                "title": "Performance Highlights",
+                "cards": [
+                    {
+                        "title": "95% Time Savings",
+                        "body": (
+                            "Reduce manual reconciliation efforts and operational costs through "
+                            "intelligent automation."
+                        ),
+                    },
+                    {
+                        "title": "99.9% Matching Accuracy",
+                        "body": (
+                            "Ensure accurate financial records with advanced reconciliation "
+                            "algorithms."
+                        ),
+                    },
+                    {
+                        "title": "Live Reconciliation Dashboard",
+                        "body": (
+                            "Monitor transaction status, exceptions, settlements, and "
+                            "reconciliation performance in real time."
+                        ),
+                    },
+                    {
+                        "title": "End-to-End Visibility",
+                        "body": (
+                            "Track every transaction from payment initiation to settlement with "
+                            "complete transparency."
+                        ),
+                    },
                 ],
             },
         ],
         "highlights": [
-            {"title": "Time Savings", "body": "Reduce reconciliation time by up to 95% with automated matching."},
-            {"title": "High Accuracy", "body": "Achieve 99.9% matching accuracy with intelligent algorithms."},
-            {"title": "Complete Visibility", "body": "Real-time dashboards and detailed reports into reconciliation status."},
+            {
+                "title": "Why Choose Urbanrupee Reconciliation?",
+                "body": (
+                    "Purpose-built to automate finance operations while delivering accuracy, "
+                    "visibility, and compliance at scale."
+                ),
+            },
+            {
+                "title": "Save Up to 95% of Reconciliation Time",
+                "body": (
+                    "Automate repetitive manual processes and significantly improve operational "
+                    "efficiency."
+                ),
+            },
+            {
+                "title": "99.9% Matching Accuracy",
+                "body": (
+                    "Advanced algorithms ensure highly accurate transaction matching with minimal "
+                    "intervention."
+                ),
+            },
+            {
+                "title": "Complete Financial Visibility",
+                "body": (
+                    "Access real-time dashboards, transaction insights, reconciliation reports, "
+                    "and audit-ready records from a single interface."
+                ),
+            },
+            {
+                "title": "Real-Time Processing",
+                "body": (
+                    "Monitor transaction matching and exception handling as events occur, enabling "
+                    "faster financial decision-making."
+                ),
+            },
+            {
+                "title": "Secure & Compliant Operations",
+                "body": (
+                    "Built on enterprise-grade security standards with robust controls, audit "
+                    "logs, and compliance-ready reporting."
+                ),
+            },
         ],
     },
     "white-label-platform": {
         "type": "marketing",
         "title": "White Label Solutions",
         "intro": (
-            "Urbanrupee's White Label Solutions enable businesses to launch their own branded payment "
-            "platform without heavy development—with full customization, seamless integration, and "
-            "enhanced brand credibility."
+            "Launch Your Brand. Powered by Urbanrupee.\n\n"
+            "Build and scale your own branded payment ecosystem with Urbanrupee's White Label "
+            "Solutions. Designed for fintechs, enterprises, aggregators, and digital platforms, "
+            "our solution enables businesses to offer fully customized payment services under "
+            "their own brand without the complexity of developing and maintaining payment "
+            "infrastructure.\n\n"
+            "From onboarding and transaction processing to settlements, analytics, and reporting, "
+            "Urbanrupee provides a complete technology foundation while you focus on growing your "
+            "business and strengthening customer relationships."
         ),
         "sections": [
             {
-                "title": "End-to-End Payment Solution",
+                "title": "Complete Payment Ecosystem",
                 "body": (
-                    "The solution eliminates the need to develop complex payment infrastructure while "
-                    "giving complete control over branding, customer experience, and business workflows."
+                    "Deliver a seamless payment experience through a fully integrated platform that "
+                    "manages the entire payment lifecycle under your brand identity."
                 ),
-                "tags": ["Payment Acceptance & Collections", "Complete Payment Lifecycle", "Full Brand Control"],
-            },
-            {
-                "title": "Comprehensive Platform Features",
-                "body": (
-                    "The platform supports seamless onboarding, transaction processing, settlement "
-                    "management, refunds, reconciliation, and reporting."
-                ),
-                "tags": ["Seamless Onboarding", "Settlement & Reconciliation", "Real-time Reporting"],
-            },
-            {
-                "title": "Customization & Real-time Visibility",
-                "body": "Businesses can configure custom workflows, define operational rules, and design user journeys.",
-                "cards": [
-                    {"title": "Custom Workflows", "body": "Configure to your needs"},
-                    {"title": "Custom Dashboards", "body": "Real-time visibility"},
-                    {"title": "Performance Metrics", "body": "Actionable insights"},
+                "bullets_heading": "Key Features",
+                "bullets": [
+                    "Payment acceptance and collections",
+                    "Transaction processing and management",
+                    "Settlement and payout management",
+                    "Refund and dispute handling",
+                    "Automated reconciliation",
+                    "Comprehensive reporting and analytics",
                 ],
             },
             {
-                "title": "Security & Compliance",
+                "title": "Full Branding & Customization",
                 "body": (
-                    "Enterprise-grade security controls, data protection mechanisms, and continuous "
-                    "monitoring ensure sensitive payment information remains protected."
+                    "Create a payment platform that reflects your brand, business processes, and "
+                    "customer experience requirements."
                 ),
-                "tags": ["Enterprise-Grade Security", "Continuous Monitoring", "Built-in Compliance"],
+                "bullets_heading": "Key Features",
+                "bullets": [
+                    "Complete brand ownership",
+                    "Custom user interfaces and workflows",
+                    "Personalized customer journeys",
+                    "Flexible operational configurations",
+                    "Tailored business rules and permissions",
+                ],
             },
             {
-                "title": "Scalable & Modular Architecture",
-                "body": "Modular and API-driven architecture that allows businesses to extend functionality as they evolve.",
-                "tags": ["API-Driven Architecture", "Modular Design", "Seamless Growth"],
+                "title": "Advanced Analytics & Visibility",
+                "body": (
+                    "Gain complete control over your payment operations with real-time dashboards, "
+                    "actionable insights, and performance monitoring."
+                ),
+                "bullets_heading": "Key Features",
+                "bullets": [
+                    "Real-time transaction visibility",
+                    "Custom dashboards and reports",
+                    "Business performance tracking",
+                    "Operational insights and analytics",
+                    "Data-driven decision-making",
+                ],
+            },
+            {
+                "title": "Enterprise Security & Compliance",
+                "body": (
+                    "Operate with confidence on a secure, compliant, and enterprise-grade "
+                    "infrastructure designed to protect sensitive payment data and business "
+                    "operations."
+                ),
+                "bullets_heading": "Key Features",
+                "bullets": [
+                    "PCI DSS & ISO 27001 certified infrastructure",
+                    "Enterprise-grade security controls",
+                    "Continuous monitoring and risk management",
+                    "Data protection and encryption",
+                    "Compliance-ready architecture",
+                ],
+            },
+            {
+                "title": "Scalable & API-Driven Architecture",
+                "body": (
+                    "Built for growth, our modular platform allows businesses to expand "
+                    "capabilities, integrate new services, and adapt to evolving market "
+                    "requirements."
+                ),
+                "bullets_heading": "Key Features",
+                "bullets": [
+                    "API-first architecture",
+                    "Modular and flexible design",
+                    "Seamless third-party integrations",
+                    "Rapid deployment capabilities",
+                    "Scalable infrastructure for future growth",
+                ],
             },
         ],
-        "closing": (
-            "By handling the complexity of technology, security, and payment operations behind the "
-            "scenes, Urbanrupee enables businesses to focus on building their brand and driving innovation."
-        ),
+        "highlights": [
+            {
+                "title": "Why Choose Urbanrupee White Label Solutions?",
+                "body": "Built to accelerate launch velocity while giving your business full control of the branded payment experience.",
+            },
+            {
+                "title": "Faster Time-to-Market",
+                "body": (
+                    "Launch your branded payment platform quickly without investing in complex "
+                    "infrastructure development."
+                ),
+            },
+            {
+                "title": "Complete Brand Ownership",
+                "body": (
+                    "Deliver a fully customized experience that strengthens customer trust and "
+                    "brand recognition."
+                ),
+            },
+            {
+                "title": "Scalable Growth",
+                "body": (
+                    "Expand your services and capabilities as your business evolves without "
+                    "operational limitations."
+                ),
+            },
+            {
+                "title": "Secure & Compliant",
+                "body": (
+                    "Leverage enterprise-grade security, compliance frameworks, and proven payment "
+                    "infrastructure."
+                ),
+            },
+            {
+                "title": "Operational Efficiency",
+                "body": (
+                    "Automate payment operations, settlements, reconciliation, and reporting "
+                    "through a unified platform."
+                ),
+            },
+        ],
     },
     "custom-checkout": {
         "type": "marketing",
         "title": "Customized Checkout Solutions",
         "intro": (
-            "Our Customized Checkout Solutions are designed to align perfectly with your brand and "
-            "user journey—from UI/UX to payment flow—reducing friction and improving conversion rates."
+            "Your Brand. Your Experience. Your Checkout.\n\n"
+            "Urbanrupee's Customized Checkout Solutions empower businesses to create payment "
+            "experiences that feel like a natural extension of their brand. Unlike standard checkout "
+            "pages that redirect customers away from your platform, our white-label checkout "
+            "infrastructure keeps users within your ecosystem—delivering a seamless, trusted, and "
+            "conversion-focused payment journey.\n\n"
+            "Built for businesses that prioritize customer experience, brand consistency, and "
+            "performance, Custom Checkout combines intelligent payment technology with complete "
+            "design flexibility to help maximize conversions and strengthen customer trust."
         ),
         "sections": [
             {
                 "title": "What is Custom Checkout?",
                 "body": (
-                    "Urbanrupee's Custom Checkout is a white-label payment solution that allows "
-                    "businesses to design and control every aspect of their checkout experience. "
-                    "Unlike generic checkout pages that redirect customers to third-party sites, "
-                    "Custom Checkout keeps your customers on your website throughout the entire payment process."
+                    "Urbanrupee's Custom Checkout Solution gives businesses complete control over "
+                    "the payment experience—from branding and user interface to payment flow and "
+                    "customer interactions. By eliminating unnecessary redirects and maintaining a "
+                    "consistent brand presence throughout the payment journey, businesses can reduce "
+                    "friction, improve trust, and create a more engaging checkout experience.\n\n"
+                    "The result is a faster, smoother, and more personalized payment process that "
+                    "helps convert more visitors into customers."
                 ),
             },
             {
                 "title": "Key Features",
-                "body": "Everything you need to create the perfect checkout experience.",
+                "subhead": "Everything You Need to Build a High-Converting Checkout",
                 "cards": [
-                    {"title": "Complete Branding", "body": "Customize colors, fonts, logos, and imagery to match your brand."},
-                    {"title": "Mobile-Optimized", "body": "Fully responsive design that looks stunning on all devices."},
-                    {"title": "Multiple Payment Methods", "body": "UPI, cards, net banking, wallets, EMI, and more."},
-                    {"title": "Lightning Fast", "body": "Optimized for speed with minimal page load times."},
-                    {"title": "Bank-Grade Security", "body": "PCI-DSS compliant with end-to-end encryption."},
-                    {"title": "Analytics & Insights", "body": "Track conversion rates and abandonment points."},
+                    {
+                        "title": "🎨 Complete Brand Customization",
+                        "body": (
+                            "Personalize colors, typography, layouts, logos, messaging, and user "
+                            "journeys to create a checkout experience that reflects your brand identity."
+                        ),
+                    },
+                    {
+                        "title": "📱 Mobile-First Experience",
+                        "body": (
+                            "Deliver flawless payment experiences across smartphones, tablets, and "
+                            "desktops through responsive, performance-driven design."
+                        ),
+                    },
+                    {
+                        "title": "Comprehensive Payment Acceptance",
+                        "body": (
+                            "Support UPI, cards, net banking, wallets, EMI, and emerging payment "
+                            "methods through one unified checkout."
+                        ),
+                    },
+                    {
+                        "title": "Lightning-Fast Performance",
+                        "body": (
+                            "Optimized architecture ensures faster page loads, smoother interactions, "
+                            "and reduced customer drop-offs."
+                        ),
+                    },
+                    {
+                        "title": "Enterprise-Grade Security",
+                        "body": (
+                            "Built on PCI DSS and security-focused infrastructure with advanced "
+                            "encryption and fraud prevention capabilities."
+                        ),
+                    },
+                    {
+                        "title": "Analytics & Conversion Insights",
+                        "body": (
+                            "Understand customer behavior, identify friction points, and continuously "
+                            "improve checkout performance through actionable insights."
+                        ),
+                    },
                 ],
             },
             {
-                "title": "Why Choose Custom Checkout?",
-                "body": "Transform your checkout into a competitive advantage.",
+                "title": "Why Choose Customized Checkout?",
+                "subhead": "Turn Payments Into a Competitive Advantage",
+                "body": (
+                    "Today's customers expect payment experiences that are simple, secure, and "
+                    "seamless. Customized Checkout helps businesses create a checkout journey that "
+                    "not only processes payments but also strengthens customer trust and drives "
+                    "measurable business growth."
+                ),
+                "bullets_heading": "Benefits",
                 "bullets": [
-                    "Increase conversions by 20–30% compared to generic solutions",
-                    "Reduce abandonment by keeping customers on your site",
-                    "Build trust with consistent branding",
-                    "Collect valuable customer data and insights",
-                    "Stand out with a unique checkout experience",
+                    "Improve conversion rates through frictionless payment journeys",
+                    "Reduce checkout abandonment with seamless user experiences",
+                    "Strengthen brand trust through consistent customer interactions",
+                    "Gain valuable customer and payment behavior insights",
+                    "Create differentiated payment experiences that stand out from competitors",
+                    "Maintain complete ownership of the customer journey",
                 ],
             },
             {
                 "title": "How It Works",
-                "body": None,
                 "steps": [
-                    {"title": "Design Your Checkout", "body": "Choose templates or use our drag-and-drop builder."},
-                    {"title": "Integrate with SDK", "body": "Simple SDK integration with just a few lines of code."},
-                    {"title": "Go Live", "body": "Launch and start accepting payments within 24 hours."},
-                    {"title": "Optimize & Scale", "body": "Use analytics to continuously improve your checkout."},
+                    {
+                        "title": "Step 1 — Design Your Experience",
+                        "body": (
+                            "Create a checkout journey that aligns perfectly with your brand, "
+                            "customer expectations, and business goals."
+                        ),
+                    },
+                    {
+                        "title": "Step 2 — Integrate with Ease",
+                        "body": (
+                            "Implement our developer-friendly APIs and SDKs with minimal effort "
+                            "and rapid deployment timelines."
+                        ),
+                    },
+                    {
+                        "title": "Step 3 — Launch Faster",
+                        "body": (
+                            "Go live quickly with a production-ready payment infrastructure built "
+                            "for reliability and scale."
+                        ),
+                    },
+                    {
+                        "title": "Step 4 — Optimize & Grow",
+                        "body": (
+                            "Leverage analytics, customer insights, and performance data to "
+                            "continuously improve checkout effectiveness."
+                        ),
+                    },
                 ],
             },
         ],
-        "cta": {
-            "title": "Ready to transform your checkout?",
-            "body": "Get a custom checkout that reflects your brand and drives more conversions.",
-            "button": "Get Started",
-            "href": "/contact",
-        },
+        "highlights": [
+            {
+                "title": "Why Businesses Love Urbanrupee Checkout",
+                "body": (
+                    "A white-label checkout built for conversion, brand control, and long-term "
+                    "payment performance."
+                ),
+            },
+            {
+                "title": "Higher Conversion Rates",
+                "body": (
+                    "Reduce friction and create faster payment experiences that encourage customers "
+                    "to complete transactions."
+                ),
+            },
+            {
+                "title": "Complete Brand Ownership",
+                "body": (
+                    "Deliver a checkout experience that feels fully integrated with your platform "
+                    "and customer journey."
+                ),
+            },
+            {
+                "title": "Superior Performance",
+                "body": (
+                    "Provide fast, responsive, and reliable payment experiences across all devices "
+                    "and channels."
+                ),
+            },
+            {
+                "title": "Secure & Compliant Infrastructure",
+                "body": (
+                    "Protect customer data through enterprise-grade security, compliance standards, "
+                    "and trusted payment technology."
+                ),
+            },
+            {
+                "title": "Continuous Optimization",
+                "body": (
+                    "Monitor customer behavior, identify opportunities, and improve performance "
+                    "through actionable insights."
+                ),
+            },
+        ],
     },
     "hyper-checkout": {
         "type": "marketing",
         "title": "Hyper Checkout Experience",
         "intro": (
-            "The Hyper Checkout Experience is focused on speed, simplicity, and efficiency—it minimizes "
-            "steps, reduces loading time, and ensures a hassle-free payment journey for higher "
-            "completion rates."
+            "Faster Payments. Higher Conversions.\n\n"
+            "Urbanrupee's Hyper Checkout Experience is engineered to remove friction from the "
+            "payment journey and maximize transaction completion rates. Designed for speed, "
+            "simplicity, and performance, it delivers a seamless checkout experience across devices "
+            "and payment methods while helping businesses reduce drop-offs and improve customer "
+            "satisfaction.\n\n"
+            "From one-tap UPI payments to tokenized card transactions, Hyper Checkout combines "
+            "intelligent routing, optimized user journeys, and enterprise-grade security to create "
+            "a payment experience customers trust and complete."
         ),
         "sections": [
             {
-                "title": "Frictionless checkout",
+                "title": "Frictionless Checkout Experience",
                 "body": (
-                    "One-click payments, tokenized saved methods, and intelligent retries keep "
-                    "shoppers moving."
+                    "Remove unnecessary steps and create seamless payment journeys that help "
+                    "customers complete transactions quickly and effortlessly."
                 ),
-                "tags": ["One-click & saved methods", "Smart retries & recovery", "Minimal steps"],
-            },
-            {
-                "title": "Conversion-first experience",
-                "body": "Fast loads, mobile-first layouts, and clear trust cues lift completion rates.",
-                "tags": ["Mobile-optimized flows", "Sub-second perceived load", "Intelligent payment routing"],
-            },
-            {
-                "title": "Control without the heavy lift",
-                "body": "Configure branding, receipts, and post-payment journeys to match your product.",
-                "cards": [
-                    {"title": "Brand-ready UI", "body": "Match your look & voice"},
-                    {"title": "Webhooks & events", "body": "Automate downstream flows"},
-                    {"title": "Funnel insight", "body": "See where buyers stall"},
+                "bullets_heading": "Features",
+                "bullets": [
+                    "One-click payments",
+                    "Saved payment methods",
+                    "Smart retry mechanisms",
+                    "Optimized checkout flows",
+                    "Minimal customer effort",
                 ],
             },
             {
-                "title": "Security & trust",
-                "body": "Tokenization, PCI-aware flows, and consistent fraud signals keep data protected.",
-                "tags": ["Tokenized instruments", "Built-in compliance posture", "Clear buyer messaging"],
+                "title": "Built for Higher Conversion Rates",
+                "body": (
+                    "Every element of the checkout experience is designed to improve payment "
+                    "completion rates and reduce customer abandonment."
+                ),
+                "bullets_heading": "Features",
+                "bullets": [
+                    "Mobile-first user experience",
+                    "Lightning-fast payment flows",
+                    "Intelligent payment routing",
+                    "Optimized customer journeys",
+                    "Reduced checkout friction",
+                ],
             },
             {
-                "title": "Plugs into your stack",
-                "body": "APIs and SDK-friendly patterns let you launch quickly, then extend.",
-                "tags": ["Developer-first APIs", "Composable checkout blocks", "Ship faster, iterate often"],
+                "title": "Complete Brand Control",
+                "body": (
+                    "Deliver payment experiences that feel like a natural extension of your brand "
+                    "while maintaining consistency throughout the customer journey."
+                ),
+                "cards": [
+                    {
+                        "title": "Brand-Ready Interface",
+                        "body": (
+                            "Customize checkout screens, payment pages, and customer interactions "
+                            "to reflect your brand identity."
+                        ),
+                    },
+                    {
+                        "title": "Event-Driven Automation",
+                        "body": (
+                            "Use webhooks and real-time events to automate notifications, "
+                            "fulfillment processes, and backend operations."
+                        ),
+                    },
+                    {
+                        "title": "Checkout Performance Insights",
+                        "body": (
+                            "Gain visibility into customer behavior and identify opportunities "
+                            "to optimize conversion rates."
+                        ),
+                    },
+                ],
+            },
+            {
+                "title": "Security & Customer Trust",
+                "body": (
+                    "Protect every transaction through advanced security standards, tokenization "
+                    "technologies, and compliance-focused infrastructure."
+                ),
+                "bullets_heading": "Features",
+                "bullets": [
+                    "Tokenized payment credentials",
+                    "PCI DSS compliant architecture",
+                    "Advanced fraud prevention controls",
+                    "Secure transaction processing",
+                    "Transparent customer communication",
+                ],
+            },
+            {
+                "title": "Built for Developers",
+                "body": (
+                    "Launch quickly and scale confidently with flexible APIs, SDKs, and integration "
+                    "frameworks designed for modern businesses."
+                ),
+                "bullets_heading": "Features",
+                "bullets": [
+                    "Developer-friendly APIs",
+                    "Flexible integration architecture",
+                    "Modular checkout components",
+                    "Faster implementation cycles",
+                    "Scalable payment infrastructure",
+                ],
             },
         ],
-        "closing": "Hyper Checkout removes friction where it hurts most—the final click.",
+        "highlights": [
+            {
+                "title": "Why Businesses Choose Hyper Checkout",
+                "body": (
+                    "Built to accelerate checkout completion with performance, security, and "
+                    "conversion-focused design."
+                ),
+            },
+            {
+                "title": "Faster Checkout Experience",
+                "body": (
+                    "Reduce friction and accelerate transaction completion through optimized "
+                    "payment journeys."
+                ),
+            },
+            {
+                "title": "Higher Conversion Rates",
+                "body": (
+                    "Increase successful transactions with intelligent routing, recovery "
+                    "mechanisms, and streamlined payment flows."
+                ),
+            },
+            {
+                "title": "Superior Performance",
+                "body": (
+                    "Deliver fast, responsive, and reliable payment experiences across every "
+                    "device and payment method."
+                ),
+            },
+            {
+                "title": "Enterprise-Grade Security",
+                "body": (
+                    "Protect customer data and transactions through secure, compliant, and "
+                    "trusted infrastructure."
+                ),
+            },
+            {
+                "title": "Better Customer Experience",
+                "body": (
+                    "Create seamless payment interactions that build trust, improve satisfaction, "
+                    "and encourage repeat business."
+                ),
+            },
+        ],
     },
     "payment-orchestration": {
         "type": "marketing",
         "title": "Payment Orchestration Platform",
         "intro": (
-            "Urbanrupee's Payment Orchestration Platform brings multiple payment gateways and methods "
-            "into a single unified system. It intelligently routes each transaction through the most "
-            "efficient channel—improving customer experience while optimizing costs and risk."
+            "Smarter Payment Decisions. Higher Success Rates.\n\n"
+            "Urbanrupee's Payment Orchestration Platform unifies your payment ecosystem through a "
+            "single intelligent layer that optimizes transaction flow, enhances payment "
+            "performance, and improves customer experiences. By dynamically selecting the most "
+            "efficient payment path based on performance, availability, and business rules, our "
+            "platform helps maximize transaction success while reducing operational complexity."
         ),
         "sections": [
             {
-                "title": "Multi-Provider Routing",
+                "title": "Intelligent Payment Routing",
                 "body": (
-                    "Manage multiple payment providers through a single interface. Intelligent routing "
-                    "selects the best provider for each transaction."
+                    "Optimize every transaction with intelligent routing capabilities that analyze "
+                    "performance metrics, availability, and predefined business rules to ensure the "
+                    "best possible payment outcome."
                 ),
-                "tags": ["Single Interface Management", "Intelligent Routing Logic", "Optimized Performance"],
+                "bullets_heading": "Key Features",
+                "bullets": [
+                    "Intelligent transaction routing",
+                    "Performance-based decision engine",
+                    "Dynamic routing rules",
+                    "Centralized payment management",
+                    "Enhanced payment success rates",
+                ],
             },
             {
-                "title": "Failover Protection",
+                "title": "Business Continuity & Reliability",
                 "body": (
-                    "Built-in failover mechanisms ensure uninterrupted payment processing during provider outages."
+                    "Ensure uninterrupted payment processing with automated failover capabilities "
+                    "and continuous infrastructure monitoring designed to maintain operational "
+                    "stability."
                 ),
-                "tags": ["Automatic Failover", "Health Monitoring", "Consistent Uptime"],
+                "bullets_heading": "Key Features",
+                "bullets": [
+                    "Automated failover protection",
+                    "Real-time health monitoring",
+                    "High availability infrastructure",
+                    "Consistent payment performance",
+                    "Enhanced operational resilience",
+                ],
             },
             {
-                "title": "Global Coverage & Analytics",
-                "body": "Connect to payment providers across different regions and markets.",
+                "title": "Analytics & Optimization",
+                "body": (
+                    "Gain complete visibility into payment performance through real-time insights, "
+                    "intelligent analytics, and optimization tools that help improve efficiency and "
+                    "business outcomes."
+                ),
+                "bullets_heading": "Key Features",
+                "bullets": [
+                    "Real-time performance dashboards",
+                    "Transaction analytics and reporting",
+                    "Payment trend monitoring",
+                    "Routing optimization controls",
+                    "Actionable business insights",
+                ],
+            },
+            {
+                "title": "Performance Highlights",
                 "cards": [
-                    {"title": "Global Reach", "body": "Worldwide provider network"},
-                    {"title": "Real-time Analytics", "body": "Performance insights"},
-                    {"title": "Optimization Tools", "body": "Configurable routing rules"},
+                    {
+                        "title": "Smart Payment Routing",
+                        "body": (
+                            "Optimize transaction flow through intelligent decision-making and "
+                            "dynamic routing strategies."
+                        ),
+                    },
+                    {
+                        "title": "Real-Time Monitoring",
+                        "body": (
+                            "Track payment performance, uptime, and transaction metrics as they "
+                            "happen."
+                        ),
+                    },
+                    {
+                        "title": "Automated Failover",
+                        "body": (
+                            "Maintain uninterrupted payment processing with built-in redundancy and "
+                            "recovery mechanisms."
+                        ),
+                    },
+                    {
+                        "title": "Centralized Control",
+                        "body": (
+                            "Manage payment operations, analytics, and optimization from a single "
+                            "platform."
+                        ),
+                    },
                 ],
             },
         ],
         "highlights": [
-            {"title": "Maximize Success Rates", "body": "Intelligent routing significantly improves acceptance rates."},
-            {"title": "Reduce Costs", "body": "Optimize routing to minimize transaction costs."},
-            {"title": "Consistent Uptime", "body": "Automatic failover during provider outages."},
+            {
+                "title": "Why Choose Urbanrupee Payment Orchestration?",
+                "body": (
+                    "Purpose-built to improve payment performance, reliability, and operational "
+                    "control as transaction volumes grow."
+                ),
+            },
+            {
+                "title": "Maximize Transaction Success",
+                "body": (
+                    "Intelligent payment optimization helps improve authorization and acceptance "
+                    "rates across payment channels."
+                ),
+            },
+            {
+                "title": "Optimize Processing Costs",
+                "body": (
+                    "Route transactions through the most efficient payment pathways to improve "
+                    "operational efficiency and cost management."
+                ),
+            },
+            {
+                "title": "Ensure Business Continuity",
+                "body": (
+                    "Automated failover and resilient infrastructure minimize disruptions and "
+                    "maintain payment availability."
+                ),
+            },
+            {
+                "title": "Complete Visibility",
+                "body": (
+                    "Monitor, analyze, and optimize payment performance from a centralized "
+                    "dashboard."
+                ),
+            },
+            {
+                "title": "Scale with Confidence",
+                "body": (
+                    "Enterprise-grade infrastructure designed to support growing transaction "
+                    "volumes and evolving business requirements."
+                ),
+            },
         ],
-        "closing": "Route smarter, recover faster, and see every decision in one place.",
     },
     "payout-portal": {
         "type": "marketing",
         "title": "Payout Portal",
         "intro": (
-            "Urbanrupee's Payout Portal is a secure operations hub for moving money out to vendors, "
-            "partners, and customers—at scale."
+            "Simplify Disbursements. Accelerate Business Operations.\n\n"
+            "Urbanrupee's Payout Portal is a powerful and secure disbursement platform designed to "
+            "help businesses move money efficiently to vendors, partners, merchants, employees, and "
+            "customers. Whether processing individual transfers or managing high-volume payout "
+            "operations, our platform provides complete control, visibility, and automation from a "
+            "single unified dashboard.\n\n"
+            "Built for speed, reliability, and scalability, the Payout Portal streamlines outbound "
+            "payments while reducing operational complexity and ensuring a seamless payout "
+            "experience."
         ),
         "sections": [
             {
-                "title": "Beneficiaries & bulk payouts",
+                "title": "Smart Beneficiary & Bulk Payout Management",
                 "body": (
-                    "Onboard payees once with verified bank or wallet details, then trigger single "
-                    "payouts or high-volume batches from the same portal."
+                    "Manage beneficiaries effortlessly through a centralized directory and execute "
+                    "payouts individually or in bulk with maximum efficiency."
                 ),
-                "tags": ["Central beneficiary directory", "File-based & API batches", "Reusable payout templates"],
+                "bullets_heading": "Key Features",
+                "bullets": [
+                    "Centralized beneficiary management",
+                    "Single and bulk payout processing",
+                    "API-driven disbursements",
+                    "Reusable payout templates",
+                    "Secure beneficiary verification",
+                ],
             },
             {
-                "title": "Controls, approvals & audit",
+                "title": "Advanced Controls & Approval Workflows",
                 "body": (
-                    "Protect outbound money with role-based access, maker–checker flows, and immutable activity logs."
+                    "Strengthen operational governance with intelligent approval mechanisms, "
+                    "role-based permissions, and complete audit visibility."
                 ),
-                "tags": ["Maker–checker & roles", "End-to-end audit trail", "Policy-aligned limits"],
+                "bullets_heading": "Key Features",
+                "bullets": [
+                    "Maker-checker approval workflows",
+                    "Role-based access controls",
+                    "Comprehensive audit trails",
+                    "Configurable payout policies",
+                    "Enhanced operational security",
+                ],
             },
             {
-                "title": "Rails, schedules & visibility",
-                "body": "Route payouts through the right bank or partner rail with live status tracking.",
+                "title": "Real-Time Tracking & Visibility",
+                "body": (
+                    "Monitor every payout with complete transparency through live status updates, "
+                    "detailed reporting, and actionable insights."
+                ),
+                "bullets_heading": "Key Features",
+                "bullets": [
+                    "Real-time payout tracking",
+                    "Transaction status monitoring",
+                    "Detailed payout reporting",
+                    "Batch-level visibility",
+                    "Beneficiary-level insights",
+                ],
+            },
+            {
+                "title": "Flexible Payment Scheduling",
+                "body": (
+                    "Execute payouts instantly or automate disbursements according to your "
+                    "preferred schedule and business requirements."
+                ),
+                "bullets_heading": "Key Features",
+                "bullets": [
+                    "Instant payouts",
+                    "Scheduled disbursements",
+                    "Automated payout cycles",
+                    "Flexible settlement workflows",
+                    "Smart payout orchestration",
+                ],
+            },
+            {
+                "title": "Seamless Integrations & Automation",
+                "body": (
+                    "Connect your existing financial ecosystem through robust APIs and automated "
+                    "workflows designed to simplify operations."
+                ),
+                "bullets_heading": "Key Features",
+                "bullets": [
+                    "API-first architecture",
+                    "ERP and accounting integrations",
+                    "Automated reconciliation support",
+                    "Ledger exports and reporting",
+                    "Scalable payout infrastructure",
+                ],
+            },
+            {
+                "title": "Performance Highlights",
                 "cards": [
-                    {"title": "Scheduled & instant", "body": "Run now or on a cadence you define"},
-                    {"title": "Live status & reporting", "body": "Per-batch and per-beneficiary tracking"},
-                    {"title": "APIs & exports", "body": "Connect ERPs and download ledgers"},
+                    {
+                        "title": "Real-Time Payout Processing",
+                        "body": (
+                            "Execute and monitor payouts with speed, accuracy, and complete "
+                            "visibility."
+                        ),
+                    },
+                    {
+                        "title": "Intelligent Approval Workflows",
+                        "body": (
+                            "Maintain governance and control through configurable approval "
+                            "hierarchies."
+                        ),
+                    },
+                    {
+                        "title": "Bulk Disbursement Capabilities",
+                        "body": (
+                            "Process thousands of payouts efficiently through automated batch "
+                            "operations."
+                        ),
+                    },
+                    {
+                        "title": "Unified Payout Dashboard",
+                        "body": (
+                            "Manage beneficiaries, transactions, settlements, and reports from one "
+                            "centralized platform."
+                        ),
+                    },
                 ],
             },
         ],
         "highlights": [
-            {"title": "Faster settlement cycles", "body": "Reduce manual handoffs between finance, ops, and banking partners."},
-            {"title": "Fewer payout failures", "body": "Validation at entry and retry-friendly batches."},
-            {"title": "One view of outbound money", "body": "Disbursements, fees, and statuses in a single surface."},
+            {
+                "title": "Why Choose Urbanrupee Payout Portal?",
+                "body": (
+                    "Built to automate disbursement operations with speed, visibility, control, and "
+                    "reliability at scale."
+                ),
+            },
+            {
+                "title": "Faster Settlement Cycles",
+                "body": (
+                    "Automate payout operations and reduce manual intervention to accelerate fund "
+                    "disbursement."
+                ),
+            },
+            {
+                "title": "Reduced Payout Failures",
+                "body": (
+                    "Built-in validation, intelligent processing, and retry mechanisms help improve "
+                    "payout success rates."
+                ),
+            },
+            {
+                "title": "Complete Operational Visibility",
+                "body": (
+                    "Access a unified view of payouts, settlements, fees, statuses, and beneficiary "
+                    "activity in real time."
+                ),
+            },
+            {
+                "title": "Secure & Compliant Infrastructure",
+                "body": (
+                    "Enterprise-grade security controls, audit logs, and compliance-focused "
+                    "processes protect every transaction."
+                ),
+            },
+            {
+                "title": "Built for Scale",
+                "body": (
+                    "Handle growing payout volumes seamlessly through a resilient and "
+                    "high-performance infrastructure."
+                ),
+            },
         ],
-        "closing": "Collect with Urbanrupee checkout, then move funds out with the same rigor.",
     },
     "close-route-wallet": {
         "type": "marketing",
         "title": "Close Route Wallet",
         "intro": (
-            "Urbanrupee's Close Route Wallet is a controlled wallet layer for programmes that need "
-            "value to move on approved rails only."
+            "Controlled Value Movement. Complete Operational Visibility.\n\n"
+            "Urbanrupee's Close Route Wallet enables businesses to create secure, controlled, and "
+            "compliant wallet ecosystems where funds move only through approved channels. Built on "
+            "a powerful ledger-based architecture, the platform provides complete control over how "
+            "value is stored, transferred, and utilized while maintaining transparency, governance, "
+            "and security at every stage.\n\n"
+            "Whether you're building loyalty programs, fintech applications, merchant ecosystems, "
+            "employee benefit solutions, or prepaid programs, Close Route Wallet delivers the "
+            "flexibility and control enterprises demand."
         ),
         "sections": [
             {
-                "title": "Balances inside the route",
+                "title": "Controlled Wallet Ecosystem",
                 "body": (
-                    "Issue and manage wallet balances that stay within the programme boundaries you configure."
+                    "Create secure wallet programmes where funds circulate only within authorized "
+                    "participants, merchants, and approved transaction routes."
                 ),
-                "tags": ["Loads from approved funding sources", "P2P and wallet-to-merchant spends", "Treasury & float visibility"],
+                "bullets_heading": "Features",
+                "bullets": [
+                    "Approved funding source management",
+                    "Wallet-to-wallet transfers",
+                    "Wallet-to-merchant transactions",
+                    "Controlled spending environments",
+                    "Real-time treasury visibility",
+                ],
             },
             {
-                "title": "Policy, risk & audit",
-                "body": "Every movement explainable with KYC-aware tiers, caps, and immutable journals.",
-                "tags": ["Tiered eligibility & limits", "Route-bound allow / deny rules", "Ledger-grade activity history"],
+                "title": "Governance, Risk & Compliance",
+                "body": (
+                    "Built for enterprises that require complete accountability, regulatory "
+                    "alignment, and operational control over every movement of value."
+                ),
+                "bullets_heading": "Features",
+                "bullets": [
+                    "KYC-based user tiers",
+                    "Configurable spending limits",
+                    "Transaction control policies",
+                    "Route-specific permissions",
+                    "Immutable ledger records",
+                    "Complete audit history",
+                ],
             },
             {
-                "title": "Connect checkout, payouts & apps",
-                "body": "Use the wallet alongside Urbanrupee checkout and payout products.",
+                "title": "Connect Payments, Wallets & Payouts",
+                "body": (
+                    "Integrate Close Route Wallet seamlessly with Urbanrupee's payment "
+                    "infrastructure to create a unified financial ecosystem."
+                ),
                 "cards": [
-                    {"title": "In-app wallet UX", "body": "Issue, view, and spend from your product"},
-                    {"title": "Webhooks & events", "body": "Drive notifications and back-office flows"},
-                    {"title": "Ops & finance exports", "body": "Statements your auditors expect"},
+                    {
+                        "title": "In-App Wallet Experience",
+                        "body": (
+                            "Deliver branded wallet functionality directly within your "
+                            "applications, allowing users to load, manage, transfer, and spend "
+                            "funds effortlessly."
+                        ),
+                    },
+                    {
+                        "title": "Webhooks & Real-Time Events",
+                        "body": (
+                            "Automate notifications, operational workflows, and backend processes "
+                            "through powerful event-driven integrations."
+                        ),
+                    },
+                    {
+                        "title": "Finance & Operational Reporting",
+                        "body": (
+                            "Access comprehensive statements, transaction exports, reconciliation "
+                            "reports, and audit-ready records whenever needed."
+                        ),
+                    },
                 ],
             },
         ],
         "highlights": [
-            {"title": "Closed-loop confidence", "body": "Keep value circulating only where your programme permits."},
-            {"title": "Faster go-to-market", "body": "Ship wallet experiences without stitching ledgers from scratch."},
-            {"title": "One stack with Urbanrupee", "body": "Pair the wallet with orchestration, checkout, and payout tools."},
+            {
+                "title": "Why Businesses Choose Close Route Wallet",
+                "body": (
+                    "Purpose-built for secure closed-loop programmes with ledger-grade control "
+                    "and enterprise-scale operations."
+                ),
+            },
+            {
+                "title": "Closed-Loop Confidence",
+                "body": (
+                    "Ensure funds move only within approved networks, participants, and business "
+                    "rules."
+                ),
+            },
+            {
+                "title": "Accelerated Time-to-Market",
+                "body": (
+                    "Launch wallet-led products without investing in complex ledger, treasury, "
+                    "and compliance infrastructure."
+                ),
+            },
+            {
+                "title": "Complete Financial Visibility",
+                "body": (
+                    "Track balances, liabilities, transactions, and operational performance "
+                    "through centralized dashboards."
+                ),
+            },
+            {
+                "title": "Enterprise Security & Governance",
+                "body": (
+                    "Protect value with robust controls, monitoring systems, audit trails, and "
+                    "compliance-focused architecture."
+                ),
+            },
+            {
+                "title": "Built for Scale",
+                "body": (
+                    "Support growing transaction volumes, expanding user bases, and evolving "
+                    "business models through flexible, API-driven infrastructure."
+                ),
+            },
         ],
-        "closing": "Define who can hold, send, and receive value—with clarity enterprises expect.",
     },
     "faq": {
         "type": "faq",
@@ -723,65 +1582,119 @@ PAGES = {
     "privacy-policy": {
         "type": "privacy",
         "title": "Privacy Policy",
-        "intro": "Your privacy is important to us. Learn how we collect, use, and protect your information.",
+        "intro": (
+            "At Urbanrupee, we value your privacy and are committed to protecting the information "
+            "you share with us. This Privacy Policy explains how we collect, use, disclose, and "
+            "safeguard your information when you visit our website or use our services."
+        ),
         "sections": [
             {
-                "id": "introduction",
-                "title": "Introduction",
-                "body": (
-                    "We are committed to protecting your personal information and ensuring transparency "
-                    "about how we handle data. By interacting with our platform, you agree to the "
-                    "practices described in this policy."
-                ),
-            },
-            {
-                "id": "data-we-collect",
-                "title": "Data We Collect",
-                "body": (
-                    "We collect business-related details such as company name, contact information, "
-                    "and industry. Technical data such as browser type, IP address, and interaction "
-                    "behavior is automatically collected. We also collect communication data from "
-                    "emails or support forms."
-                ),
+                "id": "information-we-collect",
+                "title": "Information We Collect",
+                "body": "We may collect the following information when you interact with our website:",
+                "bullets": [
+                    "Name and contact details (such as email address and phone number)",
+                    "Company or business information",
+                    "Information submitted through contact forms, demo requests, or inquiries",
+                    (
+                        "Technical information such as IP address, browser type, device information, "
+                        "and website usage data"
+                    ),
+                ],
             },
             {
                 "id": "how-we-use",
-                "title": "How We Use Your Data",
+                "title": "How We Use Your Information",
+                "body": "We use the information we collect to:",
+                "bullets": [
+                    "Respond to inquiries and support requests",
+                    "Provide information about our products and services",
+                    "Improve website functionality and user experience",
+                    "Facilitate merchant onboarding and business communications",
+                    "Ensure security and prevent fraudulent activities",
+                    "Comply with applicable legal and regulatory requirements",
+                ],
+            },
+            {
+                "id": "payment-security",
+                "title": "Payment Security",
                 "body": (
-                    "We use your data to deliver and improve services, send updates with permission, "
-                    "and detect suspicious activities while maintaining regulatory compliance."
+                    "Urbanrupee is committed to maintaining high standards of payment security.\n\n"
+                    "We do not store sensitive cardholder data, including CVV, PIN data, or full card "
+                    "numbers. Payment-related transactions are processed through secure and compliant "
+                    "payment infrastructure and authorized partners."
                 ),
             },
             {
-                "id": "data-sharing",
-                "title": "Data Sharing",
-                "body": (
-                    "We do not sell your personal information. We may share data with verified "
-                    "third-party partners for hosting, support, or compliance under strict confidentiality."
+                "id": "cookies-analytics",
+                "title": "Cookies and Analytics",
+                "body": "Our website may use cookies and similar technologies to:",
+                "bullets": [
+                    "Improve website performance",
+                    "Analyze visitor behavior and website traffic",
+                    "Enhance user experience",
+                ],
+                "closing": (
+                    "You may manage cookie preferences through your browser settings."
                 ),
             },
             {
-                "id": "security",
-                "title": "Security",
+                "id": "information-sharing",
+                "title": "Information Sharing",
                 "body": (
-                    "We implement modern security technologies to protect your data from unauthorized "
-                    "access, disclosure, or misuse."
+                    "Urbanrupee does not sell or rent your personal information.\n\n"
+                    "We may share information with:"
+                ),
+                "bullets": [
+                    "Trusted service providers and technology partners",
+                    "Financial institutions and payment partners, where necessary",
+                    "Regulatory authorities and law enforcement agencies when required by law",
+                ],
+            },
+            {
+                "id": "data-security",
+                "title": "Data Security",
+                "body": (
+                    "We implement appropriate technical and organizational measures to protect your "
+                    "information from unauthorized access, disclosure, alteration, or destruction."
                 ),
             },
             {
-                "id": "cookies",
-                "title": "Cookies and Tracking",
+                "id": "third-party-links",
+                "title": "Third-Party Links",
                 "body": (
-                    "Our website uses cookies to enhance functionality. You can control cookies through "
-                    "your browser settings; disabling them may limit certain features."
+                    "Our website may contain links to third-party websites. Urbanrupee is not "
+                    "responsible for the privacy practices or content of such websites."
                 ),
             },
             {
-                "id": "user-rights",
-                "title": "User Rights",
+                "id": "your-rights",
+                "title": "Your Rights",
+                "body": "Depending on applicable laws, you may have the right to:",
+                "bullets": [
+                    "Access your personal information",
+                    "Request correction of inaccurate information",
+                    "Request deletion of your information, subject to legal obligations",
+                    "Opt out of marketing communications",
+                ],
+            },
+            {
+                "id": "changes",
+                "title": "Changes to This Policy",
                 "body": (
-                    "You can request to view, update, or delete your data at any time. Contact our "
-                    "support team through the channels on our website."
+                    "Urbanrupee reserves the right to update this Privacy Policy at any time. Any "
+                    "changes will be posted on this page with an updated effective date."
+                ),
+            },
+            {
+                "id": "contact-us",
+                "title": "Contact Us",
+                "body": (
+                    "For any questions regarding this Privacy Policy or our data practices, "
+                    "please contact us:\n\n"
+                    "Urbanrupee Techsolution Private Limited\n"
+                    "Email: it.support@urbanrupee.com\n"
+                    "Website: www.urbanrupee.com"
                 ),
             },
         ],
@@ -790,73 +1703,335 @@ PAGES = {
         "type": "marketing",
         "title": "Seamless UPI Switch",
         "intro": (
-            "Urbanrupee provides a powerful UPI switch that ensures fast, secure, and reliable "
-            "UPI transactions—built to handle high volumes with consistent performance even during peak times."
+            "Powering Faster, Smarter & More Reliable UPI Transactions\n\n"
+            "Urbanrupee's Seamless UPI Switch is a high-performance transaction routing "
+            "infrastructure designed to deliver exceptional reliability, speed, and scalability "
+            "for businesses processing UPI payments at scale. Built to intelligently manage "
+            "transaction flow across banking and payment networks, our UPI Switch ensures higher "
+            "success rates, reduced failures, and a frictionless payment experience for every "
+            "customer.\n\n"
+            "Whether handling daily transactions or peak-volume events, Urbanrupee keeps your UPI "
+            "ecosystem running efficiently with intelligent routing, real-time monitoring, and "
+            "enterprise-grade resilience."
         ),
         "sections": [
             {
-                "title": "Built for scale",
+                "title": "Intelligent UPI Transaction Routing",
                 "body": (
-                    "Intelligent routing and minimal downtime help businesses offer a dependable "
-                    "UPI experience that customers trust."
+                    "Optimize every UPI transaction through a smart routing engine that dynamically "
+                    "selects the most efficient processing path based on performance, availability, "
+                    "and transaction health."
                 ),
-                "tags": [
-                    "High success rate for UPI payments",
-                    "Reliable performance at scale",
-                    "Secure and compliant infrastructure",
-                    "Minimal downtime",
+                "bullets_heading": "Key Features",
+                "bullets": [
+                    "Intelligent transaction routing",
+                    "Real-time route optimization",
+                    "Dynamic PSP selection",
+                    "Enhanced transaction success rates",
+                    "Automated traffic distribution",
+                ],
+            },
+            {
+                "title": "Built for High-Volume Performance",
+                "body": (
+                    "Designed to support businesses operating at scale, our infrastructure ensures "
+                    "consistent performance even during transaction surges and peak business hours."
+                ),
+                "bullets_heading": "Key Features",
+                "bullets": [
+                    "High-volume transaction processing",
+                    "Peak-load performance optimization",
+                    "Low-latency transaction handling",
+                    "Scalable infrastructure architecture",
+                    "Consistent payment performance",
+                ],
+            },
+            {
+                "title": "Secure & Reliable UPI Infrastructure",
+                "body": (
+                    "Deliver trusted payment experiences through a resilient platform built with "
+                    "advanced security controls, compliance standards, and continuous monitoring."
+                ),
+                "bullets_heading": "Key Features",
+                "bullets": [
+                    "Enterprise-grade security",
+                    "Continuous transaction monitoring",
+                    "Secure payment processing",
+                    "Compliance-focused architecture",
+                    "High-availability infrastructure",
+                ],
+            },
+            {
+                "title": "Performance Highlights",
+                "cards": [
+                    {
+                        "title": "High UPI Success Rates",
+                        "body": (
+                            "Improve payment acceptance through intelligent transaction optimization."
+                        ),
+                    },
+                    {
+                        "title": "Low-Latency Processing",
+                        "body": (
+                            "Deliver fast and seamless payment experiences that customers expect."
+                        ),
+                    },
+                    {
+                        "title": "Multi-Bank Connectivity",
+                        "body": (
+                            "Seamlessly connect with multiple banking and payment networks through "
+                            "a unified infrastructure."
+                        ),
+                    },
+                    {
+                        "title": "Real-Time Routing Intelligence",
+                        "body": (
+                            "Continuously evaluate transaction paths to ensure optimal performance "
+                            "and reliability."
+                        ),
+                    },
+                    {
+                        "title": "Peak-Ready Infrastructure",
+                        "body": (
+                            "Maintain consistent payment performance even during high-traffic "
+                            "periods and transaction spikes."
+                        ),
+                    },
+                ],
+            },
+            {
+                "title": "Key Advantages",
+                "cards": [
+                    {
+                        "title": "Peak-Ready Performance",
+                        "body": (
+                            "Handle transaction surges effortlessly while maintaining speed, "
+                            "stability, and customer satisfaction."
+                        ),
+                    },
+                    {
+                        "title": "Trusted UPI Experience",
+                        "body": (
+                            "Deliver secure, seamless, and reliable payment journeys that build "
+                            "customer confidence."
+                        ),
+                    },
+                    {
+                        "title": "Smart Routing Intelligence",
+                        "body": (
+                            "Automatically direct transactions through the healthiest available "
+                            "route to maximize success rates and minimize disruptions."
+                        ),
+                    },
                 ],
             },
         ],
         "highlights": [
             {
-                "title": "Peak-ready",
-                "body": "Maintain performance when transaction volumes spike.",
+                "title": "Why Businesses Choose Urbanrupee UPI Switch",
+                "body": (
+                    "Built for scale, speed, and reliability across every UPI transaction you process."
+                ),
             },
             {
-                "title": "Trusted UPI",
-                "body": "Give customers a consistent, secure UPI journey.",
+                "title": "High Transaction Success Rates",
+                "body": (
+                    "Maximize successful UPI payments through intelligent routing and optimized "
+                    "transaction management."
+                ),
             },
             {
-                "title": "Smart routing",
-                "body": "Route each payment through the healthiest path automatically.",
+                "title": "Lightning-Fast Processing",
+                "body": (
+                    "Enable near real-time transaction execution with low-latency infrastructure "
+                    "and rapid response times."
+                ),
+            },
+            {
+                "title": "Built for Scale",
+                "body": (
+                    "Confidently process growing transaction volumes without compromising "
+                    "performance or customer experience."
+                ),
+            },
+            {
+                "title": "Intelligent Traffic Management",
+                "body": (
+                    "Automatically route payments through the most efficient available network "
+                    "to maintain reliability."
+                ),
+            },
+            {
+                "title": "Trusted & Secure",
+                "body": (
+                    "Protect every transaction through enterprise-grade security frameworks and "
+                    "continuous risk monitoring."
+                ),
             },
         ],
     },
     "affordability": {
         "type": "marketing",
-        "title": "Affordability",
+        "title": "Affordability Solutions",
         "intro": (
-            "Urbanrupee enhances customer purchasing power with flexible payment options such as "
-            "EMI and Pay Later—encouraging higher spending while maintaining a smooth checkout experience."
+            "Empower Purchases. Increase Conversions.\n\n"
+            "Urbanrupee's Affordability Solutions help businesses unlock higher sales and improve "
+            "customer satisfaction by offering flexible payment options directly within the checkout "
+            "experience. Through EMI, Cardless EMI, and Buy Now Pay Later (BNPL) solutions, customers "
+            "gain the flexibility to purchase with confidence while businesses benefit from increased "
+            "conversions, larger basket sizes, and stronger customer loyalty.\n\n"
+            "By seamlessly integrating affordability into the payment journey, Urbanrupee removes "
+            "financial barriers and transforms high-value purchases into accessible opportunities."
         ),
         "sections": [
             {
-                "title": "Flexible payment options",
+                "title": "Flexible Payment Options for Every Customer",
                 "body": (
-                    "Make high-value purchases more accessible for your customers and improve "
-                    "overall sales for your business."
+                    "Give customers the freedom to choose how they pay through a range of "
+                    "affordability solutions designed to fit different financial needs and "
+                    "purchasing preferences."
                 ),
-                "tags": [
-                    "EMI and Pay Later options",
-                    "Increased purchasing power",
-                    "Boost in average order value",
-                    "Better customer retention",
+                "bullets_heading": "Available Options",
+                "bullets": [
+                    "Credit Card EMI",
+                    "Debit Card EMI",
+                    "Cardless EMI",
+                    "Buy Now Pay Later (BNPL)",
+                    "No-Cost EMI Programs",
+                    "Flexible Tenure Options",
+                ],
+            },
+            {
+                "title": "Increase Purchasing Power",
+                "body": (
+                    "Enable customers to spread payments over manageable installments, making premium "
+                    "products and higher-value purchases more accessible."
+                ),
+                "bullets_heading": "Key Benefits",
+                "bullets": [
+                    "Improved purchase affordability",
+                    "Flexible repayment plans",
+                    "Reduced payment hesitation",
+                    "Enhanced customer confidence",
+                    "Higher purchase completion rates",
+                ],
+            },
+            {
+                "title": "Seamless Checkout Integration",
+                "body": (
+                    "Affordability options are embedded directly into the payment journey, ensuring "
+                    "a smooth and frictionless customer experience without additional redirects or "
+                    "complex application processes."
+                ),
+                "bullets_heading": "Key Features",
+                "bullets": [
+                    "In-line EMI options",
+                    "One-click affordability selection",
+                    "Real-time eligibility checks",
+                    "Transparent repayment breakdowns",
+                    "Optimized mobile experiences",
+                ],
+            },
+            {
+                "title": "Performance Highlights",
+                "cards": [
+                    {
+                        "title": "Higher Basket Sizes",
+                        "body": (
+                            "Enable customers to comfortably purchase more through flexible "
+                            "payment plans."
+                        ),
+                    },
+                    {
+                        "title": "Better Customer Retention",
+                        "body": (
+                            "Increase repeat purchases by providing payment flexibility customers value."
+                        ),
+                    },
+                    {
+                        "title": "Faster Purchase Decisions",
+                        "body": (
+                            "Reduce payment-related hesitation with clear, transparent affordability "
+                            "options."
+                        ),
+                    },
+                    {
+                        "title": "Seamless Approval Experience",
+                        "body": (
+                            "Provide quick eligibility checks and simplified payment plan selection "
+                            "within checkout."
+                        ),
+                    },
+                ],
+            },
+            {
+                "title": "Affordability That Drives Growth",
+                "cards": [
+                    {
+                        "title": "Higher AOV",
+                        "body": (
+                            "Turn larger purchases into achievable decisions with flexible EMI and "
+                            "Pay Later options."
+                        ),
+                    },
+                    {
+                        "title": "Seamless Checkout",
+                        "body": (
+                            "Offer affordability solutions directly within the payment flow without "
+                            "adding friction or complexity."
+                        ),
+                    },
+                    {
+                        "title": "Stronger Customer Loyalty",
+                        "body": (
+                            "Create positive payment experiences that encourage repeat business and "
+                            "long-term customer engagement."
+                        ),
+                    },
                 ],
             },
         ],
         "highlights": [
             {
-                "title": "Higher AOV",
-                "body": "Help customers say yes to bigger baskets with EMI and Pay Later.",
+                "title": "Why Businesses Choose Urbanrupee Affordability",
+                "body": (
+                    "Flexible payment options built to lift conversions, basket size, and customer "
+                    "loyalty at checkout."
+                ),
             },
             {
-                "title": "Smooth checkout",
-                "body": "Affordability options embedded without adding friction.",
+                "title": "Higher Average Order Value (AOV)",
+                "body": (
+                    "Encourage customers to purchase higher-ticket products by making payments more "
+                    "manageable through flexible installment options."
+                ),
             },
             {
-                "title": "Retention",
-                "body": "Give buyers flexible ways to pay and come back again.",
+                "title": "Increased Conversion Rates",
+                "body": (
+                    "Reduce purchase barriers and improve checkout completion rates by providing "
+                    "customers with more payment choices."
+                ),
+            },
+            {
+                "title": "Flexible EMI & BNPL Options",
+                "body": (
+                    "Offer multiple affordability solutions tailored to diverse customer needs and "
+                    "spending behaviors."
+                ),
+            },
+            {
+                "title": "Frictionless Customer Experience",
+                "body": (
+                    "Embed affordability directly into checkout without disrupting the purchase journey."
+                ),
+            },
+            {
+                "title": "Improved Customer Retention",
+                "body": (
+                    "Build long-term customer relationships by offering convenient and flexible "
+                    "payment experiences."
+                ),
             },
         ],
     },

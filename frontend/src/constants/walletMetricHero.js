@@ -1,63 +1,81 @@
 /** Hero copy synced to Close Route Wallet dashboard metric highlight. */
 export const WALLET_METRIC_HERO = {
-  users: {
-    headline: "Users — who can hold and move value",
+  wallets: {
+    headline: "Wallets — Controlled Digital Value",
     body:
-      "Onboard programme participants with KYC tiers, roles, and eligibility rules so only approved identities access wallet balances.",
+      "Issue and manage digital wallets that operate within clearly defined programme boundaries. Maintain complete control over how funds are loaded, transferred, spent, and tracked.",
+    bullets_heading: "Key Benefits",
     bullets: [
-      "Registered accounts with audit trail",
-      "Tiered limits per user profile",
-      "Ops admin & member roles",
+      "Programme-specific wallet creation",
+      "Multi-currency wallet support",
+      "Real-time balance visibility",
+      "Controlled fund movement",
+      "Secure value storage",
     ],
   },
-  wallets: {
-    headline: "Wallets — balances inside your route",
+  users: {
+    headline: "Users — Identity-Driven Access Control",
     body:
-      "Issue INR and multi-currency wallets that stay inside programme boundaries—loads, spends, and transfers only on rails you allow.",
+      "Enable only authorized participants to access and transact within your wallet ecosystem through configurable onboarding, verification, and eligibility frameworks.",
+    bullets_heading: "Key Benefits",
     bullets: [
-      "Per-user & programme wallets",
-      "Currency-aware balances",
-      "Real-time available balance",
+      "KYC-enabled onboarding",
+      "Role-based user management",
+      "Tiered access permissions",
+      "Configurable transaction limits",
+      "Complete user lifecycle control",
     ],
   },
   journals: {
-    headline: "Journal entries — immutable ledger postings",
+    headline: "Journal Entries — Ledger-Grade Transparency",
     body:
-      "Every credit and debit becomes an immutable journal row finance and compliance teams can reconcile without spreadsheet glue.",
+      "Every transaction is securely recorded through an immutable ledger, ensuring complete traceability, accountability, and audit readiness.",
+    bullets_heading: "Key Benefits",
     bullets: [
-      "Double-entry style postings",
-      "Reference IDs on every movement",
-      "Export-ready activity history",
+      "Immutable transaction records",
+      "Complete audit trails",
+      "Real-time journal postings",
+      "Reference tracking for every transaction",
+      "Export-ready financial records",
     ],
   },
   liability: {
-    headline: "INR liability — treasury visibility",
+    headline: "Treasury & Liability Management",
     body:
-      "See aggregate INR wallet balances as live liability so treasury knows float in circulation and can fund loads with confidence.",
+      "Gain complete visibility into wallet balances, liabilities, and funding positions through real-time treasury monitoring.",
+    bullets_heading: "Key Benefits",
     bullets: [
-      "Sum of INR wallet balances",
-      "Float vs. funding source tracking",
-      "Daily liability snapshots",
+      "Live liability tracking",
+      "Float management visibility",
+      "Funding source monitoring",
+      "Treasury reporting",
+      "Balance reconciliation support",
     ],
   },
   posted: {
-    headline: "Posted today — live programme pulse",
+    headline: "Live Programme Activity",
     body:
-      "Track new journal activity as it lands so operations spots unusual volume, stuck flows, or batch jobs that need attention.",
+      "Monitor wallet activity as it happens through operational dashboards designed to identify trends, anomalies, and business-critical events.",
+    bullets_heading: "Key Benefits",
     bullets: [
-      "New rows since midnight",
-      "Alerting on spikes & anomalies",
-      "Same-day ops dashboards",
+      "Real-time activity monitoring",
+      "Operational alerts",
+      "Volume tracking",
+      "Anomaly detection",
+      "Performance dashboards",
     ],
   },
   topups: {
-    headline: "PG top-ups — loads via settlement API",
+    headline: "Controlled Wallet Funding",
     body:
-      "Fund wallets from approved payment-gateway settlements and bank loads—value enters the closed route only through whitelisted sources.",
+      "Ensure value enters the ecosystem only through approved funding sources, creating a secure and compliant closed-loop environment.",
+    bullets_heading: "Key Benefits",
     bullets: [
-      "Settlement API integration",
-      "Load confirmation webhooks",
-      "No off-route funding paths",
+      "Approved funding channels",
+      "Payment gateway integrations",
+      "Settlement API connectivity",
+      "Secure load mechanisms",
+      "Automated funding confirmations",
     ],
   },
 };
