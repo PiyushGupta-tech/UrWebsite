@@ -52,6 +52,9 @@ pip install -r backend/requirements.txt -q
 rm -f backend/staticfiles/index.html
 rm -rf backend/staticfiles/assets
 cd backend && python manage.py collectstatic --noinput
+# rsync from macOS can leave dist/logos unreadable by gunicorn (www user).
+chmod -R a+rX frontend/dist/logos frontend/dist/maps frontend/dist/videos 2>/dev/null || true
+chown -R www:www frontend/dist/logos frontend/dist/maps frontend/dist/videos 2>/dev/null || true
 systemctl restart urbanrupee-gunicorn
 sleep 2
 systemctl is-active urbanrupee-gunicorn
