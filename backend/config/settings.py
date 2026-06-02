@@ -51,15 +51,18 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
+# SPA assets and index.html are served from FRONTEND_DIST via config.urls — do not
+# collect them into staticfiles or WhiteNoise will serve a stale index.html at /.
 STATICFILES_DIRS = []
-if FRONTEND_DIST.exists():
-    STATICFILES_DIRS.append(FRONTEND_DIST)
 
 STORAGES = {
     "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
     },
 }
+
+# Avoid WhiteNoise serving backend/staticfiles/index.html instead of frontend/dist.
+WHITENOISE_INDEX_FILE = False
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 

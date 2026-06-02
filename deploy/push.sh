@@ -31,6 +31,7 @@ rsync -avz --delete \
   --exclude '.git' \
   --exclude '.next' \
   --exclude 'frontend/node_modules' \
+  --exclude '.venv' \
   --exclude 'backend/.venv' \
   --exclude 'backend/db.sqlite3' \
   --exclude 'backend/staticfiles' \
@@ -47,6 +48,9 @@ cd ${REMOTE}
 test -f backend/.env || { echo "Missing backend/.env — create from deploy/env.production.example" >&2; exit 1; }
 source .venv/bin/activate
 pip install -r backend/requirements.txt -q
+# Stale SPA index in staticfiles breaks asset URLs after each frontend build.
+rm -f backend/staticfiles/index.html
+rm -rf backend/staticfiles/assets
 cd backend && python manage.py collectstatic --noinput
 systemctl restart urbanrupee-gunicorn
 sleep 2
