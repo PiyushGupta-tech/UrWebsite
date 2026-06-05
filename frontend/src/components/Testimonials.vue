@@ -21,10 +21,18 @@ defineProps({
                 class="testimonials__video"
                 controls
                 playsinline
-                preload="metadata"
+                preload="none"
                 :src="item.video"
                 :poster="item.poster"
-              />
+              >
+                <track
+                  kind="captions"
+                  srclang="en"
+                  label="English captions"
+                  src="/videos/testimonials/captions.vtt"
+                  default
+                />
+              </video>
             </div>
             <footer class="testimonials__meta">
               <strong>{{ item.name }}</strong>

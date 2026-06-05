@@ -59,7 +59,7 @@ defineProps({
 
 .hero__proof {
   font-size: 13px;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   margin: 0 0 16px;
 }
 

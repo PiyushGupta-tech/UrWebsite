@@ -20,11 +20,20 @@ SERVICE_SLUGS = frozenset({
     "aml-detector",
     "automatic-reconciliation",
 })
-SEO_INJECT_SLUGS = PRODUCT_SLUGS | RESOURCE_SLUGS | CONTACT_SLUGS | SERVICE_SLUGS | frozenset({
-    "about",
-})
+HUB_SLUGS = frozenset({"products-index", "resources-index"})
+
+SEO_INJECT_SLUGS = (
+    PRODUCT_SLUGS
+    | RESOURCE_SLUGS
+    | CONTACT_SLUGS
+    | SERVICE_SLUGS
+    | HUB_SLUGS
+    | frozenset({"about"})
+)
 
 PAGE_SECTION = {
+    "products-index": ("Products", "/products"),
+    "resources-index": ("Resources", "/resources"),
     **{slug: ("Products", None) for slug in PRODUCT_SLUGS},
     **{slug: ("Services", None) for slug in SERVICE_SLUGS},
     "faq": ("Resources", "/faq"),
@@ -273,6 +282,40 @@ RELATED_LINKS = {
             "description": "Request a demo or speak with sales.",
         },
     ],
+    "products-index": [
+        {
+            "label": "Payment Orchestration",
+            "href": "/products/orchestration",
+            "description": "Intelligent routing across PSPs and banks.",
+        },
+        {
+            "label": "Hyper Checkout",
+            "href": "/products/hyper-checkout",
+            "description": "Fast UPI and card checkout flows.",
+        },
+        {
+            "label": "Contact Sales",
+            "href": "/contact",
+            "description": "Request a demo or speak with our team.",
+        },
+    ],
+    "resources-index": [
+        {
+            "label": "FAQ",
+            "href": "/faq",
+            "description": "Common questions about Urbanrupee.",
+        },
+        {
+            "label": "All Products",
+            "href": "/products",
+            "description": "Explore the full Urbanrupee product suite.",
+        },
+        {
+            "label": "Contact",
+            "href": "/contact",
+            "description": "Get started with Urbanrupee.",
+        },
+    ],
     "contact": [
         {
             "label": "Hyper Checkout",
@@ -343,6 +386,22 @@ PAGE_SEO = {
             "effort, resolve discrepancies faster, and gain real-time financial visibility."
         ),
         "h1": "Automatic Reconciliation",
+    },
+    "products-index": {
+        "title": "Urbanrupee Payment Products | Gateway, Checkout & UPI",
+        "description": (
+            "Explore Urbanrupee payment products — orchestration, Hyper Checkout, custom checkout, "
+            "UPI switch, white-label platform, payouts, wallets, and EMI solutions for India."
+        ),
+        "h1": "Urbanrupee Payment Products",
+    },
+    "resources-index": {
+        "title": "Urbanrupee Resources | FAQ, Blog & Guides",
+        "description": (
+            "Urbanrupee resources: FAQs, blog posts, and guides on payment gateways, UPI, checkout, "
+            "orchestration, and fintech for Indian businesses."
+        ),
+        "h1": "Urbanrupee Resources",
     },
     "white-label-platform": {
         "title": "White Label Payment Platform | Urbanrupee",

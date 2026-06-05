@@ -36,6 +36,18 @@ const routes = [
         meta: { slug: "automatic-reconciliation" },
       },
       {
+        path: "products",
+        name: "products",
+        component: () => import("@/views/PageView.vue"),
+        meta: { slug: "products-index" },
+      },
+      {
+        path: "resources",
+        name: "resources",
+        component: () => import("@/views/PageView.vue"),
+        meta: { slug: "resources-index" },
+      },
+      {
         path: "products/white-label",
         name: "white-label",
         component: () => import("@/views/PageView.vue"),

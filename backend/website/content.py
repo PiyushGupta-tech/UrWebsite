@@ -37,6 +37,7 @@ NAV = {
         {"label": "Automatic Reconciliation", "href": "/services/reconciliation"},
     ],
     "products": [
+        {"label": "All Products", "href": "/products"},
         {"label": "Payment Orchestration", "href": "/products/orchestration"},
         {"label": "White Label Platform", "href": "/products/white-label"},
         {"label": "Payout Portal", "href": "/products/payout"},
@@ -47,6 +48,7 @@ NAV = {
         {"label": "Affordability (EMI & Pay Later)", "href": "/products/affordability"},
     ],
     "resources": [
+        {"label": "All Resources", "href": "/resources"},
         {"label": "FAQ", "href": "/faq"},
         {"label": "Blog", "href": "/blog"},
         {"label": "Privacy Policy", "href": "/privacy-policy"},
@@ -55,21 +57,22 @@ NAV = {
 }
 
 HOME_SEO = {
-    "title": "Best Payment Gateway in India | Urbanrupee",
+    "title": "Urbanrupee",
     "description": (
-        "Urbanrupee provides secure payment gateway solutions with UPI, cards, net banking, "
-        "high success rates, fast settlements and seamless onboarding for businesses across India."
+        "Online payments India: accept UPI, cards, net banking and more with Urbanrupee's payment "
+        "suite — orchestration, checkout, payouts, and analytics for growing businesses."
     ),
-    "h1": "Best Payment Gateway in India for Growing Businesses",
+    "h1": "Smart Payment Infrastructure for Growing Businesses",
     "canonical": "https://urbanrupee.com/",
     "path": "/",
 }
 
 HERO = {
-    "headline": "Best Payment Gateway in India for Growing Businesses",
+    "headline": "Smart Payment Infrastructure for Growing Businesses",
     "subheadline": (
-        "Urbanrupee provides secure payment gateway solutions with UPI, cards, net banking, "
-        "high success rates, fast settlements and seamless onboarding for businesses across India."
+        "Urbanrupee empowers businesses with fast, secure, and seamless payment solutions across "
+        "UPI, cards, and net banking helping optimize transactions, improve customer experience, "
+        "and drive smarter growth."
     ),
     "cta_primary": "Get Started",
     "cta_secondary": "Sign In",
@@ -332,12 +335,13 @@ FAQS = {
 
 FOOTER = {
     "company": [
-        {"label": "Our Team", "href": "/team"},
-        {"label": "Privacy Policy", "href": "/privacy-policy"},
+        {"label": "About Us", "href": "/about"},
         {"label": "Contact Us", "href": "/contact"},
+        {"label": "Privacy Policy", "href": "/privacy-policy"},
     ],
     "services": NAV["services"],
     "products": NAV["products"],
+    "resources": NAV["resources"],
 }
 
 CHECKOUT_DEMO = {

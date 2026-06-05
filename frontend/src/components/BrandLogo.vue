@@ -15,6 +15,7 @@ const props = defineProps({
     validator: (v) => ["on-dark", "on-light", "icon", "full"].includes(v),
   },
   alt: { type: String, default: "Urbanrupee" },
+  priority: { type: Boolean, default: false },
 });
 
 const failed = ref(false);
@@ -57,6 +58,8 @@ watch(src, () => {
     :alt="alt"
     :width="dimensions.width"
     :height="dimensions.height"
+    :fetchpriority="priority ? 'high' : undefined"
+    :loading="priority ? 'eager' : 'lazy'"
     decoding="async"
     @error="failed = true"
   />

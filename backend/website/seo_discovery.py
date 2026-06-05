@@ -21,6 +21,8 @@ SERVICE_SLUGS = frozenset({
 
 
 def _priority_for_slug(slug: str) -> str:
+    if slug in {"products-index", "resources-index"}:
+        return "0.95"
     if slug in PRODUCT_SLUGS:
         return "0.90"
     if slug in SERVICE_SLUGS:

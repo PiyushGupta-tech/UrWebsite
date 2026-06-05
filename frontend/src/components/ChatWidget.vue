@@ -203,8 +203,10 @@ function onKeydown(e) {
 
 .chat-widget__close {
   flex-shrink: 0;
-  width: 32px;
-  height: 32px;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
   border: none;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.15);
@@ -285,8 +287,9 @@ function onKeydown(e) {
 }
 
 .chat-widget__chip {
-  padding: 6px 10px;
-  font-size: 12px;
+  padding: 12px 14px;
+  min-height: 44px;
+  font-size: 13px;
   border: 1px solid var(--border);
   border-radius: var(--radius-pill);
   background: var(--bg-surface);

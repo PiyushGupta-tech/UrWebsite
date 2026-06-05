@@ -2071,6 +2071,140 @@ PAGES = {
             },
         ],
     },
+    "products-index": {
+        "type": "hub",
+        "title": "Urbanrupee Payment Products",
+        "intro": (
+            "Urbanrupee is a payment solutions platform that enables businesses to accept, process, "
+            "route, and manage payments across UPI, cards, net banking, wallets, and EMI — with "
+            "orchestration, checkout, payouts, and analytics in one suite."
+        ),
+        "sections": [
+            {
+                "heading": "Accept & Route Payments",
+                "items": [
+                    {
+                        "title": "Payment Orchestration",
+                        "body": (
+                            "Route transactions intelligently across PSPs and banks to maximize success "
+                            "rates, uptime, and performance at scale."
+                        ),
+                        "href": "/products/orchestration",
+                    },
+                    {
+                        "title": "Hyper Checkout",
+                        "body": (
+                            "Fast UPI, card, net banking, wallet, and EMI checkout with smart routing "
+                            "and conversion-focused flows."
+                        ),
+                        "href": "/products/hyper-checkout",
+                    },
+                    {
+                        "title": "Custom Checkout",
+                        "body": (
+                            "Branded on-site checkout with UPI, cards, net banking, wallets, and EMI — "
+                            "designed to reduce drop-offs."
+                        ),
+                        "href": "/products/custom-checkout",
+                    },
+                    {
+                        "title": "UPI Switch",
+                        "body": (
+                            "High-volume UPI routing with multi-bank connectivity, low latency, and "
+                            "enterprise-grade reliability."
+                        ),
+                        "href": "/products/upi-switch",
+                    },
+                    {
+                        "title": "Affordability (EMI & Pay Later)",
+                        "body": (
+                            "Offer EMI, cardless EMI, and BNPL at checkout to lift AOV and conversions."
+                        ),
+                        "href": "/products/affordability",
+                    },
+                ],
+            },
+            {
+                "heading": "Platform & Disbursements",
+                "alt": True,
+                "items": [
+                    {
+                        "title": "White Label Platform",
+                        "body": (
+                            "Launch payments under your own brand with customizable UI, APIs, and "
+                            "scalable infrastructure."
+                        ),
+                        "href": "/products/white-label",
+                    },
+                    {
+                        "title": "Payout Portal",
+                        "body": (
+                            "Automated vendor, merchant, and customer disbursements with bulk payouts "
+                            "and real-time tracking."
+                        ),
+                        "href": "/products/payout",
+                    },
+                    {
+                        "title": "Close Route Wallet",
+                        "body": (
+                            "Secure closed-loop wallet infrastructure with real-time visibility and "
+                            "operational control."
+                        ),
+                        "href": "/products/wallet",
+                    },
+                ],
+            },
+        ],
+        "cta": {"label": "Contact Sales", "href": "/contact"},
+    },
+    "resources-index": {
+        "type": "hub",
+        "title": "Urbanrupee Resources",
+        "intro": (
+            "Guides, FAQs, and insights on payment gateways, UPI, checkout optimization, "
+            "orchestration, and fintech for Indian businesses."
+        ),
+        "sections": [
+            {
+                "heading": "Learn & Explore",
+                "items": [
+                    {
+                        "title": "FAQ",
+                        "body": (
+                            "Answers about Urbanrupee products, UPI, checkout, orchestration, "
+                            "security, and onboarding."
+                        ),
+                        "href": "/faq",
+                    },
+                    {
+                        "title": "Blog",
+                        "body": (
+                            "Payment and fintech insights — gateways, UPI, compliance, and growth "
+                            "strategies."
+                        ),
+                        "href": "/blog",
+                    },
+                    {
+                        "title": "Privacy Policy",
+                        "body": (
+                            "How Urbanrupee collects, uses, and protects your data across our "
+                            "website and services."
+                        ),
+                        "href": "/privacy-policy",
+                    },
+                    {
+                        "title": "Contact Us",
+                        "body": (
+                            "Talk to our team for demos, merchant onboarding, and payment "
+                            "infrastructure support."
+                        ),
+                        "href": "/contact",
+                    },
+                ],
+            },
+        ],
+        "cta": {"label": "Get Started", "href": "/contact"},
+    },
     "contact": {
         "type": "contact",
         "title": "Connect with us",
@@ -2088,6 +2222,8 @@ PAGES = {
 
 # Vue route path -> API slug
 ROUTE_SLUGS = {
+    "/products": "products-index",
+    "/resources": "resources-index",
     "/about": "about",
     "/services/payment": "payment-services",
     "/services/aml": "aml-detector",

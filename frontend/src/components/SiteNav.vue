@@ -27,7 +27,7 @@ function toggleDropdown(key) {
   <header class="nav">
     <div class="container nav__inner">
       <RouterLink to="/" class="nav__logo" @click="closeMenus">
-        <BrandLogo variant="on-dark" :alt="site.name" />
+        <BrandLogo variant="on-dark" :alt="site.name" priority />
       </RouterLink>
 
       <nav class="nav__links">

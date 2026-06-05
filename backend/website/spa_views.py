@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import re
 from functools import lru_cache
 from html import escape
@@ -12,6 +13,7 @@ from django.http import Http404, HttpResponse
 from django.views import View
 
 from . import content
+from .homepage import homepage_payload
 from .page_content import PAGES
 from .page_seo import normalize_path, seo_for_path, slug_for_path
 from .seo_schema import structured_data_script
@@ -99,6 +101,15 @@ def inject_json_ld(html: str, json_ld: str) -> str:
     return html.replace("</head>", f"    {tag}\n  </head>", 1)
 
 
+def inject_homepage_bootstrap(html: str, payload: dict) -> str:
+    """Embed homepage JSON so the SPA can paint without waiting on /api/homepage/."""
+    if 'id="homepage-bootstrap"' in html:
+        return html
+    blob = json.dumps(payload, ensure_ascii=False).replace("<", "\\u003c")
+    tag = f'<script type="application/json" id="homepage-bootstrap">{blob}</script>'
+    return html.replace("</body>", f"    {tag}\n  </body>", 1)
+
+
 def inject_gsc_verification(html: str, token: str) -> str:
     """Insert Google Search Console verification meta when configured."""
     if not token or 'name="google-site-verification"' in html:
@@ -128,6 +139,9 @@ class SpaIndexView(View):
                 slug = slug_for_path(normalized)
                 page = PAGES.get(slug, {"title": seo.get("h1", "")})
             html = inject_json_ld(html, structured_data_script(slug, page, seo))
+
+        if normalized == "/":
+            html = inject_homepage_bootstrap(html, homepage_payload())
 
         gsc_token = getattr(settings, "GSC_SITE_VERIFICATION", "")
         if gsc_token:

@@ -4,6 +4,7 @@ from rest_framework.views import APIView
 
 from . import content
 from . import page_content
+from .homepage import homepage_payload
 from .page_seo import page_context_for_slug
 from .seo_audit import run_seo_audit
 from .seo_schema import structured_data_graph
@@ -22,34 +23,7 @@ class HomepageAPIView(APIView):
     """Aggregated homepage content for the Vue SPA."""
 
     def get(self, request):
-        return Response(
-            {
-                "site": content.SITE,
-                "nav": content.NAV,
-                "seo": content.HOME_SEO,
-                "structured_data": structured_data_graph(
-                    None,
-                    {"title": content.HOME_SEO.get("h1", "Home")},
-                    content.HOME_SEO,
-                ),
-                "hero": content.HERO,
-                "payment_solution": content.PAYMENT_SOLUTION,
-                "banking_partners": content.BANKING_PARTNERS,
-                "merchant_partners": content.MERCHANT_PARTNERS,
-                "features": content.FEATURES,
-                "stats": content.STATS,
-                "why_choose": content.WHY_CHOOSE,
-                "testimonials": content.TESTIMONIALS,
-                "faqs": content.FAQS,
-                "footer": content.FOOTER,
-                "checkout_demo": content.CHECKOUT_DEMO,
-                "problem_trio": content.PROBLEM_TRIO,
-                "value_prop": content.VALUE_PROP,
-                "personas": content.PERSONAS,
-                "product_catalogue": content.PRODUCT_CATALOGUE,
-                "dashboard_preview": content.DASHBOARD_PREVIEW,
-            }
-        )
+        return Response(homepage_payload())
 
 
 class ContactSubmitAPIView(APIView):

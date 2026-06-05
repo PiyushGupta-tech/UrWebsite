@@ -109,6 +109,12 @@ defineProps({
               {{ link.label }}
             </RouterLink>
           </div>
+          <div v-if="footer.resources?.length" class="footer__col">
+            <h3 class="footer__col-title">Resources</h3>
+            <RouterLink v-for="link in footer.resources" :key="link.href" :to="link.href">
+              {{ link.label }}
+            </RouterLink>
+          </div>
         </div>
       </div>
     </div>
@@ -202,14 +208,13 @@ defineProps({
 .footer__cols a {
   display: block;
   font-size: 14px;
-  padding: 2px 0;
+  padding: 8px 0;
   line-height: 1.45;
-  opacity: 0.8;
-  transition: opacity 0.15s, color 0.15s;
+  color: rgba(255, 255, 255, 0.88);
+  transition: color 0.15s;
 }
 
 .footer__cols a:hover {
-  opacity: 1;
   color: #06b6d4;
 }
 
@@ -289,7 +294,7 @@ defineProps({
   }
 
   .footer__cols {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 20px;
   }
 }

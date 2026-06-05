@@ -10,6 +10,7 @@ import FaqPage from "@/components/pages/FaqPage.vue";
 import BlogPage from "@/components/pages/BlogPage.vue";
 import PrivacyPage from "@/components/pages/PrivacyPage.vue";
 import ContactPage from "@/components/pages/ContactPage.vue";
+import HubPage from "@/components/pages/HubPage.vue";
 
 defineProps({
   site: { type: Object, default: null },
@@ -32,6 +33,7 @@ const pageComponent = computed(() => {
     blog: BlogPage,
     privacy: PrivacyPage,
     contact: ContactPage,
+    hub: HubPage,
   };
   return map[type] || MarketingPage;
 });

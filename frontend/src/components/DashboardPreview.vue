@@ -196,8 +196,9 @@ watch(
       'dash--tilted': tilted,
       'dash--theme-breathe': themeBreathe,
     }"
-    role="region"
-    aria-label="Urbanrupee dashboard preview"
+    :aria-hidden="tilted ? 'true' : undefined"
+    :role="tilted ? undefined : 'region'"
+    :aria-label="tilted ? undefined : 'Urbanrupee dashboard preview'"
     @pointerenter="onPointerEnter"
     @pointerleave="onPointerLeave"
   >

@@ -20,11 +20,27 @@ defineProps({
   footer: { type: Object, default: null },
 });
 
-const data = ref(null);
+function readHomepageBootstrap() {
+  const el = document.getElementById("homepage-bootstrap");
+  if (!el?.textContent) return null;
+  try {
+    return JSON.parse(el.textContent);
+  } catch {
+    return null;
+  }
+}
+
+const bootstrap = readHomepageBootstrap();
+const data = ref(bootstrap);
 const error = ref(null);
-const loading = ref(true);
+const loading = ref(!bootstrap);
 
 onMounted(async () => {
+  if (bootstrap) {
+    applySeo(bootstrap.seo, bootstrap.structured_data);
+    loading.value = false;
+    return;
+  }
   try {
     data.value = await fetchHomepage();
     applySeo(data.value.seo, data.value.structured_data);
