@@ -23,11 +23,23 @@ const data = ref(null);
 const error = ref(null);
 const loading = ref(true);
 
+function setMeta(attr, key, value) {
+  if (!value) return;
+  let el = document.querySelector(`meta[${attr}="${key}"]`);
+  if (!el) {
+    el = document.createElement("meta");
+    el.setAttribute(attr, key);
+    document.head.appendChild(el);
+  }
+  el.setAttribute("content", value);
+}
+
 function applySeo(seo) {
   if (!seo) return;
   if (seo.title) document.title = seo.title;
-  const meta = document.querySelector('meta[name="description"]');
-  if (meta && seo.description) meta.setAttribute("content", seo.description);
+  setMeta("name", "description", seo.description);
+  setMeta("property", "og:title", seo.title);
+  setMeta("property", "og:description", seo.description);
 }
 
 onMounted(async () => {
