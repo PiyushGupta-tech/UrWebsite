@@ -153,7 +153,11 @@ def site_navigation_jsonld() -> list[dict]:
         {"name": "About Us", "href": "/about"},
         {"name": "Payment Gateway", "href": "/products/orchestration"},
         {"name": "FAQ", "href": "/faq"},
-        *[{"name": item["label"], "href": item["href"]} for item in content.NAV["products"][1:5]],
+        *[
+            {"name": item["label"], "href": item["href"]}
+            for item in content.NAV["products"]
+            if item["href"] != "/products"
+        ],
         *[{"name": item["label"], "href": item["href"]} for item in content.NAV["resources"][1:]],
         *[{"name": item["label"], "href": item["href"]} for item in content.NAV["services"]],
     ]

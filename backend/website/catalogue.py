@@ -112,6 +112,38 @@ PRODUCT_SUITE = {
             ],
             "href": "/products/affordability",
         },
+        {
+            "title": "Payout Portal",
+            "body": (
+                "Automated vendor, merchant, and customer disbursements with bulk payouts, "
+                "real-time tracking, and streamlined settlement workflows."
+            ),
+            "highlights": [
+                "Bulk payout processing",
+                "Real-time disbursement tracking",
+                "Automated settlement workflows",
+                "Multi-beneficiary support",
+                "Secure payout infrastructure",
+                "Operational visibility",
+            ],
+            "href": "/products/payout",
+        },
+        {
+            "title": "Close Route Wallet",
+            "body": (
+                "Secure closed-loop wallet infrastructure with real-time visibility, "
+                "reconciliation, and operational control for businesses."
+            ),
+            "highlights": [
+                "Closed-loop wallet control",
+                "Real-time balance visibility",
+                "Secure transaction processing",
+                "Reconciliation support",
+                "Scalable wallet infrastructure",
+                "Brand-controlled experiences",
+            ],
+            "href": "/products/wallet",
+        },
     ],
 }
 

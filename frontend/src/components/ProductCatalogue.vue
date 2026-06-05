@@ -27,6 +27,10 @@ defineProps({
           <span class="catalogue__link">Explore {{ item.title }} →</span>
         </RouterLink>
       </div>
+
+      <p class="catalogue__all">
+        <RouterLink to="/products">View all Urbanrupee products →</RouterLink>
+      </p>
     </div>
   </section>
 </template>
@@ -103,6 +107,21 @@ defineProps({
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+}
+
+.catalogue__all {
+  margin: 32px 0 0;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.catalogue__all a {
+  color: var(--accent-blue);
+}
+
+.catalogue__all a:hover {
+  text-decoration: underline;
 }
 
 @media (min-width: 640px) {
