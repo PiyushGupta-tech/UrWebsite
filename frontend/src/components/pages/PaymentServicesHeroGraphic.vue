@@ -11,7 +11,7 @@ const methods = [
     label: "UPI",
     hint: "High success UPI routing with real-time fallback across PSPs.",
     amount: "₹12,450",
-    meta: "pay@urbanrupee · Intent",
+    meta: "pay@Urbanrupee · Intent",
     latency: "0.3s",
   },
   {

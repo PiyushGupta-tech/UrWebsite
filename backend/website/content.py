@@ -1,4 +1,4 @@
-"""Urbanrupee marketing content — urbanrupee.com + product catalogue."""
+"""Urbanrupee marketing content — Urbanrupee.com + product catalogue."""
 
 from .catalogue import CATALOGUE_TAGLINE, PRODUCT_SUITE
 from .dashboard_demo import DASHBOARD_DEMO
@@ -43,9 +43,9 @@ NAV = {
 }
 
 HOME_SEO = {
-    "title": "Best Payment Gateway in India | UrbanRupee",
+    "title": "Best Payment Gateway in India | Urbanrupee",
     "description": (
-        "UrbanRupee provides secure payment gateway solutions with UPI, cards, net banking, "
+        "Urbanrupee provides secure payment gateway solutions with UPI, cards, net banking, "
         "high success rates, fast settlements and seamless onboarding for businesses across India."
     ),
 }
@@ -53,7 +53,7 @@ HOME_SEO = {
 HERO = {
     "headline": "Best Payment Gateway in India for Growing Businesses",
     "subheadline": (
-        "UrbanRupee provides secure payment gateway solutions with UPI, cards, net banking, "
+        "Urbanrupee provides secure payment gateway solutions with UPI, cards, net banking, "
         "high success rates, fast settlements and seamless onboarding for businesses across India."
     ),
     "cta_primary": "Get Started",

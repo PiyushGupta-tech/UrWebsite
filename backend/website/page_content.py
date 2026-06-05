@@ -1,4 +1,4 @@
-"""Content for inner marketing pages — sourced from urbanrupee.com."""
+"""Content for inner marketing pages — sourced from Urbanrupee.com."""
 
 # slug -> page payload
 PAGES = {
@@ -218,11 +218,11 @@ PAGES = {
         "title": "Payment Infrastructure That Powers Growth",
         "intro": (
             "Deliver seamless payment experiences with a unified platform built for speed, "
-            "reliability, security, and higher transaction success rates. UrbanRupee helps "
+            "reliability, security, and higher transaction success rates. Urbanrupee helps "
             "businesses simplify payments, improve conversions, and scale with confidence."
         ),
         "hero_extra": {
-            "why_heading": "Why UrbanRupee?",
+            "why_heading": "Why Urbanrupee?",
             "why_items": [
                 "Smart Payment Orchestration – One integration, multiple payment partners.",
                 "Higher Success Rates – Intelligent routing for better transaction approvals.",
