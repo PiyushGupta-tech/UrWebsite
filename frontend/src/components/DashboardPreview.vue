@@ -243,7 +243,7 @@ watch(
 
       <main class="dash__main">
         <div class="dash__analytics-bar">
-          <h3 class="dash__analytics-title">{{ analyticsTitle }}</h3>
+          <p class="dash__analytics-title">{{ analyticsTitle }}</p>
           <div class="dash__periods" role="tablist" aria-label="Analytics period">
             <button
               v-for="p in periods"
@@ -370,10 +370,11 @@ watch(
   --dash-bg: #f1f5f9;
   --dash-card: #ffffff;
   --dash-text: #0f172a;
-  --dash-muted: #64748b;
+  --dash-muted: #475569;
 
   position: relative;
   width: min(100%, 520px);
+  min-height: 400px;
   border-radius: 14px;
   overflow: hidden;
   background: var(--dash-bg);
@@ -632,7 +633,7 @@ watch(
   font-size: 8px;
   font-weight: 700;
   letter-spacing: 0.06em;
-  color: #64748b;
+  color: #94a3b8;
 }
 
 .dash__nav-item {

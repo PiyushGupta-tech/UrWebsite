@@ -33,12 +33,12 @@ defineProps({
 
         <div class="footer__cols">
           <div class="footer__col">
-            <h4>Company</h4>
+            <h3 class="footer__col-title">Company</h3>
             <RouterLink v-for="link in footer.company" :key="link.href" :to="link.href">
               {{ link.label }}
             </RouterLink>
             <div class="footer__follow">
-              <h4 class="footer__follow-title">Follow Us</h4>
+              <p class="footer__follow-title">Follow Us</p>
               <div class="footer__social" aria-label="Social media">
                 <a
                   v-for="item in SOCIAL_LINKS"
@@ -98,13 +98,13 @@ defineProps({
             </div>
           </div>
           <div class="footer__col">
-            <h4>Services</h4>
+            <h3 class="footer__col-title">Services</h3>
             <RouterLink v-for="link in footer.services" :key="link.href" :to="link.href">
               {{ link.label }}
             </RouterLink>
           </div>
           <div class="footer__col">
-            <h4>Products</h4>
+            <h3 class="footer__col-title">Products</h3>
             <RouterLink v-for="link in footer.products" :key="link.href" :to="link.href">
               {{ link.label }}
             </RouterLink>
@@ -150,13 +150,14 @@ defineProps({
 .footer__brand p {
   margin: 0 0 16px;
   font-size: 14px;
-  opacity: 0.75;
+  color: rgba(255, 255, 255, 0.82);
   max-width: 280px;
 }
 
 .footer__certs {
   list-style: none;
   padding: 0;
+  min-height: 96px;
   margin: 0;
   display: flex;
   flex-wrap: nowrap;
@@ -190,7 +191,7 @@ defineProps({
   gap: 0;
 }
 
-.footer__cols h4 {
+.footer__col-title {
   margin: 0 0 8px;
   font-size: 12px;
   text-transform: uppercase;
@@ -274,7 +275,7 @@ defineProps({
 .footer__bottom {
   padding-top: 24px;
   font-size: 13px;
-  opacity: 0.5;
+  color: rgba(255, 255, 255, 0.72);
 }
 
 .footer__bottom p {

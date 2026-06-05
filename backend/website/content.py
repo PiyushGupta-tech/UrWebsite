@@ -7,11 +7,23 @@ from .merchant_map import MERCHANT_MAP
 SITE = {
     "name": "Urbanrupee",
     "tagline": "Unified Payment Ecosystem · Product Catalogue",
+    "website_url": "https://urbanrupee.com",
     "sign_in_url": "https://merchant.urbanrupee.in/login",
     "get_started_url": "/contact",
     "copyright": "Copyright © 2025 Urbanrupee Techsolution Pvt Ltd. All rights reserved.",
     "footer_blurb": CATALOGUE_TAGLINE,
     "certifications": ["PCI DSS Compliant", "ISO 27001:2022 Certification"],
+    # Phase 6 — canonical product URLs for social, docs, and external listings
+    "product_urls": {
+        "hyper_checkout": "https://urbanrupee.com/products/hyper-checkout",
+        "custom_checkout": "https://urbanrupee.com/products/custom-checkout",
+        "orchestration": "https://urbanrupee.com/products/orchestration",
+        "white_label": "https://urbanrupee.com/products/white-label",
+        "upi_switch": "https://urbanrupee.com/products/upi-switch",
+        "affordability": "https://urbanrupee.com/products/affordability",
+        "payout_portal": "https://urbanrupee.com/products/payout",
+        "close_route_wallet": "https://urbanrupee.com/products/wallet",
+    },
 }
 
 NAV = {
@@ -48,6 +60,9 @@ HOME_SEO = {
         "Urbanrupee provides secure payment gateway solutions with UPI, cards, net banking, "
         "high success rates, fast settlements and seamless onboarding for businesses across India."
     ),
+    "h1": "Best Payment Gateway in India for Growing Businesses",
+    "canonical": "https://urbanrupee.com/",
+    "path": "/",
 }
 
 HERO = {
@@ -245,6 +260,26 @@ TESTIMONIALS = {
 FAQS = {
     "eyebrow": "Our Questions & Answers",
     "items": [
+        {
+            "question": "What is Urbanrupee Hyper Checkout?",
+            "answer": (
+                "Hyper Checkout is Urbanrupee's fast payment experience for UPI, cards, net banking, "
+                "wallets, and EMI — with smart routing and one-click flows designed to lift conversion."
+            ),
+            "links": [
+                {"label": "Urbanrupee Hyper Checkout", "href": "/products/hyper-checkout"},
+            ],
+        },
+        {
+            "question": "What is payment orchestration?",
+            "answer": (
+                "Payment orchestration routes each transaction across multiple PSPs and banks to "
+                "maximize success rates, uptime, and performance at scale."
+            ),
+            "links": [
+                {"label": "Payment Orchestration Platform", "href": "/products/orchestration"},
+            ],
+        },
         {
             "question": "How can I add money to my Urbanrupee wallet?",
             "answer": (

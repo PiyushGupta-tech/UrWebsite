@@ -18,6 +18,9 @@ ALLOWED_HOSTS = [
     if host.strip()
 ]
 
+SITE_BASE_URL = os.environ.get("SITE_BASE_URL", "https://urbanrupee.com").rstrip("/")
+GSC_SITE_VERIFICATION = os.environ.get("GSC_SITE_VERIFICATION", "").strip()
+
 INSTALLED_APPS = [
     "django.contrib.auth",
     "django.contrib.contenttypes",

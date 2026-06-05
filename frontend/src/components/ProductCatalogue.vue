@@ -17,13 +17,14 @@ defineProps({
           :key="item.title"
           :to="item.href"
           class="catalogue__card card"
+          :aria-label="`Explore ${item.title} — ${item.body}`"
         >
           <h3>{{ item.title }}</h3>
           <p class="catalogue__body">{{ item.body }}</p>
           <ul class="catalogue__highlights">
             <li v-for="h in item.highlights" :key="h">{{ h }}</li>
           </ul>
-          <span class="catalogue__link">Learn more →</span>
+          <span class="catalogue__link">Explore {{ item.title }} →</span>
         </RouterLink>
       </div>
     </div>

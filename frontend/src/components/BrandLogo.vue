@@ -34,6 +34,15 @@ const src = computed(() => {
   }
 });
 
+const dimensions = computed(() => {
+  switch (resolvedVariant.value) {
+    case "icon":
+      return { width: 28, height: 28 };
+    default:
+      return { width: 112, height: 28 };
+  }
+});
+
 watch(src, () => {
   failed.value = false;
 });
@@ -46,6 +55,8 @@ watch(src, () => {
     :class="`brand-logo--${resolvedVariant}`"
     :src="src"
     :alt="alt"
+    :width="dimensions.width"
+    :height="dimensions.height"
     decoding="async"
     @error="failed = true"
   />

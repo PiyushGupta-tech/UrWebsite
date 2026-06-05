@@ -5,6 +5,7 @@ from .views import (
     ContactSubmitAPIView,
     HomepageAPIView,
     PageDetailAPIView,
+    SeoAuditAPIView,
     SiteAPIView,
 )
 
@@ -14,4 +15,5 @@ urlpatterns = [
     path("chat/", ChatAPIView.as_view(), name="chat"),
     path("contact/", ContactSubmitAPIView.as_view(), name="contact-submit"),
     path("pages/<slug:slug>/", PageDetailAPIView.as_view(), name="page-detail"),
+    path("seo/", SeoAuditAPIView.as_view(), name="seo-audit"),
 ]

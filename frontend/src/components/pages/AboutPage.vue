@@ -5,9 +5,11 @@ import AboutEcoPanel from "./AboutEcoPanel.vue";
 import AboutEcoTip from "./AboutEcoTip.vue";
 import { provideAboutEco } from "@/composables/useAboutEco.js";
 import { useReveal } from "@/composables/useReveal.js";
+import RelatedLinks from "@/components/RelatedLinks.vue";
 
 const props = defineProps({
   page: { type: Object, required: true },
+  relatedLinks: { type: Array, default: () => [] },
 });
 
 const introParagraphs = computed(() =>
@@ -154,6 +156,8 @@ onMounted(() => {
         <p class="about-tagline__text">{{ page.tagline }}</p>
       </div>
     </section>
+
+    <RelatedLinks v-if="relatedLinks.length" :links="relatedLinks" />
   </main>
 </template>
 

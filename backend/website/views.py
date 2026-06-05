@@ -4,6 +4,9 @@ from rest_framework.views import APIView
 
 from . import content
 from . import page_content
+from .page_seo import page_context_for_slug
+from .seo_audit import run_seo_audit
+from .seo_schema import structured_data_graph
 from .contact import send_contact_email
 from .knowledge import answer_query
 
@@ -24,6 +27,11 @@ class HomepageAPIView(APIView):
                 "site": content.SITE,
                 "nav": content.NAV,
                 "seo": content.HOME_SEO,
+                "structured_data": structured_data_graph(
+                    None,
+                    {"title": content.HOME_SEO.get("h1", "Home")},
+                    content.HOME_SEO,
+                ),
                 "hero": content.HERO,
                 "payment_solution": content.PAYMENT_SOLUTION,
                 "banking_partners": content.BANKING_PARTNERS,
@@ -89,10 +97,13 @@ class PageDetailAPIView(APIView):
         page = page_content.PAGES.get(slug)
         if not page:
             return Response({"detail": "Page not found."}, status=404)
+        ctx = page_context_for_slug(slug, page)
         return Response(
             {
                 "slug": slug,
                 "route": page_content.SLUG_TO_ROUTE.get(slug),
+                **ctx,
+                "structured_data": structured_data_graph(slug, page, ctx["seo"]),
                 "page": page,
                 "site": content.SITE,
                 "nav": content.NAV,
@@ -101,3 +112,10 @@ class PageDetailAPIView(APIView):
                 "dashboard_preview": content.DASHBOARD_PREVIEW,
             }
         )
+
+
+class SeoAuditAPIView(APIView):
+    """Phase 7 — SEO audit report for CI or pre-deploy checks."""
+
+    def get(self, request):
+        return Response(run_seo_audit())

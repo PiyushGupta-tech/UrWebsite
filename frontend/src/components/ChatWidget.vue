@@ -139,6 +139,8 @@ function onKeydown(e) {
         v-if="!open"
         :src="LOGO_PATHS.chatBot"
         alt=""
+        width="29"
+        height="29"
         class="chat-widget__launcher-logo"
       />
       <span v-else class="chat-widget__launcher-icon" aria-hidden="true">↓</span>

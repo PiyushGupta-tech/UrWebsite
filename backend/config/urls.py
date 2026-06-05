@@ -2,11 +2,14 @@ from pathlib import Path
 
 from django.conf import settings
 from django.urls import include, path, re_path
-from django.views.generic import TemplateView
-from django.views.static import serve
+from website.seo_discovery import RobotsTxtView, SitemapXmlView
+from website.static_serve import cached_serve
+from website.spa_views import SpaIndexView
 
 urlpatterns = [
     path("api/", include("website.urls")),
+    path("robots.txt", RobotsTxtView.as_view(), name="robots-txt"),
+    path("sitemap.xml", SitemapXmlView.as_view(), name="sitemap-xml"),
 ]
 
 frontend_dist = Path(settings.BASE_DIR).parent / "frontend" / "dist"
@@ -18,14 +21,14 @@ if (frontend_dist / "index.html").exists():
             urlpatterns.append(
                 re_path(
                     rf"^{folder}/(?P<path>.*)$",
-                    serve,
+                    cached_serve,
                     {"document_root": document_root},
                 )
             )
     urlpatterns.append(
         re_path(
-            r"^(?!api/|static/|assets/|logos/|images/|maps/|videos/).*$",
-            TemplateView.as_view(template_name="index.html"),
+            r"^(?!api/|static/|assets/|logos/|images/|maps/|videos/|robots\.txt|sitemap\.xml).*$",
+            SpaIndexView.as_view(),
             name="spa",
         )
     )

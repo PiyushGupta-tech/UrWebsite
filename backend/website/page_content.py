@@ -1503,6 +1503,26 @@ PAGES = {
         "intro": "Find answers to common questions about Urbanrupee's payment solutions and services.",
         "items": [
             {
+                "question": "What is Urbanrupee Hyper Checkout?",
+                "answer": (
+                    "Hyper Checkout delivers faster UPI, card, net banking, wallet, and EMI payments "
+                    "with smart routing and one-click flows for higher conversion rates."
+                ),
+                "links": [
+                    {"label": "Explore Hyper Checkout", "href": "/products/hyper-checkout"},
+                ],
+            },
+            {
+                "question": "What is payment orchestration?",
+                "answer": (
+                    "Payment orchestration intelligently routes transactions across PSPs and banks "
+                    "to maximize success rates, uptime, and performance."
+                ),
+                "links": [
+                    {"label": "Payment Orchestration Platform", "href": "/products/orchestration"},
+                ],
+            },
+            {
                 "question": "How do I create my Urbanrupee account?",
                 "answer": (
                     "Download our mobile app or visit our website. Click 'Sign Up' or 'Register', "
@@ -1538,6 +1558,18 @@ PAGES = {
                 ),
             },
         ],
+        "product_links": {
+            "title": "Popular Urbanrupee products",
+            "intro": "Explore product pages for checkout, orchestration, UPI, and payouts.",
+            "items": [
+                {"label": "Hyper Checkout", "href": "/products/hyper-checkout"},
+                {"label": "Custom Checkout", "href": "/products/custom-checkout"},
+                {"label": "Payment Orchestration", "href": "/products/orchestration"},
+                {"label": "UPI Switch", "href": "/products/upi-switch"},
+                {"label": "Payout Portal", "href": "/products/payout"},
+                {"label": "Affordability (EMI & BNPL)", "href": "/products/affordability"},
+            ],
+        },
         "cta": {
             "title": "Still have questions?",
             "body": "Can't find the answer you're looking for? Reach out to our support team.",
@@ -1558,24 +1590,28 @@ PAGES = {
                 "date": "Jan 17, 2025",
                 "title": "Payment Orchestration: Maximizing Acceptance Rates for Global Merchants",
                 "slug": "orchestration-acceptance-rates",
+                "href": "/products/orchestration",
             },
             {
                 "category": "Fintech Innovation",
                 "date": "Jan 22, 2025",
                 "title": "How to Build a Scalable Payment Infrastructure for Growing Businesses",
                 "slug": "scalable-payment-infrastructure",
+                "href": "/products/hyper-checkout",
             },
             {
                 "category": "Global Payments",
                 "date": "Jan 23, 2025",
                 "title": "Understanding TSP/PSP Solutions: A Complete Guide for Enterprises",
                 "slug": "tsp-psp-guide",
+                "href": "/products/upi-switch",
             },
             {
                 "category": "E-Commerce Payments",
                 "date": "Jan 25, 2025",
                 "title": "E-Commerce Enablement: Transforming Online Payment Experiences",
                 "slug": "ecommerce-enablement",
+                "href": "/products/custom-checkout",
             },
         ],
     },

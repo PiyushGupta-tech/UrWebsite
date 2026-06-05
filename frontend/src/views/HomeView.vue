@@ -1,6 +1,7 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import { fetchHomepage } from "@/api/client";
+import { applySeo } from "@/utils/seo";
 import HeroSection from "@/components/HeroSection.vue";
 import ProblemTrio from "@/components/ProblemTrio.vue";
 import ValueProp from "@/components/ValueProp.vue";
@@ -23,29 +24,10 @@ const data = ref(null);
 const error = ref(null);
 const loading = ref(true);
 
-function setMeta(attr, key, value) {
-  if (!value) return;
-  let el = document.querySelector(`meta[${attr}="${key}"]`);
-  if (!el) {
-    el = document.createElement("meta");
-    el.setAttribute(attr, key);
-    document.head.appendChild(el);
-  }
-  el.setAttribute("content", value);
-}
-
-function applySeo(seo) {
-  if (!seo) return;
-  if (seo.title) document.title = seo.title;
-  setMeta("name", "description", seo.description);
-  setMeta("property", "og:title", seo.title);
-  setMeta("property", "og:description", seo.description);
-}
-
 onMounted(async () => {
   try {
     data.value = await fetchHomepage();
-    applySeo(data.value.seo);
+    applySeo(data.value.seo, data.value.structured_data);
   } catch (e) {
     error.value = e.message;
   } finally {

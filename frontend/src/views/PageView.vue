@@ -2,6 +2,8 @@
 import { computed, onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import { fetchPage } from "@/api/client";
+import { applySeo } from "@/utils/seo";
+import Breadcrumbs from "@/components/Breadcrumbs.vue";
 import AboutPage from "@/components/pages/AboutPage.vue";
 import MarketingPage from "@/components/pages/MarketingPage.vue";
 import FaqPage from "@/components/pages/FaqPage.vue";
@@ -39,7 +41,7 @@ async function loadPage() {
   error.value = null;
   try {
     payload.value = await fetchPage(slug.value);
-    document.title = `${payload.value.page.title} — Urbanrupee`;
+    applySeo(payload.value.seo, payload.value.structured_data);
   } catch (e) {
     error.value = e.status === 404 ? "Page not found." : e.message;
     payload.value = null;
@@ -62,17 +64,29 @@ watch(() => route.path, loadPage);
     <RouterLink to="/" class="btn btn--primary">Back to home</RouterLink>
   </div>
 
-  <component
-    :is="pageComponent"
-    v-else
-    :page="payload.page"
-    :site="payload.site"
-    :checkout="payload.checkout_demo"
-    :dashboard="payload.dashboard_preview"
-  />
+  <template v-else>
+    <div class="container page-chrome">
+      <Breadcrumbs
+        v-if="payload.breadcrumbs?.length > 1"
+        :items="payload.breadcrumbs"
+      />
+    </div>
+    <component
+      :is="pageComponent"
+      :page="payload.page"
+      :site="payload.site"
+      :checkout="payload.checkout_demo"
+      :dashboard="payload.dashboard_preview"
+      :related-links="payload.related_links"
+    />
+  </template>
 </template>
 
 <style scoped>
+.page-chrome {
+  padding-top: 8px;
+}
+
 .page-loading {
   min-height: 50vh;
   display: flex;

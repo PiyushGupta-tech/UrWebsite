@@ -1,8 +1,10 @@
 <script setup>
 import PageHero from "./PageHero.vue";
+import RelatedLinks from "@/components/RelatedLinks.vue";
 
 defineProps({
   page: { type: Object, required: true },
+  relatedLinks: { type: Array, default: () => [] },
 });
 </script>
 
@@ -12,18 +14,28 @@ defineProps({
 
     <section class="section">
       <div class="container blog-grid">
-        <article
-          v-for="post in page.posts"
-          :key="post.slug"
-          class="card blog-card"
-        >
-          <span class="blog-card__category">{{ post.category }}</span>
-          <time class="blog-card__date">{{ post.date }}</time>
-          <h2 class="blog-card__title">{{ post.title }}</h2>
-          <span class="blog-card__link">Read more →</span>
-        </article>
+        <template v-for="post in page.posts" :key="post.slug">
+          <RouterLink
+            v-if="post.href"
+            :to="post.href"
+            class="card blog-card blog-card--link"
+          >
+            <span class="blog-card__category">{{ post.category }}</span>
+            <time class="blog-card__date">{{ post.date }}</time>
+            <h2 class="blog-card__title">{{ post.title }}</h2>
+            <span class="blog-card__link">Explore product →</span>
+          </RouterLink>
+          <article v-else class="card blog-card">
+            <span class="blog-card__category">{{ post.category }}</span>
+            <time class="blog-card__date">{{ post.date }}</time>
+            <h2 class="blog-card__title">{{ post.title }}</h2>
+            <span class="blog-card__link">Read more →</span>
+          </article>
+        </template>
       </div>
     </section>
+
+    <RelatedLinks v-if="relatedLinks.length" :links="relatedLinks" />
   </main>
 </template>
 
@@ -47,9 +59,17 @@ defineProps({
   transition: border-color 0.15s, transform 0.15s;
 }
 
-.blog-card:hover {
+.blog-card:hover,
+.blog-card--link:hover {
   border-color: var(--accent-blue);
   transform: translateY(-2px);
+}
+
+.blog-card--link {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
 }
 
 .blog-card__category {

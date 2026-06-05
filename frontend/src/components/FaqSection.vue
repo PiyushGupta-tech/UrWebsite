@@ -37,6 +37,11 @@ function toggle(index) {
           </button>
           <div v-show="openIndex === index" class="faq__answer">
             <p>{{ item.answer }}</p>
+            <ul v-if="item.links?.length" class="faq__links">
+              <li v-for="link in item.links" :key="link.href">
+                <RouterLink :to="link.href">{{ link.label }}</RouterLink>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
@@ -101,6 +106,21 @@ function toggle(index) {
   font-size: 15px;
   color: var(--text-secondary);
   line-height: 1.65;
+}
+
+.faq__links {
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+}
+
+.faq__links a {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent-blue);
 }
 
 .faq__item--open {

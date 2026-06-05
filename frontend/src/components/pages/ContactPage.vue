@@ -2,9 +2,11 @@
 import { ref } from "vue";
 import { submitContactForm } from "@/api/client.js";
 import PageHero from "./PageHero.vue";
+import RelatedLinks from "@/components/RelatedLinks.vue";
 
 defineProps({
   page: { type: Object, required: true },
+  relatedLinks: { type: Array, default: () => [] },
 });
 
 const form = ref({
@@ -107,6 +109,8 @@ async function onSubmit() {
         </form>
       </div>
     </section>
+
+    <RelatedLinks v-if="relatedLinks.length" :links="relatedLinks" />
   </main>
 </template>
 

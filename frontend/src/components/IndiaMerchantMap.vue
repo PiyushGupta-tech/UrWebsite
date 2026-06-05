@@ -10,7 +10,9 @@ const GLOW_FILTER_PAD = 48;
 
 const indiaMapPaths = (() => {
   const match = indiaSvgRaw.match(/<svg[^>]*>([\s\S]*)<\/svg>/i);
-  return match ? match[1] : "";
+  if (!match) return "";
+  // @svg-maps/india adds aria-label on <path>, which Lighthouse flags as prohibited.
+  return match[1].replace(/\s*aria-label="[^"]*"/gi, "");
 })();
 
 const props = defineProps({

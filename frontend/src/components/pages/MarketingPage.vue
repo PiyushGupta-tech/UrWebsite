@@ -6,6 +6,7 @@ import { customCheckoutMethodHeroFor } from "@/constants/customCheckoutMethodHer
 import { walletMetricHeroFor } from "@/constants/walletMetricHero";
 import { orchestrationStoryLineFor } from "@/constants/orchestrationStoryHero";
 import PageHero from "./PageHero.vue";
+import RelatedLinks from "@/components/RelatedLinks.vue";
 import PaymentServicesHeroGraphic from "./PaymentServicesHeroGraphic.vue";
 import AmlDetectorHeroGraphic from "./AmlDetectorHeroGraphic.vue";
 import ReconciliationHeroGraphic from "./ReconciliationHeroGraphic.vue";
@@ -22,6 +23,7 @@ const props = defineProps({
   page: { type: Object, required: true },
   checkout: { type: Object, default: null },
   dashboard: { type: Object, default: null },
+  relatedLinks: { type: Array, default: () => [] },
 });
 
 const route = useRoute();
@@ -343,6 +345,8 @@ onMounted(() => {
         <p class="closing-band__text">{{ page.closing }}</p>
       </div>
     </section>
+
+    <RelatedLinks v-if="relatedLinks.length" :links="relatedLinks" />
 
     <section v-if="page.cta" class="section cta-inline">
       <div class="container card cta-inline__inner">
