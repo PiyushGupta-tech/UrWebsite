@@ -2,6 +2,9 @@ from pathlib import Path
 
 from django.conf import settings
 from django.urls import include, path, re_path
+from django.views.generic.base import RedirectView
+
+from website.legacy_redirects import LEGACY_GONE_PATHS, LEGACY_REDIRECTS, LegacyGoneView
 from website.seo_discovery import RobotsTxtView, SitemapXmlView
 from website.static_serve import cached_serve
 from website.spa_views import SpaIndexView
@@ -11,6 +14,25 @@ urlpatterns = [
     path("robots.txt", RobotsTxtView.as_view(), name="robots-txt"),
     path("sitemap.xml", SitemapXmlView.as_view(), name="sitemap-xml"),
 ]
+
+for _legacy, _target in LEGACY_REDIRECTS.items():
+    urlpatterns.append(
+        path(
+            f"{_legacy}/",
+            RedirectView.as_view(url=_target, permanent=True),
+            name=f"legacy-{_legacy.replace('/', '-')}-slash",
+        )
+    )
+    urlpatterns.append(
+        path(
+            _legacy,
+            RedirectView.as_view(url=_target, permanent=True),
+            name=f"legacy-{_legacy.replace('/', '-')}",
+        )
+    )
+
+for _gone in LEGACY_GONE_PATHS:
+    urlpatterns.append(path(_gone, LegacyGoneView.as_view(), name=f"legacy-gone-{_gone}"))
 
 frontend_dist = Path(settings.BASE_DIR).parent / "frontend" / "dist"
 if (frontend_dist / "index.html").exists():
