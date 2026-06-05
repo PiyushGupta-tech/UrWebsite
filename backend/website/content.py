@@ -42,8 +42,16 @@ NAV = {
     "contact_href": "/contact",
 }
 
+HOME_SEO = {
+    "title": "Best Payment Gateway in India | UPI, Cards & Net Banking | UrbanRupee",
+    "description": (
+        "UrbanRupee provides secure payment gateway solutions with UPI, cards, net banking, "
+        "high success rates, fast settlements and seamless onboarding for businesses across India."
+    ),
+}
+
 HERO = {
-    "headline": "Smart Payment Infrastructure for Your Growing Business",
+    "headline": "Best Payment Gateway in India for Growing Businesses",
     "subheadline": (
         "Urbanrupee empowers businesses with fast, secure, and seamless payment solutions "
         "across UPI, cards, and net banking helping optimize transactions, improve customer "

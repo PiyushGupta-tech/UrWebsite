@@ -23,6 +23,7 @@ class HomepageAPIView(APIView):
             {
                 "site": content.SITE,
                 "nav": content.NAV,
+                "seo": content.HOME_SEO,
                 "hero": content.HERO,
                 "payment_solution": content.PAYMENT_SOLUTION,
                 "banking_partners": content.BANKING_PARTNERS,

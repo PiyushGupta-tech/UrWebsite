@@ -23,9 +23,17 @@ const data = ref(null);
 const error = ref(null);
 const loading = ref(true);
 
+function applySeo(seo) {
+  if (!seo) return;
+  if (seo.title) document.title = seo.title;
+  const meta = document.querySelector('meta[name="description"]');
+  if (meta && seo.description) meta.setAttribute("content", seo.description);
+}
+
 onMounted(async () => {
   try {
     data.value = await fetchHomepage();
+    applySeo(data.value.seo);
   } catch (e) {
     error.value = e.message;
   } finally {
