@@ -115,7 +115,6 @@ defineProps({
   display: flex;
   justify-content: center;
   padding: 8px 0;
-  min-height: 420px;
 }
 
 .hero__glow {
