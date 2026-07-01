@@ -1,18 +1,18 @@
-"""Session-based admin dashboard auth and payout API proxy."""
+"""Session-based admin dashboard auth and cached payout API."""
 
 from __future__ import annotations
 
 import secrets
 import time
-from typing import Any
 
-import requests
 from django.conf import settings
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_protect, ensure_csrf_cookie
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
+from website.payout_dashboard import get_cached_snapshot
 
 ADMIN_SESSION_KEY = "admin_dashboard_auth"
 LOGIN_ATTEMPTS: dict[str, list[float]] = {}
@@ -55,48 +55,6 @@ def _valid_credentials(username: str, password: str) -> bool:
     user_ok = secrets.compare_digest(username, settings.ADMIN_DASHBOARD_USERNAME)
     pass_ok = secrets.compare_digest(password, settings.ADMIN_DASHBOARD_PASSWORD)
     return user_ok and pass_ok
-
-
-def _proxy_payout_dashboard() -> tuple[dict[str, Any] | None, int, str]:
-    api_key = settings.INTERNAL_DASHBOARD_API_KEY
-    if not api_key:
-        return None, status.HTTP_503_SERVICE_UNAVAILABLE, "Payout dashboard is not configured."
-
-    params = {"latest_limit": settings.PAYOUT_DASHBOARD_LATEST_LIMIT}
-    headers = {"X-Internal-Key": api_key, "Accept": "application/json"}
-
-    try:
-        upstream = requests.get(
-            settings.PAYOUT_DASHBOARD_API_URL,
-            params=params,
-            headers=headers,
-            timeout=settings.PAYOUT_DASHBOARD_HTTP_TIMEOUT,
-        )
-    except requests.RequestException:
-        return None, status.HTTP_502_BAD_GATEWAY, "Could not reach payout dashboard."
-
-    if upstream.status_code == 401:
-        return None, status.HTTP_502_BAD_GATEWAY, "Payout dashboard rejected credentials."
-    if upstream.status_code == 403:
-        return None, status.HTTP_502_BAD_GATEWAY, "Payout dashboard blocked this server IP."
-    if upstream.status_code == 503:
-        return None, status.HTTP_503_SERVICE_UNAVAILABLE, "Payout dashboard is unavailable."
-    if not upstream.ok:
-        return None, status.HTTP_502_BAD_GATEWAY, "Payout dashboard returned an error."
-
-    try:
-        payload = upstream.json()
-    except ValueError:
-        return None, status.HTTP_502_BAD_GATEWAY, "Payout dashboard returned invalid JSON."
-
-    if not payload.get("ok"):
-        return None, status.HTTP_502_BAD_GATEWAY, "Payout dashboard returned an error."
-
-    return {
-        "ok": True,
-        "generated_at": payload.get("generated_at"),
-        "summary": payload.get("summary") or {},
-    }, status.HTTP_200_OK, ""
 
 
 class AdminMeAPIView(APIView):
@@ -149,7 +107,7 @@ class AdminLogoutAPIView(APIView):
 
 
 class AdminPayoutDashboardAPIView(APIView):
-    """Proxy payout internal API — key stays server-side."""
+    """Serve cached payout dashboard snapshot (refreshed by background worker)."""
 
     def get(self, request):
         if not _is_authenticated(request):
@@ -158,7 +116,7 @@ class AdminPayoutDashboardAPIView(APIView):
                 status=status.HTTP_401_UNAUTHORIZED,
             )
 
-        data, code, detail = _proxy_payout_dashboard()
+        data, code, detail = get_cached_snapshot()
         if data is None:
             return Response({"detail": detail}, status=code)
         return Response(data)

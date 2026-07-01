@@ -34,6 +34,28 @@ PAYOUT_DASHBOARD_API_URL = os.environ.get(
 INTERNAL_DASHBOARD_API_KEY = os.environ.get("INTERNAL_DASHBOARD_API_KEY", "").strip()
 PAYOUT_DASHBOARD_LATEST_LIMIT = int(os.environ.get("PAYOUT_DASHBOARD_LATEST_LIMIT", "1"))
 PAYOUT_DASHBOARD_HTTP_TIMEOUT = int(os.environ.get("PAYOUT_DASHBOARD_HTTP_TIMEOUT", "10"))
+PAYOUT_DASHBOARD_REFRESH_INTERVAL = int(os.environ.get("PAYOUT_DASHBOARD_REFRESH_INTERVAL", "10"))
+PAYOUT_DASHBOARD_CACHE_TTL = int(os.environ.get("PAYOUT_DASHBOARD_CACHE_TTL", "30"))
+# Dev only: background refresh thread when running manage.py runserver
+PAYOUT_DASHBOARD_BACKGROUND_REFRESH = os.environ.get(
+    "PAYOUT_DASHBOARD_BACKGROUND_REFRESH", "false"
+).lower() in ("1", "true", "yes")
+
+_redis_url = os.environ.get("REDIS_URL", "").strip()
+if _redis_url:
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.redis.RedisCache",
+            "LOCATION": _redis_url,
+        }
+    }
+else:
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.db.DatabaseCache",
+            "LOCATION": "django_cache",
+        }
+    }
 
 SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SAMESITE = "Lax"
@@ -48,7 +70,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "corsheaders",
     "rest_framework",
-    "website",
+    "website.apps.WebsiteConfig",
 ]
 
 MIDDLEWARE = [

@@ -1,0 +1,16 @@
+[Unit]
+Description=Urbanrupee payout dashboard cache refresh (every 10s)
+After=network.target
+
+[Service]
+Type=simple
+User=www
+Group=www
+WorkingDirectory=/www/wwwroot/urbanrupeeHome/backend
+EnvironmentFile=/www/wwwroot/urbanrupeeHome/backend/.env
+ExecStart=/www/wwwroot/urbanrupeeHome/.venv/bin/python manage.py refresh_payout_dashboard --loop
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

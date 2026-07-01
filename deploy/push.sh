@@ -52,10 +52,14 @@ pip install -r backend/requirements.txt -q
 rm -f backend/staticfiles/index.html
 rm -rf backend/staticfiles/assets
 cd backend && python manage.py collectstatic --noinput
+python manage.py createcachetable 2>/dev/null || true
 # rsync from macOS can leave dist/logos unreadable by gunicorn (www user).
 chmod -R a+rX frontend/dist/logos frontend/dist/maps frontend/dist/videos 2>/dev/null || true
 chown -R www:www frontend/dist/logos frontend/dist/maps frontend/dist/videos 2>/dev/null || true
 systemctl restart urbanrupee-gunicorn
+if systemctl list-unit-files urbanrupee-payout-refresh.service --no-legend 2>/dev/null | grep -q urbanrupee-payout-refresh; then
+  systemctl restart urbanrupee-payout-refresh
+fi
 sleep 2
 systemctl is-active urbanrupee-gunicorn
 curl -s -o /dev/null -w "HTTP %{http_code}\n" -H "Host: urbanrupee.com" http://127.0.0.1:8005/
