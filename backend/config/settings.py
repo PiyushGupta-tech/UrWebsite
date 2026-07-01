@@ -1,7 +1,10 @@
 import os
 from pathlib import Path
 
+from dotenv import load_dotenv
+
 BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv(BASE_DIR / ".env")
 FRONTEND_DIST = BASE_DIR.parent / "frontend" / "dist"
 
 SECRET_KEY = os.environ.get(
@@ -21,9 +24,27 @@ ALLOWED_HOSTS = [
 SITE_BASE_URL = os.environ.get("SITE_BASE_URL", "https://urbanrupee.com").rstrip("/")
 GSC_SITE_VERIFICATION = os.environ.get("GSC_SITE_VERIFICATION", "").strip()
 
+# Admin payout micro-dashboard (session auth + server-side payout proxy)
+ADMIN_DASHBOARD_USERNAME = os.environ.get("ADMIN_DASHBOARD_USERNAME", "").strip()
+ADMIN_DASHBOARD_PASSWORD = os.environ.get("ADMIN_DASHBOARD_PASSWORD", "").strip()
+PAYOUT_DASHBOARD_API_URL = os.environ.get(
+    "PAYOUT_DASHBOARD_API_URL",
+    "https://payout.urbanrupee.in/api/internal/payout-dashboard",
+).strip()
+INTERNAL_DASHBOARD_API_KEY = os.environ.get("INTERNAL_DASHBOARD_API_KEY", "").strip()
+PAYOUT_DASHBOARD_LATEST_LIMIT = int(os.environ.get("PAYOUT_DASHBOARD_LATEST_LIMIT", "1"))
+PAYOUT_DASHBOARD_HTTP_TIMEOUT = int(os.environ.get("PAYOUT_DASHBOARD_HTTP_TIMEOUT", "10"))
+
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SAMESITE = "Lax"
+SESSION_COOKIE_SECURE = not DEBUG
+CSRF_COOKIE_SAMESITE = "Lax"
+CSRF_COOKIE_SECURE = not DEBUG
+
 INSTALLED_APPS = [
     "django.contrib.auth",
     "django.contrib.contenttypes",
+    "django.contrib.sessions",
     "django.contrib.staticfiles",
     "corsheaders",
     "rest_framework",
@@ -34,7 +55,9 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "corsheaders.middleware.CorsMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -85,6 +108,16 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:5173",
     "http://localhost:5174",
     "http://127.0.0.1:5174",
+]
+CORS_ALLOW_CREDENTIALS = True
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "http://localhost:5174",
+    "http://127.0.0.1:5174",
+    "https://urbanrupee.com",
+    "https://www.urbanrupee.com",
 ]
 
 CONTACT_EMAIL_TO = os.environ.get("CONTACT_EMAIL_TO", "it.support@urbanrupee.com")

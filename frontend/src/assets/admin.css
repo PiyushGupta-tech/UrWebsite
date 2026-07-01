@@ -1,0 +1,21 @@
+.admin-theme {
+  --ur-primary: #0a0a0a;
+  --ur-accent: #d4d4d4;
+  --ur-bg-dark: #000000;
+  --ur-card-bg: #0a0a0a;
+  --ur-card-border: #1f1f1f;
+  --ur-surface-raised: #141414;
+  --ur-shimmer-mid: #1a1a1a;
+  --ur-text: #f5f5f5;
+  --ur-muted: #737373;
+  --ur-success: #22c55e;
+  --ur-warning: #eab308;
+  --ur-danger: #ef4444;
+}
+
+.admin-theme .admin-card {
+  background: var(--ur-card-bg);
+  border: 1px solid var(--ur-card-border);
+  border-radius: 12px;
+  padding: 12px;
+}

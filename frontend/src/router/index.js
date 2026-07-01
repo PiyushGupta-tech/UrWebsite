@@ -1,7 +1,20 @@
 import { createRouter, createWebHistory } from "vue-router";
 import AppLayout from "@/layouts/AppLayout.vue";
+import { fetchAdminMe } from "@/api/client";
 
 const routes = [
+  {
+    path: "/admin",
+    name: "admin-login",
+    component: () => import("@/views/admin/AdminLoginView.vue"),
+    meta: { adminGuest: true },
+  },
+  {
+    path: "/admin/dashboard",
+    name: "admin-dashboard",
+    component: () => import("@/views/admin/AdminDashboardView.vue"),
+    meta: { requiresAdmin: true },
+  },
   {
     path: "/",
     component: AppLayout,
@@ -129,6 +142,28 @@ const router = createRouter({
   scrollBehavior() {
     return { top: 0 };
   },
+});
+
+async function isAdminAuthenticated() {
+  try {
+    const data = await fetchAdminMe();
+    return Boolean(data.authenticated);
+  } catch {
+    return false;
+  }
+}
+
+router.beforeEach(async (to) => {
+  if (!to.meta.requiresAdmin && !to.meta.adminGuest) return true;
+
+  const authed = await isAdminAuthenticated();
+  if (to.meta.requiresAdmin && !authed) {
+    return { name: "admin-login" };
+  }
+  if (to.meta.adminGuest && authed) {
+    return { name: "admin-dashboard" };
+  }
+  return true;
 });
 
 export default router;

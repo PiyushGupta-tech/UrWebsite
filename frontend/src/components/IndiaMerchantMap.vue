@@ -17,6 +17,17 @@ const indiaMapPaths = (() => {
 
 const props = defineProps({
   map: { type: Object, required: true },
+  variant: {
+    type: String,
+    default: "light",
+    validator: (value) => value === "light" || value === "admin",
+  },
+  hint: { type: String, default: "Hover a point to see partners" },
+  compact: { type: Boolean, default: false },
+  ariaLabel: {
+    type: String,
+    default: "Map of India showing Urbanrupee merchant locations",
+  },
 });
 
 const hoveredId = ref(null);
@@ -75,7 +86,7 @@ function bubbleStyle(loc) {
 </script>
 
 <template>
-  <div class="india-map">
+  <div class="india-map" :class="[`india-map--${variant}`, { 'india-map--compact': compact }]">
     <div class="india-map__frame">
       <div class="india-map__map-wrap">
         <svg
@@ -83,7 +94,7 @@ function bubbleStyle(loc) {
           class="india-map__svg"
           :viewBox="INDIA_MAP_VIEWBOX"
           role="img"
-          aria-label="Map of India showing Urbanrupee merchant locations"
+          :aria-label="ariaLabel"
         >
           <defs>
             <linearGradient
@@ -186,7 +197,7 @@ function bubbleStyle(loc) {
         </div>
       </div>
 
-      <p class="india-map__hint">Hover a point to see partners</p>
+      <p v-if="hint" class="india-map__hint">{{ hint }}</p>
     </div>
   </div>
 </template>
@@ -392,8 +403,50 @@ function bubbleStyle(loc) {
   }
 }
 
+.india-map--admin .india-map__bubble {
+  background: var(--ur-card-bg, #162528);
+  border-color: var(--ur-card-border, #1e3538);
+  color: var(--ur-text, #f0fafb);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+}
+
+.india-map--admin .india-map__bubble::after {
+  background: var(--ur-card-bg, #162528);
+  border-right-color: var(--ur-card-border, #1e3538);
+  border-bottom-color: var(--ur-card-border, #1e3538);
+}
+
+.india-map--admin .india-map__hint {
+  color: var(--ur-muted, #4a8890);
+}
+
+.india-map--compact {
+  height: 100%;
+}
+
+.india-map--compact .india-map__frame {
+  height: 100%;
+}
+
+.india-map--compact .india-map__map-wrap {
+  height: 100%;
+}
+
+.india-map--compact .india-map__svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  max-height: none;
+}
+
+.india-map--compact .india-map__hint {
+  margin-top: 6px;
+  font-size: 11px;
+}
+
 @media (min-width: 900px) {
-  .india-map__svg {
+  .india-map:not(.india-map--compact) .india-map__svg {
     min-height: 340px;
   }
 }
