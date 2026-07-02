@@ -47,6 +47,8 @@ if _redis_url:
         "default": {
             "BACKEND": "django.core.cache.backends.redis.RedisCache",
             "LOCATION": _redis_url,
+            "KEY_PREFIX": "ur",
+            "TIMEOUT": PAYOUT_DASHBOARD_CACHE_TTL,
         }
     }
 else:

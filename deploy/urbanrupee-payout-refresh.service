@@ -9,6 +9,8 @@ Group=www
 WorkingDirectory=/www/wwwroot/urbanrupeeHome/backend
 EnvironmentFile=/www/wwwroot/urbanrupeeHome/backend/.env
 ExecStart=/www/wwwroot/urbanrupeeHome/.venv/bin/python manage.py refresh_payout_dashboard --loop
+StandardOutput=journal
+StandardError=journal
 Restart=on-failure
 RestartSec=5
 

@@ -52,7 +52,10 @@ pip install -r backend/requirements.txt -q
 rm -f backend/staticfiles/index.html
 rm -rf backend/staticfiles/assets
 cd backend && python manage.py collectstatic --noinput
+python manage.py migrate --noinput
 python manage.py createcachetable 2>/dev/null || true
+chown www:www backend backend/db.sqlite3 2>/dev/null || true
+chmod 775 backend 2>/dev/null || true
 # rsync from macOS can leave dist/logos unreadable by gunicorn (www user).
 chmod -R a+rX frontend/dist/logos frontend/dist/maps frontend/dist/videos 2>/dev/null || true
 chown -R www:www frontend/dist/logos frontend/dist/maps frontend/dist/videos 2>/dev/null || true

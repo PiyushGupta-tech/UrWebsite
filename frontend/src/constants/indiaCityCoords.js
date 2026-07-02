@@ -1,76 +1,204 @@
+import cityIndex from "@/constants/indiaCityIndex.json";
+import { STATE_ANCHORS } from "@/constants/indiaMapAnchors";
 import { projectIndiaMap } from "@/constants/indiaMapProjection";
 
-/** Approximate lat/lng for Indian cities used on the admin map. */
-export const INDIA_CITY_COORDS = {
-  mumbai: [19.076, 72.8777],
-  "mumbai suburban": [19.076, 72.8777],
-  delhi: [28.6139, 77.209],
-  "new delhi": [28.6139, 77.209],
-  bengaluru: [12.9716, 77.5946],
-  bangalore: [12.9716, 77.5946],
-  hyderabad: [17.385, 78.4867],
-  chennai: [13.0827, 80.2707],
-  kolkata: [22.5726, 88.3639],
-  pune: [18.5204, 73.8567],
-  ahmedabad: [23.0225, 72.5714],
-  jaipur: [26.9124, 75.7873],
-  lucknow: [26.8467, 80.9462],
-  surat: [21.1702, 72.8311],
-  indore: [22.7196, 75.8577],
-  nagpur: [21.1458, 79.0882],
-  kochi: [9.9312, 76.2673],
-  cochin: [9.9312, 76.2673],
-  bhopal: [23.2599, 77.4126],
-  visakhapatnam: [17.6868, 83.2185],
-  patna: [25.5941, 85.1376],
-  vadodara: [22.3072, 73.1812],
-  ghaziabad: [28.6692, 77.4538],
-  ludhiana: [30.901, 75.8573],
-  agra: [27.1767, 78.0081],
-  nashik: [19.9975, 73.7898],
-  faridabad: [28.4089, 77.3178],
-  meerut: [28.9845, 77.7064],
-  rajkot: [22.3039, 70.8022],
-  varanasi: [25.3176, 82.9739],
-  srinagar: [34.0837, 74.7973],
-  amritsar: [31.634, 74.8723],
-  ranchi: [23.3441, 85.3096],
-  guwahati: [26.1445, 91.7362],
-  chandigarh: [30.7333, 76.7794],
-  thiruvananthapuram: [8.5241, 76.9366],
-  trivandrum: [8.5241, 76.9366],
+const { byKey, byCity } = cityIndex;
+
+const STATE_ALIASES = {
+  "andaman and nicobar islands": "andaman and nicobar islands",
+  "andaman & nicobar islands": "andaman and nicobar islands",
+  "jammu and kashmir": "jammu and kashmir",
+  "jammu & kashmir": "jammu and kashmir",
+  "dadra and nagar haveli and daman and diu": "dadra and nagar haveli",
+  orissa: "odisha",
+  pondicherry: "puducherry",
+  "nct of delhi": "delhi",
+  "delhi nct": "delhi",
+};
+
+const CITY_ALIASES = {
+  gurgaon: "gurugram",
+  bangalore: "bengaluru",
+  bombay: "mumbai",
+  cochin: "kochi",
+  trivandrum: "thiruvananthapuram",
+  calcutta: "kolkata",
+  "new delhi": "delhi",
+  "fatehgarh saheb": "fatehgarh sahib",
+  "mumbai suburban": "mumbai",
+  "sahibzada ajit singh nagar": "mohali",
+  baroda: "vadodara",
+  benares: "varanasi",
+  banaras: "varanasi",
+  mysore: "mysuru",
+  mangalore: "mangaluru",
+  calicut: "kozhikode",
+  pondicherry: "puducherry",
+  trichy: "tiruchirappalli",
+  vizag: "visakhapatnam",
 };
 
 const STATE_NAME_TO_ID = {
+  "andaman and nicobar islands": "an",
   "andhra pradesh": "ap",
+  "arunachal pradesh": "ar",
+  assam: "as",
   bihar: "br",
   chandigarh: "ch",
+  chhattisgarh: "cg",
   delhi: "dl",
   goa: "ga",
   gujarat: "gj",
   haryana: "hr",
   "himachal pradesh": "hp",
+  jharkhand: "jh",
   karnataka: "ka",
   kerala: "kl",
   "madhya pradesh": "mp",
   maharashtra: "mh",
+  manipur: "mn",
+  meghalaya: "ml",
+  mizoram: "mz",
+  nagaland: "nl",
+  odisha: "or",
   punjab: "pb",
   rajasthan: "rj",
+  sikkim: "sk",
   "tamil nadu": "tn",
   telangana: "tg",
+  tripura: "tr",
   "uttar pradesh": "up",
+  uttarakhand: "ut",
   "west bengal": "wb",
+  "dadra and nagar haveli": "dn",
+  "daman and diu": "dd",
+  ladakh: "la",
+  puducherry: "py",
+  lakshadweep: "ld",
 };
 
-export function stateIdFromName(state = "") {
-  return STATE_NAME_TO_ID[state.trim().toLowerCase()] || null;
+/** Approximate state centroids when city is unknown but state is known. */
+const STATE_CENTROID = {
+  an: [11.6234, 92.7265],
+  ap: [15.9129, 79.74],
+  ar: [28.218, 94.7278],
+  as: [26.2006, 92.9376],
+  br: [25.0961, 85.3131],
+  cg: [21.2787, 81.8661],
+  ch: [30.7333, 76.7794],
+  dl: [28.6139, 77.209],
+  ga: [15.2993, 74.124],
+  gj: [22.2587, 71.1924],
+  hp: [31.1048, 77.1734],
+  hr: [29.0588, 76.0856],
+  jh: [23.6102, 85.2799],
+  ka: [15.3173, 75.7139],
+  kl: [10.8505, 76.2711],
+  mh: [19.7515, 75.7139],
+  ml: [25.467, 91.3662],
+  mn: [24.6637, 93.9063],
+  mp: [22.9734, 78.6569],
+  mz: [23.1645, 92.9376],
+  nl: [26.1584, 94.5624],
+  or: [20.9517, 85.0985],
+  pb: [31.1471, 75.3412],
+  rj: [27.0238, 74.2179],
+  sk: [27.533, 88.5122],
+  tg: [18.1124, 79.0193],
+  tn: [11.1271, 78.6569],
+  tr: [23.9408, 91.9882],
+  up: [26.8467, 80.9462],
+  ut: [30.0668, 79.0193],
+  wb: [22.9868, 87.855],
+  dn: [20.1809, 73.0169],
+  dd: [20.4283, 72.8397],
+  la: [34.1526, 77.577],
+  py: [11.9416, 79.8083],
+  ld: [10.5667, 72.6417],
+};
+
+function normalize(text = "") {
+  return text
+    .trim()
+    .toLowerCase()
+    .replace(/&/g, "and")
+    .replace(/[.'’`]/g, "")
+    .replace(/\s+/g, " ");
 }
 
+function normalizeState(state = "") {
+  const key = normalize(state);
+  return STATE_ALIASES[key] || key;
+}
+
+function normalizeCity(city = "") {
+  const key = normalize(city);
+  return CITY_ALIASES[key] || key;
+}
+
+export function stateIdFromName(state = "") {
+  return STATE_NAME_TO_ID[normalizeState(state)] || null;
+}
+
+function lookupCityCoords(city, state = "") {
+  const cityKey = normalizeCity(city);
+  const stateKey = normalizeState(state);
+
+  if (!cityKey) return null;
+
+  if (stateKey && byKey[`${cityKey}|${stateKey}`]) {
+    return byKey[`${cityKey}|${stateKey}`];
+  }
+
+  const entry = byCity[cityKey];
+  if (entry) {
+    const [lat, lon, entryState] = entry;
+    if (!stateKey || entryState === stateKey) return [lat, lon];
+    if (byKey[`${cityKey}|${entryState}`]) return byKey[`${cityKey}|${entryState}`];
+  }
+
+  return null;
+}
+
+/**
+ * Resolve SVG pin position for a city/state pair.
+ * 1. Census city index (528+ cities, pop > 100k, 2011 + manual fixes)
+ * 2. State SVG anchor
+ * 3. State centroid projection
+ * 4. India geographic center (last resort)
+ */
+export function resolveMapPin(city, state = "") {
+  const state_id = stateIdFromName(state);
+  const coords = lookupCityCoords(city, state);
+
+  if (coords) {
+    const [lat, lon] = coords;
+    const { x, y } = projectIndiaMap(lat, lon);
+    return { lat, lon, state_id, x, y };
+  }
+
+  if (state_id && STATE_ANCHORS[state_id]) {
+    const { x, y } = STATE_ANCHORS[state_id];
+    return { lat: null, lon: null, state_id, x, y };
+  }
+
+  if (state_id && STATE_CENTROID[state_id]) {
+    const [lat, lon] = STATE_CENTROID[state_id];
+    const { x, y } = projectIndiaMap(lat, lon);
+    return { lat, lon, state_id, x, y };
+  }
+
+  const [lat, lon] = [20.5937, 78.9629];
+  const { x, y } = projectIndiaMap(lat, lon);
+  return { lat, lon, state_id, x, y };
+}
+
+/** @deprecated Use resolveMapPin; returns [lat, lon] only. */
 export function cityCoords(city, state = "") {
-  const key = (city || "").trim().toLowerCase();
-  if (INDIA_CITY_COORDS[key]) return INDIA_CITY_COORDS[key];
-  const stateKey = (state || "").trim().toLowerCase();
-  if (INDIA_CITY_COORDS[stateKey]) return INDIA_CITY_COORDS[stateKey];
+  const coords = lookupCityCoords(city, state);
+  if (coords) return coords;
+  const state_id = stateIdFromName(state);
+  if (state_id && STATE_CENTROID[state_id]) return STATE_CENTROID[state_id];
   return [20.5937, 78.9629];
 }
 
@@ -82,20 +210,19 @@ export function mapCitiesTodayToLocations(cities = []) {
       if (!city) return null;
 
       const state = (entry.state || "").trim();
-      const [lat, lon] = cityCoords(city, state);
-      const { x, y } = projectIndiaMap(lat, lon);
+      const pin = resolveMapPin(city, state);
 
       return {
         id: `${city.toLowerCase()}|${state.toLowerCase()}|${index}`,
         city,
         state,
-        state_id: stateIdFromName(state),
+        state_id: pin.state_id,
         txn_count: Number(entry.txn_count) || 0,
         amount_with_fees: Number(entry.amount_with_fees) || 0,
-        lat,
-        lon,
-        x,
-        y,
+        lat: pin.lat,
+        lon: pin.lon,
+        x: pin.x,
+        y: pin.y,
       };
     })
     .filter(Boolean);
@@ -111,19 +238,18 @@ export function groupTransactionsByCity(transactions = []) {
 
     const state = (location?.state || tx.merchant?.state || tx.state || "").trim();
     const key = `${city.toLowerCase()}|${state.toLowerCase()}`;
-    const [lat, lon] = cityCoords(city, state);
-    const { x, y } = projectIndiaMap(lat, lon);
+    const pin = resolveMapPin(city, state);
     const existing = groups.get(key) || {
       id: key,
       city,
       state,
-      state_id: stateIdFromName(state),
+      state_id: pin.state_id,
       count: 0,
       amount: 0,
-      lat,
-      lon,
-      x,
-      y,
+      lat: pin.lat,
+      lon: pin.lon,
+      x: pin.x,
+      y: pin.y,
     };
     existing.count += 1;
     existing.amount += Number(tx.amount) || 0;
