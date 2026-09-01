@@ -12,6 +12,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from website.payin_dashboard import get_cached_snapshot as get_payin_cached_snapshot
 from website.payout_dashboard import get_cached_snapshot
 
 ADMIN_SESSION_KEY = "admin_dashboard_auth"
@@ -117,6 +118,22 @@ class AdminPayoutDashboardAPIView(APIView):
             )
 
         data, code, detail = get_cached_snapshot()
+        if data is None:
+            return Response({"detail": detail}, status=code)
+        return Response(data)
+
+
+class AdminPayinDashboardAPIView(APIView):
+    """Serve cached payin dashboard snapshot (refreshed by background worker)."""
+
+    def get(self, request):
+        if not _is_authenticated(request):
+            return Response(
+                {"detail": "Authentication required."},
+                status=status.HTTP_401_UNAUTHORIZED,
+            )
+
+        data, code, detail = get_payin_cached_snapshot()
         if data is None:
             return Response({"detail": detail}, status=code)
         return Response(data)

@@ -8,6 +8,8 @@ User=www
 Group=www
 WorkingDirectory=/www/wwwroot/urbanrupeeHome/backend
 EnvironmentFile=/www/wwwroot/urbanrupeeHome/backend/.env
+Environment=PAYOUT_DASHBOARD_LATEST_LIMIT=100
+Environment=DASHBOARD_MAP_MERCHANT_TXN_LIMIT=100
 ExecStart=/www/wwwroot/urbanrupeeHome/.venv/bin/python manage.py refresh_payout_dashboard --loop
 StandardOutput=journal
 StandardError=journal

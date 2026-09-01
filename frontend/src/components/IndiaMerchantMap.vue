@@ -7,6 +7,9 @@ import { INDIA_MAP_VIEWBOX } from "@/constants/indiaMapProjection";
 const VIEWBOX_W = 612;
 const VIEWBOX_H = 696;
 const GLOW_FILTER_PAD = 48;
+const BUBBLE_W = 220;
+const BUBBLE_H = 52;
+const BUBBLE_GAP = 12;
 
 const indiaMapPaths = (() => {
   const match = indiaSvgRaw.match(/<svg[^>]*>([\s\S]*)<\/svg>/i);
@@ -77,11 +80,10 @@ onMounted(() => {
   nextTick(updateStateHighlight);
 });
 
-function bubbleStyle(loc) {
-  return {
-    left: `${(loc.x / VIEWBOX_W) * 100}%`,
-    top: `${(loc.y / VIEWBOX_H) * 100}%`,
-  };
+function bubbleTransform(loc) {
+  const aboveY = loc.y - BUBBLE_GAP - BUBBLE_H;
+  const y = aboveY < 8 ? loc.y + BUBBLE_GAP + 8 : aboveY;
+  return `translate(${loc.x}, ${y})`;
 }
 </script>
 
@@ -93,6 +95,7 @@ function bubbleStyle(loc) {
           ref="svgRoot"
           class="india-map__svg"
           :viewBox="INDIA_MAP_VIEWBOX"
+          preserveAspectRatio="xMidYMid meet"
           role="img"
           :aria-label="ariaLabel"
         >
@@ -146,7 +149,11 @@ function bubbleStyle(loc) {
             v-for="(loc, index) in locations"
             :key="loc.id"
             class="india-map__marker"
-            :class="{ 'india-map__marker--active': hoveredId === loc.id }"
+            :class="{
+              'india-map__marker--active': hoveredId === loc.id,
+              'india-map__marker--payin': loc.kind === 'payin',
+              'india-map__marker--payout': loc.kind !== 'payin',
+            }"
             :style="{ '--pulse-delay': `${(index % 7) * 0.42}s` }"
             @mouseenter="onEnter(loc.id)"
             @mouseleave="onLeave"
@@ -184,17 +191,30 @@ function bubbleStyle(loc) {
               pointer-events="none"
             />
           </g>
-        </svg>
 
-        <div
-          class="india-map__bubble"
-          :class="{ 'india-map__bubble--visible': activeLocation }"
-          :style="activeLocation ? bubbleStyle(activeLocation) : undefined"
-          role="tooltip"
-          :aria-hidden="!activeLocation"
-        >
-          {{ activeLocation?.company }}
-        </div>
+          <g
+            v-if="activeLocation"
+            class="india-map__bubble-layer"
+            :transform="bubbleTransform(activeLocation)"
+            pointer-events="none"
+          >
+            <foreignObject
+              :x="-BUBBLE_W / 2"
+              y="0"
+              :width="BUBBLE_W"
+              :height="BUBBLE_H"
+              class="india-map__bubble-fo"
+            >
+              <div
+                xmlns="http://www.w3.org/1999/xhtml"
+                class="india-map__bubble-inner"
+                :class="{ 'india-map__bubble-inner--admin': variant === 'admin' }"
+              >
+                {{ activeLocation.company }}
+              </div>
+            </foreignObject>
+          </g>
+        </svg>
       </div>
 
       <p v-if="hint" class="india-map__hint">{{ hint }}</p>
@@ -247,6 +267,41 @@ function bubbleStyle(loc) {
 .india-map__marker {
   pointer-events: all;
   cursor: pointer;
+}
+
+.india-map__marker--payout {
+  --map-pin-core: #ff9f0a;
+  --map-pin-stroke: #ff6b00;
+  --map-pin-glow: rgba(255, 159, 10, 0.95);
+  --map-pin-glow-soft: rgba(255, 107, 0, 0.55);
+}
+
+.india-map__marker--payin {
+  --map-pin-core: #32ff7e;
+  --map-pin-stroke: #00ff88;
+  --map-pin-glow: rgba(0, 255, 136, 0.95);
+  --map-pin-glow-soft: rgba(50, 255, 126, 0.55);
+}
+
+.india-map__marker--payout .india-map__halo,
+.india-map__marker--payout .india-map__dot,
+.india-map__marker--payin .india-map__halo,
+.india-map__marker--payin .india-map__dot {
+  filter: drop-shadow(0 0 4px var(--map-pin-glow))
+    drop-shadow(0 0 8px var(--map-pin-glow-soft));
+}
+
+.india-map__marker--payout:hover .india-map__halo,
+.india-map__marker--payout.india-map__marker--active .india-map__halo,
+.india-map__marker--payout:hover .india-map__dot,
+.india-map__marker--payout.india-map__marker--active .india-map__dot,
+.india-map__marker--payin:hover .india-map__halo,
+.india-map__marker--payin.india-map__marker--active .india-map__halo,
+.india-map__marker--payin:hover .india-map__dot,
+.india-map__marker--payin.india-map__marker--active .india-map__dot {
+  filter: drop-shadow(0 0 6px var(--map-pin-glow))
+    drop-shadow(0 0 12px var(--map-pin-glow))
+    drop-shadow(0 0 18px var(--map-pin-glow-soft));
 }
 
 .india-map__halo {
@@ -322,45 +377,31 @@ function bubbleStyle(loc) {
     drop-shadow(0 0 18px var(--map-pin-glow-soft));
 }
 
-.india-map__bubble {
-  position: absolute;
-  z-index: 2;
-  left: 0;
-  top: 0;
-  transform: translate(-50%, calc(-100% - 12px));
+.india-map__bubble-fo {
+  overflow: visible;
+}
+
+.india-map__bubble-inner {
+  box-sizing: border-box;
+  width: 100%;
   padding: 8px 12px;
   border-radius: 10px;
   background: var(--bg-surface);
   border: 1px solid var(--border);
   box-shadow: var(--shadow-card);
-  pointer-events: none;
-  max-width: min(220px, 50vw);
   font-size: 12px;
   font-weight: 600;
   line-height: 1.35;
   color: var(--text-primary);
   text-align: center;
-  visibility: hidden;
-  opacity: 0;
-  transition: opacity 0.15s ease;
+  word-break: break-word;
 }
 
-.india-map__bubble--visible {
-  visibility: visible;
-  opacity: 1;
-}
-
-.india-map__bubble::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  bottom: -5px;
-  width: 8px;
-  height: 8px;
-  background: var(--bg-surface);
-  border-right: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-  transform: translateX(-50%) rotate(45deg);
+.india-map__bubble-inner--admin {
+  background: var(--ur-card-bg, #162528);
+  border-color: var(--ur-card-border, #1e3538);
+  color: var(--ur-text, #f0fafb);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
 }
 
 .india-map__hint {
@@ -401,19 +442,6 @@ function bubbleStyle(loc) {
   50% {
     transform: scale(1.08);
   }
-}
-
-.india-map--admin .india-map__bubble {
-  background: var(--ur-card-bg, #162528);
-  border-color: var(--ur-card-border, #1e3538);
-  color: var(--ur-text, #f0fafb);
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
-}
-
-.india-map--admin .india-map__bubble::after {
-  background: var(--ur-card-bg, #162528);
-  border-right-color: var(--ur-card-border, #1e3538);
-  border-bottom-color: var(--ur-card-border, #1e3538);
 }
 
 .india-map--admin .india-map__hint {

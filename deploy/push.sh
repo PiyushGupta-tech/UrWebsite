@@ -37,6 +37,8 @@ rsync -avz --delete \
   --exclude 'backend/staticfiles' \
   --exclude 'backend/.env' \
   --exclude '.DS_Store' \
+  --exclude '.user.ini' \
+  --exclude '.well-known' \
   -e "$RSYNC_SSH" \
   "$ROOT/" \
   "${USER}@${HOST}:${REMOTE}/"
@@ -51,17 +53,29 @@ pip install -r backend/requirements.txt -q
 # Stale SPA index in staticfiles breaks asset URLs after each frontend build.
 rm -f backend/staticfiles/index.html
 rm -rf backend/staticfiles/assets
-cd backend && python manage.py collectstatic --noinput
-python manage.py migrate --noinput
-python manage.py createcachetable 2>/dev/null || true
-chown www:www backend backend/db.sqlite3 2>/dev/null || true
-chmod 775 backend 2>/dev/null || true
+(cd backend && python manage.py collectstatic --noinput)
+(cd backend && python manage.py migrate --noinput)
+(cd backend && python manage.py createcachetable 2>/dev/null || true)
+# rsync from macOS resets ownership; gunicorn (www) must write sessions to sqlite.
+chown -R www:www backend
+chmod 775 backend
+chmod 664 backend/db.sqlite3 2>/dev/null || true
 # rsync from macOS can leave dist/logos unreadable by gunicorn (www user).
 chmod -R a+rX frontend/dist/logos frontend/dist/maps frontend/dist/videos 2>/dev/null || true
 chown -R www:www frontend/dist/logos frontend/dist/maps frontend/dist/videos 2>/dev/null || true
+if [ -f deploy/urbanrupee-payout-refresh.service ]; then
+  cp deploy/urbanrupee-payout-refresh.service /etc/systemd/system/
+fi
+if [ -f deploy/urbanrupee-payin-refresh.service ]; then
+  cp deploy/urbanrupee-payin-refresh.service /etc/systemd/system/
+fi
+systemctl daemon-reload
 systemctl restart urbanrupee-gunicorn
 if systemctl list-unit-files urbanrupee-payout-refresh.service --no-legend 2>/dev/null | grep -q urbanrupee-payout-refresh; then
   systemctl restart urbanrupee-payout-refresh
+fi
+if systemctl list-unit-files urbanrupee-payin-refresh.service --no-legend 2>/dev/null | grep -q urbanrupee-payin-refresh; then
+  systemctl restart urbanrupee-payin-refresh
 fi
 sleep 2
 systemctl is-active urbanrupee-gunicorn

@@ -32,7 +32,9 @@ PAYOUT_DASHBOARD_API_URL = os.environ.get(
     "https://payout.urbanrupee.in/api/internal/payout-dashboard",
 ).strip()
 INTERNAL_DASHBOARD_API_KEY = os.environ.get("INTERNAL_DASHBOARD_API_KEY", "").strip()
-PAYOUT_DASHBOARD_LATEST_LIMIT = int(os.environ.get("PAYOUT_DASHBOARD_LATEST_LIMIT", "1"))
+PAYOUT_DASHBOARD_LATEST_LIMIT = int(os.environ.get("PAYOUT_DASHBOARD_LATEST_LIMIT", "100"))
+# Minimum txns fetched from upstream so map tooltips can resolve merchant names.
+DASHBOARD_MAP_MERCHANT_TXN_LIMIT = int(os.environ.get("DASHBOARD_MAP_MERCHANT_TXN_LIMIT", "100"))
 PAYOUT_DASHBOARD_HTTP_TIMEOUT = int(os.environ.get("PAYOUT_DASHBOARD_HTTP_TIMEOUT", "10"))
 PAYOUT_DASHBOARD_REFRESH_INTERVAL = int(os.environ.get("PAYOUT_DASHBOARD_REFRESH_INTERVAL", "10"))
 PAYOUT_DASHBOARD_CACHE_TTL = int(os.environ.get("PAYOUT_DASHBOARD_CACHE_TTL", "30"))
@@ -41,6 +43,16 @@ PAYOUT_DASHBOARD_BACKGROUND_REFRESH = os.environ.get(
     "PAYOUT_DASHBOARD_BACKGROUND_REFRESH", "false"
 ).lower() in ("1", "true", "yes")
 
+PAYIN_DASHBOARD_API_URL = os.environ.get(
+    "PAYIN_DASHBOARD_API_URL",
+    "https://merchant.urbanrupee.in/api/internal/payin-dashboard",
+).strip()
+PAYIN_DASHBOARD_API_TOKEN = os.environ.get("PAYIN_DASHBOARD_API_TOKEN", "").strip()
+PAYIN_DASHBOARD_LATEST_LIMIT = int(os.environ.get("PAYIN_DASHBOARD_LATEST_LIMIT", "25"))
+PAYIN_DASHBOARD_HTTP_TIMEOUT = int(os.environ.get("PAYIN_DASHBOARD_HTTP_TIMEOUT", "10"))
+PAYIN_DASHBOARD_REFRESH_INTERVAL = int(os.environ.get("PAYIN_DASHBOARD_REFRESH_INTERVAL", "10"))
+PAYIN_DASHBOARD_CACHE_TTL = int(os.environ.get("PAYIN_DASHBOARD_CACHE_TTL", "30"))
+
 _redis_url = os.environ.get("REDIS_URL", "").strip()
 if _redis_url:
     CACHES = {
@@ -48,7 +60,7 @@ if _redis_url:
             "BACKEND": "django.core.cache.backends.redis.RedisCache",
             "LOCATION": _redis_url,
             "KEY_PREFIX": "ur",
-            "TIMEOUT": PAYOUT_DASHBOARD_CACHE_TTL,
+            "TIMEOUT": max(PAYOUT_DASHBOARD_CACHE_TTL, PAYIN_DASHBOARD_CACHE_TTL),
         }
     }
 else:

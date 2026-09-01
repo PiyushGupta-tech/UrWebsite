@@ -101,3 +101,7 @@ export function adminLogout() {
 export function fetchPayoutDashboard() {
   return adminFetch("/admin/payout-dashboard/");
 }
+
+export function fetchPayinDashboard() {
+  return adminFetch("/admin/payin-dashboard/");
+}

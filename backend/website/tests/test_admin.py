@@ -6,6 +6,7 @@ from django.core.cache import cache
 from django.test import TestCase, override_settings
 from rest_framework.test import APIClient
 
+from website.payin_dashboard import CACHE_KEY as PAYIN_CACHE_KEY
 from website.payout_dashboard import CACHE_KEY
 
 TEST_CACHES = {
@@ -102,6 +103,37 @@ class AdminDashboardTests(TestCase):
 
         response = self.client.get("/api/admin/payout-dashboard/")
         self.assertEqual(response.status_code, 503)
+
+    def test_payin_proxy_requires_auth(self):
+        response = self.client.get("/api/admin/payin-dashboard/")
+        self.assertEqual(response.status_code, 401)
+
+    def test_payin_proxy_returns_cached_summary(self):
+        cache.set(
+            PAYIN_CACHE_KEY,
+            {
+                "ok": True,
+                "generated_at": "2026-06-24T10:00:00+00:00",
+                "summary": {"today_success_amount": 250.0},
+            },
+            timeout=30,
+        )
+
+        self.client.post(
+            "/api/admin/login/",
+            {"username": "admin", "password": "secret-pass"},
+            format="json",
+            **self._csrf_headers(),
+        )
+
+        with patch("website.payin_dashboard.requests.get") as mock_get:
+            response = self.client.get("/api/admin/payin-dashboard/")
+            mock_get.assert_not_called()
+
+        self.assertEqual(response.status_code, 200)
+        body = response.json()
+        self.assertTrue(body["ok"])
+        self.assertEqual(body["summary"]["today_success_amount"], 250.0)
 
     @override_settings(INTERNAL_DASHBOARD_API_KEY="")
     def test_refresh_reports_missing_key(self):

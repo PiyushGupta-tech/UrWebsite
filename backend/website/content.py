@@ -62,34 +62,23 @@ HOME_SEO = {
         "Online payments India: accept UPI, cards, net banking and more with Urbanrupee's payment "
         "suite — orchestration, checkout, payouts, and analytics for growing businesses."
     ),
-    "h1": "Smart Payment Infrastructure for Growing Businesses",
+    "h1": "The Payment Infrastructure Built for Scale.",
     "canonical": "https://urbanrupee.com/",
     "path": "/",
 }
 
 HERO = {
-    "headline": "Smart Payment Infrastructure for Growing Businesses",
+    "headline": "The Payment Infrastructure Built for Scale.",
     "subheadline": (
-        "Urbanrupee empowers businesses with fast, secure, and seamless payment solutions across "
-        "UPI, cards, and net banking helping optimize transactions, improve customer experience, "
-        "and drive smarter growth."
+        "UrbanRupee unifies payments, routing, payouts, and reconciliation to simplify operations "
+        "and help businesses scale confidently."
     ),
-    "cta_primary": "Get Started",
+    "cta_primary": "Talk to Expert",
     "cta_secondary": "Sign In",
-    "social_proof": "Trusted by businesses across India",
-    "fee_chips": [
-        {"label": "UPI", "value": "Low MDR"},
-        {"label": "Cards", "value": "Competitive rates"},
-        {"label": "Net Banking", "value": "1-tap checkout"},
-        {"label": "Wallets", "value": "All major brands"},
-    ],
-    "badges": [
-        "Payment Orchestration",
-        "UPI Switch",
-        "Hyper Checkout",
-        "White Label",
-        "Affordability",
-    ],
+    "compliance_badges": ["PCI-DSS COMPLIANT", "ISO CERTIFIED"],
+    "social_proof": "Trusted by Leading Businesses",
+    "fee_chips": [],
+    "badges": [],
 }
 
 PRODUCT_CATALOGUE = PRODUCT_SUITE
@@ -167,9 +156,10 @@ FEATURES = {
 }
 
 STATS = [
-    {"value": "75%", "label": "Candidate match rate"},
-    {"value": "02+", "label": "Years of experience as a PSP"},
-    {"value": "30+", "label": "Our Partner Banks"},
+    {"value": "10M+", "label": "Transactions Processed"},
+    {"value": "99.9%+", "label": "Payment Success Rate"},
+    {"value": "₹1B+", "label": "Transaction Value Processed"},
+    {"value": "<100ms", "label": "Average Processing Time"},
 ]
 
 WHY_CHOOSE = {
@@ -368,28 +358,43 @@ CHECKOUT_DEMO = {
 }
 
 PROBLEM_TRIO = {
-    "title": "Legacy payment stacks are slow, expensive, and fragmented",
+    "title": "Your Payments Are Working. Your Infrastructure Is Holding You Back.",
+    "intro": (
+        "Multiple providers, fragmented systems, failed transactions, and manual operations "
+        "make it harder to scale—and harder to know where your money is going."
+    ),
     "items": [
         {
-            "title": "Slow",
+            "title": "Too Many Payment Partners",
             "body": (
-                "Your customers expect instant UPI and cards—but you're stuck reconciling "
-                "multiple gateways and waiting on settlements."
+                "Multiple PSPs, gateways, APIs, and dashboards create unnecessary "
+                "integration and operational complexity."
             ),
+            "icon": "partners",
         },
         {
-            "title": "Expensive",
+            "title": "Payments Are Hard to Control",
             "body": (
-                "You pay platform fees, gateway charges, and hidden FX spreads—without "
-                "the unified reporting you actually need."
+                "Without intelligent routing and failover, you're dependent on individual "
+                "providers when performance drops."
             ),
+            "icon": "control",
         },
         {
-            "title": "Confusing",
+            "title": "Failed Payments = Lost Revenue",
             "body": (
-                "You need one orchestration layer—not five dashboards, three vendors, "
-                "and a migration project every year."
+                "Declines, downtime, and poor routing can cost you customers and revenue "
+                "every single day."
             ),
+            "icon": "failed",
+        },
+        {
+            "title": "Reconciliation Becomes Manual",
+            "body": (
+                "Transaction data, settlements, payouts, and refunds live across systems, "
+                "making reconciliation slow and error-prone."
+            ),
+            "icon": "reconcile",
         },
     ],
 }
@@ -412,6 +417,303 @@ VALUE_PROP = {
         "Dedicated onboarding and 24/7 support assistance",
     ],
     "cta": "Get Started",
+}
+
+ECOSYSTEM = {
+    "eyebrow": "Why us",
+    "title": "The Payment Ecosystem Built Around You",
+    "body": (
+        "Accept, route, move, reconcile, and manage every payment flow through one unified "
+        "infrastructure."
+    ),
+    "items": [
+        {
+            "number": "01",
+            "title": "LOW MDR",
+            "body": "Accept UPI, cards, wallets & EMI with competitive transaction costs.",
+            "side": "left",
+        },
+        {
+            "number": "02",
+            "title": "ORCHESTRATE",
+            "body": "Intelligent routing across multiple PSPs with automatic failover",
+            "side": "left",
+        },
+        {
+            "number": "03",
+            "title": "CUSTOM CHECKOUT",
+            "body": "Branded, high-converting checkout experiences built for your business.",
+            "side": "left",
+        },
+        {
+            "number": "04",
+            "title": "PAYOUT",
+            "body": "Move money faster with real-time payouts and settlement visibility.",
+            "side": "right",
+        },
+        {
+            "number": "05",
+            "title": "RECONCILE",
+            "body": "Bring transactions, settlements, refunds and payouts into one view.",
+            "side": "right",
+        },
+        {
+            "number": "06",
+            "title": "ANALYZE",
+            "body": "Turn payment data into actionable insights and better decisions.",
+            "side": "right",
+        },
+    ],
+}
+
+PERFORM = {
+    "title": "Payments That Perform. Operations That Scale.",
+    "body": (
+        "UrbanRupee helps you turn a fragmented payment stack into a simpler, more reliable "
+        "infrastructure built for growth."
+    ),
+    "cta": "Talk to Expert",
+    "cards": [
+        {
+            "title": "More Control Over Payments",
+            "body": (
+                "Choose how transactions are routed and optimize performance across your "
+                "payment ecosystem."
+            ),
+            "graphic": "/images/figma-home/perform/graphic-control@2x.png",
+        },
+        {
+            "title": "Higher Payment Success",
+            "body": (
+                "Recover more transactions with smarter routing, retries, and automatic failover."
+            ),
+            "graphic": "/images/figma-home/Frame%202147225707.svg",
+        },
+        {
+            "title": "Faster & Cleaner Reconciliation",
+            "body": "Get a unified view of transactions, settlements, refunds, and payouts.",
+            "graphic": "/images/figma-home/perform/graphic-reconcile@2x.png",
+        },
+    ],
+}
+
+PRODUCTS = {
+    "title": "Everything You Need to Power Payments.",
+    "body": (
+        "One unified infrastructure for payment acceptance, orchestration, payouts, checkout, "
+        "reconciliation, and analytics — built to simplify operations and scale with your business."
+    ),
+    "cta": "Talk to Expert",
+    "items": [
+        {
+            "title": "White Label Solutions",
+            "body": (
+                "Offer a complete payment experience under your own brand—without building the "
+                "infrastructure from scratch."
+            ),
+            "image": "/images/figma-home/Frame%202147225785.svg",
+            "points": [
+                {
+                    "title": "01 — Full Brand Control",
+                    "body": "Your brand, your identity, your customer experience.",
+                },
+                {
+                    "title": "02 — Your Choice of Services",
+                    "body": "Choose the payment capabilities your business needs.",
+                },
+                {
+                    "title": "03 — Smart Routing & Higher Success",
+                    "body": (
+                        "Optimize payment flows with intelligent routing and automatic failover."
+                    ),
+                },
+            ],
+        },
+        {
+            "title": "Custom Checkout",
+            "body": (
+                "Create a seamless, fully branded checkout experience that gives customers more "
+                "ways to pay—while helping you convert more payment attempts into successful "
+                "transactions."
+            ),
+            "image": "/images/figma-home/Frame%202147225787.svg",
+            "points": [
+                {
+                    "title": "01 — Full Brand Control",
+                    "body": (
+                        "Customize the checkout to match your brand, colors, logo, and customer "
+                        "journey."
+                    ),
+                },
+                {
+                    "title": "02 — Multiple Payment Methods",
+                    "body": (
+                        "Offer UPI, cards, net banking, wallets, EMI, and other payment options "
+                        "in one checkout."
+                    ),
+                },
+                {
+                    "title": "03 — Secure by Design",
+                    "body": (
+                        "Deliver a trusted payment experience with secure payment processing and "
+                        "data protection."
+                    ),
+                },
+            ],
+        },
+        {
+            "title": "Payment Orchestration",
+            "body": (
+                "Route every transaction through the best available payment path with intelligent "
+                "orchestration, automatic failover, and real-time optimization."
+            ),
+            "image": "/images/figma-home/Group%201171275326.svg",
+            "points": [
+                {
+                    "title": "01 — Multi-PSP Connectivity",
+                    "body": (
+                        "Connect and manage multiple payment providers through one unified layer."
+                    ),
+                },
+                {
+                    "title": "02 — Automatic Failover",
+                    "body": (
+                        "Keep payments moving when a provider experiences downtime or failures."
+                    ),
+                },
+                {
+                    "title": "03 — Real-Time Optimization",
+                    "body": (
+                        "Continuously optimize routing based on performance, availability, and "
+                        "transaction conditions"
+                    ),
+                },
+            ],
+        },
+    ],
+}
+
+HOME_CLOSING = {
+    "testimonials_title": "Trusted by Businesses. Proven in Practice.",
+    "testimonials": [
+        {
+            "quote": (
+                "Zeepay is my go-to app for all payments. Whether I'm paying bills or "
+                "transferring money to friends, it's super convenient and secure! The app has "
+                "taken the hassle out of managing my finances, and I love the easy interface "
+                "that keeps everything organized."
+            ),
+            "name": "Sneha P.",
+            "role": "Regular User",
+            "avatar": "/images/figma-about/testimonial-avatar-default.svg",
+        },
+        {
+            "quote": (
+                "Zeepay makes online payments a breeze! It's fast, reliable, and so easy to "
+                "use. I handle all my transactions with just a few taps, whether I'm paying for "
+                "groceries, services, or sending money to friends. Zeepay truly simplifies my "
+                "day-to-day payments."
+            ),
+            "name": "Priya K.",
+            "role": "Small Business Owner",
+            "avatar": "/images/figma-about/testimonial-avatar-1.png",
+        },
+        {
+            "quote": (
+                "With Zeepay, sending and receiving money has never been simpler. The app is "
+                "intuitive, and transactions are instant, which means no more waiting! Whether "
+                "I'm transferring funds to family or paying bills, Zeepay has made it quick and "
+                "convenient every time."
+            ),
+            "name": "Vikram S",
+            "role": "Freelancer",
+            "avatar": "/images/figma-about/testimonial-avatar-2.png",
+        },
+    ],
+    "audiences_title": "Built for Businesses That Move Money",
+    "audiences": [
+        {
+            "number": "1",
+            "title": "E-commerce & Marketplaces",
+            "body": (
+                "Handle high-volume payments, payouts, and settlements with greater reliability."
+            ),
+        },
+        {
+            "number": "2",
+            "title": "Fintechs & Payment Platforms",
+            "body": "Launch and scale payment products with one unified infrastructure layer.",
+        },
+        {
+            "number": "3",
+            "title": "Digital Businesses & Platforms",
+            "body": (
+                "Offer seamless payment experiences without building complex infrastructure "
+                "from scratch."
+            ),
+        },
+        {
+            "number": "4",
+            "title": "Enterprises & Large Businesses",
+            "body": (
+                "Unify multiple payment providers, optimize transaction performance, and "
+                "simplify operations."
+            ),
+        },
+    ],
+    "faq_title": "Got any Questions? We have got you covered!!",
+    "faq_intro": (
+        "Multiple providers, fragmented systems, failed transactions, and manual operations "
+        "make it harder to scale—and harder to know where your money is going."
+    ),
+    "faq_items": [
+        {
+            "number": "01",
+            "question": "What is Urbanrupee Hyper Checkout?",
+            "answer": (
+                "Hyper Checkout delivers faster UPI, card, net banking, wallet, and EMI payments "
+                "with smart routing and one-click flows for higher conversion rates."
+            ),
+        },
+        {
+            "number": "02",
+            "question": "What is payment orchestration?",
+            "answer": (
+                "Payment orchestration intelligently routes transactions across PSPs and banks "
+                "to maximize success rates, uptime, and performance."
+            ),
+        },
+        {
+            "number": "03",
+            "question": "How do I create my Urbanrupee account?",
+            "answer": (
+                "Download our mobile app or visit our website. Click 'Sign Up' or 'Register', "
+                "provide your mobile number, verify with OTP, and set a secure password."
+            ),
+        },
+        {
+            "number": "04",
+            "question": "How can I add money to my Urbanrupee wallet?",
+            "answer": (
+                "Use UPI, Net Banking, Debit Cards, or Credit Cards. Navigate to 'Wallet', "
+                "select 'Add Money', enter the amount, and follow the secure steps."
+            ),
+        },
+        {
+            "number": "05",
+            "question": "How can I view my transaction history?",
+            "answer": (
+                "Go to 'Transaction History' or 'My Orders' in the app or website to see all "
+                "past payments and recharges."
+            ),
+        },
+    ],
+    "cta_title": "Ready to Build a Better Payment Infrastructure?",
+    "cta_body": (
+        "Bring payments, routing, payouts, reconciliation, and analytics together on one "
+        "unified platform—built to scale with your business."
+    ),
+    "cta_label": "Talk to Expert",
 }
 
 PERSONAS = [

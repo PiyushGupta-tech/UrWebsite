@@ -25,7 +25,7 @@ export const CERT_LOGOS = [
 /** Platform merchants — files in public/logos/merchants/{slug}.png */
 export const MERCHANT_LOGOS = {
   bharatCod: "/logos/merchants/bharat-cod.png",
-  greenWeb: "/logos/merchants/green-web.jpeg",
+  greenWeb: "/logos/merchants/green-web.png",
   grootsPay: "/logos/merchants/groots.png",
   paidkiya: "/logos/merchants/paidkiya.png",
   bingopay: "/logos/merchants/bingopay.png",
@@ -89,6 +89,12 @@ export const MERCHANT_PARTNER_LOGOS = {
 export function getPartnerLogo(name, variant = "banks") {
   const map = variant === "merchants" ? MERCHANT_PARTNER_LOGOS : BANKING_PARTNER_LOGOS;
   return map[name] ?? null;
+}
+
+/** Color variant path: `bingopay.png` → `bingopaycolor.png` */
+export function getPartnerLogoColor(logoPath) {
+  if (!logoPath) return null;
+  return logoPath.replace(/\.png$/i, "color.png");
 }
 
 /** Marquee logo height (px); merchants default 35, banks 23 */

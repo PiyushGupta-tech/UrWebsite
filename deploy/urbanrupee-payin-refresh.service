@@ -1,0 +1,20 @@
+[Unit]
+Description=Urbanrupee payin dashboard cache refresh (every 10s)
+After=network.target
+
+[Service]
+Type=simple
+User=www
+Group=www
+WorkingDirectory=/www/wwwroot/urbanrupeeHome/backend
+EnvironmentFile=/www/wwwroot/urbanrupeeHome/backend/.env
+Environment=PAYIN_DASHBOARD_LATEST_LIMIT=100
+Environment=DASHBOARD_MAP_MERCHANT_TXN_LIMIT=100
+ExecStart=/www/wwwroot/urbanrupeeHome/.venv/bin/python manage.py refresh_payin_dashboard --loop
+StandardOutput=journal
+StandardError=journal
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

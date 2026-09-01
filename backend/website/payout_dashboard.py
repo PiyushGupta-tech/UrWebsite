@@ -11,6 +11,9 @@ from django.conf import settings
 from django.core.cache import cache
 from django.utils import timezone
 
+from website.dashboard_fetch import upstream_latest_limit
+from website.map_city_merchants import enrich_map_cities_with_merchants
+
 logger = logging.getLogger(__name__)
 
 CACHE_KEY = "payout_dashboard:snapshot"
@@ -23,7 +26,7 @@ def fetch_upstream_snapshot() -> tuple[dict[str, Any] | None, int, str]:
     if not api_key:
         return None, 503, "Payout dashboard is not configured."
 
-    params = {"latest_limit": settings.PAYOUT_DASHBOARD_LATEST_LIMIT}
+    params = {"latest_limit": upstream_latest_limit(settings.PAYOUT_DASHBOARD_LATEST_LIMIT)}
     headers = {"X-Internal-Key": api_key, "Accept": "application/json"}
 
     try:
@@ -54,10 +57,13 @@ def fetch_upstream_snapshot() -> tuple[dict[str, Any] | None, int, str]:
     if not payload.get("ok"):
         return None, 502, "Payout dashboard returned an error."
 
+    summary = payload.get("summary") or {}
+    enrich_map_cities_with_merchants(summary)
+
     return {
         "ok": True,
         "generated_at": payload.get("generated_at"),
-        "summary": payload.get("summary") or {},
+        "summary": summary,
     }, 200, ""
 
 
@@ -97,6 +103,9 @@ def get_cached_snapshot() -> tuple[dict[str, Any] | None, int, str]:
     """Return the cached snapshot for admin API consumers."""
     data = cache.get(CACHE_KEY)
     if data is not None:
+        summary = data.get("summary")
+        if summary:
+            enrich_map_cities_with_merchants(summary)
         return data, 200, ""
 
     meta = cache.get(META_KEY) or {}

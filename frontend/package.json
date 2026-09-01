@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "build:city-index": "node scripts/build-india-city-index.mjs",
+    "build:city-svg": "node scripts/build-india-city-svg-coords.mjs",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -16,6 +17,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.2.1",
+    "playwright": "^1.61.1",
     "vite": "^6.0.7"
   }
 }

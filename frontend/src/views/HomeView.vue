@@ -4,16 +4,11 @@ import { fetchHomepage } from "@/api/client";
 import { applySeo } from "@/utils/seo";
 import HeroSection from "@/components/HeroSection.vue";
 import ProblemTrio from "@/components/ProblemTrio.vue";
-import ValueProp from "@/components/ValueProp.vue";
-import PersonasGrid from "@/components/PersonasGrid.vue";
-import ProductCatalogue from "@/components/ProductCatalogue.vue";
-import PaymentSolution from "@/components/PaymentSolution.vue";
 import PartnersMarquee from "@/components/PartnersMarquee.vue";
-import FeaturesSection from "@/components/FeaturesSection.vue";
-import StatsBand from "@/components/StatsBand.vue";
-import WhyChoose from "@/components/WhyChoose.vue";
-import Testimonials from "@/components/Testimonials.vue";
-import FaqSection from "@/components/FaqSection.vue";
+import HomeEcosystem from "@/components/HomeEcosystem.vue";
+import HomePerform from "@/components/HomePerform.vue";
+import HomeProducts from "@/components/HomeProducts.vue";
+import HomeClosing from "@/components/HomeClosing.vue";
 
 defineProps({
   site: { type: Object, default: null },
@@ -61,28 +56,228 @@ onMounted(async () => {
     <p>{{ error }}</p>
   </div>
 
-  <main v-else>
-    <HeroSection :hero="data.hero" :dashboard="data.dashboard_preview" :site="data.site" />
+  <main v-else class="home-page">
+    <HeroSection :hero="data.hero" :site="data.site" />
+
+    <section class="home-trust" aria-label="Trust and performance">
+      <div class="home-trust__top">
+        <div class="home-trust__intro">
+          <h2 class="home-trust__title">Trusted by Leading Businesses</h2>
+          <PartnersMarquee
+            :partners="data.merchant_partners || []"
+            variant="merchants"
+            :show-title="false"
+          />
+        </div>
+        <div class="home-trust__rule" aria-hidden="true" />
+      </div>
+
+      <div class="home-trust__stats">
+        <div
+          v-for="stat in data.stats || []"
+          :key="stat.label"
+          class="home-trust__stat"
+        >
+          <span class="home-trust__stat-value">{{ stat.value }}</span>
+          <span class="home-trust__stat-label">{{ stat.label }}</span>
+        </div>
+      </div>
+    </section>
+
     <ProblemTrio :problem="data.problem_trio" />
-    <ValueProp :value-prop="data.value_prop" :checkout="data.checkout_demo" />
-    <PersonasGrid :personas="data.personas" />
-    <ProductCatalogue :catalogue="data.product_catalogue" />
-    <PaymentSolution :section="data.payment_solution" />
-    <PartnersMarquee title="Banking Partners" :partners="data.banking_partners" />
-    <PartnersMarquee
-      title="Merchant Partners"
-      :partners="data.merchant_partners"
-      variant="merchants"
-    />
-    <FeaturesSection :features="data.features" />
-    <StatsBand :stats="data.stats" />
-    <WhyChoose :section="data.why_choose" />
-    <Testimonials :section="data.testimonials" />
-      <FaqSection :faqs="data.faqs" />
-    </main>
+    <HomeEcosystem v-if="data.ecosystem" :section="data.ecosystem" />
+    <HomePerform v-if="data.perform" :section="data.perform" />
+
+    <section class="home-banks">
+      <PartnersMarquee
+        title="Partnered with leading banks and Partners"
+        :partners="data.banking_partners || []"
+        variant="banks"
+      />
+    </section>
+
+    <HomeProducts v-if="data.products" :section="data.products" />
+    <HomeClosing v-if="data.closing" :section="data.closing" />
+  </main>
 </template>
 
 <style scoped>
+.home-page {
+  margin-top: -129px;
+  background: #ffffff;
+}
+
+.home-trust {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 48px 80px 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 48px;
+  font-family: "Manrope", "DM Sans", system-ui, sans-serif;
+}
+
+/* Figma 1:5372 — title, logos, divider */
+.home-trust__top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  width: 100%;
+}
+
+.home-trust__intro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  width: 100%;
+}
+
+.home-trust :deep(.partners) {
+  width: 100%;
+  padding-top: 0;
+  padding-bottom: 0;
+  border-block: 0;
+  background: transparent;
+}
+
+.home-trust :deep(.partners .container) {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+.home-trust :deep(.partners__scroll) {
+  gap: 48px;
+  align-items: center;
+}
+
+.home-trust :deep(.partners__pill) {
+  width: 140px;
+  min-width: 140px;
+  height: 48px;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+}
+
+.home-trust :deep(.partners__logo-stack) {
+  width: 100%;
+}
+
+.home-trust :deep(.partners__logo),
+.home-trust :deep(.partners__logo--lg) {
+  width: 100% !important;
+  height: 40px !important;
+  max-width: 140px !important;
+  object-fit: contain;
+  object-position: center;
+}
+
+.home-trust__title {
+  margin: 0;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 32px;
+  color: #252b37;
+}
+
+.home-trust__rule {
+  width: 100%;
+  height: 1px;
+  background: #eceef2;
+}
+
+/* Figma 1:5384 — stats row */
+.home-trust__stats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 93px;
+  width: 100%;
+  max-width: 1120px;
+}
+
+.home-trust__stat {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.home-trust__stat-value {
+  display: block;
+  font-size: 44px;
+  font-weight: 600;
+  line-height: 72px;
+  letter-spacing: -1.68px;
+  color: #252b37;
+  white-space: nowrap;
+}
+
+.home-trust__stat-label {
+  display: block;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 32px;
+  color: #414651;
+}
+
+.home-banks :deep(.partners) {
+  padding-top: 0;
+  padding-bottom: 0;
+  border-block: 0;
+  background: transparent;
+}
+
+.home-banks :deep(.partners__title) {
+  margin: 0 0 24px;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 32px;
+  text-transform: none;
+  letter-spacing: normal;
+  color: #252b37;
+}
+
+.home-banks :deep(.partners__scroll) {
+  gap: 48px;
+  align-items: center;
+}
+
+.home-banks :deep(.partners__pill) {
+  width: 140px;
+  min-width: 140px;
+  height: 48px;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+}
+
+.home-banks :deep(.partners__logo),
+.home-banks :deep(.partners__logo--lg) {
+  width: 100% !important;
+  height: 40px !important;
+  max-width: 140px !important;
+  object-fit: contain;
+  object-position: center;
+}
+
+.home-banks {
+  max-width: 1280px;
+  margin: 0 auto 80px;
+  padding: 0 80px;
+}
+
 .page-loading {
   min-height: 40vh;
   display: grid;
@@ -105,6 +300,48 @@ onMounted(async () => {
 @keyframes spin {
   to {
     transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 1100px) {
+  .home-trust__stats {
+    gap: 48px;
+  }
+}
+
+@media (max-width: 768px) {
+  .home-trust,
+  .home-banks {
+    padding: 32px 24px 64px;
+  }
+
+  .home-trust {
+    gap: 32px;
+  }
+
+  .home-trust__top {
+    gap: 24px;
+  }
+
+  .home-trust__intro {
+    gap: 24px;
+  }
+
+  .home-trust__stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+  }
+
+  .home-trust__stat-value {
+    font-size: 36px;
+    line-height: 1.2;
+    letter-spacing: -1px;
+  }
+
+  .home-trust__stat-label {
+    font-size: 14px;
+    line-height: 1.4;
   }
 }
 </style>

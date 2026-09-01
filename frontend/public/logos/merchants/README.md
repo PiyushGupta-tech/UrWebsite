@@ -5,7 +5,7 @@ Drop PNG or WebP files here using **kebab-case** slugs. The orchestration hero l
 | File | Partner name |
 |------|----------------|
 | `bharat-cod.png` | Bharat COD |
-| `green-web.jpeg` | Green Web Solutions |
+| `green-web.png` | Green Web Solutions |
 | `groots.png` | Groots Pay |
 | `paidkiya.png` | Paidkiya |
 | `bingopay.png` | BingoPay |

@@ -67,11 +67,11 @@ watch(() => route.path, loadPage);
   </div>
 
   <template v-else>
-    <div class="container page-chrome">
-      <Breadcrumbs
-        v-if="payload.breadcrumbs?.length > 1"
-        :items="payload.breadcrumbs"
-      />
+    <div
+      v-if="payload.breadcrumbs?.length > 1 && !['contact', 'about'].includes(payload.page?.type)"
+      class="container page-chrome"
+    >
+      <Breadcrumbs :items="payload.breadcrumbs" />
     </div>
     <component
       :is="pageComponent"

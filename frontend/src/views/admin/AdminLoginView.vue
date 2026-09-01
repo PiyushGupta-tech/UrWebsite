@@ -1,6 +1,7 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
+import BrandLogo from "@/components/BrandLogo.vue";
 import { useAdminAuth } from "@/composables/useAdminAuth";
 
 const router = useRouter();
@@ -37,7 +38,7 @@ async function onSubmit() {
   <div class="admin-login admin-theme">
     <form class="admin-login__card admin-card" @submit.prevent="onSubmit">
       <div class="admin-login__brand">
-        <img src="/logos/urwhite.png" alt="UrbanRupee" class="admin-login__logo" />
+        <BrandLogo variant="on-dark" alt="UrbanRupee" priority class="admin-login__logo" />
         <div>
           <p class="admin-login__name">UrbanRupee</p>
           <p class="admin-login__subtitle">Admin Dashboard</p>
@@ -127,8 +128,9 @@ async function onSubmit() {
 }
 
 .admin-login__logo {
-  width: 40px;
-  height: 40px;
+  height: 28px;
+  width: auto;
+  flex-shrink: 0;
 }
 
 .admin-login__name {

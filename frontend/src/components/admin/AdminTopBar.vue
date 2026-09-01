@@ -41,9 +41,9 @@ const ago = computed(() => {
   display: grid;
   grid-template-columns: 1fr auto auto;
   align-items: center;
-  gap: 16px;
-  min-height: 64px;
-  padding: 8px 16px;
+  gap: clamp(10px, 1.5vw, 16px);
+  min-height: clamp(52px, 7vh, 64px);
+  padding: clamp(6px, 0.8vh, 8px) clamp(12px, 1.5vw, 16px);
   flex-shrink: 0;
   background: var(--btn-primary-gradient);
   border-bottom: 1px solid rgba(255, 255, 255, 0.12);

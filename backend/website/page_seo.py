@@ -361,7 +361,7 @@ PAGE_SEO = {
             "Learn about Urbanrupee — a unified payment ecosystem for orchestration, UPI, "
             "checkout, payouts, and white-label solutions built for businesses across India."
         ),
-        "h1": "About Urbanrupee",
+        "h1": "Powering the Future of Digital Payments",
     },
     "payment-services": {
         "title": "Payment Gateway & Infrastructure India | Urbanrupee",
@@ -497,7 +497,7 @@ PAGE_SEO = {
             "Contact Urbanrupee for payment gateway demos, merchant onboarding, and support. "
             "Reach our team in Greater Noida for UPI, checkout, and payout solutions."
         ),
-        "h1": "Connect with us",
+        "h1": "Let’s Start a Conversation",
     },
 }
 

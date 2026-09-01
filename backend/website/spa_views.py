@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import json
 import re
-from functools import lru_cache
 from html import escape
 from pathlib import Path
 
@@ -21,12 +20,20 @@ from .seo_schema import structured_data_script
 FRONTEND_DIST = Path(settings.BASE_DIR).parent / "frontend" / "dist"
 INDEX_PATH = FRONTEND_DIST / "index.html"
 
+_index_cache: tuple[int, str] | None = None
 
-@lru_cache(maxsize=1)
+
 def _index_template() -> str:
+    """Read SPA shell; re-read when frontend/dist/index.html changes after deploy."""
+    global _index_cache
     if not INDEX_PATH.is_file():
         raise Http404("Frontend build not found.")
-    return INDEX_PATH.read_text(encoding="utf-8")
+    mtime_ns = INDEX_PATH.stat().st_mtime_ns
+    if _index_cache and _index_cache[0] == mtime_ns:
+        return _index_cache[1]
+    html = INDEX_PATH.read_text(encoding="utf-8")
+    _index_cache = (mtime_ns, html)
+    return html
 
 
 def _attr(value: str) -> str:
@@ -147,4 +154,8 @@ class SpaIndexView(View):
         if gsc_token:
             html = inject_gsc_verification(html, gsc_token)
 
-        return HttpResponse(html, content_type="text/html; charset=utf-8")
+        return HttpResponse(
+            html,
+            content_type="text/html; charset=utf-8",
+            headers={"Cache-Control": "no-cache, no-store, must-revalidate"},
+        )

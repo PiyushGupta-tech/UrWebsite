@@ -4,6 +4,7 @@ from .admin_views import (
     AdminLoginAPIView,
     AdminLogoutAPIView,
     AdminMeAPIView,
+    AdminPayinDashboardAPIView,
     AdminPayoutDashboardAPIView,
 )
 from .views import (
@@ -29,5 +30,10 @@ urlpatterns = [
         "admin/payout-dashboard/",
         AdminPayoutDashboardAPIView.as_view(),
         name="admin-payout-dashboard",
+    ),
+    path(
+        "admin/payin-dashboard/",
+        AdminPayinDashboardAPIView.as_view(),
+        name="admin-payin-dashboard",
     ),
 ]

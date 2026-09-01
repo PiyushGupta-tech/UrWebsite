@@ -16,6 +16,6 @@
 .admin-theme .admin-card {
   background: var(--ur-card-bg);
   border: 1px solid var(--ur-card-border);
-  border-radius: 12px;
-  padding: 12px;
+  border-radius: clamp(8px, 1vh, 12px);
+  padding: clamp(8px, 1.2vh, 12px);
 }

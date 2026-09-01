@@ -1,217 +1,220 @@
 """Content for inner marketing pages — sourced from Urbanrupee.com."""
 
+from website import content
+
 # slug -> page payload
 PAGES = {
     "about": {
         "type": "about",
-        "title": "About Urbanrupee",
-        "intro": [
-            (
-                "At Urbanrupee, we are redefining the way businesses manage and experience digital "
-                "payments. We provide a unified payment ecosystem that enables organizations to "
-                "accept, process, route, and manage transactions through a secure, scalable, and "
-                "intelligent platform."
-            ),
-            (
-                "Our solutions are designed to simplify payment operations, improve transaction "
-                "success rates, and deliver seamless customer experiences. From payment orchestration "
-                "and UPI infrastructure to customized checkout solutions and payouts, Urbanrupee "
-                "empowers businesses to scale confidently in an increasingly digital world."
-            ),
-            (
-                "We believe payments are more than transactions they are the foundation of trust, "
-                "growth, and meaningful customer relationships. By combining technology, innovation, "
-                "and reliability, we help businesses unlock new opportunities and accelerate "
-                "sustainable growth."
-            ),
-        ],
-        "blocks": [
-            {
-                "heading": "Our Vision",
-                "body": (
-                    "To become a trusted leader in digital payment infrastructure by empowering "
-                    "businesses with secure, scalable, and innovative payment solutions that drive "
-                    "growth and financial inclusion."
-                ),
-            },
-            {
-                "heading": "Our Mission",
-                "body": (
-                    "To achieve RBI PA-PG (Payment Aggregator–Payment Gateway) authorization by 2027 "
-                    "while delivering seamless, secure, and technology-driven payment solutions that "
-                    "help businesses simplify transactions, enhance customer experiences, and scale "
-                    "with confidence."
-                ),
-            },
-            {
-                "heading": "Comprehensive Payment Solutions",
-                "body": (
-                    "Empower your business with a complete ecosystem of payment and financial "
-                    "solutions designed to simplify operations, accelerate growth, and deliver "
-                    "exceptional customer experiences. From domestic payment processing and "
-                    "payment orchestration to white-label platforms, e-commerce enablement, "
-                    "TSP/PSP services, application development, POS solutions, vouchers, and "
-                    "prepaid card programs, Urbanrupee provides everything you need through one "
-                    "trusted platform."
-                ),
-                "bullets_heading": "Key Benefits",
-                "bullets": [
-                    "End-to-end payment and fintech solutions under one ecosystem",
-                    "Seamless integration with your existing systems and workflows",
-                    "Intelligent routing, analytics, and performance optimization tools",
-                    "Scalable infrastructure designed to support business growth",
-                    "Flexible white-label solutions tailored to your brand",
-                    "Dedicated support and technology expertise at every stage",
-                ],
-                "closing": (
-                    "Build, scale, and innovate with payment solutions designed for the "
-                    "future of digital commerce."
-                ),
-            },
-        ],
-        "partners": [
-            {
-                "name": "Groots Pay",
-                "body": (
-                    "Groots Pay supports stores and retailers who can offer Assisted Digital "
-                    "Financial Services—such as Aadhaar ATM, SMS payment, khata service, utility "
-                    "payment, prepaid cards, insurance, and money transfer—through AWESOMEPAY. "
-                    "Urbanrupee infrastructure helps deliver dependable processing and a polished "
-                    "brand presence at the point of sale."
-                ),
-            },
-            {
-                "name": "Finlix Capital",
-                "body": (
-                    "A performance-based proprietary trading evaluation platform for traders in "
-                    "India: simulated challenges, clear rules, and a path to internal capital "
-                    "for those who demonstrate consistency and discipline. Simulated trading, "
-                    "education & evaluation, and not a broker—we do not execute trades or hold "
-                    "public investment funds."
-                ),
-            },
-            {
-                "name": "Green Web Software Development Private Limited",
-                "body": (
-                    "Green Web Software Development Private Limited builds digital payment "
-                    "and web platforms for businesses across India. With Urbanrupee infrastructure, "
-                    "they deliver dependable "
-                    "collections, payouts, and branded checkout experiences—helping merchants "
-                    "launch online faster and scale transaction volume with confidence."
-                ),
-            },
-            {
-                "name": "BingoPay",
-                "body": (
-                    "BingoPay empowers retailers and agents with assisted digital financial "
-                    "services—from UPI collections and bill payments to wallet and voucher flows. "
-                    "Powered by Urbanrupee rails, BingoPay offers a secure, compliant stack that "
-                    "keeps last-mile payment experiences fast and dependable."
-                ),
-            },
-        ],
-        "offerings_intro": (
-            "At Urbanrupee, we provide innovative payment and commerce solutions that help "
-            "businesses streamline operations, enhance customer experiences, and scale with "
-            "confidence. Whether you're a startup, enterprise, retailer, or fintech, our "
-            "solutions are designed to support your growth at every stage."
+        "title": "Powering the Future of Digital Payments",
+        "intro": (
+            "Urbanrupee brings intelligent payment technology, secure infrastructure, and "
+            "seamless experiences together to help businesses move money smarter, faster, and at scale."
         ),
-        "offerings": [
-            {
-                "title": "POS Solutions",
-                "body": (
-                    "Enable seamless payment acceptance anytime, anywhere with Urbanrupee's "
-                    "advanced POS solutions. From retail stores and restaurants to field sales "
-                    "and service businesses, our POS infrastructure delivers secure, fast, and "
-                    "reliable transactions across multiple payment methods."
-                ),
-                "bullets_heading": "Key Benefits",
-                "bullets": [
-                    "Accept UPI, cards, wallets, and contactless payments",
-                    "Fast and secure transaction processing",
-                    "Easy deployment and user-friendly interface",
-                    "Real-time reporting and transaction visibility",
-                    "Reliable performance for businesses of all sizes",
-                ],
-            },
-            {
-                "title": "Brand Vouchers",
-                "body": (
-                    "Strengthen customer engagement and drive brand loyalty with customizable "
-                    "digital and physical voucher programs. Create rewarding experiences that "
-                    "encourage repeat purchases and enhance customer retention."
-                ),
-                "bullets_heading": "Key Benefits",
-                "bullets": [
-                    "Customizable gift and reward programs",
-                    "Increased customer engagement and loyalty",
-                    "Easy distribution and redemption management",
-                    "Ideal for promotions, incentives, and campaigns",
-                    "Flexible solutions tailored to your brand",
-                ],
-            },
-            {
-                "title": "Prepaid Cards",
-                "body": (
-                    "Offer secure and flexible prepaid card solutions designed for businesses, "
-                    "employees, partners, and customers. Whether for corporate expenses, "
-                    "incentives, rewards, or disbursements, our prepaid card ecosystem simplifies "
-                    "fund management while enhancing user convenience."
-                ),
-                "bullets_heading": "Key Benefits",
-                "bullets": [
-                    "Corporate expense and employee benefit programs",
-                    "Customer rewards and incentive solutions",
-                    "Fast and secure fund distribution",
-                    "Custom-branded card programs",
-                    "Complete visibility and transaction control",
-                ],
-            },
-            {
-                "title": "White-Label Prepaid Cards",
-                "body": (
-                    "Launch your own branded prepaid card program with Urbanrupee's white-label "
-                    "infrastructure. Deliver a fully customized payment experience while leveraging "
-                    "secure, scalable, and compliant technology."
-                ),
-                "bullets_heading": "Key Benefits",
-                "bullets": [
-                    "Fully branded card experience",
-                    "Rapid deployment and market readiness",
-                    "Secure and scalable infrastructure",
-                    "Flexible program management",
-                    "Enhanced customer trust and brand recognition",
-                ],
-            },
+        "merchant_partners": content.MERCHANT_PARTNERS,
+        "stats": [
+            {"value": "10M+", "label": "Transactions Processed"},
+            {"value": "99.9%+", "label": "Payment Success Rate"},
+            {"value": "₹1B+", "label": "Transaction Value Processed"},
+            {"value": "<100ms", "label": "Average Processing Time"},
         ],
-        "offerings_closing": (
-            "From payment acceptance and customer engagement to prepaid programs and branded "
-            "financial solutions, Urbanrupee delivers the technology, flexibility, and reliability "
-            "businesses need to grow in a digital-first world."
+        "purpose_title": "Powering Payments with Purpose",
+        "purpose_intro": (
+            "We combine secure infrastructure, intelligent payment technology, and seamless "
+            "experiences to make digital transactions simpler, smarter, and built for scale."
         ),
-        "closing_sections": [
+        "pillars": [
             {
-                "heading": "Security, Compliance & Trust",
+                "title": "Trust in Every Transaction",
+                "body": "Secure and reliable payment infrastructure businesses can depend on.",
+                "icon": "handshake",
+            },
+            {
+                "title": "Intelligence that Performs",
+                "body": "Smart routing and payment insights that optimize transaction performance.",
+                "icon": "performance",
+            },
+            {
+                "title": "Frictionless by Design",
+                "body": "Seamless payment journeys that reduce friction and improve conversions.",
+                "icon": "link",
+            },
+            {
+                "title": "Infrastructure for Growth",
+                "body": "Scalable fintech solutions built to adapt as businesses grow.",
+                "icon": "growth",
+            },
+        ],
+        "principles_title": "The Principles Behind Every Payment We Power",
+        "principles_intro": (
+            "We build fintech solutions around trust, intelligence, seamless experiences, and "
+            "scalable infrastructure—keeping businesses and their customers at the heart of "
+            "every transaction."
+        ),
+        "principles": [
+            {
+                "number": "01",
+                "title": "Security First",
                 "body": (
-                    "Security, compliance, and trust form the foundation of Urbanrupee's payment "
-                    "ecosystem. Our infrastructure is built to meet industry-leading security "
-                    "standards, ensuring every transaction is protected with robust controls, "
-                    "continuous monitoring, and compliance-driven processes. With PCI DSS and ISO "
-                    "27001 certifications, businesses can operate with confidence while delivering "
-                    "secure payment experiences to their customers."
+                    "We prioritize secure payment infrastructure, data protection, and compliant "
+                    "transaction processing at every touchpoint."
                 ),
             },
             {
-                "heading": "Our Commitment",
+                "number": "02",
+                "title": "Customer-Centric Payments",
                 "body": (
-                    "Our commitment is to help businesses navigate the evolving digital landscape "
-                    "with confidence by providing innovative payment infrastructure, seamless "
-                    "experiences, and trusted technology that drives sustainable growth and "
-                    "operational excellence."
+                    "Every product decision starts with the payer and payee experience—reducing "
+                    "friction while keeping transactions fast and dependable."
+                ),
+            },
+            {
+                "number": "03",
+                "title": "Intelligence by Design",
+                "body": (
+                    "Smart routing, analytics, and automation are built into the platform so "
+                    "businesses can optimize performance without adding operational complexity."
+                ),
+            },
+            {
+                "number": "04",
+                "title": "Built to Scale",
+                "body": (
+                    "Infrastructure that grows with transaction volume, new payment methods, and "
+                    "expanding merchant needs—without re-architecting from scratch."
+                ),
+            },
+            {
+                "number": "05",
+                "title": "Continuous Innovation",
+                "body": (
+                    "We iterate on orchestration, checkout, payouts, and reconciliation so "
+                    "partners stay ahead of market and regulatory change."
                 ),
             },
         ],
-        "tagline": "Urbanrupee : Transforming Payments, Accelerating Growth",
+        "testimonials_title": "Trusted by Businesses. Proven in Practice.",
+        "testimonials": [
+            {
+                "quote": (
+                    "Zeepay is my go-to app for all payments. Whether I'm paying bills or "
+                    "transferring money to friends, it's super convenient and secure! The app has "
+                    "taken the hassle out of managing my finances, and I love the easy interface "
+                    "that keeps everything organized."
+                ),
+                "name": "Sneha P.",
+                "role": "Regular User",
+                "avatar": "/images/figma-about/testimonial-avatar-default.svg",
+            },
+            {
+                "quote": (
+                    "Zeepay makes online payments a breeze! It's fast, reliable, and so easy to "
+                    "use. I handle all my transactions with just a few taps, whether I'm paying for "
+                    "groceries, services, or sending money to friends. Zeepay truly simplifies my "
+                    "day-to-day payments."
+                ),
+                "name": "Priya K.",
+                "role": "Small Business Owner",
+                "avatar": "/images/figma-about/testimonial-avatar-1.png",
+            },
+            {
+                "quote": (
+                    "With Zeepay, sending and receiving money has never been simpler. The app is "
+                    "intuitive, and transactions are instant, which means no more waiting! Whether "
+                    "I'm transferring funds to family or paying bills, Zeepay has made it quick and "
+                    "convenient every time."
+                ),
+                "name": "Vikram S",
+                "role": "Freelancer",
+                "avatar": "/images/figma-about/testimonial-avatar-2.png",
+            },
+        ],
+        "audiences_title": "Built for Businesses That Move Money",
+        "audiences": [
+            {
+                "number": "1",
+                "title": "E-commerce & Marketplaces",
+                "body": (
+                    "Handle high-volume payments, payouts, and settlements with greater reliability."
+                ),
+            },
+            {
+                "number": "2",
+                "title": "Fintechs & Payment Platforms",
+                "body": (
+                    "Launch and scale payment products with one unified infrastructure layer."
+                ),
+            },
+            {
+                "number": "3",
+                "title": "Digital Businesses & Platforms",
+                "body": (
+                    "Offer seamless payment experiences without building complex infrastructure "
+                    "from scratch."
+                ),
+            },
+            {
+                "number": "4",
+                "title": "Enterprises & Large Businesses",
+                "body": (
+                    "Unify multiple payment providers, optimize transaction performance, and "
+                    "simplify operations."
+                ),
+            },
+        ],
+        "faq_title": "Got any Questions? We have got you covered!!",
+        "faq_intro": (
+            "Multiple providers, fragmented systems, failed transactions, and manual operations "
+            "make it harder to scale—and harder to know where your money is going."
+        ),
+        "faq_items": [
+            {
+                "number": "01",
+                "question": "What is Urbanrupee Hyper Checkout?",
+                "answer": (
+                    "Hyper Checkout delivers faster UPI, card, net banking, wallet, and EMI payments "
+                    "with smart routing and one-click flows for higher conversion rates."
+                ),
+            },
+            {
+                "number": "02",
+                "question": "What is payment orchestration?",
+                "answer": (
+                    "Payment orchestration intelligently routes transactions across PSPs and banks "
+                    "to maximize success rates, uptime, and performance."
+                ),
+            },
+            {
+                "number": "03",
+                "question": "How do I create my Urbanrupee account?",
+                "answer": (
+                    "Download our mobile app or visit our website. Click 'Sign Up' or 'Register', "
+                    "provide your mobile number, verify with OTP, and set a secure password."
+                ),
+            },
+            {
+                "number": "04",
+                "question": "How can I add money to my Urbanrupee wallet?",
+                "answer": (
+                    "Use UPI, Net Banking, Debit Cards, or Credit Cards. Navigate to 'Wallet', "
+                    "select 'Add Money', enter the amount, and follow the secure steps."
+                ),
+            },
+            {
+                "number": "05",
+                "question": "How can I view my transaction history?",
+                "answer": (
+                    "Go to 'Transaction History' or 'My Orders' in the app or website to see all "
+                    "past payments and recharges."
+                ),
+            },
+        ],
+        "cta_title": "Ready to Build a Better Payment Infrastructure?",
+        "cta_body": (
+            "Bring payments, routing, payouts, reconciliation, and analytics together on one "
+            "unified platform—built to scale with your business."
+        ),
+        "cta_label": "Talk to Expert",
     },
     "payment-services": {
         "type": "marketing",
@@ -2207,15 +2210,71 @@ PAGES = {
     },
     "contact": {
         "type": "contact",
-        "title": "Connect with us",
-        "intro": "Feel free to reach out to us with any questions or inquiries you may have.",
+        "title": "Let’s Start a Conversation",
+        "intro": (
+            "Have a question or need more information? We’re here to help. "
+            "Reach out to our team and we’ll get back to you shortly."
+        ),
         "company": "Urbanrupee Tech Solution Pvt. Ltd.",
         "phone": "+91 9305697870",
         "email": "it.support@urbanrupee.com",
         "address": (
-            "A01 & A03, NX-One, Gaur City, Greater Noida (Ghaziabad), "
+            "A01 & A03, NX–One, Gaur City, Greater Noida (Ghaziabad), "
             "Uttar Pradesh, India, 201301"
         ),
+        "faq_title": "Got any Questions? We have got you covered!!",
+        "faq_intro": (
+            "Multiple providers, fragmented systems, failed transactions, and manual "
+            "operations make it harder to scale—and harder to know where your money is going."
+        ),
+        "faq_items": [
+            {
+                "number": "01",
+                "question": "What is Urbanrupee Hyper Checkout?",
+                "answer": (
+                    "Hyper Checkout delivers faster UPI, card, net banking, wallet, and EMI payments "
+                    "with smart routing and one-click flows for higher conversion rates."
+                ),
+            },
+            {
+                "number": "02",
+                "question": "What is payment orchestration?",
+                "answer": (
+                    "Payment orchestration intelligently routes transactions across PSPs and banks "
+                    "to maximize success rates, uptime, and performance."
+                ),
+            },
+            {
+                "number": "03",
+                "question": "How do I create my Urbanrupee account?",
+                "answer": (
+                    "Download our mobile app or visit our website. Click 'Sign Up' or 'Register', "
+                    "provide your mobile number, verify with OTP, and set a secure password."
+                ),
+            },
+            {
+                "number": "04",
+                "question": "How can I add money to my Urbanrupee wallet?",
+                "answer": (
+                    "Use UPI, Net Banking, Debit Cards, or Credit Cards. Navigate to 'Wallet', "
+                    "select 'Add Money', enter the amount, and follow the secure steps."
+                ),
+            },
+            {
+                "number": "05",
+                "question": "How can I view my transaction history?",
+                "answer": (
+                    "Go to 'Transaction History' or 'My Orders' in the app or website to see all "
+                    "past payments and recharges."
+                ),
+            },
+        ],
+        "cta_title": "Ready to Build a Better Payment Infrastructure?",
+        "cta_body": (
+            "Bring payments, routing, payouts, reconciliation, and analytics together on one "
+            "unified platform—built to scale with your business."
+        ),
+        "cta_label": "Talk to Expert",
         "catalogue_note": "As listed in the Urbanrupee Product Catalogue — NX-One, Gaur City.",
     },
 }
