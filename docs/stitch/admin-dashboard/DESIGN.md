@@ -1,7 +1,7 @@
-# UrbanRupee Admin Payout Micro Dashboard — Design Reference
+# Urbanrupee Admin Payout Micro Dashboard — Design Reference
 
 Stitch project: `13644661613890610533`  
-Screen: UrbanRupee Admin — Payout Micro Dashboard (`513a62d003004f629282b9c36c9f4953`)
+Screen: Urbanrupee Admin — Payout Micro Dashboard (`513a62d003004f629282b9c36c9f4953`)
 
 > Stitch MCP was not available in the implementation environment. This document captures
 > design tokens and layout from the implementation spec. Add `code.html` and `screen.png`

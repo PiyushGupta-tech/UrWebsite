@@ -1,6 +1,7 @@
 <script setup>
 import { computed, ref } from "vue";
 import { submitContactForm } from "@/api/client.js";
+import { contactFieldSchemas, contactSchema } from "@/validation/contactSchema.js";
 
 defineProps({
   page: { type: Object, required: true },
@@ -18,33 +19,204 @@ const form = ref({
 const submitted = ref(false);
 const submitting = ref(false);
 const error = ref("");
-const openFaq = ref(0);
+const fieldErrors = ref({
+  name: "",
+  email: "",
+  phone: "",
+  subject: "",
+  message: "",
+});
+const touched = ref({
+  name: false,
+  email: false,
+  phone: false,
+  subject: false,
+  message: false,
+});
+const CONTROL_INPUT_TYPES = new Set([
+  "deleteContentBackward",
+  "deleteContentForward",
+  "deleteByCut",
+  "deleteByDrag",
+  "historyUndo",
+  "historyRedo",
+  "insertLineBreak",
+  "insertParagraph",
+]);
+
+function sanitizeName(value) {
+  return String(value || "").replace(/[^A-Za-z\s]/g, "");
+}
+
+function sanitizeEmail(value) {
+  const cleaned = String(value || "")
+    .replace(/\s+/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9@._+-]/g, "");
+
+  const [local = "", ...rest] = cleaned.split("@");
+  if (!rest.length) return local;
+
+  const domain = rest.join("").replace(/@/g, "");
+  return `${local}@${domain}`;
+}
+
+function sanitizePhone(value) {
+  return String(value || "").replace(/\D/g, "").slice(0, 10);
+}
+
+function sanitizeMessage(value) {
+  return String(value || "").slice(0, 500);
+}
+
+function setFieldError(field, message = "") {
+  fieldErrors.value[field] = message;
+}
+
+function validateField(field) {
+  const schema = contactFieldSchemas[field];
+  if (!schema) return true;
+
+  const { error: validationError } = schema.validate(form.value[field], { abortEarly: true });
+  setFieldError(field, validationError?.details?.[0]?.message || "");
+  return !validationError;
+}
+
+function validateForm() {
+  const { error: validationError, value } = contactSchema.validate(form.value, {
+    abortEarly: false,
+  });
+
+  form.value = { ...form.value, ...value };
+  const nextErrors = {
+    name: "",
+    email: "",
+    phone: "",
+    subject: "",
+    message: "",
+  };
+
+  validationError?.details?.forEach((detail) => {
+    const field = detail.path?.[0];
+    if (field && !nextErrors[field]) {
+      nextErrors[field] = detail.message;
+    }
+  });
+
+  fieldErrors.value = nextErrors;
+  return !validationError;
+}
+
+function updateField(key, event, sanitizer = (value) => value) {
+  form.value[key] = sanitizer(event?.target?.value);
+  if (touched.value[key] || fieldErrors.value[key]) {
+    validateField(key);
+  }
+}
+
+function onFieldBlur(field) {
+  touched.value[field] = true;
+  validateField(field);
+}
+
+function onNameBeforeInput(event) {
+  if (CONTROL_INPUT_TYPES.has(event.inputType)) return;
+  if (!/^[A-Za-z\s]*$/.test(event.data || "")) {
+    event.preventDefault();
+  }
+}
+
+function onEmailBeforeInput(event) {
+  if (CONTROL_INPUT_TYPES.has(event.inputType)) return;
+  const data = event.data || "";
+  if (!/^[A-Za-z0-9@._+-]*$/.test(data)) {
+    event.preventDefault();
+    return;
+  }
+
+  if (data.includes("@")) {
+    const target = event.target;
+    const existing = target?.value || "";
+    const selected = existing.slice(target.selectionStart || 0, target.selectionEnd || 0);
+    const nextAtCount = existing.split("@").length - 1 - (selected.includes("@") ? 1 : 0) + data.split("@").length - 1;
+    if (nextAtCount > 1) {
+      event.preventDefault();
+    }
+  }
+}
+
+function onPhoneBeforeInput(event) {
+  if (CONTROL_INPUT_TYPES.has(event.inputType)) return;
+  const data = event.data || "";
+  if (!/^\d*$/.test(data)) {
+    event.preventDefault();
+    return;
+  }
+
+  const target = event.target;
+  const existing = target?.value || "";
+  const start = target?.selectionStart || 0;
+  const end = target?.selectionEnd || 0;
+  const nextValue = `${existing.slice(0, start)}${data}${existing.slice(end)}`;
+
+  if (nextValue.length > 10) {
+    event.preventDefault();
+    return;
+  }
+
+  if (nextValue.length > 0 && !/^[6-9]/.test(nextValue)) {
+    event.preventDefault();
+  }
+}
+
+function handlePaste(field, event, sanitizer = (value) => value) {
+  event.preventDefault();
+  const pasted = event.clipboardData?.getData("text") || "";
+  form.value[field] = sanitizer(pasted);
+  touched.value[field] = true;
+  validateField(field);
+}
+
+function handlePhonePaste(event) {
+  event.preventDefault();
+  const pasted = event.clipboardData?.getData("text") || "";
+  const digitsOnly = sanitizePhone(pasted);
+  form.value.phone = /^[6-9]/.test(digitsOnly) ? digitsOnly : "";
+  touched.value.phone = true;
+  validateField("phone");
+}
 
 const canSubmit = computed(() => {
-  const { name, email, phone, subject, message } = form.value;
-  return [name, email, phone, subject, message].every(
-    (value) => String(value || "").trim().length > 0,
-  );
+  return contactSchema.validate(form.value, { abortEarly: false }).error == null;
 });
 
 async function onSubmit() {
-  if (!canSubmit.value || submitting.value) return;
+  if (submitting.value) return;
+  touched.value = {
+    name: true,
+    email: true,
+    phone: true,
+    subject: true,
+    message: true,
+  };
+  if (!validateForm()) return;
+
   submitting.value = true;
   error.value = "";
   try {
-    await submitContactForm({ ...form.value });
+    const { value } = contactSchema.validate(form.value, { abortEarly: false });
+    await submitContactForm({ ...value });
     submitted.value = true;
   } catch (e) {
+    if (e.fieldErrors && Object.keys(e.fieldErrors).length) {
+      fieldErrors.value = { ...fieldErrors.value, ...e.fieldErrors };
+    }
     error.value =
       e.message ||
       "We could not send your message. Please try again or email us directly.";
   } finally {
     submitting.value = false;
   }
-}
-
-function toggleFaq(index) {
-  openFaq.value = openFaq.value === index ? -1 : index;
 }
 </script>
 
@@ -114,23 +286,79 @@ function toggleFaq(index) {
 
             <label class="contact-card__field">
               <span>Full Name <em>*</em></span>
-              <input v-model="form.name" type="text" required :disabled="submitting" />
+              <input
+                :value="form.name"
+                type="text"
+                required
+                autocomplete="name"
+                maxlength="50"
+                :disabled="submitting"
+                @beforeinput="onNameBeforeInput"
+                @input="updateField('name', $event, sanitizeName)"
+                @paste="handlePaste('name', $event, sanitizeName)"
+                @blur="onFieldBlur('name')"
+              />
+              <small v-if="fieldErrors.name" class="contact-card__error-text">{{ fieldErrors.name }}</small>
             </label>
             <label class="contact-card__field">
               <span>Email Address <em>*</em></span>
-              <input v-model="form.email" type="email" required :disabled="submitting" />
+              <input
+                :value="form.email"
+                type="email"
+                required
+                inputmode="email"
+                autocomplete="email"
+                maxlength="254"
+                :disabled="submitting"
+                @beforeinput="onEmailBeforeInput"
+                @input="updateField('email', $event, sanitizeEmail)"
+                @paste="handlePaste('email', $event, sanitizeEmail)"
+                @blur="onFieldBlur('email')"
+              />
+              <small v-if="fieldErrors.email" class="contact-card__error-text">{{ fieldErrors.email }}</small>
             </label>
             <label class="contact-card__field">
               <span>Phone Number <em>*</em></span>
-              <input v-model="form.phone" type="tel" required :disabled="submitting" />
+              <input
+                :value="form.phone"
+                type="tel"
+                required
+                inputmode="numeric"
+                autocomplete="tel"
+                maxlength="10"
+                :disabled="submitting"
+                @beforeinput="onPhoneBeforeInput"
+                @input="updateField('phone', $event, sanitizePhone)"
+                @paste="handlePhonePaste"
+                @blur="onFieldBlur('phone')"
+              />
+              <small v-if="fieldErrors.phone" class="contact-card__error-text">{{ fieldErrors.phone }}</small>
             </label>
             <label class="contact-card__field">
               <span>Subject <em>*</em></span>
-              <input v-model="form.subject" type="text" required :disabled="submitting" />
+              <input
+                :value="form.subject"
+                type="text"
+                required
+                autocomplete="off"
+                :disabled="submitting"
+                @input="updateField('subject', $event)"
+                @blur="onFieldBlur('subject')"
+              />
+              <small v-if="fieldErrors.subject" class="contact-card__error-text">{{ fieldErrors.subject }}</small>
             </label>
             <label class="contact-card__field contact-card__field--message">
               <span>Message <em>*</em></span>
-              <textarea v-model="form.message" required :disabled="submitting" />
+              <textarea
+                :value="form.message"
+                required
+                maxlength="500"
+                :disabled="submitting"
+                @input="updateField('message', $event, sanitizeMessage)"
+                @blur="onFieldBlur('message')"
+              />
+              <small class="contact-card__hint">Maximum 500 characters.</small>
+              <small v-if="fieldErrors.message" class="contact-card__error-text">{{ fieldErrors.message }}</small>
             </label>
 
             <button
@@ -150,62 +378,6 @@ function toggleFaq(index) {
             </button>
           </template>
         </form>
-      </div>
-    </section>
-
-    <!-- FAQ: Figma Frame 2147225518 — 1240×440 @ (114, 1260), gap 94 -->
-    <section class="contact-faq" aria-label="Frequently asked questions">
-      <div class="contact-faq__inner">
-        <div class="contact-faq__intro">
-          <h2 class="contact-faq__title">{{ page.faq_title }}</h2>
-          <p class="contact-faq__body">{{ page.faq_intro }}</p>
-        </div>
-
-        <div class="contact-faq__list">
-          <div
-            v-for="(item, index) in page.faq_items || []"
-            :key="item.number"
-            class="contact-faq__item"
-            :class="{ 'contact-faq__item--open': openFaq === index }"
-          >
-            <button
-              type="button"
-              class="contact-faq__trigger"
-              :aria-expanded="openFaq === index"
-              @click="toggleFaq(index)"
-            >
-              <span class="contact-faq__num">{{ item.number }}</span>
-              <span class="contact-faq__question">{{ item.question }}</span>
-              <span class="contact-faq__icon" aria-hidden="true">{{ openFaq === index ? "−" : "+" }}</span>
-            </button>
-            <div v-show="openFaq === index" class="contact-faq__answer">
-              <p>{{ item.answer }}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- CTA: Figma Frame 1410102804 — 1240×331 @ (114, 1880), radius 16 -->
-    <section class="contact-cta" aria-label="Call to action">
-      <div class="contact-cta__panel">
-        <img
-          class="contact-cta__bg"
-          src="/images/figma-contact/cta-banner-bg.png"
-          alt=""
-          width="1240"
-          height="331"
-          loading="lazy"
-          decoding="async"
-        />
-        <div class="contact-cta__content">
-          <h2 class="contact-cta__title">{{ page.cta_title }}</h2>
-          <p class="contact-cta__body">{{ page.cta_body }}</p>
-          <a href="#contact-form" class="contact-cta__btn">
-            {{ page.cta_label }}
-            <span aria-hidden="true">›</span>
-          </a>
-        </div>
       </div>
     </section>
   </main>
@@ -401,6 +573,18 @@ function toggleFaq(index) {
 .contact-card__field em {
   color: #e11d48;
   font-style: normal;
+}
+
+.contact-card__hint {
+  font-size: 12px;
+  line-height: 16px;
+  color: #8b919a;
+}
+
+.contact-card__error-text {
+  font-size: 12px;
+  line-height: 16px;
+  color: #b91c1c;
 }
 
 .contact-card__field input,
@@ -791,6 +975,58 @@ function toggleFaq(index) {
     font-size: 28px;
     line-height: 1.3;
     letter-spacing: 0.5px;
+  }
+}
+
+@media (max-width: 480px) {
+  .contact-page {
+    margin-top: -88px;
+  }
+
+  .contact-hero {
+    padding: 104px 16px 0;
+  }
+
+  .contact-hero__copy {
+    gap: 12px;
+  }
+
+  .contact-hero__title {
+    font-size: 28px;
+  }
+
+  .contact-hero__intro {
+    font-size: 13px;
+    line-height: 20px;
+  }
+
+  .contact-card {
+    margin-top: 28px;
+    gap: 16px;
+  }
+
+  .contact-card__info-body,
+  .contact-card__form {
+    padding: 20px 16px;
+  }
+
+  .contact-card__form {
+    gap: 12px;
+  }
+
+  .contact-card__field {
+    gap: 5px;
+    font-size: 13px;
+  }
+
+  .contact-card__field input,
+  .contact-card__field textarea {
+    padding: 11px 12px;
+    font-size: 13px;
+  }
+
+  .contact-faq {
+    padding-top: 48px;
   }
 }
 </style>

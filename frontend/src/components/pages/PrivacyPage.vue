@@ -1,7 +1,6 @@
 <script setup>
 import { ref } from "vue";
 import PageHero from "./PageHero.vue";
-import RelatedLinks from "@/components/RelatedLinks.vue";
 
 const props = defineProps({
   page: { type: Object, required: true },
@@ -44,8 +43,6 @@ const active = ref(props.page.sections[0]?.id || "introduction");
         </article>
       </div>
     </section>
-
-    <RelatedLinks v-if="relatedLinks.length" :links="relatedLinks" />
   </main>
 </template>
 

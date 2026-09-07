@@ -37,7 +37,6 @@ NAV = {
         {"label": "Automatic Reconciliation", "href": "/services/reconciliation"},
     ],
     "products": [
-        {"label": "All Products", "href": "/products"},
         {"label": "Payment Orchestration", "href": "/products/orchestration"},
         {"label": "White Label Platform", "href": "/products/white-label"},
         {"label": "Payout Portal", "href": "/products/payout"},
@@ -70,7 +69,7 @@ HOME_SEO = {
 HERO = {
     "headline": "The Payment Infrastructure Built for Scale.",
     "subheadline": (
-        "UrbanRupee unifies payments, routing, payouts, and reconciliation to simplify operations "
+        "Urbanrupee unifies payments, routing, payouts, and reconciliation to simplify operations "
         "and help businesses scale confidently."
     ),
     "cta_primary": "Talk to Expert",
@@ -125,6 +124,12 @@ MERCHANT_PARTNERS = [
     "AAI Wallet",
     "BB Pay",
     "Indyapay",
+    "9Pay",
+    "Zipmart",
+    "Finyatra",
+    "Kuxdistro",
+    "RevoPay",
+    "Spark Mudra",
 ]
 
 FEATURES = {
@@ -156,10 +161,10 @@ FEATURES = {
 }
 
 STATS = [
-    {"value": "10M+", "label": "Transactions Processed"},
-    {"value": "99.9%+", "label": "Payment Success Rate"},
-    {"value": "₹1B+", "label": "Transaction Value Processed"},
-    {"value": "<100ms", "label": "Average Processing Time"},
+    {"value": "1CR+", "label": "Transactions Processed"},
+    {"value": "95%", "label": "Payment Success Rate"},
+    {"value": "₹500CR+", "label": "Transaction Value Processed"},
+    {"value": "<90ms", "label": "Average Processing Time"},
 ]
 
 WHY_CHOOSE = {
@@ -328,10 +333,22 @@ FOOTER = {
         {"label": "About Us", "href": "/about"},
         {"label": "Contact Us", "href": "/contact"},
         {"label": "Privacy Policy", "href": "/privacy-policy"},
+        {"label": "Terms & Conditions", "href": "/terms-and-conditions"},
     ],
-    "services": NAV["services"],
-    "products": NAV["products"],
-    "resources": NAV["resources"],
+    "services": [
+        {"label": "Payment Services", "href": "/services/payment"},
+        {"label": "AML Detector", "href": "/services/aml"},
+        {"label": "Automatic Reconciliation", "href": "/services/reconciliation"},
+    ],
+    "products": [
+        {"label": "Payment Orchestration", "href": "/products/orchestration"},
+        {"label": "White Label Platform", "href": "/products/white-label"},
+        {"label": "Payout Portal", "href": "/products/payout"},
+        {"label": "Close Route Wallet", "href": "/products/wallet"},
+        {"label": "Hyper Checkout", "href": "/products/hyper-checkout"},
+        {"label": "Custom Checkout", "href": "/products/custom-checkout"},
+        {"label": "UPI Switch", "href": "/products/upi-switch"},
+    ],
 }
 
 CHECKOUT_DEMO = {
@@ -421,7 +438,6 @@ VALUE_PROP = {
 
 ECOSYSTEM = {
     "eyebrow": "Why us",
-    "title": "The Payment Ecosystem Built Around You",
     "body": (
         "Accept, route, move, reconcile, and manage every payment flow through one unified "
         "infrastructure."
@@ -469,7 +485,7 @@ ECOSYSTEM = {
 PERFORM = {
     "title": "Payments That Perform. Operations That Scale.",
     "body": (
-        "UrbanRupee helps you turn a fragmented payment stack into a simpler, more reliable "
+        "Urbanrupee helps you turn a fragmented payment stack into a simpler, more reliable "
         "infrastructure built for growth."
     ),
     "cta": "Talk to Expert",
@@ -480,19 +496,19 @@ PERFORM = {
                 "Choose how transactions are routed and optimize performance across your "
                 "payment ecosystem."
             ),
-            "graphic": "/images/figma-home/perform/graphic-control@2x.png",
+            "graphic": "/images/figma-home/perform/graphic-control.svg",
         },
         {
             "title": "Higher Payment Success",
             "body": (
                 "Recover more transactions with smarter routing, retries, and automatic failover."
             ),
-            "graphic": "/images/figma-home/Frame%202147225707.svg",
+            "graphic": "/images/figma-home/perform/graphic-success.svg",
         },
         {
             "title": "Faster & Cleaner Reconciliation",
             "body": "Get a unified view of transactions, settlements, refunds, and payouts.",
-            "graphic": "/images/figma-home/perform/graphic-reconcile@2x.png",
+            "graphic": "/images/figma-home/perform/graphic-reconcile.svg",
         },
     ],
 }
@@ -506,12 +522,13 @@ PRODUCTS = {
     "cta": "Talk to Expert",
     "items": [
         {
-            "title": "White Label Solutions",
+            "eyebrow": "White Label",
+            "title": "Your brand. Your payments.",
             "body": (
                 "Offer a complete payment experience under your own brand—without building the "
                 "infrastructure from scratch."
             ),
-            "image": "/images/figma-home/Frame%202147225785.svg",
+            "image": "/images/figma-home/Frame%202147225785.png",
             "points": [
                 {
                     "title": "01 — Full Brand Control",
@@ -530,11 +547,11 @@ PRODUCTS = {
             ],
         },
         {
-            "title": "Custom Checkout",
+            "eyebrow": "Checkout",
+            "title": "Checkout built for conversion",
             "body": (
-                "Create a seamless, fully branded checkout experience that gives customers more "
-                "ways to pay—while helping you convert more payment attempts into successful "
-                "transactions."
+                "A fully branded checkout with more ways to pay—so more payment attempts become "
+                "successful transactions."
             ),
             "image": "/images/figma-home/Frame%202147225787.svg",
             "points": [
@@ -562,12 +579,13 @@ PRODUCTS = {
             ],
         },
         {
-            "title": "Payment Orchestration",
+            "eyebrow": "Orchestration",
+            "title": "Route every payment smarter",
             "body": (
-                "Route every transaction through the best available payment path with intelligent "
+                "Send each transaction through the best available path with intelligent "
                 "orchestration, automatic failover, and real-time optimization."
             ),
-            "image": "/images/figma-home/Group%201171275326.svg",
+            "image": "/images/figma-home/Frame%202147225952-bubbles.png?v=4",
             "points": [
                 {
                     "title": "01 — Multi-PSP Connectivity",
@@ -594,40 +612,79 @@ PRODUCTS = {
 }
 
 HOME_CLOSING = {
+    "india_growth": {
+        "title": "Growing Across India",
+        "body": (
+            "Powering businesses across India with reliable payment solutions designed to "
+            "support growth and success."
+        ),
+        "side_title": "Trusted Across India",
+        "side_body": (
+            "From growing startups to established businesses, we support companies across India "
+            "with reliable and seamless payment solutions. Our growing client network reflects "
+            "the trust businesses place in us to simplify payments, improve operations, and "
+            "support their growth."
+        ),
+        "points": [
+            {
+                "title": "01 — Growing Client Network",
+                "body": "Supporting businesses across multiple regions in India.",
+            },
+            {
+                "title": "02 — Reliable Payment Solutions",
+                "body": "Built to deliver secure and seamless payment experiences.",
+            },
+            {
+                "title": "03 — Growing Together",
+                "body": "Helping businesses simplify payments and scale with confidence.",
+            },
+        ],
+        "merchant_map": MERCHANT_MAP,
+    },
     "testimonials_title": "Trusted by Businesses. Proven in Practice.",
     "testimonials": [
         {
             "quote": (
-                "Zeepay is my go-to app for all payments. Whether I'm paying bills or "
-                "transferring money to friends, it's super convenient and secure! The app has "
-                "taken the hassle out of managing my finances, and I love the easy interface "
-                "that keeps everything organized."
+                "Groots Pay supports stores and retailers who can offer Assisted Digital "
+                "Financial Services, including Aadhaar ATM, SMS payment, khata service, "
+                "utility payment, prepaid cards, insurance, and money transfer. Through "
+                "AWESOMEPAY, Urbanrupee infrastructure helps deliver dependable processing "
+                "and a polished brand presence at the point of sale."
             ),
-            "name": "Sneha P.",
-            "role": "Regular User",
-            "avatar": "/images/figma-about/testimonial-avatar-default.svg",
+            "company": "Groots Pay",
+            "logo": "/logos/merchants/groots.png",
         },
         {
             "quote": (
-                "Zeepay makes online payments a breeze! It's fast, reliable, and so easy to "
-                "use. I handle all my transactions with just a few taps, whether I'm paying for "
-                "groceries, services, or sending money to friends. Zeepay truly simplifies my "
-                "day-to-day payments."
+                "Finlix Capital is a performance-based proprietary trading evaluation platform "
+                "for traders in India, offering simulated challenges, clear rules, and a path "
+                "to internal capital for those who demonstrate consistency and discipline. "
+                "Simulated trading, education, and evaluation drive the experience, not a "
+                "broker - we do not execute trades or hold public investment funds."
             ),
-            "name": "Priya K.",
-            "role": "Small Business Owner",
-            "avatar": "/images/figma-about/testimonial-avatar-1.png",
+            "company": "Finlix Capital",
+            "logo": "",
         },
         {
             "quote": (
-                "With Zeepay, sending and receiving money has never been simpler. The app is "
-                "intuitive, and transactions are instant, which means no more waiting! Whether "
-                "I'm transferring funds to family or paying bills, Zeepay has made it quick and "
-                "convenient every time."
+                "Green Web Software Development Private Limited builds digital payment and web "
+                "platforms for businesses across India. With Urbanrupee infrastructure, they "
+                "deliver dependable collections, payouts, and branded checkout experiences, "
+                "helping merchants launch online faster and scale transaction volume with "
+                "confidence."
             ),
-            "name": "Vikram S",
-            "role": "Freelancer",
-            "avatar": "/images/figma-about/testimonial-avatar-2.png",
+            "company": "Green Web Software Development Private Limited",
+            "logo": "/logos/merchants/green-web.png",
+        },
+        {
+            "quote": (
+                "BingoPay empowers retailers and agents with assisted digital financial "
+                "services, from UPI collections and bill payments to wallet and voucher flows. "
+                "Powered by Urbanrupee rails, BingoPay offers a secure, compliant stack that "
+                "keeps last-mile payment experiences fast and dependable."
+            ),
+            "company": "BingoPay",
+            "logo": "/logos/merchants/bingopay.png",
         },
     ],
     "audiences_title": "Built for Businesses That Move Money",
@@ -654,14 +711,14 @@ HOME_CLOSING = {
         },
         {
             "number": "4",
-            "title": "Enterprises & Large Businesses",
+            "title": "Enterprises & Large Corporates",
             "body": (
                 "Unify multiple payment providers, optimize transaction performance, and "
                 "simplify operations."
             ),
         },
     ],
-    "faq_title": "Got any Questions? We have got you covered!!",
+    "faq_title": "Got Any Questions? We Have Got You Covered!!",
     "faq_intro": (
         "Multiple providers, fragmented systems, failed transactions, and manual operations "
         "make it harder to scale—and harder to know where your money is going."
@@ -669,10 +726,11 @@ HOME_CLOSING = {
     "faq_items": [
         {
             "number": "01",
-            "question": "What is Urbanrupee Hyper Checkout?",
+            "question": "What does Urbanrupee do?",
             "answer": (
-                "Hyper Checkout delivers faster UPI, card, net banking, wallet, and EMI payments "
-                "with smart routing and one-click flows for higher conversion rates."
+                "Urbanrupee brings payments, routing, payouts, reconciliation, and analytics "
+                "into one unified infrastructure so businesses can scale with better visibility "
+                "and control."
             ),
         },
         {
@@ -685,26 +743,27 @@ HOME_CLOSING = {
         },
         {
             "number": "03",
-            "question": "How do I create my Urbanrupee account?",
+            "question": "What is Urbanrupee Hyper Checkout?",
             "answer": (
-                "Download our mobile app or visit our website. Click 'Sign Up' or 'Register', "
-                "provide your mobile number, verify with OTP, and set a secure password."
+                "Hyper Checkout delivers faster UPI, card, net banking, wallet, and EMI payments "
+                "with smart routing and one-click flows for higher conversion rates."
             ),
         },
         {
             "number": "04",
-            "question": "How can I add money to my Urbanrupee wallet?",
+            "question": "Which payment methods does Urbanrupee support?",
             "answer": (
-                "Use UPI, Net Banking, Debit Cards, or Credit Cards. Navigate to 'Wallet', "
-                "select 'Add Money', enter the amount, and follow the secure steps."
+                "Urbanrupee supports UPI, cards, net banking, wallets, EMI, and other digital "
+                "payment flows so merchants can offer the right mix for their customers."
             ),
         },
         {
             "number": "05",
-            "question": "How can I view my transaction history?",
+            "question": "How does Urbanrupee improve payment success rates?",
             "answer": (
-                "Go to 'Transaction History' or 'My Orders' in the app or website to see all "
-                "past payments and recharges."
+                "Urbanrupee improves success rates through intelligent routing, automatic "
+                "failover, performance monitoring, and checkout experiences designed to reduce "
+                "drop-offs."
             ),
         },
     ],

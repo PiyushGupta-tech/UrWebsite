@@ -46,13 +46,20 @@ defineProps({
 
 <style scoped>
 .page-hero {
-  background: var(--bg-surface);
-  border-bottom: 1px solid var(--border);
+  position: relative;
+  background: transparent;
+  font-family: "Manrope", "DM Sans", system-ui, sans-serif;
+  overflow: hidden;
 }
 
 .page-hero--split {
   position: relative;
-  overflow: visible;
+}
+
+.page-hero__inner,
+.page-hero__layout {
+  position: relative;
+  z-index: 1;
 }
 
 .page-hero__glow {
@@ -95,6 +102,7 @@ defineProps({
 
 .page-hero__inner {
   max-width: 720px;
+  text-align: left;
 }
 
 .page-hero__layout {
@@ -120,6 +128,8 @@ defineProps({
 .page-hero__copy {
   max-width: 520px;
   align-self: start;
+  text-align: left;
+  margin-inline: 0 auto;
 }
 
 .page-hero--graphic-left .page-hero__copy {
@@ -179,6 +189,7 @@ defineProps({
 
 .page-hero__extra {
   margin-top: 20px;
+  text-align: left;
 }
 
 .page-hero--split .page-hero__extra {
@@ -195,7 +206,7 @@ defineProps({
 }
 
 .page-hero__rule {
-  margin-top: 24px;
+  margin: 24px 0 0;
   height: 3px;
   width: 0;
   background: linear-gradient(90deg, #1a365d, #06b6d4);

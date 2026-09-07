@@ -1,6 +1,5 @@
 <script setup>
 import PageHero from "./PageHero.vue";
-import RelatedLinks from "@/components/RelatedLinks.vue";
 
 defineProps({
   page: { type: Object, required: true },
@@ -9,7 +8,7 @@ defineProps({
 </script>
 
 <template>
-  <main>
+  <main class="hub-page">
     <PageHero :title="page.title" :intro="page.intro" />
 
     <section
@@ -34,20 +33,17 @@ defineProps({
         </div>
       </div>
     </section>
-
-    <section v-if="page.cta" class="section section--tight">
-      <div class="container hub__cta">
-        <RouterLink :to="page.cta.href" class="btn btn--primary">{{ page.cta.label }}</RouterLink>
-      </div>
-    </section>
-
-    <RelatedLinks v-if="relatedLinks.length" :links="relatedLinks" />
   </main>
 </template>
 
 <style scoped>
+.hub-page {
+  font-family: "Manrope", "DM Sans", system-ui, sans-serif;
+}
+
 .hub__heading {
   margin-bottom: 28px;
+  text-align: center;
 }
 
 .hub__grid {
@@ -62,6 +58,7 @@ defineProps({
   gap: 10px;
   padding: 24px;
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  text-align: center;
 }
 
 .hub__card:hover {
@@ -88,10 +85,7 @@ defineProps({
   font-size: 14px;
   font-weight: 600;
   color: var(--accent-blue);
-}
-
-.hub__cta {
-  display: flex;
   justify-content: center;
 }
+
 </style>

@@ -1,3 +1,7 @@
+import re
+
+from django.core.validators import validate_email
+from django.core.exceptions import ValidationError
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -30,6 +34,38 @@ class ContactSubmitAPIView(APIView):
     """Accept contact form submissions and email the support inbox."""
 
     REQUIRED_FIELDS = ("name", "email", "phone", "subject", "message")
+    PHONE_RE = re.compile(r"^[6-9][0-9]{9}$")
+    NAME_RE = re.compile(r"^[A-Za-z ]+$")
+
+    def _validate_payload(self, payload):
+        errors = {}
+
+        name = payload["name"]
+        if len(name) < 2 or len(name) > 50 or not self.NAME_RE.fullmatch(name):
+            errors["name"] = "Full Name can contain only alphabets and spaces, and must be 2 to 50 characters."
+
+        email = payload["email"]
+        if len(email) > 254 or email.count("@") != 1:
+            errors["email"] = "Email Address must contain exactly one @ and be at most 254 characters."
+        else:
+            try:
+                validate_email(email)
+            except ValidationError:
+                errors["email"] = "Enter a valid email address."
+
+        phone = payload["phone"]
+        if not self.PHONE_RE.fullmatch(phone):
+            errors["phone"] = "Phone Number must be 10 digits and start with 6, 7, 8, or 9."
+
+        subject = payload["subject"]
+        if len(subject) < 3 or len(subject) > 120:
+            errors["subject"] = "Subject must be 3 to 120 characters."
+
+        message = payload["message"]
+        if len(message) < 10 or len(message) > 500:
+            errors["message"] = "Message must be 10 to 500 characters."
+
+        return errors
 
     def post(self, request):
         payload = {field: str(request.data.get(field, "")).strip() for field in self.REQUIRED_FIELDS}
@@ -37,6 +73,13 @@ class ContactSubmitAPIView(APIView):
         if missing:
             return Response(
                 {"detail": f"Missing required fields: {', '.join(missing)}."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        errors = self._validate_payload(payload)
+        if errors:
+            return Response(
+                {"detail": "Please correct the highlighted fields.", "errors": errors},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
@@ -82,6 +125,7 @@ class PageDetailAPIView(APIView):
                 "site": content.SITE,
                 "nav": content.NAV,
                 "footer": content.FOOTER,
+                "common_closing": content.HOME_CLOSING,
                 "checkout_demo": content.CHECKOUT_DEMO,
                 "dashboard_preview": content.DASHBOARD_PREVIEW,
             }

@@ -78,6 +78,7 @@ export async function submitContactForm(payload) {
   if (!res.ok) {
     const err = new Error(data.detail || `API error: ${res.status}`);
     err.status = res.status;
+    err.fieldErrors = data.errors || {};
     throw err;
   }
   return data;

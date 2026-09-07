@@ -17,7 +17,7 @@ export const ABOUT_ECO_NODES = [
     icon: "vision",
     pos: "top",
     hint: "Trusted payment infrastructure for growth and inclusion.",
-    spoke: { x2: 160, y2: 58 },
+    spoke: { x2: 160, y2: 42 },
   },
   {
     id: "mission",
@@ -41,7 +41,7 @@ export const ABOUT_ECO_NODES = [
     icon: "growth",
     pos: "bottom",
     hint: "Analytics and insights that turn volume into momentum.",
-    spoke: { x2: 160, y2: 262 },
+    spoke: { x2: 160, y2: 278 },
   },
   {
     id: "security",

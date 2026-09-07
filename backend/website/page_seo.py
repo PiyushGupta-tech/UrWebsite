@@ -13,7 +13,7 @@ PRODUCT_SLUGS = frozenset({
     "payout-portal",
     "close-route-wallet",
 })
-RESOURCE_SLUGS = frozenset({"faq", "blog", "privacy-policy"})
+RESOURCE_SLUGS = frozenset({"faq", "blog", "privacy-policy", "terms-and-conditions"})
 CONTACT_SLUGS = frozenset({"contact"})
 SERVICE_SLUGS = frozenset({
     "payment-services",
@@ -39,6 +39,7 @@ PAGE_SECTION = {
     "faq": ("Resources", "/faq"),
     "blog": ("Resources", "/blog"),
     "privacy-policy": ("Resources", "/privacy-policy"),
+    "terms-and-conditions": ("Resources", "/terms-and-conditions"),
     "about": ("Company", "/about"),
     "contact": ("Contact", "/contact"),
 }
@@ -350,6 +351,23 @@ RELATED_LINKS = {
             "description": "Common questions about Urbanrupee.",
         },
     ],
+    "terms-and-conditions": [
+        {
+            "label": "Privacy Policy",
+            "href": "/privacy-policy",
+            "description": "How Urbanrupee collects, uses, and protects your data.",
+        },
+        {
+            "label": "Contact",
+            "href": "/contact",
+            "description": "Questions about legal terms or service usage.",
+        },
+        {
+            "label": "FAQ",
+            "href": "/faq",
+            "description": "Common questions about Urbanrupee.",
+        },
+    ],
 }
 
 # slug -> { title, description, h1 }
@@ -490,6 +508,14 @@ PAGE_SEO = {
             "our website and payment services. PCI-aware practices and your rights explained."
         ),
         "h1": "Privacy Policy",
+    },
+    "terms-and-conditions": {
+        "title": "Terms and Conditions | Urbanrupee",
+        "description": (
+            "Urbanrupee terms and conditions governing access to our website, payment platform, "
+            "checkout, payouts, APIs, reconciliation, merchant tools, and related services."
+        ),
+        "h1": "Terms and Conditions",
     },
     "contact": {
         "title": "Contact Urbanrupee | Get Started",

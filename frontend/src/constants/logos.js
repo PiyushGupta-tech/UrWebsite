@@ -1,15 +1,15 @@
-/** Brand PNGs in frontend/public/logos/ */
+/** Shared Urbanrupee logo assets used across the frontend */
 export const LOGO_PATHS = {
-  /** Full wordmark — “rupee” in white (nav, footer, dark UIs) */
-  onDark: "/logos/urwhite.png",
-  /** Full wordmark — “rupee” in black (light backgrounds) */
-  onLight: "/logos/urblack.png",
-  /** Shield mark only */
-  icon: "/logos/urlogo.png",
+  /** Full wordmark for dark surfaces */
+  onDark: "/images/figma-footer-logo.png",
+  /** Full wordmark for light surfaces */
+  onLight: "/logos/urbanrupee-nav.svg",
+  /** Shield / favicon mark */
+  icon: "/logos/favicon.svg",
   /** Chat widget launcher */
   chatBot: "/logos/bot.png",
-  /** Glass-style R mark (about ecosystem hub) */
-  glass: "/logos/URglassmorph.png",
+  /** Legacy alias kept for compatibility */
+  glass: "/logos/favicon.svg",
 };
 
 /** Footer compliance marks */
@@ -32,6 +32,12 @@ export const MERCHANT_LOGOS = {
   aaiWallet: "/logos/merchants/aai-wallet.png",
   bbPay: "/logos/merchants/burberrypay.png",
   indyapay: "/logos/merchants/indyapay.png",
+  ninePay: "/logos/merchants/9pay.png",
+  zipmart: "/logos/merchants/Zipmart.png",
+  finyatra: "/logos/merchants/finyatra.png",
+  kuxdistro: "/logos/merchants/kuxdistro.png",
+  revopay: "/logos/merchants/revopay.png",
+  sparkmudra: "/logos/merchants/sparkmudra.png",
 };
 
 /** Orchestration hero merchant row (slug → logo path via MERCHANT_LOGOS or convention) */
@@ -84,6 +90,12 @@ export const MERCHANT_PARTNER_LOGOS = {
   "AAI Wallet": MERCHANT_LOGOS.aaiWallet,
   "BB Pay": MERCHANT_LOGOS.bbPay,
   Indyapay: MERCHANT_LOGOS.indyapay,
+  "9Pay": MERCHANT_LOGOS.ninePay,
+  Zipmart: MERCHANT_LOGOS.zipmart,
+  Finyatra: MERCHANT_LOGOS.finyatra,
+  Kuxdistro: MERCHANT_LOGOS.kuxdistro,
+  RevoPay: MERCHANT_LOGOS.revopay,
+  "Spark Mudra": MERCHANT_LOGOS.sparkmudra,
 };
 
 export function getPartnerLogo(name, variant = "banks") {

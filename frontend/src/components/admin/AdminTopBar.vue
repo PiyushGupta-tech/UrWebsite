@@ -19,7 +19,7 @@ const ago = computed(() => {
 <template>
   <header class="admin-topbar">
     <div class="admin-topbar__brand">
-      <BrandLogo variant="on-dark" alt="UrbanRupee" priority />
+      <BrandLogo variant="on-dark" alt="Urbanrupee" priority />
     </div>
 
     <div class="admin-topbar__status">

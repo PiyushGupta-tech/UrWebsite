@@ -127,6 +127,12 @@ const routes = [
         meta: { slug: "privacy-policy" },
       },
       {
+        path: "terms-and-conditions",
+        name: "terms-and-conditions",
+        component: () => import("@/views/PageView.vue"),
+        meta: { slug: "terms-and-conditions" },
+      },
+      {
         path: "contact",
         name: "contact",
         component: () => import("@/views/PageView.vue"),

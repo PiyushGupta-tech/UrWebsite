@@ -5,12 +5,18 @@ function clamp(value, min, max) {
 }
 
 const STICKY_TOP = 120;
-/** Graphic transition only in the last fraction of each copy step scroll. */
-const TRANSITION_FRACTION = 0.2;
+/** Graphic transition in the last fraction of each (now longer) copy step. */
+const TRANSITION_FRACTION = 0.28;
+
+function easeInOutCubic(t) {
+  return t < 0.5
+    ? 4 * t * t * t
+    : 1 - ((-2 * t + 2) ** 3) / 2;
+}
 
 /**
- * Juspay-style products pin: text scrolls per step; graphic holds until the
- * last lines of the current step, then the next graphic slides up.
+ * Juspay-style products pin: left copy steps scroll naturally; right media
+ * stays sticky and slides to the next graphic near the end of each step.
  */
 export function useProductsScrollPin(rootRef, itemCountRef) {
   const progress = ref(0);
@@ -32,20 +38,12 @@ export function useProductsScrollPin(rootRef, itemCountRef) {
 
     const rect = root.getBoundingClientRect();
     const viewport = window.innerHeight;
-    const scrollRange = root.offsetHeight - (viewport - STICKY_TOP);
-
-    if (scrollRange <= 0) {
-      progress.value = 0;
-      activeIndex.value = 0;
-      stepProgress.value = 0;
-      isPinned.value = false;
-      return;
-    }
+    const scrollRange = Math.max(root.offsetHeight - (viewport - STICKY_TOP), 1);
 
     const scrolled = clamp(STICKY_TOP - rect.top, 0, scrollRange);
     const scaled = scrolled / stepHeight;
     const currentStep = Math.min(Math.floor(scaled), count - 1);
-    const withinStep = scaled - currentStep;
+    const withinStep = clamp(scaled - currentStep, 0, 1);
 
     progress.value = scrolled / scrollRange;
     stepProgress.value = withinStep;
@@ -74,7 +72,8 @@ export function useProductsScrollPin(rootRef, itemCountRef) {
   function transitionT(withinStep) {
     const start = 1 - TRANSITION_FRACTION;
     if (withinStep <= start) return 0;
-    return clamp((withinStep - start) / TRANSITION_FRACTION, 0, 1);
+    const raw = clamp((withinStep - start) / TRANSITION_FRACTION, 0, 1);
+    return easeInOutCubic(raw);
   }
 
   function slideOffset(index, count = 3) {
@@ -100,39 +99,14 @@ export function useProductsScrollPin(rootRef, itemCountRef) {
   }
 
   function slideStyle(index, count = 3) {
-    return {
-      transform: `translate3d(0, ${slideOffset(index, count)}%, 0)`,
-    };
-  }
-
-  function copyStyle(index, count = 3) {
-    if (reducedMotion.value) {
-      return {
-        opacity: index === activeIndex.value ? 1 : 0.35,
-        transform: "none",
-      };
-    }
-
-    const currentStep = activeIndex.value;
-    const t = transitionT(stepProgress.value);
-
-    if (index === currentStep) {
-      return {
-        opacity: 1,
-        transform: "none",
-      };
-    }
-
-    if (index === currentStep + 1 && t > 0) {
-      return {
-        opacity: 0.35 + 0.65 * t,
-        transform: `translate3d(0, ${(1 - t) * 24}px, 0)`,
-      };
-    }
+    const offset = slideOffset(index, count);
+    const distance = Math.min(Math.abs(offset), 100);
+    const visibility = 1 - distance / 100;
 
     return {
-      opacity: index < currentStep ? 0.18 : 0.35,
-      transform: "none",
+      transform: `translate3d(0, ${offset}%, 0) scale(${0.985 + visibility * 0.015})`,
+      opacity: 0.22 + visibility * 0.78,
+      zIndex: index + 1,
     };
   }
 
@@ -143,7 +117,6 @@ export function useProductsScrollPin(rootRef, itemCountRef) {
     isPinned,
     reducedMotion,
     slideStyle,
-    copyStyle,
     measure,
   };
 }

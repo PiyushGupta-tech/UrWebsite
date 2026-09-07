@@ -1,269 +1,90 @@
 <script setup>
-import { computed, onMounted, onUnmounted, ref } from "vue";
+import { computed } from "vue";
+import IndiaMerchantMap from "@/components/IndiaMerchantMap.vue";
+import MarketingAudiencesGrid from "@/components/marketing/MarketingAudiencesGrid.vue";
+import MarketingBannerCta from "@/components/marketing/MarketingBannerCta.vue";
+import MarketingFaqAccordion from "@/components/marketing/MarketingFaqAccordion.vue";
+import MarketingTestimonialsCarousel from "@/components/marketing/MarketingTestimonialsCarousel.vue";
 
 const props = defineProps({
   section: { type: Object, required: true },
+  showIndiaGrowth: { type: Boolean, default: true },
 });
 
-const openFaq = ref(0);
-const testimonials = computed(() => props.section.testimonials || []);
-
-function middleIndex(realIndex, total = testimonials.value.length) {
-  return total + realIndex;
-}
-
-function initialTestimonialIndex() {
-  const total = (props.section.testimonials || []).length;
-  if (total < 2) return 0;
-  return middleIndex(Math.min(1, total - 1), total);
-}
-
-const activeTestimonial = ref(initialTestimonialIndex());
-const skipTestimonialTransition = ref(false);
-let testimonialTimer = null;
-
-const loopedTestimonials = computed(() => {
-  const items = testimonials.value;
-  if (items.length < 2) return items;
-  return [...items, ...items, ...items];
-});
-
-const realTestimonialIndex = computed(() => {
-  const total = testimonials.value.length;
-  if (total < 1) return 0;
-  return ((activeTestimonial.value % total) + total) % total;
-});
-
-const testimonialTrackStyle = computed(() => ({
-  "--active": String(activeTestimonial.value),
-}));
-
-function toggleFaq(index) {
-  openFaq.value = openFaq.value === index ? -1 : index;
-}
-
-function snapTo(index) {
-  skipTestimonialTransition.value = true;
-  activeTestimonial.value = index;
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      skipTestimonialTransition.value = false;
-    });
-  });
-}
-
-function normalizeTestimonialIndex() {
-  const total = testimonials.value.length;
-  if (total < 2) return;
-  const upper = total * 2;
-  if (activeTestimonial.value >= upper) {
-    snapTo(activeTestimonial.value - total);
-  } else if (activeTestimonial.value < total) {
-    snapTo(activeTestimonial.value + total);
-  }
-}
-
-function advanceTestimonial() {
-  const total = testimonials.value.length;
-  if (total < 2) return;
-  activeTestimonial.value += 1;
-}
-
-function onTestimonialTrackTransitionEnd(event) {
-  if (event.propertyName !== "transform") return;
-  normalizeTestimonialIndex();
-}
-
-function startTestimonialAutoplay() {
-  stopTestimonialAutoplay();
-  if (testimonials.value.length < 2) return;
-  testimonialTimer = window.setInterval(advanceTestimonial, 5000);
-}
-
-function stopTestimonialAutoplay() {
-  if (testimonialTimer != null) {
-    window.clearInterval(testimonialTimer);
-    testimonialTimer = null;
-  }
-}
-
-function setTestimonial(realIndex) {
-  const total = testimonials.value.length;
-  if (total < 1) return;
-
-  const current = realTestimonialIndex.value;
-  const inMiddle =
-    activeTestimonial.value >= total && activeTestimonial.value < total * 2;
-
-  if (realIndex === current && inMiddle) {
-    startTestimonialAutoplay();
-    return;
-  }
-
-  const moveForward = () => {
-    if (realIndex > current) {
-      activeTestimonial.value = middleIndex(realIndex);
-    } else {
-      activeTestimonial.value = total * 2 + realIndex;
-    }
-    startTestimonialAutoplay();
-  };
-
-  if (!inMiddle) {
-    skipTestimonialTransition.value = true;
-    activeTestimonial.value = middleIndex(current);
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        skipTestimonialTransition.value = false;
-        moveForward();
-      });
-    });
-    return;
-  }
-
-  moveForward();
-}
-
-function testimonialClass(loopIndex) {
-  if (loopIndex === activeTestimonial.value) return "home-close__tcard--active";
-  return "home-close__tcard--inactive";
-}
-
-onMounted(startTestimonialAutoplay);
-onUnmounted(stopTestimonialAutoplay);
+const indiaGrowth = computed(() => props.section.india_growth || null);
 </script>
 
 <template>
   <div class="home-close">
-    <section class="home-close__testimonials" aria-label="Customer testimonials">
-      <h2 class="home-close__ttitle">{{ section.testimonials_title }}</h2>
-
-      <div class="home-close__track-wrap">
-        <div
-          class="home-close__track"
-          :class="{ 'home-close__track--snap': skipTestimonialTransition }"
-          :style="testimonialTrackStyle"
-          @transitionend="onTestimonialTrackTransitionEnd"
-        >
-          <article
-            v-for="(item, index) in loopedTestimonials"
-            :key="`${item.name}-${index}`"
-            class="home-close__tcard"
-            :class="testimonialClass(index)"
-            @click="setTestimonial(index % testimonials.length)"
-          >
-            <blockquote class="home-close__quote">{{ item.quote }}</blockquote>
-            <footer class="home-close__author">
-              <img
-                class="home-close__avatar"
-                :src="item.avatar"
-                alt=""
-                width="44"
-                height="44"
-                loading="lazy"
-                decoding="async"
-              />
-              <p class="home-close__meta">
-                <strong>{{ item.name }}</strong>, <span>{{ item.role }}</span>
-              </p>
-            </footer>
-          </article>
-        </div>
+    <section
+      v-if="showIndiaGrowth && indiaGrowth"
+      class="home-close__india"
+      aria-label="Growing across India"
+    >
+      <div class="home-close__india-intro">
+        <h2>{{ indiaGrowth.title }}</h2>
+        <p>{{ indiaGrowth.body }}</p>
       </div>
 
-      <div class="home-close__dots" role="tablist" aria-label="Testimonial slides">
-        <button
-          v-for="(_, index) in testimonials"
-          :key="index"
-          type="button"
-          class="home-close__dot"
-          :class="{ 'home-close__dot--active': realTestimonialIndex === index }"
-          :aria-selected="realTestimonialIndex === index"
-          :aria-label="`Show testimonial ${index + 1}`"
-          @click="setTestimonial(index)"
+      <div class="home-close__india-grid">
+        <IndiaMerchantMap
+          v-if="indiaGrowth.merchant_map"
+          class="home-close__india-map"
+          :map="indiaGrowth.merchant_map"
+          hint="Hover a point to see partners"
         />
-      </div>
-    </section>
 
-    <section class="home-close__audiences" aria-label="Industries we serve">
-      <div class="home-close__audiences-panel">
-        <h2>{{ section.audiences_title }}</h2>
-        <div class="home-close__audiences-grid">
-          <article
-            v-for="item in section.audiences || []"
-            :key="item.number"
-            class="home-close__audience"
-          >
-            <span aria-hidden="true">{{ item.number }}</span>
-            <div>
-              <h3>{{ item.title }}</h3>
-              <p>{{ item.body }}</p>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="home-close__faq" aria-label="Frequently asked questions">
-      <div class="home-close__faq-inner">
-        <div class="home-close__faq-intro">
-          <h2>{{ section.faq_title }}</h2>
-          <p>{{ section.faq_intro }}</p>
-        </div>
-
-        <div class="home-close__faq-list">
-          <div
-            v-for="(item, index) in section.faq_items || []"
-            :key="item.number"
-            class="home-close__faq-item"
-          >
-            <button
-              type="button"
-              class="home-close__faq-trigger"
-              :aria-expanded="openFaq === index"
-              @click="toggleFaq(index)"
-            >
-              <span class="home-close__faq-num">{{ item.number }}</span>
-              <span class="home-close__faq-q">{{ item.question }}</span>
-              <span class="home-close__faq-icon" aria-hidden="true">
-                {{ openFaq === index ? "−" : "+" }}
-              </span>
-            </button>
-            <div v-show="openFaq === index" class="home-close__faq-answer">
-              <p>{{ item.answer }}</p>
-            </div>
+        <div class="home-close__india-copy">
+          <div class="home-close__india-side">
+            <h3>{{ indiaGrowth.side_title }}</h3>
+            <p>{{ indiaGrowth.side_body }}</p>
           </div>
+          <ul class="home-close__india-points">
+            <li
+              v-for="item in indiaGrowth.points || []"
+              :key="item.title"
+            >
+              <strong>{{ item.title }}</strong>
+              <p>{{ item.body }}</p>
+            </li>
+          </ul>
         </div>
       </div>
     </section>
 
-    <section class="home-close__cta" aria-label="Call to action">
-      <div class="home-close__cta-panel">
-        <img
-          class="home-close__cta-bg"
-          src="/images/figma-contact/cta-banner-bg.png"
-          alt=""
-          width="1240"
-          height="331"
-          loading="lazy"
-          decoding="async"
-        />
-        <div class="home-close__cta-content">
-          <h2>{{ section.cta_title }}</h2>
-          <p>{{ section.cta_body }}</p>
-          <RouterLink to="/contact" class="home-close__cta-btn">
-            {{ section.cta_label }}
-            <img
-              src="/images/figma-contact/nav-arrow-teal.svg"
-              alt=""
-              width="18"
-              height="18"
-              decoding="async"
-            />
-          </RouterLink>
-        </div>
-      </div>
-    </section>
+    <MarketingTestimonialsCarousel
+      :title="section.testimonials_title"
+      :items="section.testimonials || []"
+      variant="home"
+      aria-label="Customer testimonials"
+    />
+
+    <MarketingAudiencesGrid
+      :title="section.audiences_title"
+      :items="section.audiences || []"
+      aria-label="Industries we serve"
+      padding-bottom="100px"
+    />
+
+    <MarketingFaqAccordion
+      :title="section.faq_title"
+      :intro="section.faq_intro"
+      :items="section.faq_items || []"
+      variant="split"
+      aria-label="Frequently asked questions"
+      padding-bottom="100px"
+    />
+
+    <MarketingBannerCta
+      :title="section.cta_title"
+      :body="section.cta_body"
+      :label="section.cta_label"
+      to="/contact"
+      variant="home"
+      aria-label="Call to action"
+      icon-src="/images/figma-contact/nav-arrow-teal.svg"
+      padding-bottom="94px"
+    />
   </div>
 </template>
 
@@ -274,6 +95,116 @@ onUnmounted(stopTestimonialAutoplay);
   --teal: #097495;
   font-family: "Manrope", "DM Sans", system-ui, sans-serif;
   color: var(--ink);
+}
+
+.home-close__india {
+  max-width: 1189px;
+  margin: 0 auto;
+  padding: 0 24px 120px;
+}
+
+.home-close__india-intro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  max-width: 698px;
+  margin: 0 auto 56px;
+  text-align: center;
+}
+
+.home-close__india-intro h2 {
+  margin: 0;
+  font-size: 42px;
+  font-weight: 700;
+  line-height: 56px;
+  color: var(--ink);
+}
+
+.home-close__india-intro p {
+  margin: 0;
+  max-width: 580px;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: 0.64px;
+  color: var(--muted);
+}
+
+.home-close__india-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 573px) minmax(0, 518px);
+  gap: 98px;
+  align-items: center;
+  justify-content: center;
+}
+
+.home-close__india-map {
+  width: 100%;
+  max-width: 573px;
+  margin: 0 auto;
+}
+
+.home-close__india-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  max-width: 518px;
+}
+
+.home-close__india-side {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.home-close__india-side h3 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 32px;
+  letter-spacing: -0.72px;
+  color: var(--ink);
+}
+
+.home-close__india-side p {
+  margin: 0;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.64px;
+  color: var(--muted);
+}
+
+.home-close__india-points {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  max-width: 481px;
+}
+
+.home-close__india-points li {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.home-close__india-points strong {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 24px;
+  color: #414651;
+}
+
+.home-close__india-points p {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: -0.16px;
+  color: var(--muted);
 }
 
 .home-close__testimonials {
@@ -658,6 +589,16 @@ onUnmounted(stopTestimonialAutoplay);
 }
 
 @media (max-width: 1200px) {
+  .home-close__india-grid {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+
+  .home-close__india-copy {
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
   .home-close__audiences-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -678,6 +619,15 @@ onUnmounted(stopTestimonialAutoplay);
 }
 
 @media (max-width: 768px) {
+  .home-close__india {
+    padding-bottom: 80px;
+  }
+
+  .home-close__india-intro h2 {
+    font-size: 32px;
+    line-height: 1.2;
+  }
+
   .home-close__ttitle,
   .home-close__audiences-panel h2,
   .home-close__faq-intro h2,

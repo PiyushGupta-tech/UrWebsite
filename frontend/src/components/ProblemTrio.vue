@@ -183,6 +183,11 @@ const rightCards = computed(() => (props.problem.items || []).slice(2, 4));
     padding: 48px 24px;
   }
 
+  .home-problem__copy,
+  .home-problem__cards {
+    flex: none;
+  }
+
   .home-problem__title {
     font-size: 28px;
     line-height: 1.25;
@@ -194,6 +199,35 @@ const rightCards = computed(() => (props.problem.items || []).slice(2, 4));
 
   .home-problem__col--offset {
     padding-top: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .home-problem__inner {
+    padding: 36px 16px 56px;
+    gap: 24px;
+  }
+
+  .home-problem__copy {
+    gap: 14px;
+  }
+
+  .home-problem__intro {
+    font-size: 14px;
+    line-height: 22px;
+  }
+
+  .home-problem__cards {
+    gap: 16px;
+  }
+
+  .home-problem__col {
+    gap: 16px;
+  }
+
+  .home-problem__card {
+    min-height: 0;
+    padding: 16px;
   }
 }
 </style>

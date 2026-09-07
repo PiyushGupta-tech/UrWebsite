@@ -349,7 +349,7 @@ onUnmounted(() => {
         <div class="viz__node viz__node--hub">
           <div class="viz__bubble viz__bubble--hub">
             <span class="viz__hub-ring" aria-hidden="true" />
-            <img :src="LOGO_PATHS.icon" alt="" class="viz__hub-logo" />
+            <img src="/images/figma-home/hero-diagram/logo.svg" alt="" class="viz__hub-logo" />
             <span
               v-if="mode.id === 'smart'"
               class="viz__hub-badge"
@@ -472,7 +472,7 @@ onUnmounted(() => {
             </circle>
           </svg>
           <div class="viz__routing-hub">
-            <img :src="LOGO_PATHS.icon" alt="" width="20" height="20" />
+            <img src="/logos/favicon.svg" alt="" width="20" height="20" />
           </div>
         </div>
 
@@ -704,8 +704,8 @@ onUnmounted(() => {
 }
 
 .viz__hub-logo {
-  width: 31px;
-  height: 31px;
+  width: 34px;
+  height: 34px;
   object-fit: contain;
   position: relative;
   z-index: 1;
@@ -1086,8 +1086,8 @@ onUnmounted(() => {
   }
 
   .viz__hub-logo {
-    width: 27px;
-    height: 27px;
+    width: 30px;
+    height: 30px;
   }
 
   .viz__bubble--psp {

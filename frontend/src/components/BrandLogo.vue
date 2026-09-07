@@ -4,9 +4,9 @@ import { LOGO_PATHS } from "@/constants/logos.js";
 
 const props = defineProps({
   /**
-   * on-dark  — urwhite.png (white “rupee”, dark backgrounds)
-   * on-light — urblack.png (black “rupee”, light backgrounds)
-   * icon     — urlogo.png (shield only)
+   * on-dark  — footer/logo artwork for dark backgrounds
+   * on-light — nav/logo artwork for light backgrounds
+   * icon     — favicon / shield only
    * full     — alias for on-dark
    */
   variant: {
@@ -82,7 +82,7 @@ watch(src, () => {
 .brand-logo--on-dark,
 .brand-logo--on-light {
   height: 28px;
-  max-width: 168px;
+  max-width: 186px;
 }
 
 .brand-logo--icon {

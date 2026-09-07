@@ -6,17 +6,37 @@ from website import content
 PAGES = {
     "about": {
         "type": "about",
-        "title": "Powering the Future of Digital Payments",
+        "title": "About Urbanrupee",
+        "hero_paragraphs": [
+            (
+                "At Urbanrupee, we are transforming how businesses manage and experience digital "
+                "payments. We offer a unified payment ecosystem that helps organizations accept, "
+                "process, route, and manage transactions through a secure, scalable, and "
+                "intelligent platform."
+            ),
+            (
+                "Our solutions are built to simplify payment operations, improve transaction "
+                "success rates, and create seamless customer experiences. From payment "
+                "orchestration and UPI infrastructure to branded checkout solutions and payouts, "
+                "Urbanrupee empowers businesses to grow with confidence in an increasingly "
+                "digital economy."
+            ),
+            (
+                "We believe payments are more than transactions. They are the foundation of "
+                "trust, growth, and lasting customer relationships. By combining technology, "
+                "innovation, and reliability, Urbanrupee helps businesses unlock new "
+                "opportunities and scale sustainably."
+            ),
+        ],
         "intro": (
-            "Urbanrupee brings intelligent payment technology, secure infrastructure, and "
-            "seamless experiences together to help businesses move money smarter, faster, and at scale."
+            "At Urbanrupee, we are transforming how businesses manage and experience digital payments."
         ),
         "merchant_partners": content.MERCHANT_PARTNERS,
         "stats": [
             {"value": "10M+", "label": "Transactions Processed"},
-            {"value": "99.9%+", "label": "Payment Success Rate"},
-            {"value": "₹1B+", "label": "Transaction Value Processed"},
-            {"value": "<100ms", "label": "Average Processing Time"},
+            {"value": "91%", "label": "Payment Success Rate"},
+            {"value": "₹70CR+", "label": "Transaction Value Processed"},
+            {"value": "<90ms", "label": "Average Processing Time"},
         ],
         "purpose_title": "Powering Payments with Purpose",
         "purpose_intro": (
@@ -43,6 +63,20 @@ PAGES = {
                 "title": "Infrastructure for Growth",
                 "body": "Scalable fintech solutions built to adapt as businesses grow.",
                 "icon": "growth",
+            },
+        ],
+        "leaders_title": "Meet the Leaders",
+        "leaders_intro": "The visionaries driving innovation and shaping our journey forward.",
+        "leaders": [
+            {
+                "name": "Nakul Kushwaha",
+                "role": "Founder",
+                "image": "/images/2.png",
+            },
+            {
+                "name": "Jay Chaudhary",
+                "role": "CEO",
+                "image": "/images/1.png",
             },
         ],
         "principles_title": "The Principles Behind Every Payment We Power",
@@ -97,36 +131,46 @@ PAGES = {
         "testimonials": [
             {
                 "quote": (
-                    "Zeepay is my go-to app for all payments. Whether I'm paying bills or "
-                    "transferring money to friends, it's super convenient and secure! The app has "
-                    "taken the hassle out of managing my finances, and I love the easy interface "
-                    "that keeps everything organized."
+                    "Groots Pay supports stores and retailers who can offer Assisted Digital "
+                    "Financial Services, including Aadhaar ATM, SMS payment, khata service, "
+                    "utility payment, prepaid cards, insurance, and money transfer. Through "
+                    "AWESOMEPAY, Urbanrupee infrastructure helps deliver dependable processing "
+                    "and a polished brand presence at the point of sale."
                 ),
-                "name": "Sneha P.",
-                "role": "Regular User",
-                "avatar": "/images/figma-about/testimonial-avatar-default.svg",
+                "company": "Groots Pay",
+                "logo": "/logos/merchants/groots.png",
             },
             {
                 "quote": (
-                    "Zeepay makes online payments a breeze! It's fast, reliable, and so easy to "
-                    "use. I handle all my transactions with just a few taps, whether I'm paying for "
-                    "groceries, services, or sending money to friends. Zeepay truly simplifies my "
-                    "day-to-day payments."
+                    "Finlix Capital is a performance-based proprietary trading evaluation platform "
+                    "for traders in India, offering simulated challenges, clear rules, and a path "
+                    "to internal capital for those who demonstrate consistency and discipline. "
+                    "Simulated trading, education, and evaluation drive the experience, not a "
+                    "broker - we do not execute trades or hold public investment funds."
                 ),
-                "name": "Priya K.",
-                "role": "Small Business Owner",
-                "avatar": "/images/figma-about/testimonial-avatar-1.png",
+                "company": "Finlix Capital",
+                "logo": "",
             },
             {
                 "quote": (
-                    "With Zeepay, sending and receiving money has never been simpler. The app is "
-                    "intuitive, and transactions are instant, which means no more waiting! Whether "
-                    "I'm transferring funds to family or paying bills, Zeepay has made it quick and "
-                    "convenient every time."
+                    "Green Web Software Development Private Limited builds digital payment and web "
+                    "platforms for businesses across India. With Urbanrupee infrastructure, they "
+                    "deliver dependable collections, payouts, and branded checkout experiences, "
+                    "helping merchants launch online faster and scale transaction volume with "
+                    "confidence."
                 ),
-                "name": "Vikram S",
-                "role": "Freelancer",
-                "avatar": "/images/figma-about/testimonial-avatar-2.png",
+                "company": "Green Web Software Development Private Limited",
+                "logo": "/logos/merchants/green-web.png",
+            },
+            {
+                "quote": (
+                    "BingoPay empowers retailers and agents with assisted digital financial "
+                    "services, from UPI collections and bill payments to wallet and voucher flows. "
+                    "Powered by Urbanrupee rails, BingoPay offers a secure, compliant stack that "
+                    "keeps last-mile payment experiences fast and dependable."
+                ),
+                "company": "BingoPay",
+                "logo": "/logos/merchants/bingopay.png",
             },
         ],
         "audiences_title": "Built for Businesses That Move Money",
@@ -1737,6 +1781,232 @@ PAGES = {
                 ),
             },
         ],
+        "cta": {
+            "title": "Need help with privacy or data requests?",
+            "body": "Talk to the Urbanrupee team for privacy, compliance, or account-related questions.",
+            "button": "Contact Us",
+            "href": "/contact",
+        },
+    },
+    "terms-and-conditions": {
+        "type": "privacy",
+        "title": "Terms and Conditions",
+        "intro": (
+            "These Terms and Conditions govern your access to and use of Urbanrupee's website, "
+            "platform, payment infrastructure, merchant tools, checkout services, payout services, "
+            "reconciliation services, APIs, dashboards, and related offerings."
+        ),
+        "sections": [
+            {
+                "id": "acceptance",
+                "title": "Acceptance of Terms",
+                "body": (
+                    "By accessing or using Urbanrupee's services, you agree to be bound by these "
+                    "Terms and Conditions."
+                ),
+            },
+            {
+                "id": "definitions",
+                "title": "Definitions",
+                "bullets": [
+                    "Urbanrupee refers to the company, website, platform, products, and services.",
+                    "User refers to any individual or entity accessing or using the services.",
+                    (
+                        "Merchant refers to any business or organization using Urbanrupee's payment "
+                        "or operational services."
+                    ),
+                    (
+                        "Services refers to all software, products, APIs, payment solutions, "
+                        "dashboards, integrations, and related offerings provided by Urbanrupee."
+                    ),
+                ],
+            },
+            {
+                "id": "eligibility",
+                "title": "Eligibility",
+                "body": (
+                    "You may use Urbanrupee only if you are legally capable of entering into "
+                    "binding contracts and are authorized to act on behalf of the business or "
+                    "entity you represent."
+                ),
+            },
+            {
+                "id": "use-of-services",
+                "title": "Use of Services",
+                "body": "Users agree to use Urbanrupee's services only for lawful and authorized business purposes. You agree not to:",
+                "bullets": [
+                    "Use the services for fraudulent, unlawful, misleading, or abusive activities.",
+                    "Violate applicable payment, financial, data protection, or consumer laws.",
+                    "Interfere with platform security, infrastructure, or service availability.",
+                    "Attempt unauthorized access to data, systems, APIs, or accounts.",
+                    (
+                        "Use the services in any manner that could harm Urbanrupee, its partners, "
+                        "merchants, or end users."
+                    ),
+                ],
+            },
+            {
+                "id": "merchant-responsibilities",
+                "title": "Merchant Responsibilities",
+                "body": "Merchants using Urbanrupee are responsible for:",
+                "bullets": [
+                    "Providing accurate onboarding and business information.",
+                    "Maintaining the confidentiality of account credentials and API keys.",
+                    "Complying with applicable laws, regulations, and network requirements.",
+                    "Ensuring lawful use of checkout, collections, payouts, and related services.",
+                    "Maintaining appropriate customer support, refund, and dispute handling practices.",
+                    (
+                        "Ensuring any content, branding, and customer communications used through "
+                        "the platform are accurate and lawful."
+                    ),
+                ],
+            },
+            {
+                "id": "service-availability",
+                "title": "Service Availability",
+                "body": (
+                    "Urbanrupee strives to maintain reliable service availability. However, we do "
+                    "not guarantee uninterrupted or error-free access at all times. Service may be "
+                    "affected by maintenance, technical failures, third-party partner downtime, "
+                    "regulatory actions, or events beyond our reasonable control."
+                ),
+            },
+            {
+                "id": "third-party-providers",
+                "title": "Third-Party Providers",
+                "body": (
+                    "Certain services may depend on banks, payment gateways, acquiring institutions, "
+                    "UPI partners, technology vendors, or other third-party providers. Urbanrupee "
+                    "is not liable for failures, delays, or interruptions caused solely by such "
+                    "third-party systems."
+                ),
+            },
+            {
+                "id": "fees",
+                "title": "Fees and Commercial Terms",
+                "body": (
+                    "Use of certain Urbanrupee services may be subject to separate commercial "
+                    "agreements, pricing schedules, onboarding documents, or service orders. Users "
+                    "and merchants agree to pay all applicable fees, charges, taxes, and levies "
+                    "associated with the use of the services."
+                ),
+            },
+            {
+                "id": "compliance",
+                "title": "Compliance and Verification",
+                "body": (
+                    "Urbanrupee may request documents, KYC details, business verification records, "
+                    "and related compliance information as required by law, internal risk controls, "
+                    "or partner obligations. Urbanrupee may suspend or restrict services if required "
+                    "information is not provided or if suspicious or prohibited activity is identified."
+                ),
+            },
+            {
+                "id": "intellectual-property",
+                "title": "Intellectual Property",
+                "body": (
+                    "All content, software, branding, trademarks, designs, interfaces, technology, "
+                    "and materials made available by Urbanrupee are the intellectual property of "
+                    "Urbanrupee or its licensors. Users may not copy, reproduce, modify, distribute, "
+                    "reverse engineer, or exploit any part of the services without prior written permission."
+                ),
+            },
+            {
+                "id": "data-and-privacy",
+                "title": "Data and Privacy",
+                "body": (
+                    "Use of Urbanrupee is also governed by our Privacy Policy. By using the services, "
+                    "you acknowledge that Urbanrupee may collect, process, and use information in "
+                    "accordance with that policy."
+                ),
+            },
+            {
+                "id": "suspension",
+                "title": "Suspension and Termination",
+                "body": "Urbanrupee may suspend, restrict, or terminate access to services where necessary to:",
+                "bullets": [
+                    "Prevent fraud or misuse.",
+                    "Comply with legal or regulatory obligations.",
+                    "Protect platform security.",
+                    "Investigate suspicious or prohibited activity.",
+                    "Enforce these Terms and Conditions.",
+                ],
+                "closing": (
+                    "Users may stop using the services at any time, subject to any obligations in "
+                    "separate commercial agreements."
+                ),
+            },
+            {
+                "id": "disclaimers",
+                "title": "Disclaimers",
+                "body": (
+                    "Urbanrupee provides the website and services on an as-available and "
+                    "as-applicable basis. To the fullest extent permitted by law, we disclaim all "
+                    "warranties, whether express or implied, including merchantability, fitness for "
+                    "a particular purpose, and non-infringement."
+                ),
+            },
+            {
+                "id": "liability",
+                "title": "Limitation of Liability",
+                "body": (
+                    "To the maximum extent permitted by law, Urbanrupee shall not be liable for any "
+                    "indirect, incidental, special, punitive, or consequential damages, including "
+                    "loss of profits, revenue, business, goodwill, or data, arising out of or "
+                    "related to the use of the services."
+                ),
+                "closing": (
+                    "Urbanrupee's aggregate liability shall be limited to the amount paid by the "
+                    "user or merchant for the specific services giving rise to the claim, subject "
+                    "to applicable law and any separate contractual agreement."
+                ),
+            },
+            {
+                "id": "indemnity",
+                "title": "Indemnity",
+                "body": (
+                    "You agree to indemnify and hold harmless Urbanrupee, its affiliates, officers, "
+                    "employees, partners, and service providers from any claims, damages, liabilities, "
+                    "losses, or expenses arising from your misuse of the services, violation of "
+                    "these Terms, breach of law, or infringement of any third-party rights."
+                ),
+            },
+            {
+                "id": "governing-law",
+                "title": "Governing Law and Jurisdiction",
+                "body": (
+                    "These Terms and Conditions shall be governed by the laws of India. Any disputes "
+                    "arising out of or relating to these Terms shall be subject to the exclusive "
+                    "jurisdiction of the courts located in Greater Noida, Uttar Pradesh."
+                ),
+            },
+            {
+                "id": "changes",
+                "title": "Changes to These Terms",
+                "body": (
+                    "Urbanrupee may update these Terms and Conditions from time to time. Revised "
+                    "versions will be posted on this page with an updated effective date."
+                ),
+            },
+            {
+                "id": "contact-us",
+                "title": "Contact Us",
+                "body": (
+                    "For any questions regarding these Terms and Conditions, please contact us:\n\n"
+                    "Urbanrupee Tech Solution Pvt. Ltd.\n"
+                    "Email: it.support@urbanrupee.com\n"
+                    "Website: www.urbanrupee.com\n"
+                    "Address: A01 & A03, UG, Tower 3, NX–One, Techzone 4, Greater Noida, "
+                    "Uttar Pradesh, India, 201301"
+                ),
+            },
+        ],
+        "cta": {
+            "title": "Questions about using Urbanrupee services?",
+            "body": "Reach out to our team for clarifications on platform access, merchant onboarding, or service terms.",
+            "button": "Contact Us",
+            "href": "/contact",
+        },
     },
     "upi-switch": {
         "type": "marketing",
@@ -2219,7 +2489,7 @@ PAGES = {
         "phone": "+91 9305697870",
         "email": "it.support@urbanrupee.com",
         "address": (
-            "A01 & A03, NX–One, Gaur City, Greater Noida (Ghaziabad), "
+            "A01 & A03, UG, Tower 3, NX–One, Techzone 4, Greater Noida, "
             "Uttar Pradesh, India, 201301"
         ),
         "faq_title": "Got any Questions? We have got you covered!!",
@@ -2298,6 +2568,7 @@ ROUTE_SLUGS = {
     "/faq": "faq",
     "/blog": "blog",
     "/privacy-policy": "privacy-policy",
+    "/terms-and-conditions": "terms-and-conditions",
     "/contact": "contact",
 }
 

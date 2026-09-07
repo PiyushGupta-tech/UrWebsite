@@ -7,14 +7,27 @@ defineProps({
 <template>
   <section class="home-eco">
     <div class="home-eco__panel">
+      <div class="home-eco__canvas">
       <div class="home-eco__rings" aria-hidden="true">
-        <span /><span /><span /><span />
+        <span class="home-eco__ring home-eco__ring--4" />
+        <span class="home-eco__ring home-eco__ring--3" />
+        <span class="home-eco__ring home-eco__ring--2" />
+        <span class="home-eco__ring home-eco__ring--1" />
       </div>
 
       <div class="home-eco__hub">
-        <p class="home-eco__eyebrow">{{ section.eyebrow }}</p>
-        <h2 class="home-eco__title">{{ section.title }}</h2>
-        <p class="home-eco__body">{{ section.body }}</p>
+        <img
+          class="home-eco__logo"
+          src="/images/figma-home/eco-hub-logo.svg"
+          alt=""
+          width="31"
+          height="37"
+          decoding="async"
+        />
+        <div class="home-eco__hub-copy">
+          <p class="home-eco__eyebrow">{{ section.eyebrow }}</p>
+          <p class="home-eco__body">{{ section.body }}</p>
+        </div>
       </div>
 
       <ul class="home-eco__points">
@@ -31,6 +44,7 @@ defineProps({
           <p>{{ item.body }}</p>
         </li>
       </ul>
+      </div>
     </div>
   </section>
 </template>
@@ -44,49 +58,96 @@ defineProps({
 }
 
 .home-eco__panel {
+  --eco-scale: 0.688;
   position: relative;
-  min-height: 950px;
+  height: calc(820px * var(--eco-scale));
+  min-height: min(calc(820px * var(--eco-scale)), 72svh);
   border-radius: 24px;
   overflow: hidden;
   background: linear-gradient(180deg, #0292b8 0%, #134e66 100%);
-  display: grid;
-  place-items: center;
+}
+
+.home-eco__canvas {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 100%;
+  height: 820px;
+  transform: translate(-50%, -50%) scale(var(--eco-scale));
+  transform-origin: center center;
 }
 
 .home-eco__rings {
   position: absolute;
   inset: 0;
-  display: grid;
-  place-items: center;
+  z-index: 1;
   pointer-events: none;
 }
 
-.home-eco__rings span {
+.home-eco__ring {
+  --ring-size: 473px;
   position: absolute;
+  left: 50%;
+  top: 50%;
+  width: var(--ring-size);
+  height: var(--ring-size);
   border: 1px solid #80dbed;
   border-radius: 50%;
+  box-sizing: border-box;
+  opacity: 0.28;
+  transform: translate(-50%, -50%);
+  animation: eco-ring-pulse 3s ease-in-out infinite;
 }
 
-.home-eco__rings span:nth-child(1) {
-  width: 966px;
-  height: 946px;
+.home-eco__ring--1 {
+  --ring-size: 800px;
+  animation-delay: 2.25s;
 }
-.home-eco__rings span:nth-child(2) {
-  width: 794px;
-  height: 794px;
+
+.home-eco__ring--2 {
+  --ring-size: 672px;
+  animation-delay: 1.5s;
 }
-.home-eco__rings span:nth-child(3) {
-  width: 634px;
-  height: 628px;
+
+.home-eco__ring--3 {
+  --ring-size: 531px;
+  animation-delay: 0.75s;
 }
-.home-eco__rings span:nth-child(4) {
-  width: 473px;
-  height: 473px;
+
+.home-eco__ring--4 {
+  --ring-size: 400px;
+  animation-delay: 0s;
+}
+
+@keyframes eco-ring-pulse {
+  0%,
+  100% {
+    opacity: 0.22;
+  }
+
+  18%,
+  32% {
+    opacity: 0.78;
+  }
+
+  50% {
+    opacity: 0.22;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-eco__ring {
+    animation: none;
+    opacity: 0.45;
+  }
 }
 
 .home-eco__hub {
-  position: relative;
+  position: absolute;
+  left: 50%;
+  top: 50%;
   z-index: 2;
+  transform: translate(-50%, -50%);
   width: 317px;
   height: 317px;
   padding: 64px 45px;
@@ -97,30 +158,37 @@ defineProps({
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 10px;
   text-align: center;
+}
+
+.home-eco__logo {
+  display: block;
+  width: 36.679px;
+  height: 44.005px;
+  flex-shrink: 0;
+}
+
+.home-eco__hub-copy {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
 }
 
 .home-eco__eyebrow {
   margin: 0;
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 700;
   line-height: 24px;
   color: #535862;
-}
-
-.home-eco__title {
-  margin: 0;
-  font-size: 20px;
-  font-weight: 600;
-  line-height: 28px;
-  letter-spacing: -0.6px;
-  color: #000000;
 }
 
 .home-eco__body {
   margin: 0;
   font-size: 12px;
+  font-weight: 600;
   line-height: 18px;
   color: #535862;
 }
@@ -216,11 +284,29 @@ defineProps({
 
 @media (max-width: 1200px) {
   .home-eco__panel {
+    height: auto;
     min-height: auto;
     padding: 64px 32px;
     display: flex;
     flex-direction: column;
     gap: 40px;
+  }
+
+  .home-eco__canvas {
+    position: relative;
+    left: auto;
+    top: auto;
+    width: auto;
+    height: auto;
+    transform: none;
+  }
+
+  .home-eco__hub {
+    position: relative;
+    left: auto;
+    top: auto;
+    transform: none;
+    margin: 0 auto;
   }
 
   .home-eco__rings,
@@ -253,15 +339,155 @@ defineProps({
 }
 
 @media (max-width: 700px) {
+  .home-eco {
+    padding: 0 16px 80px;
+  }
+
+  .home-eco__panel {
+    height: 332px;
+    min-height: 332px;
+    padding: 0;
+    display: block;
+    border-radius: 18px;
+  }
+
+  .home-eco__canvas {
+    position: relative;
+    left: auto;
+    top: auto;
+    width: 100%;
+    height: 100%;
+    transform: none;
+  }
+
+  .home-eco__rings {
+    display: block;
+    position: absolute;
+    inset: 0;
+  }
+
+  .home-eco__ring--1 {
+    display: none;
+  }
+
+  .home-eco__ring--2 {
+    --ring-size: 308px;
+  }
+
+  .home-eco__ring--3 {
+    --ring-size: 234px;
+  }
+
+  .home-eco__ring--4 {
+    --ring-size: 182px;
+  }
+
   .home-eco__hub {
-    width: min(317px, 90vw);
-    height: auto;
-    aspect-ratio: 1;
-    padding: 40px 28px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 150px;
+    height: 150px;
+    aspect-ratio: auto;
+    padding: 18px 14px;
+    gap: 6px;
+  }
+
+  .home-eco__logo {
+    width: 22px;
+    height: 28px;
+  }
+
+  .home-eco__hub-copy {
+    gap: 6px;
+  }
+
+  .home-eco__eyebrow {
+    font-size: 10px;
+    line-height: 14px;
+  }
+
+  .home-eco__body {
+    font-size: 8px;
+    line-height: 11px;
   }
 
   .home-eco__points {
-    grid-template-columns: 1fr;
+    position: absolute;
+    inset: 0;
+    display: block;
+  }
+
+  .home-eco__point {
+    position: absolute !important;
+    width: 96px !important;
+  }
+
+  .home-eco__point strong {
+    font-size: 10px;
+    line-height: 14px;
+  }
+
+  .home-eco__point p {
+    font-size: 7px;
+    line-height: 11px;
+  }
+
+  .home-eco__point-head {
+    gap: 6px;
+    margin-bottom: 8px;
+  }
+
+  .home-eco__num {
+    width: 16px;
+    height: 16px;
+    font-size: 9px;
+    line-height: 10px;
+  }
+
+  .home-eco__point--left.home-eco__point:nth-child(1) {
+    left: 62px;
+    top: 30px;
+    width: 82px;
+  }
+
+  .home-eco__point--left.home-eco__point:nth-child(2) {
+    left: 14px;
+    top: 136px;
+    width: 100px;
+  }
+
+  .home-eco__point--left.home-eco__point:nth-child(3) {
+    left: 62px;
+    top: 230px;
+    width: 90px;
+  }
+
+  .home-eco__point--right.home-eco__point:nth-child(4) {
+    right: 62px;
+    top: 30px;
+    width: 82px;
+  }
+
+  .home-eco__point--right.home-eco__point:nth-child(5) {
+    right: 14px;
+    top: 136px;
+    width: 100px;
+  }
+
+  .home-eco__point--right.home-eco__point:nth-child(6) {
+    right: 62px;
+    top: 230px;
+    width: 90px;
+  }
+
+  .home-eco__point--right {
+    text-align: right;
+  }
+
+  .home-eco__point--right .home-eco__point-head {
+    justify-content: flex-end;
   }
 }
 </style>

@@ -29,7 +29,7 @@ def organization_jsonld() -> dict:
         "@id": f"{SITE_BASE_URL}/#organization",
         "name": content.SITE["name"],
         "url": SITE_BASE_URL,
-        "logo": f"{SITE_BASE_URL}/logos/urlogo.png",
+        "logo": f"{SITE_BASE_URL}/logos/favicon.svg",
         "description": content.HOME_SEO.get("description", ""),
         "sameAs": [
             "https://www.linkedin.com/company/urbanrupeex/",
@@ -39,7 +39,7 @@ def organization_jsonld() -> dict:
         ],
         "address": {
             "@type": "PostalAddress",
-            "streetAddress": "A01 & A03, NX-One, Gaur City",
+            "streetAddress": "A01 & A03, UG, Tower 3, NX-One, Techzone 4",
             "addressLocality": "Greater Noida",
             "addressRegion": "Uttar Pradesh",
             "postalCode": "201301",

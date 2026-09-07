@@ -270,4 +270,30 @@ onMounted(() => {
     transition: none;
   }
 }
+
+@media (max-width: 480px) {
+  .partners__title {
+    margin-bottom: 16px;
+    font-size: 13px;
+  }
+
+  .partners__scroll {
+    gap: 8px;
+  }
+
+  .partners__pill {
+    width: 132px;
+    height: 40px;
+    padding: 8px 12px;
+  }
+
+  .partners__logo {
+    height: 18px;
+  }
+
+  .partners--merchants .partners__logo {
+    height: 28px;
+    max-width: 118px;
+  }
+}
 </style>

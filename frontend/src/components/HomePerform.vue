@@ -1,5 +1,8 @@
 <script setup>
 import { RouterLink } from "vue-router";
+import HomePerformControlGraphic from "@/components/HomePerformControlGraphic.vue";
+import HomePerformReconcileGraphic from "@/components/HomePerformReconcileGraphic.vue";
+import HomePerformSuccessGraphic from "@/components/HomePerformSuccessGraphic.vue";
 
 defineProps({
   section: { type: Object, required: true },
@@ -19,15 +22,7 @@ defineProps({
           <h3>{{ section.cards[0].title }}</h3>
           <p>{{ section.cards[0].body }}</p>
         </div>
-        <img
-          class="home-perform__graphic home-perform__graphic--control"
-          :src="section.cards[0].graphic"
-          alt=""
-          width="365"
-          height="332"
-          loading="lazy"
-          decoding="async"
-        />
+        <HomePerformControlGraphic class="home-perform__graphic home-perform__graphic--control" />
       </article>
 
       <div class="home-perform__stack">
@@ -36,30 +31,17 @@ defineProps({
             <h3>{{ section.cards[1].title }}</h3>
             <p>{{ section.cards[1].body }}</p>
           </div>
-          <img
-            class="home-perform__graphic home-perform__graphic--success"
-            :src="section.cards[1].graphic"
-            alt=""
-            width="817"
-            height="87"
-            loading="lazy"
-            decoding="async"
-          />
+          <HomePerformSuccessGraphic class="home-perform__graphic home-perform__graphic--success" />
         </article>
 
         <article class="home-perform__card home-perform__card--reconcile">
-          <div class="home-perform__copy">
+          <div class="home-perform__copy home-perform__copy--reconcile">
             <h3>{{ section.cards[2].title }}</h3>
             <p>{{ section.cards[2].body }}</p>
           </div>
-          <img
+          <HomePerformReconcileGraphic
             class="home-perform__graphic home-perform__graphic--reconcile"
-            :src="section.cards[2].graphic"
-            alt=""
-            width="817"
-            height="180"
-            loading="lazy"
-            decoding="async"
+            :title="section.cards[2].title"
           />
         </article>
       </div>
@@ -82,7 +64,7 @@ defineProps({
 .home-perform {
   max-width: 1240px;
   margin: 0 auto;
-  padding: 0 24px 100px;
+  padding: 0 24px 120px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -115,14 +97,13 @@ defineProps({
   color: #535862;
 }
 
-/* Figma Frame 2147225718 — 1240×529 */
+/* Figma Frame 2147225718 — columns share one row height */
 .home-perform__grid {
   display: grid;
   grid-template-columns: 367px minmax(0, 859px);
   gap: 14px;
   width: 100%;
   max-width: 1240px;
-  height: 529px;
   align-items: stretch;
 }
 
@@ -130,8 +111,8 @@ defineProps({
   display: flex;
   flex-direction: column;
   gap: 28px;
-  height: 529px;
   min-width: 0;
+  min-height: 0;
 }
 
 .home-perform__card {
@@ -145,14 +126,15 @@ defineProps({
   overflow: hidden;
 }
 
-/* Figma 1:5552 — 367×529 */
+/* Stretch to match success + gap + reconcile stack in the sibling column */
 .home-perform__card--tall {
-  height: 529px;
-  padding: 22px 0;
+  height: 100%;
+  min-height: 0;
+  padding: 22px 0 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 51px;
+  gap: 28px;
 }
 
 .home-perform__copy {
@@ -191,11 +173,13 @@ defineProps({
 }
 
 .home-perform__graphic--control {
-  width: 365px;
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 396px;
   max-width: calc(100% - 40px);
-  height: 332px;
-  object-fit: contain;
-  object-position: center bottom;
+  max-height: 290px;
+  height: auto;
+  aspect-ratio: 396 / 290;
 }
 
 /* Figma 1:5618 — 859×227 */
@@ -209,32 +193,36 @@ defineProps({
 
 .home-perform__graphic--success {
   width: 100%;
-  max-width: 817px;
-  height: 87px;
-  object-fit: contain;
-  object-position: left center;
+  max-width: 748px;
+  height: auto;
+  aspect-ratio: 748 / 87;
 }
 
-/* Figma 1:5670 — fills remaining stack height for bottom alignment */
+/* Figma 73:1345 — full reconcile card SVG (805×244) */
 .home-perform__card--reconcile {
-  flex: 1;
-  min-height: 270px;
-  padding: 25px 21px;
+  flex: none;
+  width: 100%;
+  max-width: 859px;
+  align-self: stretch;
+  padding: 18px 20px;
   display: flex;
   flex-direction: column;
-}
-
-.home-perform__card--reconcile .home-perform__copy {
-  flex-shrink: 0;
+  gap: 4px;
+  overflow: hidden;
 }
 
 .home-perform__graphic--reconcile {
+  display: block;
   width: 100%;
-  max-width: 817px;
-  height: 180px;
-  object-fit: contain;
-  object-position: left bottom;
-  margin-top: auto;
+  max-width: 805px;
+  height: auto;
+}
+
+.home-perform__copy--reconcile {
+  max-width: 556px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .home-perform__cta {
@@ -281,16 +269,13 @@ defineProps({
     flex: none;
   }
 
-  .home-perform__card--reconcile .home-perform__graphic--reconcile {
-    margin-top: 16px;
-  }
-
   .home-perform__graphic--control {
+    flex: none;
     height: auto;
+    max-height: none;
   }
 
-  .home-perform__graphic--success,
-  .home-perform__graphic--reconcile {
+  .home-perform__graphic--success {
     height: auto;
     max-height: none;
   }
@@ -302,9 +287,63 @@ defineProps({
     line-height: 42px;
   }
 
+  .home-perform__card--success {
+    padding: 20px 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .home-perform {
+    padding: 0 16px 80px;
+    gap: 24px;
+  }
+
+  .home-perform__intro {
+    gap: 14px;
+  }
+
+  .home-perform__intro h2 {
+    font-size: 28px;
+    line-height: 1.2;
+  }
+
+  .home-perform__intro p {
+    font-size: 14px;
+    line-height: 22px;
+  }
+
+  .home-perform__grid,
+  .home-perform__stack {
+    gap: 16px;
+  }
+
+  .home-perform__card--tall {
+    padding-top: 18px;
+    gap: 18px;
+  }
+
   .home-perform__card--success,
   .home-perform__card--reconcile {
-    padding: 20px 16px;
+    padding: 16px 14px;
+  }
+
+  .home-perform__card--reconcile {
+    gap: 10px;
+    padding-bottom: 18px;
+  }
+
+  .home-perform__copy h3 {
+    font-size: 18px;
+    line-height: 28px;
+  }
+
+  .home-perform__copy p {
+    font-size: 13px;
+    line-height: 20px;
+  }
+
+  .home-perform__graphic--control {
+    max-width: calc(100% - 24px);
   }
 }
 </style>

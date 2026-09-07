@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref } from "vue";
+import { computed, onMounted, onUnmounted, ref } from "vue";
 import { RouterLink, useRoute } from "vue-router";
 
 defineProps({
@@ -10,10 +10,16 @@ defineProps({
 const route = useRoute();
 const openMenu = ref(null);
 const mobileOpen = ref(false);
+/** 0 at page top → 1 after scrolling one viewport */
+const compact = ref(0);
 
 const ctaTo = computed(() =>
   route.path === "/contact" ? { path: "/contact", hash: "#contact-form" } : "/contact",
 );
+
+const navStyle = computed(() => ({
+  "--nav-compact": String(compact.value),
+}));
 
 function closeMenus() {
   openMenu.value = null;
@@ -32,11 +38,46 @@ function toggleMobile() {
   mobileOpen.value = !mobileOpen.value;
   if (!mobileOpen.value) openMenu.value = null;
 }
+
+let raf = 0;
+let reduceMotion = false;
+
+function updateCompact() {
+  raf = 0;
+  if (reduceMotion || window.innerWidth < 1100) {
+    compact.value = 0;
+    return;
+  }
+  const vh = Math.max(window.innerHeight, 1);
+  compact.value = Math.min(Math.max(window.scrollY / vh, 0), 1);
+}
+
+function onScrollOrResize() {
+  if (raf) return;
+  raf = requestAnimationFrame(updateCompact);
+}
+
+onMounted(() => {
+  reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  updateCompact();
+  window.addEventListener("scroll", onScrollOrResize, { passive: true });
+  window.addEventListener("resize", onScrollOrResize, { passive: true });
+});
+
+onUnmounted(() => {
+  window.removeEventListener("scroll", onScrollOrResize);
+  window.removeEventListener("resize", onScrollOrResize);
+  if (raf) cancelAnimationFrame(raf);
+});
 </script>
 
 <template>
   <!-- Figma Frame 2147225433 — 1146×89 @ (147, 40); logo → links → CTA gaps 175px -->
-  <header class="nav">
+  <header
+    class="nav"
+    :class="{ 'nav--compact': compact >= 0.5 }"
+    :style="navStyle"
+  >
     <div class="nav__shell">
       <div class="nav__bar">
         <RouterLink to="/" class="nav__logo" :aria-label="site.name" @click="closeMenus">
@@ -158,6 +199,9 @@ function toggleMobile() {
 
 <style scoped>
 .nav {
+  --nav-compact: 0;
+  --nav-pad-top: 40px;
+  --nav-shrink: calc(1 - (var(--nav-compact) * 0.3));
   position: fixed;
   top: 0;
   left: 0;
@@ -176,7 +220,7 @@ function toggleMobile() {
   pointer-events: none;
   max-width: 1440px;
   margin: 0 auto;
-  padding: 40px 147px 0;
+  padding: calc(var(--nav-pad-top) * var(--nav-shrink)) 147px 0;
   box-sizing: border-box;
 }
 
@@ -199,6 +243,9 @@ function toggleMobile() {
   -webkit-backdrop-filter: blur(14px);
   box-shadow: 0 8px 24px rgba(9, 116, 149, 0.06);
   font-family: "Manrope", "DM Sans", system-ui, sans-serif;
+  transform: scale(var(--nav-shrink));
+  transform-origin: top center;
+  will-change: transform;
 }
 
 .nav__logo {
@@ -232,10 +279,22 @@ function toggleMobile() {
   color: #052201;
   background: transparent;
   border-radius: 0;
-  text-shadow: none;
   text-decoration: none;
   white-space: nowrap;
-  transition: color 0.15s ease;
+  transition:
+    color 0.15s ease,
+    font-weight 0.2s ease;
+}
+
+.nav--compact .nav__link,
+.nav--compact .nav__link--btn {
+  font-weight: 700;
+}
+
+.nav--compact .nav__link.router-link-exact-active,
+.nav--compact .nav__link--contact.router-link-active,
+.nav--compact .nav__link--contact.router-link-exact-active {
+  font-weight: 800;
 }
 
 .nav__link:hover,
@@ -407,8 +466,13 @@ function toggleMobile() {
 }
 
 @media (max-width: 1280px) {
+  .nav {
+    --nav-pad-top: 24px;
+  }
+
   .nav__shell {
-    padding: 24px 40px 0;
+    padding-left: 40px;
+    padding-right: 40px;
   }
 
   .nav-spacer {
@@ -425,8 +489,13 @@ function toggleMobile() {
 }
 
 @media (max-width: 1099px) {
+  .nav {
+    --nav-pad-top: 16px;
+  }
+
   .nav__shell {
-    padding: 16px 16px 0;
+    padding-left: 16px;
+    padding-right: 16px;
   }
 
   .nav-spacer {
@@ -439,6 +508,8 @@ function toggleMobile() {
     min-height: 64px;
     padding: 12px 16px;
     position: relative;
+    transform: none;
+    will-change: auto;
   }
 
   .nav__logo {
@@ -498,6 +569,49 @@ function toggleMobile() {
 
   .nav__menu-btn {
     display: inline-flex;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav__shell {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .nav-spacer {
+    height: 88px;
+  }
+
+  .nav__bar {
+    gap: 10px;
+    padding: 10px 12px;
+  }
+
+  .nav__logo-img {
+    width: 136px;
+    max-height: 28px;
+  }
+
+  .nav__actions {
+    gap: 8px;
+  }
+
+  .nav__cta {
+    display: none;
+  }
+
+  .nav__menu-btn {
+    width: 36px;
+    height: 36px;
+  }
+
+  .nav__links {
+    padding: 10px;
+  }
+
+  .nav__panel-inner a {
+    font-size: 13px;
+    padding: 9px 10px;
   }
 }
 </style>

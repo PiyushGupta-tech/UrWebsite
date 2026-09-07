@@ -1,12 +1,17 @@
 <script setup>
-import { computed, onMounted, onUnmounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { RouterLink } from "vue-router";
 import PartnersMarquee from "@/components/PartnersMarquee.vue";
+import AboutHeroGraphic from "@/components/pages/AboutHeroGraphic.vue";
+import AboutEcoPanel from "@/components/pages/AboutEcoPanel.vue";
+import AboutEcoTip from "@/components/pages/AboutEcoTip.vue";
+import { provideAboutEco } from "@/composables/useAboutEco.js";
 
 const props = defineProps({
   page: { type: Object, required: true },
   relatedLinks: { type: Array, default: () => [] },
 });
+const heroParagraphs = computed(() => props.page.hero_paragraphs || [props.page.intro]);
 
 const pillarIcons = {
   handshake: "/images/figma-about/icon-handshake.svg",
@@ -17,146 +22,19 @@ const pillarIcons = {
 
 const openPrinciple = ref(0);
 const openFaq = ref(0);
+const aboutEcoReady = ref(false);
+provideAboutEco(aboutEcoReady);
 
 const leftPillars = computed(() => (props.page.pillars || []).slice(0, 2));
 const rightPillars = computed(() => (props.page.pillars || []).slice(2, 4));
-const testimonials = computed(() => props.page.testimonials || []);
-
-function middleIndex(realIndex, total = testimonials.value.length) {
-  return total + realIndex;
-}
-
-function initialTestimonialIndex() {
-  const total = (props.page.testimonials || []).length;
-  if (total < 2) return 0;
-  return middleIndex(Math.min(1, total - 1), total);
-}
-
-/**
- * Index into loopedTestimonials (3 copies). Live slides stay in the middle copy
- * so the first/last real cards always have neighbors on both sides.
- */
-const activeTestimonial = ref(initialTestimonialIndex());
-const skipTestimonialTransition = ref(false);
-let testimonialTimer = null;
-
-/** Three copies: [A][B][C]. We keep the active index in [B], then snap after wrapping into [C]. */
-const loopedTestimonials = computed(() => {
-  const items = testimonials.value;
-  if (items.length < 2) return items;
-  return [...items, ...items, ...items];
-});
-
-const realTestimonialIndex = computed(() => {
-  const total = testimonials.value.length;
-  if (total < 1) return 0;
-  return ((activeTestimonial.value % total) + total) % total;
-});
-
-const testimonialTrackStyle = computed(() => ({
-  "--active": String(activeTestimonial.value),
-}));
 
 function togglePrinciple(index) {
   openPrinciple.value = openPrinciple.value === index ? -1 : index;
 }
 
-function toggleFaq(index) {
-  openFaq.value = openFaq.value === index ? -1 : index;
-}
-
-function snapTo(index) {
-  skipTestimonialTransition.value = true;
-  activeTestimonial.value = index;
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      skipTestimonialTransition.value = false;
-    });
-  });
-}
-
-/** After sliding into the third (or first) copy, jump back to the matching middle-copy card. */
-function normalizeTestimonialIndex() {
-  const total = testimonials.value.length;
-  if (total < 2) return;
-  const upper = total * 2;
-  if (activeTestimonial.value >= upper) {
-    snapTo(activeTestimonial.value - total);
-  } else if (activeTestimonial.value < total) {
-    snapTo(activeTestimonial.value + total);
-  }
-}
-
-function advanceTestimonial() {
-  const total = testimonials.value.length;
-  if (total < 2) return;
-  activeTestimonial.value += 1;
-}
-
-function onTestimonialTrackTransitionEnd(event) {
-  if (event.propertyName !== "transform") return;
-  normalizeTestimonialIndex();
-}
-
-function startTestimonialAutoplay() {
-  stopTestimonialAutoplay();
-  if (testimonials.value.length < 2) return;
-  testimonialTimer = window.setInterval(advanceTestimonial, 5000);
-}
-
-function stopTestimonialAutoplay() {
-  if (testimonialTimer != null) {
-    window.clearInterval(testimonialTimer);
-    testimonialTimer = null;
-  }
-}
-
-/** Dot / card selection: always move forward through the loop. */
-function setTestimonial(realIndex) {
-  const total = testimonials.value.length;
-  if (total < 1) return;
-
-  const current = realTestimonialIndex.value;
-  const inMiddle =
-    activeTestimonial.value >= total && activeTestimonial.value < total * 2;
-
-  if (realIndex === current && inMiddle) {
-    startTestimonialAutoplay();
-    return;
-  }
-
-  const moveForward = () => {
-    if (realIndex > current) {
-      activeTestimonial.value = middleIndex(realIndex);
-    } else {
-      // Slide forward into the third copy (e.g. last → first).
-      activeTestimonial.value = total * 2 + realIndex;
-    }
-    startTestimonialAutoplay();
-  };
-
-  if (!inMiddle) {
-    skipTestimonialTransition.value = true;
-    activeTestimonial.value = middleIndex(current);
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        skipTestimonialTransition.value = false;
-        moveForward();
-      });
-    });
-    return;
-  }
-
-  moveForward();
-}
-
-function testimonialClass(loopIndex) {
-  if (loopIndex === activeTestimonial.value) return "about-testimonials__card--active";
-  return "about-testimonials__card--inactive";
-}
-
-onMounted(startTestimonialAutoplay);
-onUnmounted(stopTestimonialAutoplay);
+onMounted(() => {
+  aboutEcoReady.value = true;
+});
 </script>
 
 <template>
@@ -174,17 +52,19 @@ onUnmounted(stopTestimonialAutoplay);
 
       <div class="about-hero__copy">
         <h1 class="about-hero__title">{{ page.title }}</h1>
-        <p class="about-hero__intro">{{ page.intro }}</p>
-        <RouterLink to="/contact" class="about-hero__cta">
-          Talk to Expert
-          <img
-            src="/images/figma-contact/nav-arrow.svg"
-            alt=""
-            width="18"
-            height="18"
-            decoding="async"
-          />
-        </RouterLink>
+        <p
+          v-for="(paragraph, index) in heroParagraphs"
+          :key="index"
+          class="about-hero__intro"
+        >
+          {{ paragraph }}
+        </p>
+      </div>
+
+      <div class="about-hero__visual" aria-label="Payments ecosystem overview">
+        <AboutHeroGraphic class="about-hero__graphic" />
+        <AboutEcoTip class="about-hero__tip" />
+        <AboutEcoPanel class="about-hero__panel" />
       </div>
     </section>
 
@@ -256,6 +136,37 @@ onUnmounted(stopTestimonialAutoplay);
       </div>
     </section>
 
+    <section class="about-leaders" aria-label="Leadership team">
+      <div class="about-leaders__head">
+        <h2 class="about-leaders__title">{{ page.leaders_title }}</h2>
+        <p class="about-leaders__intro">{{ page.leaders_intro }}</p>
+      </div>
+
+      <div class="about-leaders__grid">
+        <article
+          v-for="leader in page.leaders || []"
+          :key="leader.name"
+          class="about-leaders__card"
+        >
+          <div class="about-leaders__photo-wrap">
+            <img
+              class="about-leaders__photo"
+              :src="leader.image"
+              :alt="leader.name"
+              width="204"
+              height="240"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+          <div class="about-leaders__copy">
+            <h3 class="about-leaders__name">{{ leader.name }}</h3>
+            <p class="about-leaders__role">{{ leader.role }}</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
     <section class="about-principles" aria-label="Core principles">
       <div class="about-principles__head">
         <h2 class="about-principles__title">{{ page.principles_title }}</h2>
@@ -301,134 +212,6 @@ onUnmounted(stopTestimonialAutoplay);
       </div>
     </section>
 
-    <section class="about-testimonials" aria-label="Customer testimonials">
-      <h2 class="about-testimonials__title">{{ page.testimonials_title }}</h2>
-
-      <div class="about-testimonials__track-wrap">
-        <div
-          class="about-testimonials__track"
-          :class="{ 'about-testimonials__track--snap': skipTestimonialTransition }"
-          :style="testimonialTrackStyle"
-          @transitionend="onTestimonialTrackTransitionEnd"
-        >
-          <article
-            v-for="(item, index) in loopedTestimonials"
-            :key="`${item.name}-${index}`"
-            class="about-testimonials__card"
-            :class="testimonialClass(index)"
-            @click="setTestimonial(index % testimonials.length)"
-          >
-            <blockquote class="about-testimonials__quote">{{ item.quote }}</blockquote>
-            <footer class="about-testimonials__author">
-              <img
-                class="about-testimonials__avatar"
-                :src="item.avatar"
-                alt=""
-                width="44"
-                height="44"
-                loading="lazy"
-                decoding="async"
-              />
-              <p class="about-testimonials__meta">
-                <strong>{{ item.name }}</strong>, <span>{{ item.role }}</span>
-              </p>
-            </footer>
-          </article>
-        </div>
-      </div>
-
-      <div class="about-testimonials__dots" role="tablist" aria-label="Testimonial slides">
-        <button
-          v-for="(_, index) in testimonials"
-          :key="index"
-          type="button"
-          class="about-testimonials__dot"
-          :class="{ 'about-testimonials__dot--active': realTestimonialIndex === index }"
-          :aria-selected="realTestimonialIndex === index"
-          :aria-label="`Show testimonial ${index + 1}`"
-          @click="setTestimonial(index)"
-        />
-      </div>
-    </section>
-
-    <section class="about-audiences" aria-label="Industries we serve">
-      <div class="about-audiences__panel">
-        <h2 class="about-audiences__title">{{ page.audiences_title }}</h2>
-        <div class="about-audiences__grid">
-          <article
-            v-for="item in page.audiences || []"
-            :key="item.number"
-            class="about-audiences__card"
-          >
-            <span class="about-audiences__num" aria-hidden="true">{{ item.number }}</span>
-            <div class="about-audiences__copy">
-              <h3>{{ item.title }}</h3>
-              <p>{{ item.body }}</p>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="about-faq" aria-label="Frequently asked questions">
-      <div class="about-faq__inner">
-        <div class="about-faq__intro">
-          <h2 class="about-faq__title">{{ page.faq_title }}</h2>
-          <p class="about-faq__body">{{ page.faq_intro }}</p>
-        </div>
-
-        <div class="about-faq__list">
-          <div
-            v-for="(item, index) in page.faq_items || []"
-            :key="item.number"
-            class="about-faq__item"
-            :class="{ 'about-faq__item--open': openFaq === index }"
-          >
-            <button
-              type="button"
-              class="about-faq__trigger"
-              :aria-expanded="openFaq === index"
-              @click="toggleFaq(index)"
-            >
-              <span class="about-faq__num">{{ item.number }}</span>
-              <span class="about-faq__question">{{ item.question }}</span>
-              <span class="about-faq__icon" aria-hidden="true">{{ openFaq === index ? "−" : "+" }}</span>
-            </button>
-            <div v-show="openFaq === index" class="about-faq__answer">
-              <p>{{ item.answer }}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="about-cta" aria-label="Call to action">
-      <div class="about-cta__panel">
-        <img
-          class="about-cta__bg"
-          src="/images/figma-contact/cta-banner-bg.png"
-          alt=""
-          width="1240"
-          height="331"
-          loading="lazy"
-          decoding="async"
-        />
-        <div class="about-cta__content">
-          <h2 class="about-cta__title">{{ page.cta_title }}</h2>
-          <p class="about-cta__body">{{ page.cta_body }}</p>
-          <RouterLink to="/contact" class="about-cta__btn">
-            {{ page.cta_label }}
-            <img
-              src="/images/figma-contact/nav-arrow.svg"
-              alt=""
-              width="18"
-              height="18"
-              decoding="async"
-            />
-          </RouterLink>
-        </div>
-      </div>
-    </section>
   </main>
 </template>
 
@@ -449,9 +232,14 @@ onUnmounted(stopTestimonialAutoplay);
   width: 100%;
   max-width: 1440px;
   margin: 0 auto;
-  padding: 200px 100px 48px;
+  min-height: 100vh;
+  padding: 148px 100px 40px;
   box-sizing: border-box;
   overflow: hidden;
+  display: grid;
+  grid-template-columns: minmax(0, 611px) minmax(340px, 1fr);
+  align-items: stretch;
+  gap: 56px;
 }
 
 .about-hero__bg {
@@ -459,7 +247,7 @@ onUnmounted(stopTestimonialAutoplay);
   inset: 0 auto auto 50%;
   transform: translateX(-50%);
   width: 1440px;
-  height: 560px;
+  height: 100%;
   pointer-events: none;
   z-index: 0;
 }
@@ -467,7 +255,7 @@ onUnmounted(stopTestimonialAutoplay);
 .about-hero__bg img {
   display: block;
   width: 1440px;
-  height: 560px;
+  height: 100%;
   object-fit: cover;
   object-position: center top;
 }
@@ -477,11 +265,13 @@ onUnmounted(stopTestimonialAutoplay);
   z-index: 1;
   width: 611px;
   max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
+  margin: 0;
+  text-align: left;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
+  justify-content: center;
+  min-height: 100%;
   gap: 24px;
 }
 
@@ -496,42 +286,43 @@ onUnmounted(stopTestimonialAutoplay);
 .about-hero__intro {
   margin: 0;
   font-size: 14px;
-  line-height: normal;
+  font-family: "Manrope", "DM Sans", system-ui, sans-serif;
+  font-weight: 400;
+  line-height: 22px;
   letter-spacing: 0.56px;
-  color: #64748b;
+  color: var(--about-muted);
 }
 
-.about-hero__cta {
-  display: inline-flex;
+.about-hero__visual {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 4px;
-  min-height: 52px;
-  padding: 15px 16px;
-  border-radius: 8px;
-  background: var(--about-teal);
-  color: #ffffff;
-  font-size: 16px;
-  font-weight: 700;
-  letter-spacing: -0.32px;
-  text-decoration: none;
+  gap: 20px;
+  padding-top: 30px;
 }
 
-.about-hero__cta:hover {
-  background: #086681;
+.about-hero__graphic {
+  width: min(100%, 360px);
+  margin-bottom: 28px;
 }
 
-.about-hero__cta img {
-  display: block;
-  width: 18px;
-  height: 18px;
-  filter: brightness(0) invert(1);
+.about-hero__tip,
+.about-hero__panel {
+  width: min(100%, 420px);
+}
+
+.about-hero__tip {
+  width: min(100%, 360px);
 }
 
 .about-trust {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 24px 80px 100px;
+  padding: 0 80px 100px;
 }
 
 .about-trust :deep(.partners) {
@@ -671,6 +462,100 @@ onUnmounted(stopTestimonialAutoplay);
   height: 424px;
   border-radius: 16px;
   object-fit: cover;
+}
+
+.about-leaders {
+  max-width: 1081px;
+  margin: 0 auto;
+  padding: 0 24px 120px;
+}
+
+.about-leaders__head {
+  width: 363px;
+  max-width: 100%;
+  margin: 0 auto 56px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.about-leaders__title {
+  margin: 0;
+  width: 100%;
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 56px;
+  letter-spacing: -1.2px;
+  color: var(--about-ink);
+}
+
+.about-leaders__intro {
+  margin: 0;
+  width: 100%;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.64px;
+  color: var(--about-muted);
+}
+
+.about-leaders__grid {
+  display: flex;
+  justify-content: center;
+  gap: 62px;
+  flex-wrap: wrap;
+}
+
+.about-leaders__card {
+  width: 204px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 31px;
+  text-align: center;
+}
+
+.about-leaders__photo-wrap {
+  width: 204px;
+  height: 240px;
+  overflow: hidden;
+  border-radius: 3000px;
+  background: #d4d4d8;
+}
+
+.about-leaders__photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.about-leaders__copy {
+  width: 203px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+}
+
+.about-leaders__name {
+  margin: 0;
+  width: 100%;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 22px;
+  letter-spacing: 0.6px;
+  color: var(--about-ink);
+}
+
+.about-leaders__role {
+  margin: 0;
+  width: 100%;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.42px;
+  color: var(--about-muted);
 }
 
 .about-principles {
@@ -866,14 +751,6 @@ onUnmounted(stopTestimonialAutoplay);
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 16px;
-}
-
-.about-testimonials__avatar {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  object-fit: cover;
 }
 
 .about-testimonials__meta {
@@ -884,8 +761,8 @@ onUnmounted(stopTestimonialAutoplay);
   color: #020617;
 }
 
-.about-testimonials__meta span {
-  color: #64748b;
+.about-testimonials__meta strong {
+  font-weight: 700;
 }
 
 .about-testimonials__dots {
@@ -1164,6 +1041,24 @@ onUnmounted(stopTestimonialAutoplay);
 }
 
 @media (max-width: 1200px) {
+  .about-hero {
+    min-height: auto;
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .about-hero__copy {
+    width: 100%;
+    max-width: 640px;
+    margin: 0 auto;
+    text-align: center;
+    align-items: center;
+  }
+
+  .about-hero__visual {
+    padding-top: 0;
+  }
+
   .about-principles__head,
   .about-principles__body {
     grid-template-columns: 1fr;
@@ -1189,6 +1084,10 @@ onUnmounted(stopTestimonialAutoplay);
 }
 
 @media (max-width: 1100px) {
+  .about-page {
+    margin-top: -92px;
+  }
+
   .about-purpose__grid {
     grid-template-columns: 1fr;
     max-width: 420px;
@@ -1198,12 +1097,16 @@ onUnmounted(stopTestimonialAutoplay);
   .about-purpose__photo {
     order: -1;
   }
+
+  .about-leaders__grid {
+    gap: 32px;
+  }
 }
 
 @media (max-width: 768px) {
   .about-hero {
     min-height: auto;
-    padding: 160px 24px 32px;
+    padding: 160px 24px 24px;
   }
 
   .about-hero__title {
@@ -1211,11 +1114,17 @@ onUnmounted(stopTestimonialAutoplay);
     line-height: 1.2;
   }
 
+  .about-hero__intro {
+    font-size: 14px;
+    line-height: 22px;
+  }
+
   .about-trust {
     padding: 0 24px 64px;
   }
 
   .about-purpose__title,
+  .about-leaders__title,
   .about-principles__title,
   .about-testimonials__title,
   .about-audiences__title,
@@ -1227,6 +1136,24 @@ onUnmounted(stopTestimonialAutoplay);
 
   .about-testimonials__track {
     --card-w: min(612px, calc(100vw - 48px));
+  }
+
+  .about-leaders {
+    padding: 0 24px 80px;
+  }
+
+  .about-leaders__card,
+  .about-leaders__photo-wrap {
+    width: min(204px, 56vw);
+  }
+
+  .about-leaders__photo-wrap {
+    height: auto;
+    aspect-ratio: 204 / 240;
+  }
+
+  .about-leaders__copy {
+    width: 100%;
   }
 
   .about-audiences__grid {
@@ -1251,6 +1178,87 @@ onUnmounted(stopTestimonialAutoplay);
   .about-cta__panel {
     height: auto;
     min-height: 331px;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-page {
+    margin-top: -88px;
+  }
+
+  .about-hero {
+    padding: 120px 16px 20px;
+    gap: 24px;
+  }
+
+  .about-hero__copy {
+    gap: 16px;
+  }
+
+  .about-hero__title {
+    font-size: 28px;
+  }
+
+  .about-hero__visual {
+    gap: 14px;
+  }
+
+  .about-hero__graphic {
+    margin-bottom: 12px;
+  }
+
+  .about-trust {
+    padding: 0 16px 48px;
+  }
+
+  .about-purpose,
+  .about-leaders,
+  .about-principles {
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-bottom: 72px;
+  }
+
+  .about-purpose__head,
+  .about-leaders__head,
+  .about-principles__head {
+    margin-bottom: 28px;
+    gap: 12px;
+  }
+
+  .about-purpose__grid,
+  .about-principles__body {
+    gap: 20px;
+  }
+
+  .about-purpose__col {
+    gap: 20px;
+  }
+
+  .about-purpose__card {
+    padding: 16px;
+  }
+
+  .about-principles__trigger {
+    grid-template-columns: auto 1fr 24px;
+    gap: 12px;
+    padding: 18px 0;
+  }
+
+  .about-principles__num,
+  .about-principles__label {
+    font-size: 18px;
+    line-height: 24px;
+  }
+
+  .about-principles__icon {
+    width: 24px;
+    height: 24px;
+    font-size: 16px;
+  }
+
+  .about-principles__answer {
+    padding: 0 0 18px;
   }
 }
 </style>

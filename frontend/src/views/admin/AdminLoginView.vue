@@ -38,9 +38,9 @@ async function onSubmit() {
   <div class="admin-login admin-theme">
     <form class="admin-login__card admin-card" @submit.prevent="onSubmit">
       <div class="admin-login__brand">
-        <BrandLogo variant="on-dark" alt="UrbanRupee" priority class="admin-login__logo" />
+        <BrandLogo variant="on-dark" alt="Urbanrupee" priority class="admin-login__logo" />
         <div>
-          <p class="admin-login__name">UrbanRupee</p>
+          <p class="admin-login__name">Urbanrupee</p>
           <p class="admin-login__subtitle">Admin Dashboard</p>
         </div>
       </div>

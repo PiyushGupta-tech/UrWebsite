@@ -6,7 +6,6 @@ import { customCheckoutMethodHeroFor } from "@/constants/customCheckoutMethodHer
 import { walletMetricHeroFor } from "@/constants/walletMetricHero";
 import { orchestrationStoryLineFor } from "@/constants/orchestrationStoryHero";
 import PageHero from "./PageHero.vue";
-import RelatedLinks from "@/components/RelatedLinks.vue";
 import PaymentServicesHeroGraphic from "./PaymentServicesHeroGraphic.vue";
 import AmlDetectorHeroGraphic from "./AmlDetectorHeroGraphic.vue";
 import ReconciliationHeroGraphic from "./ReconciliationHeroGraphic.vue";
@@ -167,7 +166,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <main>
+  <main class="marketing-page">
     <PageHero
       :title="page.title"
       :intro="page.intro"
@@ -345,23 +344,18 @@ onMounted(() => {
         <p class="closing-band__text">{{ page.closing }}</p>
       </div>
     </section>
-
-    <RelatedLinks v-if="relatedLinks.length" :links="relatedLinks" />
-
-    <section v-if="page.cta" class="section cta-inline">
-      <div class="container card cta-inline__inner">
-        <h2>{{ page.cta.title }}</h2>
-        <p>{{ page.cta.body }}</p>
-        <RouterLink :to="page.cta.href" class="btn btn--primary">{{ page.cta.button }}</RouterLink>
-      </div>
-    </section>
   </main>
 </template>
 
 <style scoped>
+.marketing-page {
+  font-family: "Manrope", "DM Sans", system-ui, sans-serif;
+}
+
 .hero-payment-extra {
   display: grid;
   gap: 12px;
+  text-align: left;
 }
 
 .hero-payment-extra__heading {
@@ -383,14 +377,17 @@ onMounted(() => {
   list-style: none;
   display: grid;
   gap: 8px;
+  justify-items: start;
 }
 
 .hero-payment-extra__list li {
+  display: inline-block;
   padding-left: 18px;
   position: relative;
   font-size: 14px;
   color: var(--text-secondary);
   line-height: 1.5;
+  text-align: left;
 }
 
 .hero-payment-extra__list li::before {
@@ -410,6 +407,7 @@ onMounted(() => {
   font-weight: 500;
   color: var(--text-secondary);
   line-height: 1.55;
+  text-align: left;
 }
 
 .hero-payment-extra__tagline {
@@ -418,6 +416,7 @@ onMounted(() => {
   font-weight: 600;
   color: var(--text-primary);
   letter-spacing: -0.01em;
+  text-align: left;
 }
 
 .hero-orchestration-line {
@@ -426,6 +425,7 @@ onMounted(() => {
   line-height: 1.55;
   color: var(--text-secondary);
   font-weight: 500;
+  text-align: left;
 }
 
 .hero-method-detail__headline {
@@ -434,6 +434,7 @@ onMounted(() => {
   font-weight: 600;
   color: var(--text-primary);
   letter-spacing: -0.02em;
+  text-align: left;
 }
 
 .hero-method-detail__body {
@@ -441,6 +442,7 @@ onMounted(() => {
   font-size: 15px;
   color: var(--text-secondary);
   line-height: 1.55;
+  text-align: left;
 }
 
 .hero-method-detail__bullets-head {
@@ -458,13 +460,16 @@ onMounted(() => {
   list-style: none;
   display: grid;
   gap: 8px;
+  justify-items: start;
 }
 
 .hero-method-detail__bullets li {
+  display: inline-block;
   padding-left: 18px;
   position: relative;
   font-size: 14px;
   color: var(--text-secondary);
+  text-align: left;
 }
 
 .hero-method-detail__bullets li::before {
@@ -522,6 +527,7 @@ onMounted(() => {
     radial-gradient(120% 140% at 0% 0%, rgba(6, 182, 212, 0.07) 0%, transparent 48%),
     var(--bg-page);
   box-shadow: 0 10px 26px rgba(26, 54, 93, 0.06);
+  text-align: left;
 }
 
 .section--alt .marketing-section {
@@ -603,6 +609,7 @@ onMounted(() => {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+  justify-content: flex-start;
 }
 
 .tag {
@@ -646,6 +653,7 @@ onMounted(() => {
     transform 0.22s ease,
     box-shadow 0.22s ease,
     border-color 0.22s ease;
+  text-align: left;
 }
 
 .marketing-card:hover,
@@ -678,12 +686,14 @@ onMounted(() => {
 
 .step-card {
   display: flex;
+  flex-direction: column;
   gap: 16px;
   padding: 20px;
   align-items: flex-start;
   border: 1px solid var(--border);
   border-radius: var(--radius-card);
   background: var(--bg-page);
+  text-align: left;
 }
 
 .step-card__num {
@@ -725,17 +735,4 @@ onMounted(() => {
   margin-inline: auto;
 }
 
-.cta-inline__inner {
-  text-align: center;
-  padding: 48px 32px;
-}
-
-.cta-inline__inner h2 {
-  margin: 0 0 8px;
-}
-
-.cta-inline__inner p {
-  color: var(--text-secondary);
-  margin: 0 0 24px;
-}
 </style>

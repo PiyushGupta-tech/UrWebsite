@@ -3,7 +3,7 @@ import { computed, onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import { fetchPage } from "@/api/client";
 import { applySeo } from "@/utils/seo";
-import Breadcrumbs from "@/components/Breadcrumbs.vue";
+import HomeClosing from "@/components/HomeClosing.vue";
 import AboutPage from "@/components/pages/AboutPage.vue";
 import MarketingPage from "@/components/pages/MarketingPage.vue";
 import FaqPage from "@/components/pages/FaqPage.vue";
@@ -23,6 +23,9 @@ const error = ref(null);
 const loading = ref(true);
 
 const slug = computed(() => route.meta.slug);
+const usesSolutionsTypography = computed(
+  () => route.path.startsWith("/services") || route.path.startsWith("/products"),
+);
 
 const pageComponent = computed(() => {
   const type = payload.value?.page?.type;
@@ -66,13 +69,11 @@ watch(() => route.path, loadPage);
     <RouterLink to="/" class="btn btn--primary">Back to home</RouterLink>
   </div>
 
-  <template v-else>
-    <div
-      v-if="payload.breadcrumbs?.length > 1 && !['contact', 'about'].includes(payload.page?.type)"
-      class="container page-chrome"
-    >
-      <Breadcrumbs :items="payload.breadcrumbs" />
-    </div>
+  <div
+    v-else
+    class="page-view"
+    :class="{ 'page-view--solutions': usesSolutionsTypography }"
+  >
     <component
       :is="pageComponent"
       :page="payload.page"
@@ -81,12 +82,26 @@ watch(() => route.path, loadPage);
       :dashboard="payload.dashboard_preview"
       :related-links="payload.related_links"
     />
-  </template>
+    <HomeClosing
+      v-if="payload.common_closing"
+      :section="payload.common_closing"
+      :show-india-growth="false"
+    />
+  </div>
 </template>
 
 <style scoped>
-.page-chrome {
-  padding-top: 8px;
+.page-view {
+  --page-nav-offset: 129px;
+  margin-top: calc(-1 * var(--page-nav-offset));
+  padding-top: var(--page-nav-offset);
+  background:
+    url("/images/figma-contact/hero-bg@2x.png") center top / 1440px 560px no-repeat,
+    #ffffff;
+}
+
+.page-view--solutions {
+  font-family: "Manrope", "DM Sans", system-ui, sans-serif;
 }
 
 .page-loading {
@@ -109,6 +124,24 @@ watch(() => route.path, loadPage);
   border-top-color: var(--accent-blue);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
+}
+
+@media (max-width: 1280px) {
+  .page-view {
+    --page-nav-offset: 113px;
+  }
+}
+
+@media (max-width: 1099px) {
+  .page-view {
+    --page-nav-offset: 92px;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-view {
+    --page-nav-offset: 88px;
+  }
 }
 
 @keyframes spin {

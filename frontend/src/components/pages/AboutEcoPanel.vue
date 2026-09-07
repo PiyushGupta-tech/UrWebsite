@@ -23,7 +23,7 @@ const { activeNode, activeId } = eco;
 <style scoped>
 .eco__panel {
   width: 100%;
-  padding: 14px 16px;
+  padding: 12px 18px;
   border-radius: 12px;
   border: 1px solid #e2e8f0;
   background: linear-gradient(135deg, #f8fafc 0%, #fff 100%);
@@ -48,7 +48,7 @@ const { activeNode, activeId } = eco;
 }
 
 .eco__panel-kicker {
-  margin: 0 0 4px;
+  margin: 0 0 2px;
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.12em;
@@ -57,17 +57,19 @@ const { activeNode, activeId } = eco;
 }
 
 .eco__panel-title {
-  margin: 0 0 6px;
+  margin: 0 0 4px;
   font-size: 18px;
   font-weight: 700;
+  line-height: 1.2;
   color: #1a365d;
   transition: color 0.2s ease;
 }
 
 .eco__panel-hint {
   margin: 0;
-  font-size: 13px;
-  line-height: 1.5;
+  font-size: 12px;
+  line-height: 1.35;
+  white-space: nowrap;
   color: #64748b;
 }
 

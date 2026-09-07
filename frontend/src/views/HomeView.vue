@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref } from "vue";
+import { computed, nextTick, onMounted, onUnmounted, ref } from "vue";
 import { fetchHomepage } from "@/api/client";
 import { applySeo } from "@/utils/seo";
 import HeroSection from "@/components/HeroSection.vue";
@@ -9,6 +9,11 @@ import HomeEcosystem from "@/components/HomeEcosystem.vue";
 import HomePerform from "@/components/HomePerform.vue";
 import HomeProducts from "@/components/HomeProducts.vue";
 import HomeClosing from "@/components/HomeClosing.vue";
+import {
+  animateStatValues,
+  formatStatValue,
+  parseStatValue,
+} from "@/composables/useCountUp.js";
 
 defineProps({
   site: { type: Object, default: null },
@@ -29,21 +34,82 @@ const bootstrap = readHomepageBootstrap();
 const data = ref(bootstrap);
 const error = ref(null);
 const loading = ref(!bootstrap);
+const trustStatsRef = ref(null);
+const hasAnimatedStats = ref(false);
+const statDisplays = ref([]);
+let statsObserver = null;
+let cancelStatAnimation = null;
+
+const parsedStats = computed(() =>
+  (data.value?.stats || []).map((stat) => parseStatValue(stat.value)),
+);
+
+function setFinalStatValues() {
+  statDisplays.value = (data.value?.stats || []).map((stat) => stat.value);
+}
+
+function resetStatValues() {
+  statDisplays.value = parsedStats.value.map((parsed) => formatStatValue(parsed, 0));
+}
+
+function runStatsCountUp() {
+  if (hasAnimatedStats.value || !parsedStats.value.length) return;
+  hasAnimatedStats.value = true;
+  cancelStatAnimation?.();
+  cancelStatAnimation = animateStatValues(parsedStats.value, {
+    duration: 1800,
+    onFrame: (values) => {
+      statDisplays.value = values;
+    },
+    onComplete: setFinalStatValues,
+  });
+}
+
+function setupStatsObserver() {
+  statsObserver?.disconnect();
+
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    setFinalStatValues();
+    return;
+  }
+
+  statsObserver = new IntersectionObserver(
+    ([entry]) => {
+      if (!entry?.isIntersecting) return;
+      runStatsCountUp();
+      statsObserver?.disconnect();
+    },
+    { threshold: 0.25, rootMargin: "0px 0px -8% 0px" },
+  );
+
+  if (trustStatsRef.value) {
+    statsObserver.observe(trustStatsRef.value);
+  }
+}
 
 onMounted(async () => {
   if (bootstrap) {
     applySeo(bootstrap.seo, bootstrap.structured_data);
+    resetStatValues();
     loading.value = false;
+    nextTick(setupStatsObserver);
     return;
   }
   try {
     data.value = await fetchHomepage();
     applySeo(data.value.seo, data.value.structured_data);
+    resetStatValues();
   } catch (e) {
     error.value = e.message;
   } finally {
     loading.value = false;
+    nextTick(setupStatsObserver);
   }
+});
+
+onUnmounted(() => {
+  statsObserver?.disconnect();
+  cancelStatAnimation?.();
 });
 </script>
 
@@ -72,13 +138,13 @@ onMounted(async () => {
         <div class="home-trust__rule" aria-hidden="true" />
       </div>
 
-      <div class="home-trust__stats">
+      <div ref="trustStatsRef" class="home-trust__stats">
         <div
-          v-for="stat in data.stats || []"
+          v-for="(stat, index) in data.stats || []"
           :key="stat.label"
           class="home-trust__stat"
         >
-          <span class="home-trust__stat-value">{{ stat.value }}</span>
+          <span class="home-trust__stat-value">{{ statDisplays[index] || stat.value }}</span>
           <span class="home-trust__stat-label">{{ stat.label }}</span>
         </div>
       </div>
@@ -274,7 +340,7 @@ onMounted(async () => {
 
 .home-banks {
   max-width: 1280px;
-  margin: 0 auto 80px;
+  margin: 0 auto 120px;
   padding: 0 80px;
 }
 
@@ -304,12 +370,20 @@ onMounted(async () => {
 }
 
 @media (max-width: 1100px) {
+  .home-page {
+    margin-top: -113px;
+  }
+
   .home-trust__stats {
     gap: 48px;
   }
 }
 
 @media (max-width: 768px) {
+  .home-page {
+    margin-top: -92px;
+  }
+
   .home-trust,
   .home-banks {
     padding: 32px 24px 64px;
@@ -341,6 +415,56 @@ onMounted(async () => {
 
   .home-trust__stat-label {
     font-size: 14px;
+    line-height: 1.4;
+  }
+}
+
+@media (max-width: 480px) {
+  .home-page {
+    margin-top: -88px;
+  }
+
+  .home-trust,
+  .home-banks {
+    padding: 28px 16px 48px;
+  }
+
+  .home-trust {
+    gap: 24px;
+  }
+
+  .home-trust__stats {
+    gap: 20px 16px;
+  }
+
+  .home-trust :deep(.partners__scroll),
+  .home-banks :deep(.partners__scroll) {
+    gap: 20px;
+  }
+
+  .home-trust :deep(.partners__pill),
+  .home-banks :deep(.partners__pill) {
+    width: 112px;
+    min-width: 112px;
+    height: 40px;
+  }
+
+  .home-trust :deep(.partners__logo),
+  .home-trust :deep(.partners__logo--lg),
+  .home-banks :deep(.partners__logo),
+  .home-banks :deep(.partners__logo--lg) {
+    height: 28px !important;
+    max-width: 112px !important;
+  }
+
+  .home-trust__stat-value {
+    font-size: 30px;
+    line-height: 1.15;
+    letter-spacing: -0.72px;
+  }
+
+  .home-trust__stat-label {
+    font-size: 13px;
     line-height: 1.4;
   }
 }
