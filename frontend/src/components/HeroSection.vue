@@ -206,30 +206,44 @@ defineProps({
 @media (max-width: 480px) {
   .home-hero {
     min-height: auto;
-    padding: 92px 16px 24px;
+    padding: 104px 19px 28px;
   }
 
   .home-hero__stage {
-    gap: 24px;
+    gap: 40px;
   }
 
   .home-hero__copy {
+    align-items: center;
     gap: 24px;
+    max-width: 353px;
+    margin: 0 auto;
   }
 
   .home-hero__text {
     gap: 10px;
+    text-align: center;
   }
 
   .home-hero__title {
-    font-size: 28px;
-    line-height: 1.15;
-    letter-spacing: -0.6px;
+    font-size: 44px;
+    line-height: 1.04;
+    letter-spacing: -1.1px;
   }
 
   .home-hero__lead {
-    font-size: 14px;
-    line-height: 1.55;
+    font-size: 16px;
+    line-height: 1.56;
+    letter-spacing: 0;
+    text-align: center;
+  }
+
+  .home-hero__cta {
+    width: auto;
+    min-width: 142px;
+    height: 40px;
+    padding: 10px 16px;
+    font-size: 16px;
   }
 
   .home-hero__visual {
@@ -237,7 +251,8 @@ defineProps({
   }
 
   .home-hero__diagram {
-    max-height: 280px;
+    width: min(100%, 324px);
+    max-height: 240px;
     transform: none;
   }
 }

@@ -294,56 +294,97 @@ defineProps({
 
 @media (max-width: 480px) {
   .home-perform {
-    padding: 0 16px 80px;
+    padding: 0 19px 80px;
     gap: 24px;
   }
 
   .home-perform__intro {
-    gap: 14px;
+    gap: 12px;
+    max-width: 309px;
   }
 
   .home-perform__intro h2 {
-    font-size: 28px;
-    line-height: 1.2;
+    font-size: 36px;
+    line-height: 46px;
+    letter-spacing: 0;
   }
 
   .home-perform__intro p {
-    font-size: 14px;
-    line-height: 22px;
+    font-size: 12px;
+    line-height: 20px;
+    letter-spacing: 0.48px;
   }
 
   .home-perform__grid,
   .home-perform__stack {
-    gap: 16px;
+    gap: 20px;
   }
 
   .home-perform__card--tall {
-    padding-top: 18px;
-    gap: 18px;
+    padding: 20px 22px;
+    gap: 8px;
   }
 
   .home-perform__card--success,
   .home-perform__card--reconcile {
-    padding: 16px 14px;
+    padding: 20px 22px;
   }
 
   .home-perform__card--reconcile {
-    gap: 10px;
-    padding-bottom: 18px;
+    gap: 19px;
+  }
+
+  .home-perform__card--success {
+    gap: 20px;
   }
 
   .home-perform__copy h3 {
-    font-size: 18px;
-    line-height: 28px;
+    font-size: 16px;
+    line-height: 24px;
+    text-align: center;
   }
 
   .home-perform__copy p {
-    font-size: 13px;
+    font-size: 12px;
     line-height: 20px;
+    letter-spacing: 0.48px;
+    text-align: center;
+  }
+
+  .home-perform__copy,
+  .home-perform__copy--tall,
+  .home-perform__copy--reconcile {
+    max-width: 309px;
+    margin: 0 auto;
+    align-items: center;
+    text-align: center;
   }
 
   .home-perform__graphic--control {
-    max-width: calc(100% - 24px);
+    width: 309px;
+    max-width: 100%;
+    aspect-ratio: 309 / 294;
+    margin: 0 auto;
+  }
+
+  .home-perform__graphic--success {
+    width: 220px;
+    max-width: 100%;
+    aspect-ratio: 220 / 310;
+    margin: 0 auto;
+  }
+
+  .home-perform__graphic--reconcile {
+    width: 336px;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .home-perform__cta {
+    min-width: 142px;
+    height: 40px;
+    padding: 10px 16px;
+    font-size: 16px;
   }
 }
 </style>

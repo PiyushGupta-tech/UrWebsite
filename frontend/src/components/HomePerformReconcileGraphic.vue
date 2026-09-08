@@ -27,15 +27,15 @@ const DESKTOP_CONNECTORS = {
 };
 
 const MOBILE_CONNECTORS = {
-  viewBox: "0 0 320 132",
-  top: "M128 20H166C172.627 20 178 25.373 178 32V54C178 60.627 183.373 66 190 66H220",
-  middle: { x1: 128, y1: 66, x2: 178, y2: 66 },
-  bottom: "M128 112H166C172.627 112 178 106.627 178 100V78C178 71.373 183.373 66 190 66H220",
+  viewBox: "0 0 336 150",
+  top: "M51 0V74C51 80.627 56.373 86 63 86H168V106",
+  middle: { x1: 168, y1: 0, x2: 168, y2: 106 },
+  bottom: "M285 0V74C285 80.627 279.627 86 273 86H168V106",
 };
 
 const mainCardBody = computed(() =>
   isMobile.value
-    ? "All transactions, settlements, refunds & payouts, matched in one place."
+    ? "All transactions, settlements, refunds & payouts - accurate, matched, complete."
     : "All transactions, settlements, refunds & payouts - accurate, matched, complete.",
 );
 
@@ -97,6 +97,7 @@ onUnmounted(() => {
     :aria-label="props.title"
   >
     <svg
+      v-if="!isMobile"
       class="reconcile-graphic__connectors"
       :viewBox="isMobile ? MOBILE_CONNECTORS.viewBox : DESKTOP_CONNECTORS.viewBox"
       fill="none"
@@ -126,7 +127,38 @@ onUnmounted(() => {
       />
     </svg>
 
-    <div class="reconcile-graphic__sources">
+    <svg
+      v-else
+      class="reconcile-graphic__connectors reconcile-graphic__connectors--mobile"
+      :viewBox="MOBILE_CONNECTORS.viewBox"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
+      <path
+        class="reconcile-graphic__connector"
+        :class="{ 'is-live': !reduceMotion }"
+        style="--connector-color: #3B82F6"
+        :d="MOBILE_CONNECTORS.top"
+      />
+      <line
+        class="reconcile-graphic__connector"
+        :class="{ 'is-live': !reduceMotion }"
+        style="--connector-color: #10B981"
+        :x1="MOBILE_CONNECTORS.middle.x1"
+        :y1="MOBILE_CONNECTORS.middle.y1"
+        :x2="MOBILE_CONNECTORS.middle.x2"
+        :y2="MOBILE_CONNECTORS.middle.y2"
+      />
+      <path
+        class="reconcile-graphic__connector"
+        :class="{ 'is-live': !reduceMotion }"
+        style="--connector-color: #8B5CF6"
+        :d="MOBILE_CONNECTORS.bottom"
+      />
+    </svg>
+
+    <div class="reconcile-graphic__sources" :class="{ 'reconcile-graphic__sources--mobile': isMobile }">
       <div
         v-for="(lane, index) in LANES"
         :key="lane.id"
@@ -154,7 +186,7 @@ onUnmounted(() => {
       </div>
     </div>
 
-    <div class="reconcile-graphic__stack" aria-hidden="true">
+    <div class="reconcile-graphic__stack" :class="{ 'reconcile-graphic__stack--mobile': isMobile }" aria-hidden="true">
       <div class="reconcile-graphic__stack-cap" />
       <div
         v-for="(lane, index) in LANES"
@@ -165,7 +197,7 @@ onUnmounted(() => {
       />
     </div>
 
-    <div class="reconcile-graphic__main-card" :class="{ 'is-live': !reduceMotion }">
+    <div class="reconcile-graphic__main-card" :class="{ 'is-live': !reduceMotion, 'reconcile-graphic__main-card--mobile': isMobile }">
       <div class="reconcile-graphic__badge" :class="{ 'is-active': !reduceMotion }">
         <span class="reconcile-graphic__badge-core">
           <svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -465,6 +497,17 @@ onUnmounted(() => {
   }
 }
 
+@keyframes reconcile-main-card-float-mobile {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-2px);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .reconcile-graphic__connector.is-live,
   .reconcile-graphic__source-pill.is-live .reconcile-graphic__dot,
@@ -477,79 +520,142 @@ onUnmounted(() => {
 
 @media (max-width: 480px) {
   .reconcile-graphic {
-    aspect-ratio: 805 / 188;
+    max-width: 336px;
+    aspect-ratio: 336 / 342;
   }
 
-  .reconcile-graphic__connectors {
-    transform: none;
+  .reconcile-graphic__connectors--mobile {
+    top: 70px;
+    left: 0;
+    width: 100%;
+    height: 150px;
   }
 
-  .reconcile-graphic__sources {
-    width: 36.5%;
-    gap: 6px;
+  .reconcile-graphic__connectors--mobile .reconcile-graphic__connector {
+    stroke-width: 2;
+    stroke-dasharray: 4 5;
+    stroke: #d5d7da;
+    stroke-opacity: 1;
   }
 
-  .reconcile-graphic__source-pill {
-    height: 28px;
-    padding: 0 44px 0 10px;
+  .reconcile-graphic__connectors--mobile .reconcile-graphic__connector.is-live {
+    stroke: var(--connector-color);
+    stroke-opacity: 0.72;
   }
 
-  .reconcile-graphic__source-label {
+  .reconcile-graphic__sources--mobile {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .reconcile-graphic__sources--mobile .reconcile-graphic__source-pill {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    height: 70px;
+    padding: 8px 8px 10px;
+    border-radius: 4px;
+  }
+
+  .reconcile-graphic__sources--mobile .reconcile-graphic__source-label {
     font-size: 10px;
+    text-align: center;
   }
 
-  .reconcile-graphic__dot-track {
-    left: auto;
-    right: 16px;
+  .reconcile-graphic__sources--mobile .reconcile-graphic__dot-track {
+    position: static;
+    transform: none;
+    margin-top: 10px;
     gap: 3px;
   }
 
-  .reconcile-graphic__dot {
+  .reconcile-graphic__sources--mobile .reconcile-graphic__dot {
     width: 5px;
     height: 5px;
   }
 
-  .reconcile-graphic__anchor {
-    right: 9px;
+  .reconcile-graphic__sources--mobile .reconcile-graphic__anchor {
+    position: static;
+    transform: none;
+    margin-top: 10px;
     width: 7px;
     height: 7px;
   }
 
-  .reconcile-graphic__stack,
-  .reconcile-graphic__main-card {
-    left: 64.5%;
-    width: 30%;
+  .reconcile-graphic__stack--mobile,
+  .reconcile-graphic__main-card--mobile {
+    left: 50%;
+    margin-left: -103.5px;
+    top: 176px;
+    width: 207px;
+    height: 138px;
   }
 
-  .reconcile-graphic__stack-layer,
-  .reconcile-graphic__main-card {
+  .reconcile-graphic__stack--mobile .reconcile-graphic__stack-cap {
+    left: 7px;
+    top: 0;
+    width: 192px;
+    height: 16px;
+    border-radius: 16px 16px 0 0;
+  }
+
+  .reconcile-graphic__stack--mobile .reconcile-graphic__stack-layer,
+  .reconcile-graphic__main-card--mobile {
     border-radius: 18px;
   }
 
-  .reconcile-graphic__main-card {
-    padding: 7px 8px 8px;
+  .reconcile-graphic__stack--mobile .reconcile-graphic__stack-layer {
+    top: 8px;
+    height: 130px;
+  }
+
+  .reconcile-graphic__stack--mobile .reconcile-graphic__stack-layer.is-top {
+    transform: translate(0, -2px) rotate(0deg);
+    opacity: 0.16;
+  }
+
+  .reconcile-graphic__stack--mobile .reconcile-graphic__stack-layer.is-mid,
+  .reconcile-graphic__stack--mobile .reconcile-graphic__stack-layer.is-back {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 0.08;
+  }
+
+  .reconcile-graphic__main-card--mobile {
+    padding: 12px 14px;
+    border-radius: 24px;
+  }
+
+  .reconcile-graphic__main-card--mobile.is-live {
+    animation: reconcile-main-card-float-mobile 1.4s ease-in-out infinite;
   }
 
   .reconcile-graphic__badge {
-    width: 26px;
-    height: 26px;
+    width: 32px;
+    height: 32px;
     margin-bottom: 8px;
   }
 
   .reconcile-graphic__badge-core,
   .reconcile-graphic__badge-core svg {
-    width: 10px;
-    height: 10px;
+    width: 12px;
+    height: 12px;
   }
 
   .reconcile-graphic__copy h3 {
-    font-size: 8.5px;
-    line-height: 10px;
+    font-size: 12px;
+    line-height: 16px;
+    margin-bottom: 6px;
   }
 
   .reconcile-graphic__copy p {
-    font-size: 6.5px;
-    line-height: 8px;
+    font-size: 10px;
+    line-height: 14px;
   }
 }
 </style>

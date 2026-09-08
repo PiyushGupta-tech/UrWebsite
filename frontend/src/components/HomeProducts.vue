@@ -440,22 +440,25 @@ function staticFigureClass(item) {
 
 @media (max-width: 480px) {
   .home-products {
-    padding: 0 16px 80px;
-    gap: 40px;
+    padding: 0 19px 80px;
+    gap: 48px;
   }
 
   .home-products__intro {
-    gap: 14px;
+    gap: 12px;
+    max-width: 353px;
   }
 
   .home-products__intro h2 {
-    font-size: 28px;
-    line-height: 1.2;
+    font-size: 42px;
+    line-height: 1.08;
+    letter-spacing: -1px;
   }
 
   .home-products__intro p {
-    font-size: 14px;
-    line-height: 22px;
+    font-size: 16px;
+    line-height: 1.5;
+    letter-spacing: 0;
   }
 
   .home-products__static {
@@ -489,13 +492,13 @@ function staticFigureClass(item) {
   }
 
   .home-products__copy h3 {
-    font-size: 28px;
-    line-height: 1.15;
+    font-size: 32px;
+    line-height: 1.1;
   }
 
   .home-products__copy .home-products__lead {
     max-width: 100%;
-    font-size: 16px;
+    font-size: 15px;
     line-height: 24px;
   }
 
@@ -508,7 +511,10 @@ function staticFigureClass(item) {
   }
 
   .home-products__cta {
-    width: 100%;
+    width: auto;
+    min-width: 142px;
+    height: 40px;
+    padding: 10px 16px;
   }
 }
 

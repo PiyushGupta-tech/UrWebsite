@@ -204,17 +204,24 @@ const rightCards = computed(() => (props.problem.items || []).slice(2, 4));
 
 @media (max-width: 480px) {
   .home-problem__inner {
-    padding: 36px 16px 56px;
-    gap: 24px;
+    padding: 56px 19px 72px;
+    gap: 32px;
   }
 
   .home-problem__copy {
-    gap: 14px;
+    gap: 16px;
+  }
+
+  .home-problem__title {
+    font-size: 42px;
+    line-height: 1.08;
+    letter-spacing: -1px;
   }
 
   .home-problem__intro {
-    font-size: 14px;
-    line-height: 22px;
+    font-size: 16px;
+    line-height: 1.5;
+    letter-spacing: 0;
   }
 
   .home-problem__cards {
@@ -226,8 +233,25 @@ const rightCards = computed(() => (props.problem.items || []).slice(2, 4));
   }
 
   .home-problem__card {
-    min-height: 0;
-    padding: 16px;
+    min-height: 197px;
+    padding: 20px;
+  }
+
+  .home-problem__icon {
+    width: 52px;
+    height: 52px;
+    margin-bottom: 16px;
+  }
+
+  .home-problem__card h3 {
+    font-size: 18px;
+    line-height: 24px;
+  }
+
+  .home-problem__card p {
+    font-size: 15px;
+    line-height: 22px;
+    letter-spacing: 0;
   }
 }
 </style>

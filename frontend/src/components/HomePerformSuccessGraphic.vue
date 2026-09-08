@@ -31,6 +31,7 @@ const PHASES = [
 ];
 
 const reduceMotion = ref(false);
+const isMobile = ref(false);
 const phase = ref("idle");
 const activeIndex = ref(0);
 const completed = ref([]);
@@ -39,6 +40,8 @@ const packetLeg = ref(1);
 
 let timers = [];
 let running = false;
+let mobileMediaQuery = null;
+let handleMobileQueryChange = null;
 
 function clearTimers() {
   timers.forEach((id) => window.clearTimeout(id));
@@ -145,6 +148,12 @@ const dash2Active = computed(() => !reduceMotion.value && phase.value === "trave
 
 onMounted(() => {
   reduceMotion.value = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  mobileMediaQuery = window.matchMedia("(max-width: 480px)");
+  isMobile.value = mobileMediaQuery.matches;
+  handleMobileQueryChange = (event) => {
+    isMobile.value = event.matches;
+  };
+  mobileMediaQuery.addEventListener("change", handleMobileQueryChange);
   if (reduceMotion.value) {
     phase.value = "idle";
     completed.value = SUCCESS.map((_, i) => i);
@@ -157,12 +166,16 @@ onMounted(() => {
 onUnmounted(() => {
   running = false;
   clearTimers();
+  if (mobileMediaQuery && handleMobileQueryChange) {
+    mobileMediaQuery.removeEventListener("change", handleMobileQueryChange);
+  }
 });
 </script>
 
 <template>
   <!-- Figma 73:1302 — payment journey: attempt → retry → success -->
   <svg
+    v-if="!isMobile"
     class="success-graphic"
     :class="{ 'success-graphic--static': reduceMotion }"
     width="748"
@@ -321,6 +334,178 @@ onUnmounted(() => {
       />
     </g>
   </svg>
+
+  <svg
+    v-else
+    class="success-graphic success-graphic--mobile"
+    :class="{ 'success-graphic--static': reduceMotion }"
+    width="220"
+    height="400"
+    viewBox="0 0 220 400"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    role="img"
+    aria-label="A payment attempt passes through smart retry and becomes successful"
+  >
+    <text class="success-graphic__label success-graphic__label--mobile-center" x="110" y="20">
+      INCOMING
+    </text>
+    <text class="success-graphic__label success-graphic__label--mobile-center" x="110" y="40">
+      ATTEMPTS
+    </text>
+
+    <g class="success-graphic__incoming" aria-hidden="true">
+      <circle
+        v-for="(dot, i) in INCOMING"
+        :key="`mobile-in-${i}`"
+        class="success-graphic__attempt"
+        :class="attemptClass(i)"
+        :cx="56 + i * 27"
+        cy="78"
+        r="12"
+        stroke="#ffffff"
+        stroke-width="2"
+      />
+    </g>
+
+    <line
+      class="success-graphic__dash"
+      :class="{ 'is-active': dash1Active }"
+      x1="110"
+      y1="99"
+      x2="110"
+      y2="137"
+      stroke="#097495"
+      stroke-opacity="0.35"
+      stroke-width="1.5"
+      stroke-dasharray="5 5"
+      stroke-linecap="round"
+    />
+
+    <text class="success-graphic__label success-graphic__label--mobile-side-left" x="74" y="214">
+      SMART
+    </text>
+
+    <text class="success-graphic__label success-graphic__label--mobile-side-right" x="146" y="214">
+      RETRY
+    </text>
+
+    <g aria-hidden="true">
+      <rect
+        x="81.5"
+        y="180"
+        width="57"
+        height="57"
+        rx="28.5"
+        fill="#ffffff"
+        stroke="#EEEEEE"
+        :class="{ 'success-graphic__hub--active': retryActive }"
+      />
+      <rect
+        x="93.875"
+        y="191.875"
+        width="33.25"
+        height="33.25"
+        rx="16.625"
+        fill="#097495"
+        :fill-opacity="retryActive ? 0.22 : 0.1"
+      />
+      <g>
+        <animateTransform
+          v-if="retryActive"
+          attributeName="transform"
+          type="rotate"
+          from="0 110 208.5"
+          to="360 110 208.5"
+          dur="0.9s"
+          repeatCount="indefinite"
+        />
+        <path
+          d="M114.196 207.313H118.865C118.922 207.313 118.977 207.329 119.025 207.36C119.072 207.39 119.11 207.433 119.134 207.484C119.158 207.535 119.167 207.592 119.16 207.648C119.153 207.704 119.13 207.757 119.093 207.8L116.759 210.603C116.731 210.636 116.696 210.663 116.657 210.681C116.617 210.7 116.574 210.709 116.531 210.709C116.487 210.709 116.444 210.7 116.405 210.681C116.366 210.663 116.331 210.636 116.303 210.603L113.968 207.8C113.932 207.757 113.909 207.704 113.902 207.648C113.895 207.592 113.904 207.535 113.927 207.484C113.951 207.433 113.989 207.39 114.037 207.36C114.085 207.329 114.14 207.313 114.196 207.313ZM101.134 209.688H105.803C105.859 209.688 105.915 209.672 105.962 209.642C106.01 209.611 106.048 209.568 106.072 209.517C106.096 209.466 106.104 209.409 106.097 209.353C106.09 209.297 106.067 209.245 106.031 209.201L103.696 206.399C103.668 206.365 103.634 206.338 103.594 206.32C103.555 206.302 103.512 206.292 103.468 206.292C103.425 206.292 103.382 206.302 103.342 206.32C103.303 206.338 103.268 206.365 103.24 206.399L100.906 209.201C100.87 209.245 100.847 209.297 100.839 209.353C100.832 209.409 100.841 209.466 100.865 209.517C100.889 209.568 100.927 209.611 100.974 209.642C101.022 209.672 101.077 209.688 101.134 209.688Z"
+          fill="#097495"
+        />
+        <path
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+          d="M109.999 202.563C108.156 202.563 106.508 203.402 105.419 204.722C105.37 204.785 105.309 204.837 105.24 204.876C105.171 204.915 105.094 204.94 105.015 204.949C104.936 204.958 104.856 204.951 104.78 204.928C104.703 204.905 104.632 204.868 104.571 204.817C104.51 204.766 104.459 204.704 104.422 204.633C104.385 204.563 104.363 204.485 104.357 204.406C104.351 204.327 104.36 204.247 104.385 204.171C104.411 204.096 104.451 204.026 104.503 203.966C105.373 202.914 106.526 202.133 107.827 201.717C109.127 201.301 110.52 201.267 111.839 201.62C113.158 201.972 114.348 202.696 115.267 203.705C116.187 204.715 116.797 205.967 117.026 207.313H115.818C115.544 205.972 114.815 204.766 113.755 203.901C112.695 203.035 111.368 202.563 109.999 202.563ZM104.18 209.688C104.405 210.786 104.936 211.798 105.712 212.607C106.487 213.416 107.476 213.989 108.563 214.26C109.651 214.531 110.793 214.489 111.857 214.138C112.922 213.788 113.866 213.143 114.579 212.279C114.628 212.216 114.689 212.163 114.758 212.124C114.827 212.085 114.904 212.061 114.983 212.052C115.062 212.043 115.142 212.05 115.219 212.072C115.295 212.095 115.366 212.133 115.427 212.184C115.489 212.234 115.539 212.297 115.576 212.367C115.613 212.438 115.635 212.515 115.641 212.595C115.648 212.674 115.638 212.754 115.613 212.829C115.588 212.905 115.547 212.974 115.495 213.034C114.625 214.087 113.472 214.868 112.171 215.284C110.871 215.7 109.478 215.734 108.159 215.381C106.84 215.029 105.65 214.305 104.731 213.295C103.811 212.286 103.201 211.034 102.973 209.688H104.18Z"
+          fill="#097495"
+        />
+      </g>
+    </g>
+
+    <line
+      class="success-graphic__dash"
+      :class="{ 'is-active': dash2Active }"
+      x1="110"
+      y1="248"
+      x2="110"
+      y2="286"
+      stroke="#097495"
+      stroke-opacity="0.35"
+      stroke-width="1.5"
+      stroke-dasharray="5 5"
+      stroke-linecap="round"
+    />
+
+    <circle
+      v-if="packetOn"
+      class="success-graphic__packet"
+      :class="packetLeg === 1 ? 'success-graphic__packet--mobile-leg1' : 'success-graphic__packet--mobile-leg2'"
+      r="3.5"
+      fill="#097495"
+      cx="0"
+      cy="0"
+    />
+
+    <text class="success-graphic__label success-graphic__label--mobile-center" x="110" y="356">
+      SUCCESSFUL
+    </text>
+    <text class="success-graphic__label success-graphic__label--mobile-center" x="110" y="376">
+      ATTEMPTS
+    </text>
+
+    <line
+      x1="56"
+      y1="320.5"
+      x2="164"
+      y2="320.5"
+      stroke="#2DCE89"
+      stroke-opacity="0.31"
+      stroke-width="3"
+    />
+
+    <g
+      v-for="(item, i) in SUCCESS"
+      :key="`mobile-ok-${i}`"
+      class="success-graphic__ok"
+      :class="{
+        'is-lit': tickDrawn(i) || tickDrawing(i),
+        'is-drawing': tickDrawing(i),
+      }"
+      aria-hidden="true"
+    >
+      <rect
+        :x="56 + i * 27 - 12"
+        y="309"
+        width="24"
+        height="24"
+        rx="12"
+        class="success-graphic__ok-bubble"
+        stroke="#ffffff"
+        stroke-width="2"
+      />
+      <path
+        class="success-graphic__tick"
+        :d="`M${56 + i * 27 - 3.917} 320.833 L${56 + i * 27 - 2.459} 322.291 L${56 + i * 27 + 1.916} 317.708`"
+        fill="none"
+        stroke="#ffffff"
+        stroke-width="1.6"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        pathLength="1"
+      />
+    </g>
+  </svg>
 </template>
 
 <style scoped>
@@ -343,6 +528,21 @@ onUnmounted(() => {
 
 .success-graphic__label--center {
   text-anchor: middle;
+}
+
+.success-graphic__label--mobile-center {
+  text-anchor: middle;
+  font-size: 14px;
+}
+
+.success-graphic__label--mobile-side-left {
+  text-anchor: end;
+  font-size: 14px;
+}
+
+.success-graphic__label--mobile-side-right {
+  text-anchor: start;
+  font-size: 14px;
 }
 
 .success-graphic__attempt {
@@ -471,6 +671,24 @@ onUnmounted(() => {
   }
 }
 
+@keyframes success-packet-mobile-leg1 {
+  from {
+    transform: translate(110px, 99px);
+  }
+  to {
+    transform: translate(110px, 137px);
+  }
+}
+
+@keyframes success-packet-mobile-leg2 {
+  from {
+    transform: translate(110px, 248px);
+  }
+  to {
+    transform: translate(110px, 286px);
+  }
+}
+
 @keyframes success-tick-draw {
   from {
     stroke-dashoffset: 1;
@@ -494,6 +712,23 @@ onUnmounted(() => {
   .success-graphic--static .success-graphic__tick {
     opacity: 1;
     stroke-dashoffset: 0;
+  }
+}
+
+.success-graphic__packet--mobile-leg1 {
+  animation: success-packet-mobile-leg1 0.65s linear forwards;
+}
+
+.success-graphic__packet--mobile-leg2 {
+  animation: success-packet-mobile-leg2 0.65s linear forwards;
+}
+
+@media (max-width: 480px) {
+  .success-graphic--mobile {
+    width: 220px;
+    max-width: 100%;
+    height: auto;
+    overflow: visible;
   }
 }
 </style>

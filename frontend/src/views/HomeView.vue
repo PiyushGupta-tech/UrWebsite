@@ -426,20 +426,27 @@ onUnmounted(() => {
 
   .home-trust,
   .home-banks {
-    padding: 28px 16px 48px;
+    padding: 40px 19px 64px;
   }
 
   .home-trust {
-    gap: 24px;
+    gap: 32px;
+  }
+
+  .home-trust__title,
+  .home-banks :deep(.partners__title) {
+    font-size: 24px;
+    line-height: 1.33;
   }
 
   .home-trust__stats {
-    gap: 20px 16px;
+    max-width: 327px;
+    gap: 26px 36px;
   }
 
   .home-trust :deep(.partners__scroll),
   .home-banks :deep(.partners__scroll) {
-    gap: 20px;
+    gap: 28px;
   }
 
   .home-trust :deep(.partners__pill),
@@ -458,14 +465,51 @@ onUnmounted(() => {
   }
 
   .home-trust__stat-value {
-    font-size: 30px;
-    line-height: 1.15;
-    letter-spacing: -0.72px;
+    font-size: 36px;
+    line-height: 1.2;
+    letter-spacing: -1px;
   }
 
   .home-trust__stat-label {
-    font-size: 13px;
-    line-height: 1.4;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .home-page :deep(.marketing-audiences) {
+    padding-left: 19px;
+    padding-right: 19px;
+  }
+
+  .home-page :deep(.marketing-audiences__panel) {
+    padding: 28px 16px;
+    border-radius: 18px;
+  }
+
+  .home-page :deep(.marketing-audiences__title) {
+    max-width: 313px;
+    margin-bottom: 24px;
+    font-size: 32px;
+    line-height: 1.22;
+  }
+
+  .home-page :deep(.marketing-audiences__card) {
+    min-height: 188px;
+    padding: 14px 12px;
+  }
+
+  .home-page :deep(.marketing-audiences__num) {
+    font-size: 42px;
+    line-height: 44px;
+  }
+
+  .home-page :deep(.marketing-audiences__copy h3) {
+    font-size: 16px;
+    line-height: 1.25;
+  }
+
+  .home-page :deep(.marketing-audiences__copy p) {
+    font-size: 12px;
+    line-height: 1.45;
   }
 }
 </style>
