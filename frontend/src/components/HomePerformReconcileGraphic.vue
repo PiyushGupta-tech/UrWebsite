@@ -72,7 +72,7 @@ function layerClass(index) {
 
 onMounted(() => {
   reduceMotion.value = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  mobileMediaQuery = window.matchMedia("(max-width: 480px)");
+  mobileMediaQuery = window.matchMedia("(max-width: 900px)");
   isMobile.value = mobileMediaQuery.matches;
   handleMobileQueryChange = (event) => {
     isMobile.value = event.matches;
@@ -531,7 +531,7 @@ onUnmounted(() => {
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 900px) {
   .reconcile-graphic {
     max-width: 336px;
     aspect-ratio: 336 / 342;

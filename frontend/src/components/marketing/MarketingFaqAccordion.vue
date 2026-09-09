@@ -248,20 +248,8 @@ function toggle(index) {
 
 @media (max-width: 900px) {
   .marketing-faq--split {
-    padding-left: 24px;
-    padding-right: 24px;
-  }
-
-  .marketing-faq__title {
-    font-size: 28px;
-    line-height: 1.3;
-  }
-}
-
-@media (max-width: 480px) {
-  .marketing-faq--split {
-    padding-left: 16px;
-    padding-right: 16px;
+    padding-left: clamp(16px, 4vw, 24px);
+    padding-right: clamp(16px, 4vw, 24px);
   }
 
   .marketing-faq__inner {
@@ -275,12 +263,13 @@ function toggle(index) {
   }
 
   .marketing-faq__title {
-    font-size: 24px;
+    font-size: var(--ur-heading-sm, 28px);
+    line-height: 1.3;
   }
 
   .marketing-faq__body {
     max-width: 100%;
-    font-size: 14px;
+    font-size: clamp(14px, 2.5vw, 16px);
     line-height: 22px;
   }
 

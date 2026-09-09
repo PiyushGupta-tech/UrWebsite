@@ -173,42 +173,24 @@ const usesLink = computed(() => !!props.to && !props.href);
 
 @media (max-width: 900px) {
   .marketing-banner-cta {
-    padding-left: 24px;
-    padding-right: 24px;
-    padding-bottom: 48px;
-  }
-
-  .marketing-banner-cta__panel {
-    height: auto;
-    min-height: 280px;
-  }
-
-  .marketing-banner-cta__title {
-    font-size: 28px;
-    line-height: 1.3;
-    letter-spacing: 0.5px;
-  }
-}
-
-@media (max-width: 480px) {
-  .marketing-banner-cta {
-    padding-left: 16px;
-    padding-right: 16px;
+    padding-left: clamp(16px, 4vw, 24px);
+    padding-right: clamp(16px, 4vw, 24px);
     padding-bottom: 36px;
   }
 
   .marketing-banner-cta__panel {
+    height: auto;
     min-height: 244px;
     border-radius: 14px;
   }
 
   .marketing-banner-cta__content {
     gap: 12px;
-    padding: 24px 16px;
+    padding: 24px clamp(16px, 4vw, 24px);
   }
 
   .marketing-banner-cta__title {
-    font-size: 24px;
+    font-size: var(--ur-heading-sm, 28px);
     line-height: 1.25;
     letter-spacing: 0.2px;
   }

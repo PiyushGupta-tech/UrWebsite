@@ -88,10 +88,10 @@ defineProps({
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: 1440px;
+  max-width: var(--ur-page-max, 1440px);
   margin: 0 auto;
   min-height: max(560px, calc(100svh - var(--home-trust-peek)));
-  padding: var(--home-nav-clearance) 102px 48px;
+  padding: var(--home-nav-clearance) clamp(24px, 7vw, 102px) 48px;
   box-sizing: border-box;
 }
 
@@ -100,7 +100,7 @@ defineProps({
   display: grid;
   grid-template-columns: minmax(280px, 545px) minmax(280px, 1fr);
   align-items: center;
-  gap: 40px;
+  gap: clamp(24px, 3vw, 40px);
   width: 100%;
   min-height: 0;
 }
@@ -122,7 +122,7 @@ defineProps({
 
 .home-hero__title {
   margin: 0;
-  font-size: 42px;
+  font-size: var(--ur-heading-lg, 42px);
   font-weight: 700;
   line-height: 1.15;
   letter-spacing: -1.26px;
@@ -177,7 +177,7 @@ defineProps({
 
 @media (max-width: 1100px) {
   .home-hero__inner {
-    padding: 113px 40px 40px;
+    padding: 113px clamp(24px, 5vw, 40px) 40px;
     min-height: auto;
   }
 
@@ -196,25 +196,10 @@ defineProps({
   }
 }
 
-@media (max-width: 768px) {
+/* Tablet + phone: mobile-inspired composition */
+@media (max-width: 900px) {
   .home-hero__inner {
-    padding: 100px 24px 32px;
-  }
-
-  .home-hero__title {
-    font-size: 32px;
-    letter-spacing: -0.8px;
-  }
-
-  .home-hero__cta {
-    width: 100%;
-  }
-}
-
-@media (max-width: 480px) {
-  .home-hero__inner {
-    min-height: auto;
-    padding: 104px 19px 28px;
+    padding: 104px clamp(19px, 4vw, 32px) 28px;
   }
 
   .home-hero__stage {
@@ -224,7 +209,7 @@ defineProps({
   .home-hero__copy {
     align-items: center;
     gap: 24px;
-    max-width: 353px;
+    max-width: min(420px, 100%);
     margin: 0 auto;
   }
 
@@ -234,13 +219,13 @@ defineProps({
   }
 
   .home-hero__title {
-    font-size: 44px;
-    line-height: 1.04;
-    letter-spacing: -1.1px;
+    font-size: var(--ur-heading-sm, 28px);
+    line-height: 1.15;
+    letter-spacing: -0.8px;
   }
 
   .home-hero__lead {
-    font-size: 16px;
+    font-size: clamp(14px, 2.8vw, 16px);
     line-height: 1.56;
     letter-spacing: 0;
     text-align: center;
@@ -259,9 +244,21 @@ defineProps({
   }
 
   .home-hero__diagram {
+    width: min(100%, 420px);
+    max-height: 280px;
+    transform: none;
+    margin-inline: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .home-hero__copy {
+    max-width: 353px;
+  }
+
+  .home-hero__diagram {
     width: min(100%, 324px);
     max-height: 240px;
-    transform: none;
   }
 }
 </style>

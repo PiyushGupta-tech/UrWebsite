@@ -396,6 +396,8 @@ async function onSubmit() {
   color: var(--contact-ink);
   /* Pull hero under the fixed floating nav (Figma overlays nav on the hero bg) */
   margin-top: -129px;
+  overflow-x: clip;
+  max-width: 100%;
 }
 
 /* ===== Hero + contact card (Figma background 1440×628, card 1193×688) ===== */
@@ -429,10 +431,10 @@ async function onSubmit() {
   position: relative;
   z-index: 1;
   width: 100%;
-  max-width: 1440px;
+  max-width: var(--ur-page-max, 1440px);
   margin: 0 auto;
   min-height: 1046px; /* card bottom: 358 + 688 */
-  padding: 188px 100px 0; /* title @ y=188; card→FAQ gap handled by .contact-faq */
+  padding: 188px clamp(24px, 7vw, 100px) 0; /* title @ y=188; card→FAQ gap handled by .contact-faq */
   box-sizing: border-box;
 }
 
@@ -452,9 +454,9 @@ async function onSubmit() {
   margin: 0;
   width: 500px;
   font-family: var(--contact-font);
-  font-size: 42px;
+  font-size: var(--ur-heading-lg, 42px);
   font-weight: 700;
-  line-height: 57.372px;
+  line-height: 1.37;
   letter-spacing: -1.26px;
   color: var(--contact-ink);
 }
@@ -923,13 +925,14 @@ async function onSubmit() {
 
   .contact-hero__inner {
     min-height: 0;
-    padding-top: 110px;
-    padding-bottom: 0;
+    padding: 110px clamp(19px, 4vw, 32px) 0;
   }
 
   .contact-hero__copy {
     width: 100%;
+    max-width: min(420px, 100%);
     margin-top: 0;
+    gap: 12px;
   }
 
   .contact-hero__title,
@@ -938,9 +941,14 @@ async function onSubmit() {
   }
 
   .contact-hero__title {
-    font-size: 32px;
+    font-size: var(--ur-heading-sm, 28px);
     line-height: 1.25;
     letter-spacing: -0.8px;
+  }
+
+  .contact-hero__intro {
+    font-size: clamp(13px, 2.5vw, 15px);
+    line-height: 1.5;
   }
 
   .contact-card {
@@ -956,6 +964,8 @@ async function onSubmit() {
 
   .contact-faq {
     padding-top: 64px;
+    padding-left: clamp(16px, 4vw, 24px);
+    padding-right: clamp(16px, 4vw, 24px);
   }
 
   .contact-faq__inner {
@@ -968,12 +978,12 @@ async function onSubmit() {
   }
 
   .contact-faq__title {
-    font-size: 28px;
+    font-size: var(--ur-heading-sm, 28px);
     line-height: 1.3;
   }
 
   .contact-cta {
-    padding: 64px 24px 48px;
+    padding: 64px clamp(16px, 4vw, 24px) 48px;
   }
 
   .contact-cta__panel {
@@ -982,7 +992,7 @@ async function onSubmit() {
   }
 
   .contact-cta__title {
-    font-size: 28px;
+    font-size: var(--ur-heading-sm, 28px);
     line-height: 1.3;
     letter-spacing: 0.5px;
   }

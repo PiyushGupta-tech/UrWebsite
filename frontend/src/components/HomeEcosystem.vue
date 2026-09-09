@@ -338,7 +338,7 @@ defineProps({
   }
 }
 
-@media (max-width: 700px) {
+@media (max-width: 900px) {
   .home-eco {
     padding: 0 16px 80px;
   }

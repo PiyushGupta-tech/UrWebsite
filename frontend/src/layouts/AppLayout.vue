@@ -36,7 +36,7 @@ onMounted(async () => {
     <code>{{ error }}</code>
   </div>
 
-  <div v-else>
+  <div v-else class="app-shell">
     <SiteNav :nav="nav" :site="site" />
     <RouterView v-slot="{ Component }">
       <component :is="Component" :site="site" :footer="footer" />
@@ -47,6 +47,10 @@ onMounted(async () => {
 </template>
 
 <style scoped>
+.app-shell {
+  overflow-x: clip;
+  max-width: 100%;
+}
 .loading-screen {
   min-height: 100vh;
   display: flex;

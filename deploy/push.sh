@@ -37,6 +37,7 @@ rsync -avz --delete \
   --exclude 'backend/staticfiles' \
   --exclude 'backend/.env' \
   --exclude '.DS_Store' \
+  --exclude '.cursor-*' \
   --exclude '.user.ini' \
   --exclude '.well-known' \
   -e "$RSYNC_SSH" \

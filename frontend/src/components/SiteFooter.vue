@@ -38,6 +38,7 @@ const copyrightText = computed(() => {
           <img
             class="footer__certs"
             src="/images/figma-footer-certs.png"
+            srcset="/images/figma-footer-certs.png 3x"
             alt="PCI DSS compliant and ISO certified"
             width="141"
             height="42"
@@ -181,6 +182,7 @@ const copyrightText = computed(() => {
   display: block;
   height: 42px;
   width: auto;
+  max-width: 100%;
   object-fit: contain;
 }
 

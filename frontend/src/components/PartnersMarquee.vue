@@ -271,7 +271,7 @@ onMounted(() => {
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 900px) {
   .partners__title {
     margin-bottom: 16px;
     font-size: 13px;

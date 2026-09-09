@@ -66,9 +66,9 @@ const rightCards = computed(() => (props.problem.items || []).slice(2, 4));
 }
 
 .home-problem__inner {
-  max-width: 1440px;
+  max-width: var(--ur-page-max, 1440px);
   margin: 0 auto;
-  padding: 100px 100px 120px;
+  padding: 100px clamp(24px, 7vw, 100px) 120px;
   display: flex;
   align-items: center;
   gap: 41px;
@@ -165,7 +165,7 @@ const rightCards = computed(() => (props.problem.items || []).slice(2, 4));
   .home-problem__inner {
     flex-direction: column;
     align-items: stretch;
-    padding: 64px 40px;
+    padding: 64px clamp(24px, 5vw, 40px);
   }
 
   .home-problem__cards {
@@ -178,34 +178,16 @@ const rightCards = computed(() => (props.problem.items || []).slice(2, 4));
   }
 }
 
-@media (max-width: 768px) {
+/* Tablet + phone: mobile-inspired */
+@media (max-width: 900px) {
   .home-problem__inner {
-    padding: 48px 24px;
+    padding: 56px clamp(19px, 4vw, 32px) 72px;
+    gap: 32px;
   }
 
   .home-problem__copy,
   .home-problem__cards {
     flex: none;
-  }
-
-  .home-problem__title {
-    font-size: 28px;
-    line-height: 1.25;
-  }
-
-  .home-problem__cards {
-    grid-template-columns: 1fr;
-  }
-
-  .home-problem__col--offset {
-    padding-top: 0;
-  }
-}
-
-@media (max-width: 480px) {
-  .home-problem__inner {
-    padding: 56px 19px 72px;
-    gap: 32px;
   }
 
   .home-problem__copy {
@@ -215,19 +197,26 @@ const rightCards = computed(() => (props.problem.items || []).slice(2, 4));
   }
 
   .home-problem__title {
-    font-size: 42px;
-    line-height: 1.08;
+    font-size: var(--ur-heading-sm, 28px);
+    line-height: 1.15;
     letter-spacing: -1px;
   }
 
   .home-problem__intro {
-    font-size: 16px;
+    font-size: clamp(14px, 2.8vw, 16px);
     line-height: 1.5;
     letter-spacing: 0;
   }
 
   .home-problem__cards {
+    grid-template-columns: 1fr;
     gap: 16px;
+    max-width: 420px;
+    margin-inline: auto;
+  }
+
+  .home-problem__col--offset {
+    padding-top: 0;
   }
 
   .home-problem__col {
@@ -237,6 +226,12 @@ const rightCards = computed(() => (props.problem.items || []).slice(2, 4));
   .home-problem__card {
     min-height: 197px;
     padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .home-problem__cards {
+    max-width: none;
   }
 
   .home-problem__icon {

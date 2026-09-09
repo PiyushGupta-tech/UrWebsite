@@ -86,6 +86,8 @@ watch(() => route.path, loadPage);
       v-if="payload.common_closing"
       :section="payload.common_closing"
       :show-india-growth="false"
+      :show-faq="slug !== 'faq'"
+      :show-cta="slug !== 'contact'"
     />
   </div>
 </template>
@@ -95,6 +97,8 @@ watch(() => route.path, loadPage);
   --page-nav-offset: 129px;
   margin-top: calc(-1 * var(--page-nav-offset));
   padding-top: var(--page-nav-offset);
+  overflow-x: clip;
+  max-width: 100%;
   background:
     url("/images/figma-contact/hero-bg@2x.png") center top / max(100%, 1440px) auto no-repeat,
     #ffffff;

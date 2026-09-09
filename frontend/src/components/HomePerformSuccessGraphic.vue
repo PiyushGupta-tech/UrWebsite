@@ -151,7 +151,7 @@ const dash2Active = computed(() => !reduceMotion.value && phase.value === "trave
 
 onMounted(() => {
   reduceMotion.value = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  mobileMediaQuery = window.matchMedia("(max-width: 480px)");
+  mobileMediaQuery = window.matchMedia("(max-width: 900px)");
   isMobile.value = mobileMediaQuery.matches;
   handleMobileQueryChange = (event) => {
     isMobile.value = event.matches;
@@ -723,7 +723,7 @@ onUnmounted(() => {
   animation: success-packet-mobile-leg2 0.65s linear forwards;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 900px) {
   .success-graphic--mobile {
     width: 220px;
     max-width: 100%;

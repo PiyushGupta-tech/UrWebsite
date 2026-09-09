@@ -9,13 +9,17 @@ import MarketingTestimonialsCarousel from "@/components/marketing/MarketingTesti
 const props = defineProps({
   section: { type: Object, required: true },
   showIndiaGrowth: { type: Boolean, default: true },
+  showTestimonials: { type: Boolean, default: true },
+  showAudiences: { type: Boolean, default: true },
+  showFaq: { type: Boolean, default: true },
+  showCta: { type: Boolean, default: true },
 });
 
 const indiaGrowth = computed(() => props.section.india_growth || null);
 </script>
 
 <template>
-  <div class="home-close">
+  <div class="home-close site-closing">
     <section
       v-if="showIndiaGrowth && indiaGrowth"
       class="home-close__india"
@@ -53,6 +57,7 @@ const indiaGrowth = computed(() => props.section.india_growth || null);
     </section>
 
     <MarketingTestimonialsCarousel
+      v-if="showTestimonials"
       :title="section.testimonials_title"
       :items="section.testimonials || []"
       variant="home"
@@ -60,6 +65,7 @@ const indiaGrowth = computed(() => props.section.india_growth || null);
     />
 
     <MarketingAudiencesGrid
+      v-if="showAudiences"
       :title="section.audiences_title"
       :items="section.audiences || []"
       aria-label="Industries we serve"
@@ -67,6 +73,7 @@ const indiaGrowth = computed(() => props.section.india_growth || null);
     />
 
     <MarketingFaqAccordion
+      v-if="showFaq"
       :title="section.faq_title"
       :intro="section.faq_intro"
       :items="section.faq_items || []"
@@ -76,6 +83,7 @@ const indiaGrowth = computed(() => props.section.india_growth || null);
     />
 
     <MarketingBannerCta
+      v-if="showCta"
       :title="section.cta_title"
       :body="section.cta_body"
       :label="section.cta_label"
@@ -618,13 +626,15 @@ const indiaGrowth = computed(() => props.section.india_growth || null);
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .home-close__india {
     padding-bottom: 80px;
+    padding-left: clamp(16px, 4vw, 24px);
+    padding-right: clamp(16px, 4vw, 24px);
   }
 
   .home-close__india-intro h2 {
-    font-size: 32px;
+    font-size: var(--ur-heading-sm, 28px);
     line-height: 1.2;
   }
 
@@ -632,25 +642,18 @@ const indiaGrowth = computed(() => props.section.india_growth || null);
   .home-close__audiences-panel h2,
   .home-close__faq-intro h2,
   .home-close__cta-content h2 {
-    font-size: 32px;
+    font-size: var(--ur-heading-sm, 28px);
     line-height: 1.2;
   }
 
-  .home-close__audiences-grid {
-    grid-template-columns: 1fr;
+  .home-close :deep(.marketing-testimonials__title),
+  .home-close :deep(.marketing-audiences__title),
+  .home-close :deep(.marketing-faq__title),
+  .home-close :deep(.marketing-banner-cta__title) {
+    font-size: var(--ur-heading-sm, 28px) !important;
+    line-height: 1.2 !important;
   }
 
-  .home-close__track {
-    --card-w: min(612px, calc(100vw - 48px));
-  }
-
-  .home-close__cta-panel {
-    height: auto;
-    min-height: 280px;
-  }
-}
-
-@media (max-width: 480px) {
   .home-close__india-copy {
     align-items: center;
     text-align: center;
@@ -667,6 +670,25 @@ const indiaGrowth = computed(() => props.section.india_growth || null);
 
   .home-close__india-points li {
     align-items: center;
+  }
+
+  .home-close__audiences-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .home-close__track {
+    --card-w: min(612px, calc(100vw - 48px));
+  }
+
+  .home-close__cta-panel {
+    height: auto;
+    min-height: 280px;
+  }
+
+  .home-close__faq,
+  .home-close__cta {
+    padding-left: clamp(16px, 4vw, 24px);
+    padding-right: clamp(16px, 4vw, 24px);
   }
 }
 </style>

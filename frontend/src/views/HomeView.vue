@@ -171,6 +171,8 @@ onUnmounted(() => {
 .home-page {
   margin-top: -129px;
   background: #ffffff;
+  overflow-x: clip;
+  max-width: 100%;
 }
 
 .home-trust {
@@ -379,14 +381,14 @@ onUnmounted(() => {
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .home-page {
     margin-top: -92px;
   }
 
   .home-trust,
   .home-banks {
-    padding: 32px 24px 64px;
+    padding: 32px clamp(16px, 4vw, 24px) 64px;
   }
 
   .home-trust {
@@ -477,43 +479,6 @@ onUnmounted(() => {
   .home-trust__stat-label {
     font-size: 14px;
     line-height: 1.5;
-  }
-
-  .home-page :deep(.marketing-audiences) {
-    padding-left: 19px;
-    padding-right: 19px;
-  }
-
-  .home-page :deep(.marketing-audiences__panel) {
-    padding: 28px 16px;
-    border-radius: 18px;
-  }
-
-  .home-page :deep(.marketing-audiences__title) {
-    max-width: 313px;
-    margin-bottom: 24px;
-    font-size: 32px;
-    line-height: 1.22;
-  }
-
-  .home-page :deep(.marketing-audiences__card) {
-    min-height: 188px;
-    padding: 14px 12px;
-  }
-
-  .home-page :deep(.marketing-audiences__num) {
-    font-size: 42px;
-    line-height: 44px;
-  }
-
-  .home-page :deep(.marketing-audiences__copy h3) {
-    font-size: 16px;
-    line-height: 1.25;
-  }
-
-  .home-page :deep(.marketing-audiences__copy p) {
-    font-size: 12px;
-    line-height: 1.45;
   }
 }
 </style>

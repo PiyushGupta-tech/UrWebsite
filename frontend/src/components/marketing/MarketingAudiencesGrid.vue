@@ -125,31 +125,11 @@ defineProps({
   }
 }
 
-@media (max-width: 768px) {
-  .marketing-audiences__title {
-    font-size: 32px;
-    line-height: 1.2;
-  }
-
-  .marketing-audiences__grid {
-    display: flex;
-    overflow-x: auto;
-    gap: 17px;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    padding-bottom: 8px;
-  }
-
-  .marketing-audiences__card {
-    flex: 0 0 min(280px, 78vw);
-    scroll-snap-align: start;
-  }
-}
-
-@media (max-width: 480px) {
+/* Tablet + phone: stack like mobile */
+@media (max-width: 900px) {
   .marketing-audiences {
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: clamp(16px, 4vw, 24px);
+    padding-right: clamp(16px, 4vw, 24px);
     padding-bottom: min(var(--section-pad-bottom, 100px), 72px);
   }
 
@@ -158,16 +138,16 @@ defineProps({
     flex-direction: column;
     align-items: center;
     gap: 20px;
-    padding: 36px 20px;
-    border-radius: 24px;
+    padding: clamp(28px, 5vw, 36px) clamp(16px, 4vw, 24px);
+    border-radius: 18px;
   }
 
   .marketing-audiences__title {
-    margin: 0;
-    max-width: 313px;
-    font-size: 32px;
+    margin: 0 0 24px;
+    max-width: min(420px, 100%);
+    font-size: var(--ur-heading-sm, 28px);
     font-weight: 700;
-    line-height: 36px;
+    line-height: 1.22;
     letter-spacing: -0.96px;
     text-align: center;
   }
@@ -177,7 +157,7 @@ defineProps({
     flex-direction: column;
     align-items: center;
     width: 100%;
-    max-width: 304px;
+    max-width: min(420px, 100%);
     gap: 12px;
     overflow: visible;
     padding-bottom: 0;
@@ -189,7 +169,7 @@ defineProps({
     width: 100%;
     min-height: 0;
     height: auto;
-    padding: 16px 20px;
+    padding: 20px;
     border-radius: 18px;
   }
 
@@ -202,25 +182,40 @@ defineProps({
 
   .marketing-audiences__num {
     margin-bottom: 20px;
-    font-size: 56px;
+    font-size: clamp(36px, 8vw, 42px);
     font-weight: 700;
-    line-height: 64px;
+    line-height: 1.05;
     letter-spacing: -1.68px;
   }
 
   .marketing-audiences__copy h3 {
     margin: 0 0 6px;
-    font-size: 20px;
+    font-size: clamp(16px, 3.5vw, 18px);
     font-weight: 700;
-    line-height: 28px;
+    line-height: 1.25;
     letter-spacing: -0.6px;
   }
 
   .marketing-audiences__copy p {
     font-size: 12px;
     font-weight: 400;
-    line-height: 20px;
+    line-height: 1.45;
     letter-spacing: 0.48px;
+  }
+}
+
+@media (max-width: 480px) {
+  .marketing-audiences {
+    padding-left: 19px;
+    padding-right: 19px;
+  }
+
+  .marketing-audiences__title {
+    max-width: 313px;
+  }
+
+  .marketing-audiences__grid {
+    max-width: 304px;
   }
 }
 </style>

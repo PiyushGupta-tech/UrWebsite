@@ -73,7 +73,7 @@ const { activeNode, activeId } = eco;
   color: #64748b;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 900px) {
   .eco__panel-hint {
     white-space: normal;
   }
