@@ -206,10 +206,10 @@ PAGES = {
                 ),
             },
         ],
-        "faq_title": "Got any Questions? We have got you covered!!",
+        "faq_title": "Got any questions? We've got you covered.",
         "faq_intro": (
-            "Multiple providers, fragmented systems, failed transactions, and manual operations "
-            "make it harder to scale—and harder to know where your money is going."
+            "Find clear answers about Urbanrupee products, payment orchestration, checkout, "
+            "and how our platform helps businesses scale with better visibility and control."
         ),
         "faq_items": [
             {
@@ -258,7 +258,7 @@ PAGES = {
             "Bring payments, routing, payouts, reconciliation, and analytics together on one "
             "unified platform—built to scale with your business."
         ),
-        "cta_label": "Talk to Expert",
+        "cta_label": "Talk to an Expert",
     },
     "payment-services": {
         "type": "marketing",
@@ -1439,7 +1439,7 @@ PAGES = {
             {
                 "title": "Controlled Wallet Ecosystem",
                 "body": (
-                    "Create secure wallet programmes where funds circulate only within authorized "
+                    "Create secure wallet programs where funds circulate only within authorized "
                     "participants, merchants, and approved transaction routes."
                 ),
                 "bullets_heading": "Features",
@@ -1503,7 +1503,7 @@ PAGES = {
             {
                 "title": "Why Businesses Choose Close Route Wallet",
                 "body": (
-                    "Purpose-built for secure closed-loop programmes with ledger-grade control "
+                    "Purpose-built for secure closed-loop programs with ledger-grade control "
                     "and enterprise-scale operations."
                 ),
             },
@@ -1993,7 +1993,7 @@ PAGES = {
                 "title": "Contact Us",
                 "body": (
                     "For any questions regarding these Terms and Conditions, please contact us:\n\n"
-                    "Urbanrupee Tech Solution Pvt. Ltd.\n"
+                    "Urbanrupee Techsolution Private Limited\n"
                     "Email: it.support@urbanrupee.com\n"
                     "Website: www.urbanrupee.com\n"
                     "Address: A01 & A03, UG, Tower 3, NX–One, Techzone 4, Greater Noida, "
@@ -2485,17 +2485,17 @@ PAGES = {
             "Have a question or need more information? We’re here to help. "
             "Reach out to our team and we’ll get back to you shortly."
         ),
-        "company": "Urbanrupee Tech Solution Pvt. Ltd.",
+        "company": "Urbanrupee Techsolution Private Limited",
         "phone": "+91 9305697870",
         "email": "it.support@urbanrupee.com",
         "address": (
             "A01 & A03, UG, Tower 3, NX–One, Techzone 4, Greater Noida, "
             "Uttar Pradesh, India, 201301"
         ),
-        "faq_title": "Got any Questions? We have got you covered!!",
+        "faq_title": "Got any questions? We've got you covered.",
         "faq_intro": (
-            "Multiple providers, fragmented systems, failed transactions, and manual "
-            "operations make it harder to scale—and harder to know where your money is going."
+            "Find clear answers about Urbanrupee products, payment orchestration, checkout, "
+            "and how our platform helps businesses scale with better visibility and control."
         ),
         "faq_items": [
             {
@@ -2544,7 +2544,7 @@ PAGES = {
             "Bring payments, routing, payouts, reconciliation, and analytics together on one "
             "unified platform—built to scale with your business."
         ),
-        "cta_label": "Talk to Expert",
+        "cta_label": "Talk to an Expert",
         "catalogue_note": "As listed in the Urbanrupee Product Catalogue — NX-One, Gaur City.",
     },
 }

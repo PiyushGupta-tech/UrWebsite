@@ -186,7 +186,10 @@ const copyrightText = computed(() => {
 
 .footer__cols {
   display: grid;
-  gap: 24px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: auto auto;
+  grid-auto-flow: column;
+  gap: 28px 24px;
   align-content: start;
 }
 
@@ -195,6 +198,7 @@ const copyrightText = computed(() => {
   flex-direction: column;
   align-items: flex-start;
   gap: 3px;
+  min-width: 0;
 }
 
 .footer__col-title {
@@ -226,6 +230,7 @@ const copyrightText = computed(() => {
 
 .footer__social {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 10px;
 }
@@ -292,8 +297,14 @@ const copyrightText = computed(() => {
 
   .footer__cols {
     grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: none;
+    grid-auto-flow: row;
     gap: 24px;
     min-width: 560px;
+  }
+
+  .footer__social {
+    flex-wrap: nowrap;
   }
 }
 </style>

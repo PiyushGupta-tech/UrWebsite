@@ -465,6 +465,19 @@ onUnmounted(() => {
   }
 }
 
+@keyframes reconcile-anchor-pulse-mobile {
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 transparent;
+  }
+
+  55% {
+    transform: scale(1.15);
+    box-shadow: 0 0 0 8px rgba(9, 116, 149, 0.16);
+  }
+}
+
 @keyframes reconcile-dash-move {
   to {
     stroke-dashoffset: -20;
@@ -550,42 +563,58 @@ onUnmounted(() => {
     width: 100%;
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 8px;
+    gap: 15px;
+    box-sizing: border-box;
   }
 
   .reconcile-graphic__sources--mobile .reconcile-graphic__source-pill {
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
+    gap: 12px;
+    width: 100%;
     height: 70px;
-    padding: 8px 8px 10px;
+    padding: 8px 16px;
     border-radius: 4px;
+    box-sizing: border-box;
   }
 
   .reconcile-graphic__sources--mobile .reconcile-graphic__source-label {
+    width: 100%;
     font-size: 10px;
+    font-weight: 700;
+    line-height: normal;
     text-align: center;
+    color: #535862;
   }
 
   .reconcile-graphic__sources--mobile .reconcile-graphic__dot-track {
     position: static;
     transform: none;
-    margin-top: 10px;
-    gap: 3px;
+    margin: 0;
+    width: 46px;
+    height: 6px;
+    gap: 4px;
+    justify-content: center;
   }
 
   .reconcile-graphic__sources--mobile .reconcile-graphic__dot {
-    width: 5px;
-    height: 5px;
+    width: 6px;
+    height: 6px;
+    flex-shrink: 0;
   }
 
   .reconcile-graphic__sources--mobile .reconcile-graphic__anchor {
     position: static;
     transform: none;
-    margin-top: 10px;
-    width: 7px;
-    height: 7px;
+    margin: 0;
+    width: 8px;
+    height: 8px;
+  }
+
+  .reconcile-graphic__sources--mobile .reconcile-graphic__source-pill.is-live .reconcile-graphic__anchor {
+    animation-name: reconcile-anchor-pulse-mobile;
   }
 
   .reconcile-graphic__stack--mobile,

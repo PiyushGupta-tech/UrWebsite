@@ -56,7 +56,7 @@ export const ABOUT_ECO_NODES = [
     label: "Trust",
     icon: "trust",
     pos: "top-left",
-    hint: "Transparent settlement and support your customers feel.",
+    hint: "Transparent settlement and support customers can feel.",
     spoke: { x2: 72, y2: 110 },
   },
 ];

@@ -42,7 +42,7 @@ class ContactSubmitAPIView(APIView):
 
         name = payload["name"]
         if len(name) < 2 or len(name) > 50 or not self.NAME_RE.fullmatch(name):
-            errors["name"] = "Full Name can contain only alphabets and spaces, and must be 2 to 50 characters."
+            errors["name"] = "Full Name can contain only letters and spaces, and must be 2 to 50 characters."
 
         email = payload["email"]
         if len(email) > 254 or email.count("@") != 1:

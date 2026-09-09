@@ -73,6 +73,12 @@ const { activeNode, activeId } = eco;
   color: #64748b;
 }
 
+@media (max-width: 480px) {
+  .eco__panel-hint {
+    white-space: normal;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .eco__panel--ready {
     opacity: 1;

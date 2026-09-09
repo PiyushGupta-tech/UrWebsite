@@ -294,7 +294,7 @@ defineProps({
 
 @media (max-width: 480px) {
   .home-perform {
-    padding: 0 19px 80px;
+    padding: 0 19px 100px;
     gap: 24px;
   }
 
@@ -370,7 +370,7 @@ defineProps({
   .home-perform__graphic--success {
     width: 220px;
     max-width: 100%;
-    aspect-ratio: 220 / 310;
+    aspect-ratio: 220 / 305;
     margin: 0 auto;
   }
 
@@ -383,8 +383,10 @@ defineProps({
   .home-perform__cta {
     min-width: 142px;
     height: 40px;
+    margin-top: 8px;
     padding: 10px 16px;
-    font-size: 16px;
+    font-size: 14px;
+    letter-spacing: -0.28px;
   }
 }
 </style>

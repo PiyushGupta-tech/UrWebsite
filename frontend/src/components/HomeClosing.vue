@@ -649,4 +649,24 @@ const indiaGrowth = computed(() => props.section.india_growth || null);
     min-height: 280px;
   }
 }
+
+@media (max-width: 480px) {
+  .home-close__india-copy {
+    align-items: center;
+    text-align: center;
+  }
+
+  .home-close__india-side {
+    align-items: center;
+  }
+
+  .home-close__india-points {
+    align-items: center;
+    max-width: 100%;
+  }
+
+  .home-close__india-points li {
+    align-items: center;
+  }
+}
 </style>

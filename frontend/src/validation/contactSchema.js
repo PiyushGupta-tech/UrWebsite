@@ -10,7 +10,7 @@ const name = Joi.string()
     "string.empty": "Full Name is required.",
     "string.min": "Full Name must be at least 2 characters.",
     "string.max": "Full Name must be at most 50 characters.",
-    "string.pattern.base": "Full Name can contain only alphabets and spaces.",
+    "string.pattern.base": "Full Name can contain only letters and spaces.",
     "any.required": "Full Name is required.",
   });
 

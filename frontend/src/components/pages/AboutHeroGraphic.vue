@@ -40,7 +40,7 @@ function labelStyle(side) {
   if (side === "top") {
     return {
       left: "50%",
-      bottom: "64px",
+      bottom: "var(--eco-label-stack, 64px)",
       transform: "translateX(-50%)",
     };
   }
@@ -48,14 +48,14 @@ function labelStyle(side) {
   if (side === "bottom") {
     return {
       left: "50%",
-      top: "64px",
+      top: "var(--eco-label-stack, 64px)",
       transform: "translateX(-50%)",
     };
   }
 
   if (side === "left") {
     return {
-      right: "64px",
+      right: "var(--eco-label-side, 64px)",
       top: "50%",
       transform: "translateY(-50%)",
       textAlign: "right",
@@ -63,7 +63,7 @@ function labelStyle(side) {
   }
 
   return {
-    left: "64px",
+    left: "var(--eco-label-side, 64px)",
     top: "50%",
     transform: "translateY(-50%)",
   };
@@ -103,8 +103,8 @@ const nodeModels = computed(() =>
         opacity: eco.ready ? "1" : "0",
       },
       iconStyle: {
-        width: "52px",
-        height: "52px",
+        width: "var(--eco-node-size, 52px)",
+        height: "var(--eco-node-size, 52px)",
         borderRadius: "50%",
         border: `2px solid ${isActive ? COLORS.cyan : COLORS.pale}`,
         background: COLORS.white,
@@ -117,7 +117,7 @@ const nodeModels = computed(() =>
       labelStyle: {
         position: "absolute",
         fontFamily: '"Manrope", "DM Sans", system-ui, sans-serif',
-        fontSize: "12px",
+        fontSize: "var(--eco-label-size, 12px)",
         fontWeight: "600",
         lineHeight: "1",
         whiteSpace: "nowrap",
@@ -321,6 +321,10 @@ function handleHubKeydown(event) {
   position: relative;
   --navy: #1a365d;
   --cyan: #06b6d4;
+  --eco-node-size: 52px;
+  --eco-label-size: 12px;
+  --eco-label-side: 64px;
+  --eco-label-stack: 64px;
 }
 
 .eco__lines {
@@ -534,6 +538,28 @@ function handleHubKeydown(event) {
     opacity: 1;
     transform: none;
     transition: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .eco {
+    width: 100%;
+    max-width: 300px;
+    margin-inline: auto;
+    --eco-node-size: 44px;
+    --eco-label-size: 11px;
+    --eco-label-side: 50px;
+    --eco-label-stack: 54px;
+  }
+
+  .eco__hub {
+    width: 88px;
+    height: 88px;
+  }
+
+  .eco__hub-mark {
+    width: 36px;
+    height: 26px;
   }
 }
 </style>

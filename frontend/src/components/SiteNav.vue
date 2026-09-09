@@ -169,7 +169,7 @@ onUnmounted(() => {
 
         <div class="nav__actions">
           <RouterLink :to="ctaTo" class="nav__cta" @click="closeMenus">
-            Talk to Expert
+            Talk to an Expert
             <img
               class="nav__cta-arrow"
               src="/images/figma-contact/nav-arrow.svg"

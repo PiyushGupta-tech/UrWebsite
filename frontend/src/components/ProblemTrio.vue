@@ -210,6 +210,8 @@ const rightCards = computed(() => (props.problem.items || []).slice(2, 4));
 
   .home-problem__copy {
     gap: 16px;
+    align-items: center;
+    text-align: center;
   }
 
   .home-problem__title {

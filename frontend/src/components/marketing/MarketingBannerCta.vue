@@ -219,9 +219,11 @@ const usesLink = computed(() => !!props.to && !props.href);
   }
 
   .marketing-banner-cta__btn {
-    width: 100%;
-    min-height: 48px;
-    font-size: 15px;
+    width: auto;
+    min-width: 0;
+    min-height: 52px;
+    padding: 0 16px;
+    font-size: 16px;
   }
 }
 </style>

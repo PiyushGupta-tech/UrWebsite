@@ -3,7 +3,7 @@ export const WALLET_METRIC_HERO = {
   wallets: {
     headline: "Wallets — Controlled Digital Value",
     body:
-      "Issue and manage digital wallets that operate within clearly defined programme boundaries. Maintain complete control over how funds are loaded, transferred, spent, and tracked.",
+      "Issue and manage digital wallets that operate within clearly defined program boundaries. Maintain complete control over how funds are loaded, transferred, spent, and tracked.",
     bullets_heading: "Key Benefits",
     bullets: [
       "Programme-specific wallet creation",

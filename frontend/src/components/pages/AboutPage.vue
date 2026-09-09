@@ -4,7 +4,6 @@ import { RouterLink } from "vue-router";
 import PartnersMarquee from "@/components/PartnersMarquee.vue";
 import AboutHeroGraphic from "@/components/pages/AboutHeroGraphic.vue";
 import AboutEcoPanel from "@/components/pages/AboutEcoPanel.vue";
-import AboutEcoTip from "@/components/pages/AboutEcoTip.vue";
 import { provideAboutEco } from "@/composables/useAboutEco.js";
 
 const props = defineProps({
@@ -50,21 +49,34 @@ onMounted(() => {
         />
       </div>
 
-      <div class="about-hero__copy">
-        <h1 class="about-hero__title">{{ page.title }}</h1>
-        <p
-          v-for="(paragraph, index) in heroParagraphs"
-          :key="index"
-          class="about-hero__intro"
-        >
-          {{ paragraph }}
-        </p>
-      </div>
+      <div class="about-hero__inner">
+        <div class="about-hero__copy">
+          <h1 class="about-hero__title">{{ page.title }}</h1>
+          <div class="about-hero__intros">
+            <p
+              v-for="(paragraph, index) in heroParagraphs"
+              :key="index"
+              class="about-hero__intro"
+            >
+              {{ paragraph }}
+            </p>
+          </div>
+          <RouterLink to="/contact" class="about-hero__cta">
+            <span>{{ page.cta_label || "Talk to an Expert" }}</span>
+            <img
+              src="/images/figma-contact/nav-arrow.svg"
+              alt=""
+              width="18"
+              height="18"
+              decoding="async"
+            />
+          </RouterLink>
+        </div>
 
-      <div class="about-hero__visual" aria-label="Payments ecosystem overview">
-        <AboutHeroGraphic class="about-hero__graphic" />
-        <AboutEcoTip class="about-hero__tip" />
-        <AboutEcoPanel class="about-hero__panel" />
+        <div class="about-hero__visual" aria-label="Payments ecosystem overview">
+          <AboutHeroGraphic class="about-hero__graphic" />
+          <AboutEcoPanel class="about-hero__panel" />
+        </div>
       </div>
     </section>
 
@@ -230,23 +242,16 @@ onMounted(() => {
 .about-hero {
   position: relative;
   width: 100%;
-  max-width: 1440px;
-  margin: 0 auto;
-  min-height: 100vh;
-  padding: 148px 100px 40px;
-  box-sizing: border-box;
+  max-width: none;
+  margin: 0;
   overflow: hidden;
-  display: grid;
-  grid-template-columns: minmax(0, 611px) minmax(340px, 1fr);
-  align-items: stretch;
-  gap: 56px;
 }
 
 .about-hero__bg {
   position: absolute;
   inset: 0 auto auto 50%;
   transform: translateX(-50%);
-  width: 1440px;
+  width: max(100%, 1440px);
   height: 100%;
   pointer-events: none;
   z-index: 0;
@@ -254,10 +259,25 @@ onMounted(() => {
 
 .about-hero__bg img {
   display: block;
-  width: 1440px;
+  width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center top;
+}
+
+.about-hero__inner {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  min-height: 100vh;
+  padding: 148px 100px 40px;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: minmax(0, 611px) minmax(340px, 1fr);
+  align-items: stretch;
+  gap: 56px;
 }
 
 .about-hero__copy {
@@ -283,6 +303,13 @@ onMounted(() => {
   letter-spacing: -1.26px;
 }
 
+.about-hero__intros {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
 .about-hero__intro {
   margin: 0;
   font-size: 14px;
@@ -291,6 +318,34 @@ onMounted(() => {
   line-height: 22px;
   letter-spacing: 0.56px;
   color: var(--about-muted);
+}
+
+.about-hero__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  height: 52px;
+  padding: 16px;
+  border-radius: 8px;
+  background: #097495;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.32px;
+  line-height: 1;
+  text-decoration: none;
+  box-sizing: border-box;
+}
+
+.about-hero__cta img {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.about-hero__cta:hover {
+  filter: brightness(1.05);
 }
 
 .about-hero__visual {
@@ -310,13 +365,8 @@ onMounted(() => {
   margin-bottom: 28px;
 }
 
-.about-hero__tip,
 .about-hero__panel {
   width: min(100%, 420px);
-}
-
-.about-hero__tip {
-  width: min(100%, 360px);
 }
 
 .about-trust {
@@ -1041,7 +1091,7 @@ onMounted(() => {
 }
 
 @media (max-width: 1200px) {
-  .about-hero {
+  .about-hero__inner {
     min-height: auto;
     grid-template-columns: 1fr;
     gap: 40px;
@@ -1104,7 +1154,7 @@ onMounted(() => {
 }
 
 @media (max-width: 768px) {
-  .about-hero {
+  .about-hero__inner {
     min-height: auto;
     padding: 160px 24px 24px;
   }
@@ -1186,25 +1236,61 @@ onMounted(() => {
     margin-top: -88px;
   }
 
+  .about-hero__inner {
+    padding: 120px 19px 40px;
+    gap: 40px;
+  }
+
   .about-hero {
-    padding: 120px 16px 20px;
-    gap: 24px;
+    overflow: visible;
   }
 
   .about-hero__copy {
-    gap: 16px;
+    gap: 24px;
+    max-width: 354px;
   }
 
   .about-hero__title {
-    font-size: 28px;
+    font-size: 36px;
+    line-height: 46px;
+    letter-spacing: -1.08px;
+  }
+
+  .about-hero__intros {
+    gap: 0;
+  }
+
+  .about-hero__intro {
+    font-size: 12px;
+    line-height: 20px;
+    letter-spacing: 0;
+  }
+
+  .about-hero__cta {
+    height: 40px;
+    min-width: 142px;
+    margin-top: 16px;
+    margin-bottom: 8px;
+    padding: 10px 16px;
+    font-size: 14px;
+    letter-spacing: -0.28px;
   }
 
   .about-hero__visual {
-    gap: 14px;
+    width: 100%;
+    max-width: 354px;
+    margin: 0 auto;
+    gap: 16px;
+    overflow: visible;
   }
 
   .about-hero__graphic {
-    margin-bottom: 12px;
+    width: min(100%, 320px);
+    margin-bottom: 8px;
+  }
+
+  .about-hero__panel {
+    width: min(100%, 338px);
   }
 
   .about-trust {

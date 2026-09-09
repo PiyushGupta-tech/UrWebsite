@@ -148,51 +148,79 @@ defineProps({
 
 @media (max-width: 480px) {
   .marketing-audiences {
-    padding-left: 16px;
-    padding-right: 16px;
+    padding-left: 20px;
+    padding-right: 20px;
     padding-bottom: min(var(--section-pad-bottom, 100px), 72px);
   }
 
   .marketing-audiences__panel {
-    padding: 32px 16px;
-    border-radius: 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 36px 20px;
+    border-radius: 24px;
   }
 
   .marketing-audiences__title {
-    margin-bottom: 28px;
-    font-size: 24px;
+    margin: 0;
+    max-width: 313px;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 36px;
+    letter-spacing: -0.96px;
+    text-align: center;
   }
 
   .marketing-audiences__grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    overflow: visible;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 304px;
     gap: 12px;
+    overflow: visible;
     padding-bottom: 0;
+    scroll-snap-type: none;
   }
 
   .marketing-audiences__card {
     flex: none;
     width: 100%;
     min-height: 0;
-    padding: 14px 16px;
+    height: auto;
+    padding: 16px 20px;
+    border-radius: 18px;
+  }
+
+  .marketing-audiences__card:hover {
+    transform: none;
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(200, 200, 200, 0.19);
+    box-shadow: none;
   }
 
   .marketing-audiences__num {
-    margin-bottom: 14px;
-    font-size: 48px;
-    line-height: 52px;
+    margin-bottom: 20px;
+    font-size: 56px;
+    font-weight: 700;
+    line-height: 64px;
+    letter-spacing: -1.68px;
   }
 
   .marketing-audiences__copy h3 {
-    font-size: 18px;
-    line-height: 24px;
+    margin: 0 0 6px;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 28px;
+    letter-spacing: -0.6px;
   }
 
   .marketing-audiences__copy p {
-    font-size: 13px;
-    line-height: 18px;
-    letter-spacing: 0.02em;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: 0.48px;
   }
 }
 </style>

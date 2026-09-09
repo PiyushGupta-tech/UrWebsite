@@ -269,7 +269,9 @@ function toggle(index) {
   }
 
   .marketing-faq__intro {
+    align-items: center;
     gap: 14px;
+    text-align: center;
   }
 
   .marketing-faq__title {
@@ -277,6 +279,7 @@ function toggle(index) {
   }
 
   .marketing-faq__body {
+    max-width: 100%;
     font-size: 14px;
     line-height: 22px;
   }

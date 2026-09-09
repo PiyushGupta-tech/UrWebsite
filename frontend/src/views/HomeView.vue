@@ -429,6 +429,10 @@ onUnmounted(() => {
     padding: 40px 19px 64px;
   }
 
+  .home-banks {
+    padding-top: 0;
+  }
+
   .home-trust {
     gap: 32px;
   }

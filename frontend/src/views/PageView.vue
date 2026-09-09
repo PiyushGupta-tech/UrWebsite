@@ -96,7 +96,7 @@ watch(() => route.path, loadPage);
   margin-top: calc(-1 * var(--page-nav-offset));
   padding-top: var(--page-nav-offset);
   background:
-    url("/images/figma-contact/hero-bg@2x.png") center top / 1440px 560px no-repeat,
+    url("/images/figma-contact/hero-bg@2x.png") center top / max(100%, 1440px) auto no-repeat,
     #ffffff;
 }
 

@@ -203,12 +203,12 @@ onUnmounted(stopTestimonialAutoplay);
 
 .marketing-testimonials--about {
   margin: 0;
-  padding: 0 0 120px;
+  padding: 80px 0 120px;
   text-align: center;
 }
 
 .marketing-testimonials--home {
-  padding: 0 0 100px;
+  padding: 80px 0 100px;
 }
 
 .marketing-testimonials__title {
@@ -360,6 +360,7 @@ onUnmounted(stopTestimonialAutoplay);
 @media (max-width: 480px) {
   .marketing-testimonials--about,
   .marketing-testimonials--home {
+    padding-top: 48px;
     padding-bottom: 72px;
   }
 

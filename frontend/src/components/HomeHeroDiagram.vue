@@ -31,8 +31,8 @@ const PRODUCTS = [
     dot: { cx: 375.5, cy: 164.5 },
   },
   {
-    id: "withdrawls",
-    label: "Withdrawls",
+    id: "withdrawals",
+    label: "Withdrawals",
     pill: { x: 218, y: 396, w: 115 },
     path: "M296 306V334C296 337.314 293.314 340 290 340H275C271.686 340 269 342.686 269 346V366.5V393",
     dot: { cx: 295.5, cy: 301.5 },
@@ -50,7 +50,7 @@ const CYCLE_ORDER = [
   "orchestration",
   "tsp",
   "whitelabel",
-  "withdrawls",
+  "withdrawals",
   "checkout",
   "collections",
 ];
@@ -120,7 +120,7 @@ onUnmounted(stopCycle);
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
     role="img"
-    aria-label="Urbanrupee products: Orchestration, Collections, Checkout, TSP, Withdrawls, and White Label"
+    aria-label="Urbanrupee products: Orchestration, Collections, Checkout, BaaS, Withdrawals, and White Label"
   >
     <defs>
       <linearGradient id="heroHubGrad" x1="223" y1="139" x2="362" y2="278" gradientUnits="userSpaceOnUse">

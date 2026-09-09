@@ -10,7 +10,7 @@ SITE = {
     "website_url": "https://urbanrupee.com",
     "sign_in_url": "https://merchant.urbanrupee.in/login",
     "get_started_url": "/contact",
-    "copyright": "Copyright © 2025 Urbanrupee Techsolution Pvt Ltd. All rights reserved.",
+    "copyright": "Copyright © 2025 Urbanrupee Techsolution Private Limited. All rights reserved.",
     "footer_blurb": CATALOGUE_TAGLINE,
     "certifications": ["PCI DSS Compliant", "ISO 27001:2022 Certification"],
     # Phase 6 — canonical product URLs for social, docs, and external listings
@@ -72,7 +72,7 @@ HERO = {
         "Urbanrupee unifies payments, routing, payouts, and reconciliation to simplify operations "
         "and help businesses scale confidently."
     ),
-    "cta_primary": "Talk to Expert",
+    "cta_primary": "Talk to an Expert",
     "cta_secondary": "Sign In",
     "compliance_badges": ["PCI-DSS COMPLIANT", "ISO CERTIFIED"],
     "social_proof": "Trusted by Leading Businesses",
@@ -256,7 +256,7 @@ TESTIMONIALS = {
 }
 
 FAQS = {
-    "eyebrow": "Our Questions & Answers",
+    "eyebrow": "Questions & Answers",
     "items": [
         {
             "question": "What is Urbanrupee Hyper Checkout?",
@@ -420,7 +420,7 @@ VALUE_PROP = {
     "headline": "Unified Payments Infrastructure for Modern Businesses",
     "subheadline": (
         "Urbanrupee is a unified payment ecosystem that combines payment processing, smart "
-        "routing, reconciliation, analytics, and settlement management into one seamless platform "
+        "routing, reconciliation, analytics, and settlement management into one seamless platform, "
         "enabling businesses to accept payments across UPI, cards, wallets, net banking, and EMI "
         "options with speed, security, reliability, and enhanced transaction success rates."
     ),
@@ -452,7 +452,7 @@ ECOSYSTEM = {
         {
             "number": "02",
             "title": "ORCHESTRATE",
-            "body": "Intelligent routing across multiple PSPs with automatic failover",
+            "body": "Intelligent routing across multiple PSPs with automatic failover.",
             "side": "left",
         },
         {
@@ -488,7 +488,7 @@ PERFORM = {
         "Urbanrupee helps you turn a fragmented payment stack into a simpler, more reliable "
         "infrastructure built for growth."
     ),
-    "cta": "Talk to Expert",
+    "cta": "Talk to an Expert",
     "cards": [
         {
             "title": "More Control Over Payments",
@@ -519,7 +519,7 @@ PRODUCTS = {
         "One unified infrastructure for payment acceptance, orchestration, payouts, checkout, "
         "reconciliation, and analytics — built to simplify operations and scale with your business."
     ),
-    "cta": "Talk to Expert",
+    "cta": "Talk to an Expert",
     "items": [
         {
             "eyebrow": "White Label",
@@ -528,7 +528,8 @@ PRODUCTS = {
                 "Offer a complete payment experience under your own brand—without building the "
                 "infrastructure from scratch."
             ),
-            "image": "/images/figma-home/Frame%202147225785.png",
+            "image": "/images/figma-home/Frame%202147225785.svg?v=5",
+            "image_mobile": "/images/figma-home/products/mobile/white-label.svg?v=2",
             "points": [
                 {
                     "title": "01 — Full Brand Control",
@@ -554,6 +555,7 @@ PRODUCTS = {
                 "successful transactions."
             ),
             "image": "/images/figma-home/Frame%202147225787.svg",
+            "image_mobile": "/images/figma-home/products/mobile/checkout.svg?v=2",
             "points": [
                 {
                     "title": "01 — Full Brand Control",
@@ -585,7 +587,8 @@ PRODUCTS = {
                 "Send each transaction through the best available path with intelligent "
                 "orchestration, automatic failover, and real-time optimization."
             ),
-            "image": "/images/figma-home/Frame%202147225952-bubbles.png?v=4",
+            "image": "/images/figma-home/Frame%202147225952-clean.svg?v=5",
+            "image_mobile": "/images/figma-home/products/mobile/orchestration.svg?v=2",
             "points": [
                 {
                     "title": "01 — Multi-PSP Connectivity",
@@ -603,7 +606,7 @@ PRODUCTS = {
                     "title": "03 — Real-Time Optimization",
                     "body": (
                         "Continuously optimize routing based on performance, availability, and "
-                        "transaction conditions"
+                        "transaction conditions."
                     ),
                 },
             ],
@@ -718,10 +721,10 @@ HOME_CLOSING = {
             ),
         },
     ],
-    "faq_title": "Got Any Questions? We Have Got You Covered!!",
+    "faq_title": "Got any questions? We've got you covered.",
     "faq_intro": (
-        "Multiple providers, fragmented systems, failed transactions, and manual operations "
-        "make it harder to scale—and harder to know where your money is going."
+        "Find clear answers about Urbanrupee products, payment orchestration, checkout, "
+        "and how our platform helps businesses scale with better visibility and control."
     ),
     "faq_items": [
         {
@@ -772,7 +775,7 @@ HOME_CLOSING = {
         "Bring payments, routing, payouts, reconciliation, and analytics together on one "
         "unified platform—built to scale with your business."
     ),
-    "cta_label": "Talk to Expert",
+    "cta_label": "Talk to an Expert",
 }
 
 PERSONAS = [

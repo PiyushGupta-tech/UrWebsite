@@ -20,16 +20,8 @@ function mediaStyle(index) {
 }
 
 function staticImage(item) {
-  if (item?.image?.includes("2147225785")) {
-    return "/images/figma-home/Frame%202147225785-content.svg";
-  }
-  return item.image;
-}
-
-function staticFigureClass(item) {
-  return {
-    "home-products__figure--white-label-mobile": item?.image?.includes("2147225785"),
-  };
+  if (item?.image_mobile) return item.image_mobile;
+  return item?.image;
 }
 </script>
 
@@ -108,9 +100,8 @@ function staticFigureClass(item) {
             :src="staticImage(item)"
             :alt="item.title"
             class="home-products__figure"
-            :class="staticFigureClass(item)"
-            width="661"
-            height="526"
+            width="353"
+            height="281"
             loading="lazy"
             decoding="async"
           />
@@ -301,6 +292,7 @@ function staticFigureClass(item) {
   height: 100%;
   object-fit: cover;
   border-radius: 0;
+  background: transparent;
 }
 
 /* Figma 89:2110 / 89:2108 — rgba(9,116,149,0.2) glass pills */
@@ -420,6 +412,19 @@ function staticFigureClass(item) {
   .home-products__static {
     display: flex;
   }
+
+  .home-products__stage--static {
+    max-width: 560px;
+    aspect-ratio: 353 / 281;
+    padding: 0;
+    border-radius: 12px;
+  }
+
+  .home-products__stage--static .home-products__figure {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
 }
 
 @media (max-width: 768px) {
@@ -471,20 +476,16 @@ function staticFigureClass(item) {
 
   .home-products__stage--static {
     max-width: 100%;
-    aspect-ratio: auto;
+    aspect-ratio: 353 / 281;
     min-height: 0;
-    padding: 12px;
-    border-radius: 16px;
+    padding: 0;
+    border-radius: 12px;
   }
 
   .home-products__stage--static .home-products__figure {
-    height: auto;
+    width: 100%;
+    height: 100%;
     object-fit: contain;
-  }
-
-  .home-products__stage--static .home-products__figure--white-label-mobile {
-    width: 82%;
-    margin: 0 auto;
   }
 
   .home-products__copy {
