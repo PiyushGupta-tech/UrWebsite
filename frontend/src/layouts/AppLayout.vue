@@ -1,9 +1,10 @@
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted, onUnmounted, ref } from "vue";
 import { fetchSite } from "@/api/client";
 import SiteNav from "@/components/SiteNav.vue";
 import SiteFooter from "@/components/SiteFooter.vue";
 import ChatWidget from "@/components/ChatWidget.vue";
+import { startResponsiveBand } from "@/composables/useResponsiveBand.js";
 
 const site = ref(null);
 const nav = ref(null);
@@ -11,7 +12,10 @@ const footer = ref(null);
 const error = ref(null);
 const loading = ref(true);
 
+let stopBand = null;
+
 onMounted(async () => {
+  stopBand = startResponsiveBand();
   try {
     const data = await fetchSite();
     site.value = data.site;
@@ -22,6 +26,10 @@ onMounted(async () => {
   } finally {
     loading.value = false;
   }
+});
+
+onUnmounted(() => {
+  stopBand?.();
 });
 </script>
 

@@ -714,7 +714,7 @@ HOME_CLOSING = {
         },
         {
             "number": "4",
-            "title": "Enterprises & Large Corporates",
+            "title": "Enterprises & Large Businesses",
             "body": (
                 "Unify multiple payment providers, optimize transaction performance, and "
                 "simplify operations."

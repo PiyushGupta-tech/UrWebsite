@@ -63,8 +63,8 @@ defineProps({
 <style scoped>
 .home-perform {
   max-width: 1240px;
-  margin: 0 auto;
-  padding: 0 clamp(24px, 4vw, 72px) 120px;
+  margin-inline: auto;
+  padding: 0 var(--ur-gutter);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -204,10 +204,10 @@ defineProps({
   width: 100%;
   max-width: 859px;
   align-self: stretch;
-  padding: 18px 20px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 16px;
   overflow: hidden;
 }
 
@@ -252,116 +252,126 @@ defineProps({
   }
 }
 
-@media (max-width: 1100px) {
-  .home-perform__grid {
-    grid-template-columns: 1fr;
-    height: auto;
-  }
-
-  .home-perform__stack {
-    height: auto;
-  }
-
-  .home-perform__card--tall,
-  .home-perform__card--success,
-  .home-perform__card--reconcile {
-    height: auto;
-    flex: none;
-  }
-
-  .home-perform__graphic--control {
-    flex: none;
-    height: auto;
-    max-height: none;
-  }
-
-  .home-perform__graphic--success {
-    height: auto;
-    max-height: none;
-  }
-}
-
-@media (max-width: 900px) {
+/* Tablet: Figma 208:3641 — stacked full-width cards + vertical graphics */
+@media (max-width: 1200px) {
   .home-perform {
-    padding: 0 clamp(19px, 4vw, 32px) 100px;
+    padding: 0 70px;
     gap: 24px;
+    max-width: 1024px;
   }
 
   .home-perform__intro {
     gap: 12px;
-    max-width: min(420px, 100%);
+    max-width: 560px;
     margin-inline: auto;
     text-align: center;
   }
 
   .home-perform__intro h2 {
-    font-size: var(--ur-heading-sm, 28px);
-    line-height: 1.2;
-    letter-spacing: 0;
+    font-size: 34px;
+    line-height: 42px;
+    letter-spacing: -0.4px;
   }
 
   .home-perform__intro p {
-    font-size: clamp(12px, 2.5vw, 14px);
+    font-size: 12px;
     line-height: 20px;
     letter-spacing: 0.48px;
   }
 
-  .home-perform__grid,
+  .home-perform__grid {
+    display: flex;
+    flex-direction: column;
+    grid-template-columns: none;
+    gap: 24px;
+    width: 100%;
+    max-width: 523px;
+    margin-inline: auto;
+    height: auto;
+  }
+
   .home-perform__stack {
-    gap: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    height: auto;
+    width: 100%;
+  }
+
+  .home-perform__card--tall,
+  .home-perform__card--success,
+  .home-perform__card--reconcile {
+    width: 100%;
+    max-width: none;
+    height: auto;
+    flex: none;
   }
 
   .home-perform__card--tall {
-    padding: 20px 22px;
-    gap: 8px;
+    padding: 29px 32px;
+    gap: 12px;
+    border-radius: 20.5px;
   }
 
   .home-perform__card--success,
   .home-perform__card--reconcile {
-    padding: 20px 22px;
-  }
-
-  .home-perform__card--reconcile {
-    gap: 19px;
+    padding: 29px;
+    border-radius: 21px;
   }
 
   .home-perform__card--success {
-    gap: 20px;
+    gap: 12px;
+  }
+
+  .home-perform__card--reconcile {
+    padding: 31px;
+    gap: 28px;
   }
 
   .home-perform__copy h3 {
-    font-size: 16px;
-    line-height: 24px;
+    font-size: 23.4px;
+    line-height: 35px;
     text-align: center;
   }
 
   .home-perform__copy p {
-    font-size: 12px;
-    line-height: 20px;
-    letter-spacing: 0.48px;
+    font-size: 17.5px;
+    line-height: 29px;
+    letter-spacing: 0.7px;
     text-align: center;
   }
 
   .home-perform__copy,
   .home-perform__copy--tall,
   .home-perform__copy--reconcile {
-    max-width: min(420px, 100%);
+    width: 100%;
+    max-width: 100%;
     margin: 0 auto;
     align-items: center;
     text-align: center;
   }
 
+  .home-perform__copy--tall {
+    max-width: 453px;
+    gap: 6px;
+  }
+
   .home-perform__graphic--control {
-    width: min(309px, 100%);
+    flex: none;
+    width: min(453px, 100%);
     max-width: 100%;
-    aspect-ratio: 309 / 294;
+    max-height: none;
+    height: auto;
+    aspect-ratio: 396 / 290;
     margin: 0 auto;
   }
 
   .home-perform__graphic--success {
-    width: min(220px, 100%);
+    width: min(322px, 100%);
     max-width: 100%;
-    aspect-ratio: 220 / 305;
+    height: auto;
+    max-height: none;
+    aspect-ratio: auto;
     margin: 0 auto;
   }
 
@@ -374,10 +384,57 @@ defineProps({
   .home-perform__cta {
     min-width: 142px;
     height: 40px;
-    margin-top: 8px;
+    margin-top: 0;
     padding: 10px 16px;
     font-size: 14px;
     letter-spacing: -0.28px;
+  }
+}
+
+@media (max-width: 700px) {
+  .home-perform {
+    padding: 0 19px;
+  }
+
+  .home-perform__grid {
+    max-width: none;
+  }
+
+  .home-perform__intro h2 {
+    font-size: 28px;
+    line-height: 1.2;
+  }
+
+  .home-perform__copy h3 {
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  .home-perform__copy p {
+    font-size: 12px;
+    line-height: 20px;
+  }
+
+  .home-perform__card--tall,
+  .home-perform__card--success,
+  .home-perform__card--reconcile {
+    padding: 20px;
+  }
+
+  .home-perform__card--reconcile {
+    gap: 16px;
+  }
+
+  .home-perform__graphic--control {
+    width: min(309px, 100%);
+  }
+
+  .home-perform__graphic--success {
+    width: min(220px, 100%);
+  }
+
+  .home-perform__graphic--reconcile {
+    width: min(336px, 100%);
   }
 }
 </style>

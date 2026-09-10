@@ -26,8 +26,9 @@ const PRODUCTS = [
   {
     id: "tsp",
     label: "BaaS",
-    pill: { x: 462, y: 162, w: 88 },
-    path: "M375.5 164.5H418.5C421.814 164.5 424.5 167.186 424.5 170.5V177C424.5 180.314 427.186 183 430.5 183H462",
+    /* Figma 89:276 — connector steps UP into the pill (flip of prior step-down) */
+    pill: { x: 462, y: 125, w: 88 },
+    path: "M375.5 164.5H418.5C421.814 164.5 424.5 161.814 424.5 158.5V152C424.5 148.686 427.186 146 430.5 146H462",
     dot: { cx: 375.5, cy: 164.5 },
   },
   {

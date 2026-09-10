@@ -13,7 +13,7 @@ const props = defineProps({
   backgroundSrc: { type: String, default: "/images/figma-contact/cta-banner-bg.png" },
   iconSrc: { type: String, default: "" },
   paddingTop: { type: String, default: "0" },
-  paddingBottom: { type: String, default: "94px" },
+  paddingBottom: { type: String, default: "0" },
 });
 
 const usesLink = computed(() => !!props.to && !props.href);
@@ -75,7 +75,7 @@ const usesLink = computed(() => !!props.to && !props.href);
   width: 100%;
   max-width: 1440px;
   margin: 0 auto;
-  padding: var(--cta-pad-top, 0) 100px var(--cta-pad-bottom, 94px);
+  padding: var(--cta-pad-top, 0) 100px var(--cta-pad-bottom, 0);
   box-sizing: border-box;
   background: #ffffff;
 }
@@ -164,40 +164,38 @@ const usesLink = computed(() => !!props.to && !props.href);
   opacity: 0.92;
 }
 
-@media (max-width: 1280px) {
+/* Tablet CTA (Figma 208:5864) */
+@media (max-width: 1200px) {
   .marketing-banner-cta {
     padding-left: 40px;
     padding-right: 40px;
   }
-}
-
-@media (max-width: 900px) {
-  .marketing-banner-cta {
-    padding-left: clamp(16px, 4vw, 24px);
-    padding-right: clamp(16px, 4vw, 24px);
-    padding-bottom: 36px;
-  }
 
   .marketing-banner-cta__panel {
     height: auto;
-    min-height: 244px;
-    border-radius: 14px;
+    min-height: 280px;
+    border-radius: 16px;
   }
 
   .marketing-banner-cta__content {
-    gap: 12px;
-    padding: 24px clamp(16px, 4vw, 24px);
+    gap: 16px;
+    padding: 36px 24px;
+    max-width: 720px;
+    margin-inline: auto;
   }
 
   .marketing-banner-cta__title {
-    font-size: var(--ur-heading-sm, 28px);
-    line-height: 1.25;
-    letter-spacing: 0.2px;
+    max-width: 640px;
+    font-size: 34px;
+    line-height: 44px;
+    letter-spacing: 0.8px;
   }
 
   .marketing-banner-cta__body {
-    font-size: 13px;
+    max-width: 523px;
+    font-size: 12px;
     line-height: 20px;
+    letter-spacing: 0.48px;
   }
 
   .marketing-banner-cta__btn {
@@ -206,6 +204,31 @@ const usesLink = computed(() => !!props.to && !props.href);
     min-height: 52px;
     padding: 0 16px;
     font-size: 16px;
+  }
+}
+
+@media (max-width: 700px) {
+  .marketing-banner-cta {
+    padding-left: 19px;
+    padding-right: 19px;
+  }
+
+  .marketing-banner-cta__panel {
+    min-height: 244px;
+    border-radius: 14px;
+  }
+
+  .marketing-banner-cta__content {
+    gap: 12px;
+    padding: 24px 16px;
+  }
+
+  .marketing-banner-cta__title {
+    max-width: 320px;
+    margin-inline: auto;
+    font-size: 26px;
+    line-height: 1.3;
+    letter-spacing: 0.2px;
   }
 }
 </style>

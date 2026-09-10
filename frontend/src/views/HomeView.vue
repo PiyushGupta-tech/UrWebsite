@@ -175,10 +175,26 @@ onUnmounted(() => {
   max-width: 100%;
 }
 
+/* Consistent gap between major homepage sections.
+   Use margin-block-start so section roots can still use margin-inline: auto. */
+.home-page > * + * {
+  margin-block-start: var(--ur-section-gap);
+}
+
+/* Hero diagram → trust title (Figma: ~100 desktop / 120 iPad / 100 phone) */
+.home-page > .home-hero + .home-trust {
+  margin-block-start: 100px;
+}
+
+/* Match spacing below metrics to spacing above clients */
+.home-page > .home-trust + * {
+  margin-block-start: 100px;
+}
+
 .home-trust {
   max-width: 1280px;
-  margin: 0 auto;
-  padding: 48px 80px 80px;
+  margin-inline: auto;
+  padding: 0 var(--ur-gutter);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -342,8 +358,8 @@ onUnmounted(() => {
 
 .home-banks {
   max-width: 1280px;
-  margin: 0 auto 120px;
-  padding: 0 80px;
+  margin-inline: auto;
+  padding: 0 var(--ur-gutter);
 }
 
 .page-loading {
@@ -371,83 +387,159 @@ onUnmounted(() => {
   }
 }
 
-@media (max-width: 1100px) {
+/* Tablet: Figma iPad — single-row stats (gap 120), compact logos */
+@media (max-width: 1200px) {
   .home-page {
-    margin-top: -113px;
+    margin-top: -82px;
   }
 
-  .home-trust__stats {
-    gap: 48px;
-  }
-}
-
-@media (max-width: 900px) {
-  .home-page {
-    margin-top: -92px;
+  .home-page > .home-hero + .home-trust,
+  .home-page > .home-trust + * {
+    margin-block-start: 100px;
   }
 
   .home-trust,
   .home-banks {
-    padding: 32px clamp(16px, 4vw, 24px) 64px;
+    max-width: 1024px;
+    padding: 0 70px;
   }
 
+  /* Figma 208:3156 — intro gap 16 + pb 12 + border, then 44 to stats */
   .home-trust {
-    gap: 32px;
+    gap: 44px;
   }
 
   .home-trust__top {
-    gap: 24px;
+    gap: 0;
   }
 
   .home-trust__intro {
-    gap: 24px;
+    gap: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #d5d7da;
+  }
+
+  .home-trust__rule {
+    display: none;
+  }
+
+  .home-trust__title {
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 500;
+  }
+
+  .home-trust :deep(.partners),
+  .home-trust :deep(.partners .container),
+  .home-trust :deep(.partners__track) {
+    line-height: 0;
+  }
+
+  .home-trust :deep(.partners__scroll) {
+    gap: 64px;
+    justify-content: flex-start;
+  }
+
+  .home-trust :deep(.partners__pill) {
+    width: 120px;
+    min-width: 120px;
+    height: 34px;
+  }
+
+  .home-trust :deep(.partners__logo),
+  .home-trust :deep(.partners__logo--lg) {
+    width: 100% !important;
+    height: 28px !important;
+    max-width: 120px !important;
   }
 
   .home-trust__stats {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 24px;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: clamp(32px, 8vw, 120px);
+    width: 100%;
+    max-width: 868px;
+  }
+
+  .home-trust__stat {
+    flex: 0 1 auto;
+    max-width: 137px;
   }
 
   .home-trust__stat-value {
     font-size: 36px;
-    line-height: 1.2;
-    letter-spacing: -1px;
+    line-height: 44px;
+    letter-spacing: -1.08px;
   }
 
   .home-trust__stat-label {
-    font-size: 14px;
-    line-height: 1.4;
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 600;
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 700px) {
   .home-page {
     margin-top: -88px;
   }
 
+  .home-page > .home-hero + .home-trust,
+  .home-page > .home-trust + * {
+    margin-block-start: 80px;
+  }
+
   .home-trust,
   .home-banks {
-    padding: 40px 19px 64px;
+    padding: 0 19px;
   }
 
   .home-banks {
     padding-top: 0;
   }
 
+  /* Phone: compact title→logos; rule sits close under logo belt */
   .home-trust {
-    gap: 32px;
+    gap: 24px;
   }
 
-  .home-trust__title,
+  .home-trust__top {
+    gap: 16px;
+    width: 100%;
+  }
+
+  .home-trust__intro {
+    gap: 12px;
+    padding-bottom: 0;
+    border-bottom: 0;
+  }
+
+  .home-trust__rule {
+    display: block;
+  }
+
+  .home-trust__title {
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 500;
+  }
+
   .home-banks :deep(.partners__title) {
     font-size: 24px;
     line-height: 1.33;
   }
 
   .home-trust__stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     max-width: 327px;
     gap: 26px 36px;
+  }
+
+  .home-trust__stat {
+    max-width: none;
   }
 
   .home-trust :deep(.partners__scroll),
@@ -459,14 +551,14 @@ onUnmounted(() => {
   .home-banks :deep(.partners__pill) {
     width: 112px;
     min-width: 112px;
-    height: 40px;
+    height: 36px;
   }
 
   .home-trust :deep(.partners__logo),
   .home-trust :deep(.partners__logo--lg),
   .home-banks :deep(.partners__logo),
   .home-banks :deep(.partners__logo--lg) {
-    height: 28px !important;
+    height: 26px !important;
     max-width: 112px !important;
   }
 

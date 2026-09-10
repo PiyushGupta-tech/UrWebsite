@@ -541,7 +541,7 @@ function handleHubKeydown(event) {
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 700px) {
   .eco {
     width: 100%;
     max-width: 300px;

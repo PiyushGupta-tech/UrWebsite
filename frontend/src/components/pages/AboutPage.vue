@@ -274,7 +274,7 @@ onMounted(() => {
   max-width: var(--ur-page-max, 1440px);
   margin: 0 auto;
   min-height: 100vh;
-  padding: 148px clamp(24px, 7vw, 100px) 40px;
+  padding: 148px var(--ur-gutter) 40px;
   box-sizing: border-box;
   display: grid;
   grid-template-columns: minmax(0, 611px) minmax(340px, 1fr);
@@ -1146,7 +1146,7 @@ onMounted(() => {
 
 @media (max-width: 1100px) {
   .about-page {
-    margin-top: -92px;
+    margin-top: -82px;
   }
 
   .about-purpose__grid {
@@ -1165,26 +1165,26 @@ onMounted(() => {
 }
 
 
-@media (max-width: 900px) {
+@media (max-width: 1200px) {
   .about-page {
-    margin-top: -92px;
+    margin-top: -82px;
   }
 
   .about-hero__inner {
-    padding: 120px clamp(19px, 4vw, 32px) 40px;
+    padding: 120px var(--ur-gutter) 40px;
     gap: 40px;
   }
 
   .about-hero__copy {
     gap: 24px;
-    max-width: min(420px, 100%);
+    max-width: min(var(--ur-stack-max), 100%);
     margin-inline: auto;
     text-align: center;
     align-items: center;
   }
 
   .about-hero__title {
-    font-size: var(--ur-heading-sm, 28px);
+    font-size: var(--ur-heading-stack, 28px);
     line-height: 1.25;
     letter-spacing: -1.08px;
   }
@@ -1196,7 +1196,7 @@ onMounted(() => {
   .about-audiences__title,
   .about-faq__title,
   .about-cta__title {
-    font-size: var(--ur-heading-sm, 28px);
+    font-size: var(--ur-heading-stack, 28px);
     line-height: 1.2;
   }
 

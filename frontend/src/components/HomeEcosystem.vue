@@ -1,67 +1,129 @@
 <script setup>
+import { onBeforeUnmount, onMounted, ref } from "vue";
+
 defineProps({
   section: { type: Object, required: true },
+});
+
+const DESIGN_W = 1328;
+const DESIGN_H = 820;
+/** Fixed nav + spacer (~129px) + small gap under the bar */
+const NAV_CLEARANCE = 148;
+
+const frameRef = ref(null);
+const panelRef = ref(null);
+let resizeObserver = null;
+
+function applyScale() {
+  const frame = frameRef.value;
+  const panel = panelRef.value;
+  if (!frame || !panel) return;
+
+  const availW = frame.clientWidth;
+  if (availW <= 0) return;
+
+  const availH = Math.max(window.innerHeight - NAV_CLEARANCE, 240);
+  const scale = Math.min(availW / DESIGN_W, availH / DESIGN_H);
+
+  panel.style.setProperty("--eco-scale", String(scale));
+  panel.style.aspectRatio = "auto";
+  panel.style.width = `${DESIGN_W * scale}px`;
+  panel.style.height = `${DESIGN_H * scale}px`;
+}
+
+onMounted(() => {
+  const frame = frameRef.value;
+  if (!frame) return;
+
+  applyScale();
+  window.addEventListener("resize", applyScale, { passive: true });
+
+  if (typeof ResizeObserver === "undefined") return;
+
+  resizeObserver = new ResizeObserver(() => applyScale());
+  resizeObserver.observe(frame);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener("resize", applyScale);
+  resizeObserver?.disconnect();
+  resizeObserver = null;
 });
 </script>
 
 <template>
   <section class="home-eco">
-    <div class="home-eco__panel">
-      <div class="home-eco__canvas">
-      <div class="home-eco__rings" aria-hidden="true">
-        <span class="home-eco__ring home-eco__ring--4" />
-        <span class="home-eco__ring home-eco__ring--3" />
-        <span class="home-eco__ring home-eco__ring--2" />
-        <span class="home-eco__ring home-eco__ring--1" />
-      </div>
-
-      <div class="home-eco__hub">
-        <img
-          class="home-eco__logo"
-          src="/images/figma-home/eco-hub-logo.svg"
-          alt=""
-          width="31"
-          height="37"
-          decoding="async"
-        />
-        <div class="home-eco__hub-copy">
-          <p class="home-eco__eyebrow">{{ section.eyebrow }}</p>
-          <p class="home-eco__body">{{ section.body }}</p>
-        </div>
-      </div>
-
-      <ul class="home-eco__points">
-        <li
-          v-for="item in section.items || []"
-          :key="item.number"
-          class="home-eco__point"
-          :class="`home-eco__point--${item.side}`"
-        >
-          <div class="home-eco__point-head">
-            <span class="home-eco__num">{{ item.number }}</span>
-            <strong>{{ item.title }}</strong>
+    <div ref="frameRef" class="home-eco__frame">
+      <div ref="panelRef" class="home-eco__panel">
+        <div class="home-eco__canvas">
+          <div class="home-eco__rings" aria-hidden="true">
+            <span class="home-eco__ring home-eco__ring--4" />
+            <span class="home-eco__ring home-eco__ring--3" />
+            <span class="home-eco__ring home-eco__ring--2" />
+            <span class="home-eco__ring home-eco__ring--1" />
           </div>
-          <p>{{ item.body }}</p>
-        </li>
-      </ul>
+
+          <div class="home-eco__hub">
+            <img
+              class="home-eco__logo"
+              src="/images/figma-home/eco-hub-logo.svg"
+              alt=""
+              width="31"
+              height="37"
+              decoding="async"
+            />
+            <div class="home-eco__hub-copy">
+              <p class="home-eco__eyebrow">{{ section.eyebrow }}</p>
+              <p class="home-eco__body">{{ section.body }}</p>
+            </div>
+          </div>
+
+          <ul class="home-eco__points">
+            <li
+              v-for="item in section.items || []"
+              :key="item.number"
+              class="home-eco__point"
+              :class="`home-eco__point--${item.side}`"
+            >
+              <div class="home-eco__point-head">
+                <span class="home-eco__num">{{ item.number }}</span>
+                <strong>{{ item.title }}</strong>
+              </div>
+              <p>{{ item.body }}</p>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </section>
 </template>
 
 <style scoped>
+/*
+  Fixed 1328×820 canvas. Scale = min(width, viewport-below-nav) so laptop
+  fits under the navbar; narrower widths still shrink the whole graphic.
+*/
 .home-eco {
   max-width: 1328px;
-  margin: 0 auto;
-  padding: 0 24px 100px;
+  margin-inline: auto;
+  padding: 0 24px;
   font-family: "Manrope", "DM Sans", system-ui, sans-serif;
 }
 
+.home-eco__frame {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
 .home-eco__panel {
-  --eco-scale: 0.688;
+  --eco-scale: 1;
   position: relative;
-  height: calc(820px * var(--eco-scale));
-  min-height: min(calc(820px * var(--eco-scale)), 72svh);
+  width: 100%;
+  max-width: 100%;
+  /* Fallback before JS; JS sets exact scaled width/height */
+  aspect-ratio: 1328 / 820;
+  max-height: calc(100svh - 148px);
   border-radius: 24px;
   overflow: hidden;
   background: linear-gradient(180deg, #0292b8 0%, #134e66 100%);
@@ -69,12 +131,12 @@ defineProps({
 
 .home-eco__canvas {
   position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 100%;
+  left: 0;
+  top: 0;
+  width: 1328px;
   height: 820px;
-  transform: translate(-50%, -50%) scale(var(--eco-scale));
-  transform-origin: center center;
+  transform: scale(var(--eco-scale));
+  transform-origin: top left;
 }
 
 .home-eco__rings {
@@ -216,30 +278,42 @@ defineProps({
   text-align: right;
 }
 
+/* Fixed coords on 1328×820 canvas (center = 664) */
 .home-eco__point--left.home-eco__point:nth-child(1) {
-  left: calc(50% - 493px);
+  left: 171px;
   top: 140px;
+  width: 250px;
 }
+
 .home-eco__point--left.home-eco__point:nth-child(2) {
-  left: calc(50% - 629px);
+  left: 35px;
   top: 390px;
+  width: 250px;
 }
+
 .home-eco__point--left.home-eco__point:nth-child(3) {
-  left: calc(50% - 517px);
+  left: 147px;
   top: 640px;
+  width: 250px;
 }
+
 .home-eco__point--right.home-eco__point:nth-child(4) {
-  right: calc(50% - 493px);
+  left: 974px;
+  right: auto;
   top: 140px;
   width: 183px;
 }
+
 .home-eco__point--right.home-eco__point:nth-child(5) {
-  right: calc(50% - 629px);
+  left: 1072px;
+  right: auto;
   top: 390px;
   width: 221px;
 }
+
 .home-eco__point--right.home-eco__point:nth-child(6) {
-  right: calc(50% - 517px);
+  left: 960px;
+  right: auto;
   top: 640px;
   width: 221px;
 }
@@ -259,6 +333,7 @@ defineProps({
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  flex: 0 0 21px;
   width: 21px;
   height: 21px;
   border-radius: 10px;
@@ -270,9 +345,12 @@ defineProps({
 }
 
 .home-eco__point strong {
+  flex: 0 1 auto;
+  min-width: 0;
   font-size: 20px;
   font-weight: 700;
   color: #ffffff;
+  white-space: nowrap;
 }
 
 .home-eco__point p {
@@ -283,360 +361,23 @@ defineProps({
 }
 
 @media (max-width: 1200px) {
+  .home-eco {
+    max-width: 1024px;
+    padding: 0 70px;
+  }
+
   .home-eco__panel {
-    height: auto;
-    min-height: auto;
-    padding: 64px 32px;
-    display: flex;
-    flex-direction: column;
-    gap: 40px;
-  }
-
-  .home-eco__canvas {
-    position: relative;
-    left: auto;
-    top: auto;
-    width: auto;
-    height: auto;
-    transform: none;
-  }
-
-  .home-eco__hub {
-    position: relative;
-    left: auto;
-    top: auto;
-    transform: none;
-    margin: 0 auto;
-  }
-
-  .home-eco__rings,
-  .home-eco__points {
-    position: static;
-  }
-
-  .home-eco__rings {
-    display: none;
-  }
-
-  .home-eco__points {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 24px;
-  }
-
-  .home-eco__point {
-    position: static !important;
-    width: auto !important;
-  }
-
-  .home-eco__point--right {
-    text-align: left;
-  }
-
-  .home-eco__point--right .home-eco__point-head {
-    justify-content: flex-start;
+    border-radius: 16px;
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 700px) {
   .home-eco {
-    padding: 0 16px 80px;
+    padding: 0 19px;
   }
 
   .home-eco__panel {
-    height: 332px;
-    min-height: 332px;
-    padding: 0;
-    display: block;
-    border-radius: 18px;
-  }
-
-  .home-eco__canvas {
-    position: relative;
-    left: auto;
-    top: auto;
-    width: 100%;
-    height: 100%;
-    transform: none;
-  }
-
-  .home-eco__rings {
-    display: block;
-    position: absolute;
-    inset: 0;
-  }
-
-  .home-eco__ring--1 {
-    display: none;
-  }
-
-  .home-eco__ring--2 {
-    --ring-size: 308px;
-  }
-
-  .home-eco__ring--3 {
-    --ring-size: 234px;
-  }
-
-  .home-eco__ring--4 {
-    --ring-size: 182px;
-  }
-
-  .home-eco__hub {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 150px;
-    height: 150px;
-    aspect-ratio: auto;
-    padding: 18px 14px;
-    gap: 6px;
-  }
-
-  .home-eco__logo {
-    width: 22px;
-    height: 28px;
-  }
-
-  .home-eco__hub-copy {
-    gap: 6px;
-  }
-
-  .home-eco__eyebrow {
-    font-size: 10px;
-    line-height: 14px;
-  }
-
-  .home-eco__body {
-    font-size: 8px;
-    line-height: 11px;
-  }
-
-  .home-eco__points {
-    position: absolute;
-    inset: 0;
-    display: block;
-  }
-
-  .home-eco__point {
-    position: absolute !important;
-    width: 96px !important;
-  }
-
-  .home-eco__point strong {
-    font-size: 10px;
-    line-height: 14px;
-  }
-
-  .home-eco__point p {
-    font-size: 7px;
-    line-height: 11px;
-  }
-
-  .home-eco__point-head {
-    gap: 6px;
-    margin-bottom: 8px;
-  }
-
-  .home-eco__num {
-    width: 16px;
-    height: 16px;
-    font-size: 9px;
-    line-height: 10px;
-  }
-
-  .home-eco__point--left.home-eco__point:nth-child(1) {
-    left: 62px;
-    top: 30px;
-    width: 82px;
-  }
-
-  .home-eco__point--left.home-eco__point:nth-child(2) {
-    left: 14px;
-    top: 136px;
-    width: 100px;
-  }
-
-  .home-eco__point--left.home-eco__point:nth-child(3) {
-    left: 62px;
-    top: 230px;
-    width: 90px;
-  }
-
-  .home-eco__point--right.home-eco__point:nth-child(4) {
-    right: 62px;
-    top: 30px;
-    width: 82px;
-  }
-
-  .home-eco__point--right.home-eco__point:nth-child(5) {
-    right: 14px;
-    top: 136px;
-    width: 100px;
-  }
-
-  .home-eco__point--right.home-eco__point:nth-child(6) {
-    right: 62px;
-    top: 230px;
-    width: 90px;
-  }
-
-  .home-eco__point--right {
-    text-align: right;
-  }
-
-  .home-eco__point--right .home-eco__point-head {
-    justify-content: flex-end;
-  }
-}
-
-@media (max-width: 480px) {
-  .home-eco {
-    padding: 0 19px 80px;
-  }
-
-  .home-eco__panel {
-    max-width: 353px;
-    height: 268px;
-    min-height: 268px;
-    margin: 0 auto;
-    border-radius: 6.38px;
-  }
-
-  .home-eco__ring {
-    left: 50%;
-    top: 50%;
-    border-width: 0.266px;
-    animation: eco-ring-pulse 4.2s ease-in-out infinite;
-    opacity: 0.24;
-  }
-
-  .home-eco__ring--1 {
-    display: block;
-    --ring-size: 270px;
-    animation-delay: 2.4s;
-  }
-
-  .home-eco__ring--2 {
-    --ring-size: 222px;
-    animation-delay: 1.6s;
-  }
-
-  .home-eco__ring--3 {
-    --ring-size: 176px;
-    animation-delay: 0.8s;
-  }
-
-  .home-eco__ring--4 {
-    --ring-size: 132px;
-    border-width: 0.289px;
-    animation-delay: 0s;
-  }
-
-  .home-eco__hub {
-    left: 50%;
-    top: 50%;
-    width: 98px;
-    height: 98px;
-    padding: 18px 14px;
-    gap: 4px;
-  }
-
-  .home-eco__logo {
-    width: 13px;
-    height: 16px;
-  }
-
-  .home-eco__hub-copy {
-    gap: 4px;
-  }
-
-  .home-eco__eyebrow {
-    font-size: 6.5px;
-    line-height: 8.5px;
-    font-weight: 500;
-    color: #535862;
-  }
-
-  .home-eco__body {
-    font-size: 4.5px;
-    line-height: 6.5px;
-    font-weight: 600;
-    color: #252b37;
-  }
-
-  .home-eco__point {
-    width: auto !important;
-    max-width: none;
-  }
-
-  .home-eco__point-head {
-    gap: 2px;
-    margin-bottom: 6px;
-  }
-
-  .home-eco__num {
-    width: 5.582px;
-    height: 5.582px;
-    padding: 1.063px;
-    border-radius: 2.658px;
-    font-size: 3.19px;
-    line-height: 3.721px;
-    box-sizing: border-box;
-  }
-
-  .home-eco__point strong {
-    font-size: 8px;
-    line-height: 10px;
-    font-weight: 700;
-  }
-
-  .home-eco__point p {
-    font-size: 5px;
-    line-height: 7.5px;
-    letter-spacing: 0;
-    max-width: 54px;
-    color: rgba(255, 255, 255, 0.82);
-  }
-
-  .home-eco__point--left.home-eco__point:nth-child(1) {
-    left: 42px;
-    top: 46px;
-    width: 76px;
-  }
-
-  .home-eco__point--left.home-eco__point:nth-child(2) {
-    left: 10px;
-    top: 118px;
-    width: 82px;
-  }
-
-  .home-eco__point--left.home-eco__point:nth-child(3) {
-    left: 42px;
-    top: 192px;
-    width: 84px;
-  }
-
-  .home-eco__point--right.home-eco__point:nth-child(4) {
-    left: auto;
-    right: 42px;
-    top: 46px;
-    width: 70px;
-  }
-
-  .home-eco__point--right.home-eco__point:nth-child(5) {
-    left: auto;
-    right: 10px;
-    top: 118px;
-    width: 78px;
-  }
-
-  .home-eco__point--right.home-eco__point:nth-child(6) {
-    left: auto;
-    right: 42px;
-    top: 192px;
-    width: 74px;
+    border-radius: 14px;
   }
 }
 </style>

@@ -27,7 +27,7 @@ const DESKTOP_CONNECTORS = {
 };
 
 const MOBILE_CONNECTORS = {
-  viewBox: "0 0 336 150",
+  viewBox: "0 0 336 106",
   top: "M51 0V74C51 80.627 56.373 86 63 86H168V106",
   middle: { x1: 168, y1: 0, x2: 168, y2: 106 },
   bottom: "M285 0V74C285 80.627 279.627 86 273 86H168V106",
@@ -72,7 +72,7 @@ function layerClass(index) {
 
 onMounted(() => {
   reduceMotion.value = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  mobileMediaQuery = window.matchMedia("(max-width: 900px)");
+  mobileMediaQuery = window.matchMedia("(max-width: 1200px)");
   isMobile.value = mobileMediaQuery.matches;
   handleMobileQueryChange = (event) => {
     isMobile.value = event.matches;
@@ -531,17 +531,22 @@ onUnmounted(() => {
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1200px) {
   .reconcile-graphic {
-    max-width: 336px;
-    aspect-ratio: 336 / 342;
+    width: 336px;
+    max-width: 100%;
+    /* sources 70 + connectors 106 + main card 138 = 314 */
+    aspect-ratio: 336 / 314;
+    height: auto;
+    display: block;
   }
 
   .reconcile-graphic__connectors--mobile {
+    position: absolute;
     top: 70px;
     left: 0;
     width: 100%;
-    height: 150px;
+    height: 106px;
   }
 
   .reconcile-graphic__connectors--mobile .reconcile-graphic__connector {

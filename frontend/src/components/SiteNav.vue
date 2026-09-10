@@ -12,6 +12,8 @@ const openMenu = ref(null);
 const mobileOpen = ref(false);
 /** 0 at page top → 1 after scrolling one viewport */
 const compact = ref(0);
+/** Mobile only: hide chrome while scrolling down */
+const navHidden = ref(false);
 
 const ctaTo = computed(() =>
   route.path === "/contact" ? { path: "/contact", hash: "#contact-form" } : "/contact",
@@ -37,29 +39,66 @@ function toggleDropdown(key) {
 function toggleMobile() {
   mobileOpen.value = !mobileOpen.value;
   if (!mobileOpen.value) openMenu.value = null;
+  else navHidden.value = false;
 }
 
 let raf = 0;
 let reduceMotion = false;
+let lastScrollY = 0;
+/** Phone only — tablet keeps the Figma full bar */
+const MOBILE_NAV_MAX = 700;
+const SCROLL_DELTA = 6;
+const TOP_REVEAL = 16;
 
-function updateCompact() {
+function isMobileNav() {
+  return window.innerWidth <= MOBILE_NAV_MAX;
+}
+
+function updateNavChrome() {
   raf = 0;
-  if (reduceMotion || window.innerWidth < 1100) {
-    compact.value = 0;
+  const y = Math.max(window.scrollY, 0);
+
+  if (!isMobileNav()) {
+    navHidden.value = false;
+    if (reduceMotion) {
+      compact.value = 0;
+    } else {
+      const vh = Math.max(window.innerHeight, 1);
+      compact.value = Math.min(Math.max(y / vh, 0), 1);
+    }
+    lastScrollY = y;
     return;
   }
-  const vh = Math.max(window.innerHeight, 1);
-  compact.value = Math.min(Math.max(window.scrollY / vh, 0), 1);
+
+  compact.value = 0;
+
+  if (reduceMotion || mobileOpen.value) {
+    navHidden.value = false;
+    lastScrollY = y;
+    return;
+  }
+
+  const delta = y - lastScrollY;
+  if (y <= TOP_REVEAL) {
+    navHidden.value = false;
+  } else if (delta > SCROLL_DELTA) {
+    navHidden.value = true;
+  } else if (delta < -SCROLL_DELTA) {
+    navHidden.value = false;
+  }
+
+  lastScrollY = y;
 }
 
 function onScrollOrResize() {
   if (raf) return;
-  raf = requestAnimationFrame(updateCompact);
+  raf = requestAnimationFrame(updateNavChrome);
 }
 
 onMounted(() => {
   reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  updateCompact();
+  lastScrollY = Math.max(window.scrollY, 0);
+  updateNavChrome();
   window.addEventListener("scroll", onScrollOrResize, { passive: true });
   window.addEventListener("resize", onScrollOrResize, { passive: true });
 });
@@ -75,7 +114,10 @@ onUnmounted(() => {
   <!-- Figma Frame 2147225433 — 1146×89 @ (147, 40); logo → links → CTA gaps 175px -->
   <header
     class="nav"
-    :class="{ 'nav--compact': compact >= 0.5 }"
+    :class="{
+      'nav--compact': compact >= 0.5,
+      'nav--hidden': navHidden,
+    }"
     :style="navStyle"
   >
     <div class="nav__shell">
@@ -459,13 +501,14 @@ onUnmounted(() => {
   border-radius: 1px;
 }
 
-@media (min-width: 1100px) {
+/* Desktop + tablet: inline links (Figma iPad keeps full bar) */
+@media (min-width: 701px) {
   .nav__links {
     display: flex;
   }
 }
 
-@media (max-width: 1280px) {
+@media (max-width: 1280px) and (min-width: 1201px) {
   .nav {
     --nav-pad-top: 24px;
   }
@@ -488,9 +531,88 @@ onUnmounted(() => {
   }
 }
 
-@media (max-width: 1099px) {
+/* Tablet: Figma 208:6003 — 752×58 bar, full links, no hamburger */
+@media (min-width: 701px) and (max-width: 1200px) {
+  .nav {
+    --nav-pad-top: 24px;
+    --nav-shrink: 1;
+  }
+
+  .nav__shell {
+    padding-left: max(40px, calc((100% - 752px) / 2));
+    padding-right: max(40px, calc((100% - 752px) / 2));
+  }
+
+  .nav-spacer {
+    height: 82px;
+  }
+
+  .nav__bar {
+    max-width: min(752px, 100%);
+    height: 58px;
+    padding: 10.5px 17px;
+    justify-content: space-between;
+    gap: clamp(24px, 6vw, 114px);
+    border-radius: 5.531px;
+    /* Keep ≥1px teal stroke — Figma's 0.46px white vanishes when scaled down */
+    border: 1px solid rgba(9, 116, 149, 0.18);
+    box-shadow: none;
+    transform: none;
+    will-change: auto;
+  }
+
+  .nav__logo-img {
+    width: 132px;
+    max-height: 25px;
+  }
+
+  .nav__links {
+    gap: 23px;
+    flex: 0 0 auto;
+    justify-content: center;
+  }
+
+  .nav__link,
+  .nav__link--btn {
+    font-size: 10.5px;
+  }
+
+  .nav__chevron {
+    width: 16px;
+    height: 16px;
+  }
+
+  .nav__cta {
+    width: auto;
+    min-width: 101px;
+    height: 34px;
+    padding: 0 10px;
+    gap: 2.6px;
+    border-radius: 5.25px;
+    font-size: 10.5px;
+    letter-spacing: -0.21px;
+  }
+
+  .nav__cta-arrow {
+    width: 12px;
+    height: 12px;
+  }
+
+  .nav__menu-btn {
+    display: none;
+  }
+}
+
+/* Phone: hamburger + hide-on-scroll */
+@media (max-width: 700px) {
   .nav {
     --nav-pad-top: 16px;
+    transition: transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform;
+  }
+
+  .nav--hidden {
+    transform: translate3d(0, calc(-100% - 12px), 0);
   }
 
   .nav__shell {
@@ -499,7 +621,7 @@ onUnmounted(() => {
   }
 
   .nav-spacer {
-    height: 92px;
+    height: 88px;
   }
 
   .nav__bar {
@@ -551,6 +673,7 @@ onUnmounted(() => {
   .nav__link--btn {
     padding: 12px;
     border-radius: 8px;
+    font-size: 16px;
   }
 
   .nav__panel {
@@ -572,14 +695,16 @@ onUnmounted(() => {
   }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .nav {
+    transition: none;
+  }
+}
+
 @media (max-width: 480px) {
   .nav__shell {
     padding-left: 12px;
     padding-right: 12px;
-  }
-
-  .nav-spacer {
-    height: 88px;
   }
 
   .nav__bar {

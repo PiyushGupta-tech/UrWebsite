@@ -104,6 +104,10 @@ watch(() => route.path, loadPage);
     #ffffff;
 }
 
+.page-view > .site-closing {
+  margin-top: var(--ur-section-gap);
+}
+
 .page-view--solutions {
   font-family: "Manrope", "DM Sans", system-ui, sans-serif;
 }
@@ -136,13 +140,13 @@ watch(() => route.path, loadPage);
   }
 }
 
-@media (max-width: 1099px) {
+@media (max-width: 1200px) {
   .page-view {
-    --page-nav-offset: 92px;
+    --page-nav-offset: 82px;
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 700px) {
   .page-view {
     --page-nav-offset: 88px;
   }

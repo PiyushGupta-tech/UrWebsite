@@ -69,7 +69,7 @@ const indiaGrowth = computed(() => props.section.india_growth || null);
       :title="section.audiences_title"
       :items="section.audiences || []"
       aria-label="Industries we serve"
-      padding-bottom="100px"
+      padding-bottom="0"
     />
 
     <MarketingFaqAccordion
@@ -79,7 +79,7 @@ const indiaGrowth = computed(() => props.section.india_growth || null);
       :items="section.faq_items || []"
       variant="split"
       aria-label="Frequently asked questions"
-      padding-bottom="100px"
+      padding-bottom="0"
     />
 
     <MarketingBannerCta
@@ -91,7 +91,7 @@ const indiaGrowth = computed(() => props.section.india_growth || null);
       variant="home"
       aria-label="Call to action"
       icon-src="/images/figma-contact/nav-arrow-teal.svg"
-      padding-bottom="94px"
+      padding-bottom="0"
     />
   </div>
 </template>
@@ -101,14 +101,21 @@ const indiaGrowth = computed(() => props.section.india_growth || null);
   --ink: #252b37;
   --muted: #535862;
   --teal: #097495;
+  display: flex;
+  flex-direction: column;
   font-family: "Manrope", "DM Sans", system-ui, sans-serif;
   color: var(--ink);
+  padding-bottom: var(--ur-section-gap);
+}
+
+.home-close > * + * {
+  margin-top: var(--ur-section-gap);
 }
 
 .home-close__india {
   max-width: 1189px;
   margin: 0 auto;
-  padding: 0 24px 120px;
+  padding: 0 24px;
 }
 
 .home-close__india-intro {
@@ -216,7 +223,7 @@ const indiaGrowth = computed(() => props.section.india_growth || null);
 }
 
 .home-close__testimonials {
-  padding: 0 0 100px;
+  padding: 0;
   overflow: hidden;
 }
 
@@ -344,7 +351,7 @@ const indiaGrowth = computed(() => props.section.india_growth || null);
 .home-close__audiences {
   max-width: 1328px;
   margin: 0 auto;
-  padding: 0 24px 100px;
+  padding: 0 24px;
 }
 
 .home-close__audiences-panel {
@@ -424,7 +431,7 @@ const indiaGrowth = computed(() => props.section.india_growth || null);
 .home-close__faq {
   max-width: 1440px;
   margin: 0 auto;
-  padding: 0 100px 100px;
+  padding: 0 100px;
   box-sizing: border-box;
 }
 
@@ -512,7 +519,7 @@ const indiaGrowth = computed(() => props.section.india_growth || null);
 .home-close__cta {
   max-width: 1440px;
   margin: 0 auto;
-  padding: 0 100px 94px;
+  padding: 0 100px;
   box-sizing: border-box;
 }
 
@@ -596,99 +603,135 @@ const indiaGrowth = computed(() => props.section.india_growth || null);
   }
 }
 
+/* Tablet: India stays map|copy (Figma 208:5583) */
 @media (max-width: 1200px) {
+  .home-close__india {
+    max-width: 1024px;
+    padding: 0 40px;
+  }
+
+  .home-close__india-intro {
+    max-width: 560px;
+    margin-bottom: 24px;
+    gap: 12px;
+  }
+
+  .home-close__india-intro h2 {
+    font-size: 34px;
+    line-height: 42px;
+  }
+
+  .home-close__india-intro p {
+    max-width: 431px;
+    font-size: 12px;
+    line-height: 20px;
+    letter-spacing: 0.48px;
+  }
+
   .home-close__india-grid {
-    grid-template-columns: 1fr;
-    gap: 48px;
+    grid-template-columns: minmax(0, 426px) minmax(0, 385px);
+    gap: 48px 72px;
+    justify-content: center;
+  }
+
+  .home-close__india-map {
+    max-width: 426px;
   }
 
   .home-close__india-copy {
-    max-width: 640px;
-    margin: 0 auto;
+    max-width: 385px;
+    gap: 36px;
+    align-items: flex-start;
+    text-align: left;
   }
 
-  .home-close__audiences-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .home-close__india-side {
+    align-items: flex-start;
+    gap: 9px;
   }
 
-  .home-close__faq-inner {
-    grid-template-columns: 1fr;
+  .home-close__india-side h3 {
+    font-size: 20px;
+    line-height: 28px;
+    letter-spacing: -0.6px;
   }
 
-  .home-close__faq-intro {
-    padding-top: 0;
+  .home-close__india-side p {
+    font-size: 12px;
+    line-height: 20px;
+    letter-spacing: 0.48px;
+  }
+
+  .home-close__india-points {
+    gap: 18px;
+    max-width: 358px;
+    align-items: flex-start;
+  }
+
+  .home-close__india-points li {
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .home-close__india-points strong {
+    font-size: 16px;
+    line-height: 28px;
+  }
+
+  .home-close__india-points p {
+    font-size: 12px;
+    line-height: 20px;
   }
 
   .home-close__faq,
   .home-close__cta {
-    padding-left: 24px;
-    padding-right: 24px;
-  }
-}
-
-@media (max-width: 900px) {
-  .home-close__india {
-    padding-bottom: 80px;
-    padding-left: clamp(16px, 4vw, 24px);
-    padding-right: clamp(16px, 4vw, 24px);
-  }
-
-  .home-close__india-intro h2 {
-    font-size: var(--ur-heading-sm, 28px);
-    line-height: 1.2;
-  }
-
-  .home-close__ttitle,
-  .home-close__audiences-panel h2,
-  .home-close__faq-intro h2,
-  .home-close__cta-content h2 {
-    font-size: var(--ur-heading-sm, 28px);
-    line-height: 1.2;
-  }
-
-  .home-close :deep(.marketing-testimonials__title),
-  .home-close :deep(.marketing-audiences__title),
-  .home-close :deep(.marketing-faq__title),
-  .home-close :deep(.marketing-banner-cta__title) {
-    font-size: var(--ur-heading-sm, 28px) !important;
-    line-height: 1.2 !important;
-  }
-
-  .home-close__india-copy {
-    align-items: center;
-    text-align: center;
-  }
-
-  .home-close__india-side {
-    align-items: center;
-  }
-
-  .home-close__india-points {
-    align-items: center;
-    max-width: 100%;
-  }
-
-  .home-close__india-points li {
-    align-items: center;
-  }
-
-  .home-close__audiences-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .home-close__track {
-    --card-w: min(612px, calc(100vw - 48px));
+    padding-left: 40px;
+    padding-right: 40px;
   }
 
   .home-close__cta-panel {
     height: auto;
     min-height: 280px;
   }
+}
+
+/* Phone: stack India */
+@media (max-width: 700px) {
+  .home-close__india {
+    padding: 0 19px;
+  }
+
+  .home-close__india-intro h2 {
+    font-size: 28px;
+    line-height: 1.2;
+  }
+
+  .home-close__india-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .home-close__india-copy {
+    max-width: 640px;
+    margin: 0 auto;
+    align-items: center;
+    text-align: center;
+  }
+
+  .home-close__india-side,
+  .home-close__india-points,
+  .home-close__india-points li {
+    align-items: center;
+  }
+
+  .home-close__india-points {
+    max-width: 100%;
+  }
 
   .home-close__faq,
   .home-close__cta {
-    padding-left: clamp(16px, 4vw, 24px);
-    padding-right: clamp(16px, 4vw, 24px);
+    padding-left: 19px;
+    padding-right: 19px;
   }
 }
 </style>

@@ -208,7 +208,7 @@ onUnmounted(stopTestimonialAutoplay);
 }
 
 .marketing-testimonials--home {
-  padding: 80px 0 100px;
+  padding: 0;
 }
 
 .marketing-testimonials__title {
@@ -329,7 +329,8 @@ onUnmounted(stopTestimonialAutoplay);
   display: flex;
   justify-content: center;
   gap: 8px;
-  margin-top: 36px;
+  /* Match heading → cards spacing (24px) */
+  margin-top: 24px;
 }
 
 .marketing-testimonials__dot {
@@ -346,28 +347,66 @@ onUnmounted(stopTestimonialAutoplay);
   background: #097495;
 }
 
-@media (max-width: 900px) {
-  .marketing-testimonials--about,
-  .marketing-testimonials--home {
+/* Tablet: Figma cards 612px with side peek */
+@media (max-width: 1200px) {
+  .marketing-testimonials--about {
     padding-top: 48px;
     padding-bottom: 72px;
   }
 
+  .marketing-testimonials--home {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
   .marketing-testimonials--about .marketing-testimonials__title,
   .marketing-testimonials--home .marketing-testimonials__title {
-    padding: 0 clamp(16px, 4vw, 24px);
-    font-size: var(--ur-heading-sm, 28px) !important;
+    padding: 0 40px;
+    font-size: 34px !important;
+    line-height: 42px !important;
+    letter-spacing: -0.8px !important;
+  }
+
+  .marketing-testimonials--home .marketing-testimonials__title {
+    margin-bottom: 24px;
+  }
+
+  .marketing-testimonials--home .marketing-testimonials__dots {
+    margin-top: 24px;
+  }
+
+  .marketing-testimonials__track {
+    --card-w: min(612px, calc(100vw - 80px));
+    --gap: 24px;
+  }
+
+  .marketing-testimonials__card {
+    gap: 24px;
+    min-height: 220px;
+    padding: 32px;
+  }
+
+  .marketing-testimonials__quote {
+    font-size: 16px;
+    line-height: 24px;
+  }
+}
+
+@media (max-width: 700px) {
+  .marketing-testimonials--about .marketing-testimonials__title,
+  .marketing-testimonials--home .marketing-testimonials__title {
+    padding: 0 19px;
+    font-size: 28px !important;
     line-height: 1.2 !important;
   }
 
   .marketing-testimonials__track {
-    --card-w: min(612px, calc(100vw - 48px));
+    --card-w: calc(100vw - 32px);
     --gap: 16px;
   }
 
   .marketing-testimonials__card {
     gap: 18px;
-    min-height: 220px;
     padding: 24px 20px;
   }
 
@@ -376,19 +415,9 @@ onUnmounted(stopTestimonialAutoplay);
     line-height: 22px;
   }
 
-  .marketing-testimonials__author {
-    gap: 12px;
-  }
-
   .marketing-testimonials__meta {
     font-size: 16px;
     line-height: 22px;
-  }
-}
-
-@media (max-width: 480px) {
-  .marketing-testimonials__track {
-    --card-w: calc(100vw - 32px);
   }
 }
 </style>

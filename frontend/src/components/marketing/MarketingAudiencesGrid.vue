@@ -3,7 +3,7 @@ defineProps({
   title: { type: String, default: "" },
   items: { type: Array, default: () => [] },
   ariaLabel: { type: String, default: "Industries we serve" },
-  paddingBottom: { type: String, default: "100px" },
+  paddingBottom: { type: String, default: "0" },
 });
 </script>
 
@@ -32,7 +32,7 @@ defineProps({
 .marketing-audiences {
   max-width: 1328px;
   margin: 0 auto;
-  padding: 0 24px var(--section-pad-bottom, 100px);
+  padding: 0 24px var(--section-pad-bottom, 0);
 }
 
 .marketing-audiences__panel {
@@ -119,103 +119,127 @@ defineProps({
   }
 }
 
+/* Tablet (Figma 208:5805 — 762×586 panel, 2×2 cards) */
 @media (max-width: 1200px) {
-  .marketing-audiences__grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-/* Tablet + phone: stack like mobile */
-@media (max-width: 900px) {
   .marketing-audiences {
-    padding-left: clamp(16px, 4vw, 24px);
-    padding-right: clamp(16px, 4vw, 24px);
-    padding-bottom: min(var(--section-pad-bottom, 100px), 72px);
+    max-width: 1024px;
+    padding: 0 70px var(--section-pad-bottom, 0);
   }
 
   .marketing-audiences__panel {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-    padding: clamp(28px, 5vw, 36px) clamp(16px, 4vw, 24px);
-    border-radius: 18px;
+    width: 100%;
+    max-width: 762px;
+    margin-inline: auto;
+    padding: 36px;
+    border-radius: 24px;
+    box-sizing: border-box;
   }
 
   .marketing-audiences__title {
-    margin: 0 0 24px;
-    max-width: min(420px, 100%);
-    font-size: var(--ur-heading-sm, 28px);
-    font-weight: 700;
-    line-height: 1.22;
+    margin: 0 auto 0;
+    max-width: 689px;
+    height: auto;
+    font-size: 32px;
+    line-height: 36px;
     letter-spacing: -0.96px;
-    text-align: center;
   }
 
   .marketing-audiences__grid {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    display: grid;
+    grid-template-columns: minmax(0, 304fr) minmax(0, 333fr);
+    gap: 24px 47px;
     width: 100%;
-    max-width: min(420px, 100%);
-    gap: 12px;
-    overflow: visible;
-    padding-bottom: 0;
-    scroll-snap-type: none;
+    max-width: 684px;
+    margin: 24px auto 0;
   }
 
   .marketing-audiences__card {
-    flex: none;
-    width: 100%;
-    min-height: 0;
+    min-height: 189px;
     height: auto;
-    padding: 20px;
+    padding: 16px 20px;
     border-radius: 18px;
   }
 
-  .marketing-audiences__card:hover {
-    transform: none;
-    background: rgba(255, 255, 255, 0.06);
-    border-color: rgba(200, 200, 200, 0.19);
-    box-shadow: none;
+  .marketing-audiences__card:nth-child(3),
+  .marketing-audiences__card:nth-child(4) {
+    min-height: 235px;
   }
 
   .marketing-audiences__num {
     margin-bottom: 20px;
-    font-size: clamp(36px, 8vw, 42px);
-    font-weight: 700;
-    line-height: 1.05;
+    font-size: 56px;
+    line-height: 64px;
     letter-spacing: -1.68px;
   }
 
+  .marketing-audiences__copy {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
   .marketing-audiences__copy h3 {
-    margin: 0 0 6px;
-    font-size: clamp(16px, 3.5vw, 18px);
-    font-weight: 700;
-    line-height: 1.25;
+    margin: 0;
+    font-size: 20px;
+    line-height: 28px;
     letter-spacing: -0.6px;
   }
 
   .marketing-audiences__copy p {
+    margin: 0;
     font-size: 12px;
-    font-weight: 400;
-    line-height: 1.45;
+    line-height: 20px;
     letter-spacing: 0.48px;
   }
 }
 
-@media (max-width: 480px) {
+/* Phone: single column */
+@media (max-width: 700px) {
   .marketing-audiences {
     padding-left: 19px;
     padding-right: 19px;
+    padding-bottom: var(--section-pad-bottom, 0);
+  }
+
+  .marketing-audiences__panel {
+    max-width: none;
+    padding: 28px 16px;
+    border-radius: 18px;
   }
 
   .marketing-audiences__title {
+    margin: 0 auto 20px;
     max-width: 313px;
+    font-size: 28px;
+    line-height: 1.22;
   }
 
   .marketing-audiences__grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
     max-width: 304px;
+    margin: 0 auto;
+  }
+
+  .marketing-audiences__card,
+  .marketing-audiences__card:nth-child(3),
+  .marketing-audiences__card:nth-child(4) {
+    min-height: 0;
+  }
+
+  .marketing-audiences__card:hover {
+    transform: none;
+    box-shadow: none;
+  }
+
+  .marketing-audiences__num {
+    font-size: 42px;
+    line-height: 1.05;
+  }
+
+  .marketing-audiences__copy h3 {
+    font-size: 18px;
+    line-height: 1.25;
   }
 }
 </style>

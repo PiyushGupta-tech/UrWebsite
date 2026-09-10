@@ -24,14 +24,65 @@
   --font: "DM Sans", "Inter", system-ui, -apple-system, sans-serif;
   --max-width: 1100px;
   --gutter: 24px;
-  /* Responsive system: laptop fluid · tablet uses mobile-inspired layout · phone denser */
+
+  /*
+   * Responsive bands (horizontal):
+   *   mobile 390 ──→ tablet 1024 (Figma iPad Pro 12.9) ──→ laptop 1440
+   * Values lerp toward the nearer anchor. Layout stays stacked through tablet;
+   * laptop composition begins above --ur-bp-tablet.
+   */
   --ur-page-max: 1440px;
-  --ur-gutter: clamp(16px, 5vw, 100px);
-  --ur-heading-lg: clamp(36px, 2.9vw, 42px);
-  --ur-heading-md: clamp(32px, 2.6vw, 40px);
-  --ur-heading-sm: clamp(26px, 6.2vw, 28px);
-  --ur-bp-tablet: 900px;
+  --ur-anchor-mobile: 390px;
+  --ur-anchor-tablet: 1024px;
+  --ur-anchor-laptop: 1440px;
+  --ur-bp-tablet: 1200px;
   --ur-bp-phone: 480px;
+  /* 0 = mobile, 0.5 = tablet, 1 = laptop — set by AppLayout */
+  --ur-band: 1;
+
+  /* Laptop band defaults (above tablet): fluid toward 1440 */
+  --ur-gutter: clamp(56px, calc(-52.3px + 10.58vw), 100px);
+  /* stack column unused in laptop composition but kept for shared components */
+  --ur-stack-max: 673px;
+  --ur-heading-lg: clamp(36px, calc(21.23px + 1.442vw), 42px);
+  --ur-heading-md: clamp(32px, calc(17.23px + 1.442vw), 40px);
+  /* stacked-title scale: mobile 28 → tablet 36 (Figma) → laptop 42 */
+  --ur-heading-stack: clamp(36px, calc(21.23px + 1.442vw), 42px);
+  --ur-heading-sm: var(--ur-heading-stack);
+  --ur-lead: clamp(14px, 0.4vw + 12px, 16px);
+
+  /* Vertical rhythm between major page sections */
+  --ur-section-gap: 100px;
+}
+
+/* Through tablet (≤1200): use iPad-anchored stacked metrics */
+@media (max-width: 1200px) {
+  :root {
+    /* gutter: 19@390 → 40@1024 → 48@1200 */
+    --ur-gutter: clamp(19px, calc(-4px + 4.3vw), 48px);
+    /* content column: 353@390 → 673@1024 */
+    --ur-stack-max: clamp(353px, calc(156.3px + 50.47vw), 673px);
+    /* titles: 28@390 → 36@1024 (Figma) */
+    --ur-heading-stack: clamp(28px, calc(23.08px + 1.262vw), 36px);
+    --ur-heading-sm: var(--ur-heading-stack);
+    --ur-heading-lg: var(--ur-heading-stack);
+    --ur-heading-md: var(--ur-heading-stack);
+    --ur-lead: clamp(12px, calc(10.77px + 0.315vw), 14px);
+    --ur-section-gap: 70px;
+  }
+}
+
+@media (max-width: 700px) {
+  :root {
+    --ur-gutter: clamp(16px, 4.8vw, 19px);
+    --ur-stack-max: min(353px, calc(100vw - 38px));
+    --ur-heading-stack: clamp(26px, 7vw, 28px);
+    --ur-heading-sm: var(--ur-heading-stack);
+    --ur-heading-lg: var(--ur-heading-stack);
+    --ur-heading-md: var(--ur-heading-stack);
+    --ur-lead: 14px;
+    --ur-section-gap: 40px;
+  }
 }
 
 *,
@@ -79,11 +130,11 @@ img {
 }
 
 .section {
-  padding: 80px 0;
+  padding: var(--ur-section-gap) 0;
 }
 
 .section--tight {
-  padding: 48px 0;
+  padding: calc(var(--ur-section-gap) * 0.5) 0;
 }
 
 .eyebrow {
@@ -176,6 +227,6 @@ img {
 
 @media (max-width: 799px) {
   .section {
-    padding: 56px 0;
+    padding: var(--ur-section-gap) 0;
   }
 }

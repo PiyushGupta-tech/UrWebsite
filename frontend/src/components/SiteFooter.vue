@@ -22,7 +22,7 @@ const copyrightText = computed(() => {
 
 <template>
   <footer class="footer">
-    <div class="container footer__inner">
+    <div class="footer__inner">
       <div class="footer__top">
         <div class="footer__brand">
           <img
@@ -151,30 +151,46 @@ const copyrightText = computed(() => {
   display: flex;
   flex-direction: column;
   gap: 27px;
+  width: 100%;
+  max-width: 1440px;
+  margin-inline: auto;
+  padding: 0 70px;
+  box-sizing: border-box;
 }
 
 .footer__top {
   width: 100%;
   display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.footer__brand {
+  flex: 0 0 auto;
+  width: 358px;
+  max-width: min(358px, 42%);
+  display: flex;
   flex-direction: column;
-  gap: 36px;
+  gap: 16px;
 }
 
 .footer__logo-img {
   display: block;
-  margin-bottom: 16px;
+  margin: 0;
   width: 186px;
   max-width: 100%;
   height: auto;
 }
 
 .footer__brand p {
-  margin: 0 0 20px;
+  margin: 0;
   font-size: 14px;
   font-weight: 500;
   line-height: 20px;
-  letter-spacing: 0.04em;
-  color: rgba(255, 255, 255, 0.92);
+  letter-spacing: 0.56px;
+  color: #ffffff;
   max-width: 358px;
 }
 
@@ -184,15 +200,17 @@ const copyrightText = computed(() => {
   width: auto;
   max-width: 100%;
   object-fit: contain;
+  object-position: left bottom;
 }
 
 .footer__cols {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  grid-template-rows: auto auto;
-  grid-auto-flow: column;
-  gap: 28px 24px;
-  align-content: start;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  justify-content: flex-end;
+  gap: 32px;
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 .footer__col {
@@ -200,7 +218,16 @@ const copyrightText = computed(() => {
   flex-direction: column;
   align-items: flex-start;
   gap: 3px;
+  flex: 0 0 auto;
+  width: max-content;
+  max-width: none;
   min-width: 0;
+}
+
+.footer__col--social {
+  width: auto;
+  flex: 0 0 auto;
+  gap: 12px;
 }
 
 .footer__col-title {
@@ -220,29 +247,28 @@ const copyrightText = computed(() => {
   color: rgba(255, 255, 255, 0.8);
   transition: color 0.15s;
   text-decoration: none;
+  white-space: nowrap;
 }
 
 .footer__cols a:hover {
   color: #ffffff;
 }
 
-.footer__col--social {
-  gap: 12px;
-}
-
 .footer__social {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 10px;
+  display: grid;
+  grid-template-columns: repeat(2, 28px);
+  gap: 8px;
+  width: fit-content;
 }
 
 .footer__social-link {
   position: relative;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   box-sizing: border-box;
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   padding: 0;
   line-height: 0;
   border-radius: 50%;
@@ -268,8 +294,8 @@ const copyrightText = computed(() => {
   top: 50%;
   left: 50%;
   display: block;
-  width: 14px;
-  height: 14px;
+  width: 12px;
+  height: 12px;
   transform: translate(-50%, -50%);
 }
 
@@ -282,31 +308,95 @@ const copyrightText = computed(() => {
 .footer__bottom {
   font-size: 14px;
   line-height: 20px;
-  color: rgba(255, 255, 255, 0.72);
+  color: rgba(255, 255, 255, 0.8);
 }
 
 .footer__bottom p {
   margin: 0;
 }
 
-@media (min-width: 960px) {
-  .footer__top {
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 32px;
+/* Laptop+ wider gutters */
+@media (min-width: 1201px) {
+  .footer__inner {
+    padding: 0 100px;
+  }
+}
+
+/* Tablet: room for long link labels + 2×2 social */
+@media (min-width: 768px) and (max-width: 1200px) {
+  .footer__inner {
+    padding: 0 70px;
+  }
+
+  .footer__brand {
+    width: 300px;
+    max-width: min(300px, 34%);
+  }
+
+  .footer__brand p {
+    max-width: 300px;
   }
 
   .footer__cols {
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: none;
-    grid-auto-flow: row;
-    gap: 24px;
-    min-width: 560px;
+    gap: 28px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .footer__inner {
+    padding: 0 40px;
+  }
+
+  .footer__brand {
+    width: auto;
+    max-width: 240px;
+  }
+
+  .footer__cols {
+    gap: 20px;
+  }
+}
+
+/* Phone: stack */
+@media (max-width: 767px) {
+  .footer__inner {
+    padding: 0 19px;
+    gap: 28px;
+  }
+
+  .footer__top {
+    flex-direction: column;
+    gap: 36px;
+  }
+
+  .footer__brand {
+    flex: none;
+    width: 100%;
+    max-width: none;
+  }
+
+  .footer__cols {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: auto auto;
+    grid-auto-flow: column;
+    gap: 28px 24px;
+    justify-content: stretch;
+    width: 100%;
+  }
+
+  .footer__col,
+  .footer__col--social {
+    width: auto;
+    flex: none;
+  }
+
+  .footer__cols a {
+    white-space: normal;
   }
 
   .footer__social {
-    flex-wrap: nowrap;
+    grid-template-columns: repeat(2, 28px);
   }
 }
 </style>

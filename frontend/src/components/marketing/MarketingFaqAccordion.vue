@@ -228,60 +228,83 @@ function toggle(index) {
   color: var(--accent-blue);
 }
 
-@media (max-width: 1280px) {
+/* Tablet FAQ: centered ~627px column (Figma 208:5682) */
+@media (max-width: 1200px) {
   .marketing-faq--split {
     padding-left: 40px;
     padding-right: 40px;
   }
-}
 
-@media (max-width: 1200px) {
   .marketing-faq__inner {
     grid-template-columns: 1fr;
-    gap: 32px;
+    gap: 24px;
+    max-width: 627px;
+    margin-inline: auto;
   }
 
   .marketing-faq__intro {
     padding-top: 0;
-  }
-}
-
-@media (max-width: 900px) {
-  .marketing-faq--split {
-    padding-left: clamp(16px, 4vw, 24px);
-    padding-right: clamp(16px, 4vw, 24px);
-  }
-
-  .marketing-faq__inner {
-    gap: 24px;
-  }
-
-  .marketing-faq__intro {
     align-items: center;
-    gap: 14px;
+    gap: 20px;
     text-align: center;
   }
 
   .marketing-faq__title {
-    font-size: var(--ur-heading-sm, 28px);
-    line-height: 1.3;
+    max-width: 520px;
+    margin-inline: auto;
+    font-size: 34px;
+    line-height: 42px;
+    letter-spacing: -0.4px;
   }
 
   .marketing-faq__body {
     max-width: 100%;
-    font-size: clamp(14px, 2.5vw, 16px);
-    line-height: 22px;
+    font-size: 12px;
+    line-height: 20px;
+    letter-spacing: 0.48px;
   }
 
   .marketing-faq__trigger {
-    grid-template-columns: 28px 1fr 20px;
-    gap: 12px;
-    min-height: 64px;
-    padding: 18px 16px;
+    grid-template-columns: auto 1fr 20px;
+    gap: 16px;
+    min-height: 0;
+    padding: 24px;
   }
 
-  .marketing-faq--simple .marketing-faq__trigger {
-    padding: 16px;
+  .marketing-faq__num,
+  .marketing-faq__question {
+    font-size: 18px;
+    line-height: 28px;
+  }
+
+  .marketing-faq__answer {
+    padding: 0 24px 24px;
+  }
+
+  .marketing-faq--simple .marketing-faq__answer {
+    padding: 0 24px 20px;
+  }
+}
+
+@media (max-width: 700px) {
+  .marketing-faq--split {
+    padding-left: 19px;
+    padding-right: 19px;
+  }
+
+  .marketing-faq__inner {
+    max-width: none;
+    gap: 16px;
+  }
+
+  .marketing-faq__title {
+    font-size: 28px;
+    line-height: 1.25;
+  }
+
+  .marketing-faq__trigger {
+    gap: 12px;
+    padding: 18px 16px;
   }
 
   .marketing-faq__num,
@@ -290,16 +313,8 @@ function toggle(index) {
     line-height: 24px;
   }
 
-  .marketing-faq__icon {
-    font-size: 18px;
-  }
-
   .marketing-faq__answer {
     padding: 0 16px 18px 56px;
-  }
-
-  .marketing-faq--simple .marketing-faq__answer {
-    padding: 0 16px 16px;
   }
 }
 </style>

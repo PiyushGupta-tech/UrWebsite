@@ -91,7 +91,7 @@ defineProps({
   max-width: var(--ur-page-max, 1440px);
   margin: 0 auto;
   min-height: max(560px, calc(100svh - var(--home-trust-peek)));
-  padding: var(--home-nav-clearance) clamp(24px, 7vw, 102px) 48px;
+  padding: var(--home-nav-clearance) var(--ur-gutter) 0;
   box-sizing: border-box;
 }
 
@@ -172,61 +172,45 @@ defineProps({
   width: min(100%, 604px);
   height: auto;
   max-height: 454px;
-  transform: translateY(24px);
+  /* Keep diagram in flow so section gap below isn’t eaten by a transform */
+  margin-top: 24px;
 }
 
-@media (max-width: 1100px) {
+/* Tablet: centered stack (Figma iPad 208:3123) */
+@media (max-width: 1200px) {
   .home-hero__inner {
-    padding: 113px clamp(24px, 5vw, 40px) 40px;
+    padding: 120px 40px 0;
     min-height: auto;
   }
 
   .home-hero__stage {
     grid-template-columns: 1fr;
-    gap: 32px;
-  }
-
-  .home-hero__copy {
-    max-width: 640px;
-  }
-
-  .home-hero__diagram {
-    max-height: 360px;
-    transform: translateY(12px);
-  }
-}
-
-/* Tablet + phone: mobile-inspired composition */
-@media (max-width: 900px) {
-  .home-hero__inner {
-    padding: 104px clamp(19px, 4vw, 32px) 28px;
-  }
-
-  .home-hero__stage {
     gap: 40px;
+    max-width: 673px;
+    margin-inline: auto;
   }
 
   .home-hero__copy {
     align-items: center;
     gap: 24px;
-    max-width: min(420px, 100%);
+    max-width: 570px;
     margin: 0 auto;
   }
 
   .home-hero__text {
-    gap: 10px;
+    gap: 12px;
     text-align: center;
   }
 
   .home-hero__title {
-    font-size: var(--ur-heading-sm, 28px);
-    line-height: 1.15;
+    font-size: 34px;
+    line-height: 42px;
     letter-spacing: -0.8px;
   }
 
   .home-hero__lead {
-    font-size: clamp(14px, 2.8vw, 16px);
-    line-height: 1.56;
+    font-size: 12px;
+    line-height: 20px;
     letter-spacing: 0;
     text-align: center;
   }
@@ -236,7 +220,9 @@ defineProps({
     min-width: 142px;
     height: 40px;
     padding: 10px 16px;
-    font-size: 16px;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: -0.28px;
   }
 
   .home-hero__visual {
@@ -244,16 +230,36 @@ defineProps({
   }
 
   .home-hero__diagram {
-    width: min(100%, 420px);
-    max-height: 280px;
+    width: min(100%, 674px);
+    max-height: none;
     transform: none;
+    margin-top: 0;
     margin-inline: auto;
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 700px) {
+  .home-hero__inner {
+    padding: 104px 19px 0;
+  }
+
+  .home-hero__stage {
+    max-width: none;
+    gap: 32px;
+  }
+
   .home-hero__copy {
     max-width: 353px;
+  }
+
+  .home-hero__title {
+    font-size: 28px;
+    line-height: 1.15;
+  }
+
+  .home-hero__lead {
+    font-size: 14px;
+    line-height: 1.56;
   }
 
   .home-hero__diagram {
