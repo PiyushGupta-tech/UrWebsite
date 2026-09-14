@@ -41,10 +41,10 @@ onMounted(() => {
     <section class="about-hero">
       <div class="about-hero__bg" aria-hidden="true">
         <img
-          src="/images/figma-contact/hero-bg@2x.png"
+          src="/images/herobg.svg"
           alt=""
           width="1440"
-          height="628"
+          height="600"
           decoding="async"
         />
       </div>
@@ -251,18 +251,24 @@ onMounted(() => {
 
 .about-hero__bg {
   position: absolute;
-  inset: 0 auto auto 50%;
-  transform: translateX(-50%);
-  width: max(100%, 1440px);
+  inset: 0;
+  width: 100%;
   height: 100%;
   pointer-events: none;
   z-index: 0;
+  overflow: hidden;
 }
 
 .about-hero__bg img {
   display: block;
+  position: absolute;
+  left: 50%;
+  top: 0;
   width: 100%;
+  min-width: 100%;
   height: 100%;
+  min-height: 100%;
+  transform: translateX(-50%);
   object-fit: cover;
   object-position: center top;
 }

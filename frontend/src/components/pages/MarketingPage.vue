@@ -12,7 +12,6 @@ import ReconciliationHeroGraphic from "./ReconciliationHeroGraphic.vue";
 import PaymentOrchestrationHeroGraphic from "./PaymentOrchestrationHeroGraphic.vue";
 import CustomCheckoutHeroGraphic from "./CustomCheckoutHeroGraphic.vue";
 import HyperCheckoutHeroGraphic from "./HyperCheckoutHeroGraphic.vue";
-import DashboardHeroGraphic from "./DashboardHeroGraphic.vue";
 import UpiSwitchHeroGraphic from "./UpiSwitchHeroGraphic.vue";
 import AffordabilityHeroGraphic from "./AffordabilityHeroGraphic.vue";
 import PayoutPortalHeroGraphic from "./PayoutPortalHeroGraphic.vue";
@@ -111,12 +110,6 @@ const HERO_PAGES = {
   "upi-switch": {
     component: UpiSwitchHeroGraphic,
     graphicPosition: "right",
-  },
-  "white-label": {
-    component: DashboardHeroGraphic,
-    graphicPosition: "right",
-    needsDashboard: true,
-    graphicProps: { themeBreathe: true, logoPlaceholder: true },
   },
   affordability: {
     component: AffordabilityHeroGraphic,

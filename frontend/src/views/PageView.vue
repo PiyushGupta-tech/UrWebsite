@@ -6,6 +6,8 @@ import { applySeo } from "@/utils/seo";
 import HomeClosing from "@/components/HomeClosing.vue";
 import AboutPage from "@/components/pages/AboutPage.vue";
 import MarketingPage from "@/components/pages/MarketingPage.vue";
+import WhiteLabelPage from "@/components/pages/WhiteLabelPage.vue";
+import CustomCheckoutPage from "@/components/pages/CustomCheckoutPage.vue";
 import FaqPage from "@/components/pages/FaqPage.vue";
 import BlogPage from "@/components/pages/BlogPage.vue";
 import PrivacyPage from "@/components/pages/PrivacyPage.vue";
@@ -32,6 +34,8 @@ const pageComponent = computed(() => {
   const map = {
     about: AboutPage,
     marketing: MarketingPage,
+    "white-label": WhiteLabelPage,
+    "custom-checkout": CustomCheckoutPage,
     faq: FaqPage,
     blog: BlogPage,
     privacy: PrivacyPage,
@@ -99,9 +103,7 @@ watch(() => route.path, loadPage);
   padding-top: var(--page-nav-offset);
   overflow-x: clip;
   max-width: 100%;
-  background:
-    url("/images/figma-contact/hero-bg@2x.png") center top / max(100%, 1440px) auto no-repeat,
-    #ffffff;
+  background: #ffffff;
 }
 
 .page-view > .site-closing {

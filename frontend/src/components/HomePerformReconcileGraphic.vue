@@ -20,10 +20,11 @@ let handleMobileQueryChange = null;
 
 const DESKTOP_CONNECTORS = {
   viewBox: "0 0 805 138",
-  top: "M291 17H385.5C392.127 17 397.5 22.373 397.5 29V53C397.5 59.627 402.873 65 409.5 65H519.5",
-  middle: { x1: 291, y1: 64.5, x2: 397, y2: 64.5 },
+  // Y values = source-pill centers (36px pills + 8px gaps → 18 / 62 / 106)
+  top: "M291 18H385.5C392.127 18 397.5 23.373 397.5 30V54C397.5 60.627 402.873 62 409.5 62H519.5",
+  middle: { x1: 291, y1: 62, x2: 519.5, y2: 62 },
   bottom:
-    "M291 107H385.733C392.36 107 397.733 101.627 397.733 95V77C397.733 70.373 403.106 65 409.733 65H520",
+    "M291 106H385.733C392.36 106 397.733 100.627 397.733 94V78C397.733 71.373 403.106 62 409.733 62H520",
 };
 
 const MOBILE_CONNECTORS = {
@@ -99,7 +100,8 @@ onUnmounted(() => {
     <svg
       v-if="!isMobile"
       class="reconcile-graphic__connectors"
-      :viewBox="isMobile ? MOBILE_CONNECTORS.viewBox : DESKTOP_CONNECTORS.viewBox"
+      :viewBox="DESKTOP_CONNECTORS.viewBox"
+      preserveAspectRatio="xMinYMin meet"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
@@ -186,29 +188,37 @@ onUnmounted(() => {
       </div>
     </div>
 
-    <div class="reconcile-graphic__stack" :class="{ 'reconcile-graphic__stack--mobile': isMobile }" aria-hidden="true">
-      <div class="reconcile-graphic__stack-cap" />
-      <div
-        v-for="(lane, index) in LANES"
-        :key="`${lane.id}-layer`"
-        class="reconcile-graphic__stack-layer"
-        :class="layerClass(index)"
-        :style="{ '--stack-rotation': `${index === 0 ? -4 : index === 1 ? 0 : 4}deg` }"
-      />
-    </div>
-
-    <div class="reconcile-graphic__main-card" :class="{ 'is-live': !reduceMotion, 'reconcile-graphic__main-card--mobile': isMobile }">
-      <div class="reconcile-graphic__badge" :class="{ 'is-active': !reduceMotion }">
-        <span class="reconcile-graphic__badge-core">
-          <svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path d="M9.75 3.5L5.2 8.05L3.125 5.975" stroke="white" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" />
-          </svg>
-        </span>
+    <div
+      class="reconcile-graphic__result"
+      :class="{
+        'is-live': !reduceMotion,
+        'reconcile-graphic__result--mobile': isMobile,
+      }"
+    >
+      <div class="reconcile-graphic__stack" :class="{ 'reconcile-graphic__stack--mobile': isMobile }" aria-hidden="true">
+        <div class="reconcile-graphic__stack-cap" />
+        <div
+          v-for="(lane, index) in LANES"
+          :key="`${lane.id}-layer`"
+          class="reconcile-graphic__stack-layer"
+          :class="layerClass(index)"
+          :style="{ '--stack-rotation': `${index === 0 ? -4 : index === 1 ? 0 : 4}deg` }"
+        />
       </div>
 
-      <div class="reconcile-graphic__copy">
-        <h3>Reconciled in One Place</h3>
-        <p>{{ mainCardBody }}</p>
+      <div class="reconcile-graphic__main-card" :class="{ 'reconcile-graphic__main-card--mobile': isMobile }">
+        <div class="reconcile-graphic__badge" :class="{ 'is-active': !reduceMotion }">
+          <span class="reconcile-graphic__badge-core">
+            <svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M9.75 3.5L5.2 8.05L3.125 5.975" stroke="white" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </span>
+        </div>
+
+        <div class="reconcile-graphic__copy">
+          <h3>Reconciled in One Place</h3>
+          <p>{{ mainCardBody }}</p>
+        </div>
       </div>
     </div>
   </div>
@@ -225,7 +235,8 @@ onUnmounted(() => {
 
 .reconcile-graphic__connectors {
   position: absolute;
-  inset: 0;
+  left: 0;
+  top: 0;
   width: 100%;
   height: 100%;
   overflow: visible;
@@ -252,16 +263,22 @@ onUnmounted(() => {
   left: 0;
   top: 0;
   width: 29.81%;
+  height: 100%;
   display: grid;
-  gap: 8px;
+  /* 36 + 8 + 36 + 8 + 36 = 124 → ~14px design padding under Refunds */
+  grid-template-rows: repeat(3, calc(36 / 138 * 100%));
+  gap: calc(8 / 138 * 100%);
+  align-content: start;
+  box-sizing: border-box;
 }
 
 .reconcile-graphic__source-pill {
   position: relative;
   display: flex;
   align-items: center;
-  height: 36px;
-  padding: 0 14px;
+  height: 100%;
+  min-height: 0;
+  padding: 0 clamp(8px, 1.7%, 14px);
   border: 1px solid #d5d7da;
   border-radius: 4px;
   background: #ffffff;
@@ -271,7 +288,7 @@ onUnmounted(() => {
 
 .reconcile-graphic__source-label {
   color: #535862;
-  font-size: 12px;
+  font-size: clamp(10px, 1.5vw, 12px);
   font-weight: 700;
   line-height: 1;
 }
@@ -281,13 +298,13 @@ onUnmounted(() => {
   left: 59%;
   top: 50%;
   display: flex;
-  gap: 4px;
+  gap: clamp(2px, 0.5vw, 4px);
   transform: translateY(-50%);
 }
 
 .reconcile-graphic__dot {
-  width: 6px;
-  height: 6px;
+  width: clamp(4px, 0.75vw, 6px);
+  height: clamp(4px, 0.75vw, 6px);
   border-radius: 50%;
   background: var(--dot-color);
   opacity: var(--dot-opacity);
@@ -300,10 +317,10 @@ onUnmounted(() => {
 
 .reconcile-graphic__anchor {
   position: absolute;
-  right: 12px;
+  right: clamp(8px, 1.5%, 12px);
   top: 50%;
-  width: 8px;
-  height: 8px;
+  width: clamp(6px, 1vw, 8px);
+  height: clamp(6px, 1vw, 8px);
   border-radius: 50%;
   color: var(--dot-color);
   background: currentColor;
@@ -315,11 +332,24 @@ onUnmounted(() => {
   animation: reconcile-anchor-pulse 0.72s ease-out infinite;
 }
 
-.reconcile-graphic__stack {
+.reconcile-graphic__result {
   position: absolute;
   left: 64.97%;
   top: 0;
   width: 25.71%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.reconcile-graphic__result.is-live {
+  animation: reconcile-main-card-float 1.4s ease-in-out infinite;
+}
+
+.reconcile-graphic__stack {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
   height: 100%;
   pointer-events: none;
 }
@@ -354,27 +384,28 @@ onUnmounted(() => {
     border-color 0.6s ease;
 }
 
+/* Desktop: tight stack so layers don’t read as ghost borders */
 .reconcile-graphic__stack-layer.is-top {
-  transform: translate(-12px, -10px) rotate(var(--stack-rotation));
-  opacity: 0.28;
-  border-color: rgba(9, 116, 149, 0.25);
+  transform: translate(0, -3px) rotate(0deg);
+  opacity: 0.18;
+  border-color: rgba(9, 116, 149, 0.18);
 }
 
 .reconcile-graphic__stack-layer.is-mid {
-  transform: translate(-6px, -5px) rotate(calc(var(--stack-rotation) * 0.5));
-  opacity: 0.16;
+  transform: translate(0, -1.5px) rotate(0deg);
+  opacity: 0.1;
 }
 
 .reconcile-graphic__stack-layer.is-back {
   transform: translate(0, 0) rotate(0deg);
-  opacity: 0.08;
+  opacity: 0.06;
 }
 
 .reconcile-graphic__main-card {
   position: absolute;
-  left: 64.97%;
+  left: 0;
   top: 5.8%;
-  width: 25.71%;
+  width: 100%;
   height: 93.5%;
   border: 1px solid #d5d7da;
   border-radius: 24px;
@@ -384,11 +415,8 @@ onUnmounted(() => {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  padding: 10px 12px 12px;
-}
-
-.reconcile-graphic__main-card.is-live {
-  animation: reconcile-main-card-float 1.4s ease-in-out infinite;
+  padding: 8px 10px 10px;
+  overflow: hidden;
 }
 
 .reconcile-graphic__badge {
@@ -525,7 +553,7 @@ onUnmounted(() => {
   .reconcile-graphic__connector.is-live,
   .reconcile-graphic__source-pill.is-live .reconcile-graphic__dot,
   .reconcile-graphic__source-pill.is-live .reconcile-graphic__anchor,
-  .reconcile-graphic__main-card.is-live,
+  .reconcile-graphic__result.is-live,
   .reconcile-graphic__badge.is-active {
     animation: none;
   }
@@ -622,13 +650,16 @@ onUnmounted(() => {
     animation-name: reconcile-anchor-pulse-mobile;
   }
 
-  .reconcile-graphic__stack--mobile,
-  .reconcile-graphic__main-card--mobile {
+  .reconcile-graphic__result--mobile {
     left: 50%;
     margin-left: -103.5px;
     top: 176px;
     width: 207px;
     height: 138px;
+  }
+
+  .reconcile-graphic__result--mobile.is-live {
+    animation: reconcile-main-card-float-mobile 1.4s ease-in-out infinite;
   }
 
   .reconcile-graphic__stack--mobile .reconcile-graphic__stack-cap {
@@ -663,10 +694,6 @@ onUnmounted(() => {
   .reconcile-graphic__main-card--mobile {
     padding: 12px 14px;
     border-radius: 24px;
-  }
-
-  .reconcile-graphic__main-card--mobile.is-live {
-    animation: reconcile-main-card-float-mobile 1.4s ease-in-out infinite;
   }
 
   .reconcile-graphic__badge {

@@ -1,0 +1,13 @@
+<svg width="447" height="240" viewBox="0 0 447 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="3" cy="3" r="3" fill="#252B37"/>
+  <path
+    d="M3 3 V143 H444 V237"
+    stroke="#252B37"
+    stroke-width="1"
+    stroke-dasharray="6 6"
+    fill="none"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+  <circle cx="444" cy="237" r="3" fill="#252B37"/>
+</svg>

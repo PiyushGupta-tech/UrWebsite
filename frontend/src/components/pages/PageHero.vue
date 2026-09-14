@@ -22,7 +22,15 @@ defineProps({
       'page-hero--graphic-left': split && graphicPosition === 'left',
     }"
   >
-    <div v-if="split" class="page-hero__glow" aria-hidden="true" />
+    <div class="page-hero__bg" aria-hidden="true">
+      <img
+        src="/images/herobg.svg"
+        alt=""
+        width="1440"
+        height="600"
+        decoding="async"
+      />
+    </div>
     <div class="container" :class="split ? 'page-hero__layout' : 'page-hero__inner'">
       <div v-if="$slots.graphic && graphicPosition === 'left'" class="page-hero__graphic">
         <slot name="graphic" />
@@ -56,48 +64,34 @@ defineProps({
   position: relative;
 }
 
+.page-hero__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.page-hero__bg img {
+  display: block;
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 100%;
+  min-width: 100%;
+  height: 100%;
+  min-height: 100%;
+  transform: translateX(-50%);
+  object-fit: cover;
+  object-position: center top;
+}
+
 .page-hero__inner,
 .page-hero__layout {
   position: relative;
   z-index: 1;
-}
-
-.page-hero__glow {
-  position: absolute;
-  top: 30%;
-  width: min(420px, 45vw);
-  height: 240px;
-  border-radius: 24px;
-  background: linear-gradient(
-    135deg,
-    rgba(6, 182, 212, 0.08) 0%,
-    rgba(26, 54, 93, 0.06) 50%,
-    transparent 100%
-  );
-  pointer-events: none;
-  animation: page-hero-glow 5s ease-in-out infinite;
-}
-
-.page-hero--graphic-left .page-hero__glow {
-  left: 5%;
-  right: auto;
-}
-
-.page-hero:not(.page-hero--graphic-left) .page-hero__glow {
-  right: 5%;
-  left: auto;
-}
-
-@keyframes page-hero-glow {
-  0%,
-  100% {
-    opacity: 0.7;
-    transform: translateY(0);
-  }
-  50% {
-    opacity: 1;
-    transform: translateY(-8px);
-  }
 }
 
 .page-hero__inner {
@@ -106,8 +100,6 @@ defineProps({
 }
 
 .page-hero__layout {
-  position: relative;
-  z-index: 1;
   display: grid;
   gap: 28px;
   align-items: start;
@@ -219,10 +211,6 @@ defineProps({
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .page-hero__glow {
-    animation: none;
-  }
-
   .page-hero--split .page-hero__title,
   .page-hero--split .page-hero__intro,
   .page-hero--split .page-hero__extra {

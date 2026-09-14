@@ -654,313 +654,197 @@ PAGES = {
         ],
     },
     "white-label-platform": {
-        "type": "marketing",
-        "title": "White Label Solutions",
+        "type": "white-label",
+        "eyebrow": "White label solution",
+        "title": "Launch Your Own Branded Payment Experience",
         "intro": (
-            "Launch Your Brand. Powered by Urbanrupee.\n\n"
-            "Build and scale your own branded payment ecosystem with Urbanrupee's White Label "
-            "Solutions. Designed for fintechs, enterprises, aggregators, and digital platforms, "
-            "our solution enables businesses to offer fully customized payment services under "
-            "their own brand without the complexity of developing and maintaining payment "
-            "infrastructure.\n\n"
-            "From onboarding and transaction processing to settlements, analytics, and reporting, "
-            "Urbanrupee provides a complete technology foundation while you focus on growing your "
-            "business and strengthening customer relationships."
+            "Take control of your customer experience with a platform designed around your brand, "
+            "supported by reliable technology and centralized management tools."
         ),
-        "sections": [
-            {
-                "title": "Complete Payment Ecosystem",
-                "body": (
-                    "Deliver a seamless payment experience through a fully integrated platform that "
-                    "manages the entire payment lifecycle under your brand identity."
-                ),
-                "bullets_heading": "Key Features",
-                "bullets": [
-                    "Payment acceptance and collections",
-                    "Transaction processing and management",
-                    "Settlement and payout management",
-                    "Refund and dispute handling",
-                    "Automated reconciliation",
-                    "Comprehensive reporting and analytics",
-                ],
-            },
-            {
-                "title": "Full Branding & Customization",
-                "body": (
-                    "Create a payment platform that reflects your brand, business processes, and "
-                    "customer experience requirements."
-                ),
-                "bullets_heading": "Key Features",
-                "bullets": [
-                    "Complete brand ownership",
-                    "Custom user interfaces and workflows",
-                    "Personalized customer journeys",
-                    "Flexible operational configurations",
-                    "Tailored business rules and permissions",
-                ],
-            },
-            {
-                "title": "Advanced Analytics & Visibility",
-                "body": (
-                    "Gain complete control over your payment operations with real-time dashboards, "
-                    "actionable insights, and performance monitoring."
-                ),
-                "bullets_heading": "Key Features",
-                "bullets": [
-                    "Real-time transaction visibility",
-                    "Custom dashboards and reports",
-                    "Business performance tracking",
-                    "Operational insights and analytics",
-                    "Data-driven decision-making",
-                ],
-            },
-            {
-                "title": "Enterprise Security & Compliance",
-                "body": (
-                    "Operate with confidence on a secure, compliant, and enterprise-grade "
-                    "infrastructure designed to protect sensitive payment data and business "
-                    "operations."
-                ),
-                "bullets_heading": "Key Features",
-                "bullets": [
-                    "PCI DSS & ISO 27001 certified infrastructure",
-                    "Enterprise-grade security controls",
-                    "Continuous monitoring and risk management",
-                    "Data protection and encryption",
-                    "Compliance-ready architecture",
-                ],
-            },
-            {
-                "title": "Scalable & API-Driven Architecture",
-                "body": (
-                    "Built for growth, our modular platform allows businesses to expand "
-                    "capabilities, integrate new services, and adapt to evolving market "
-                    "requirements."
-                ),
-                "bullets_heading": "Key Features",
-                "bullets": [
-                    "API-first architecture",
-                    "Modular and flexible design",
-                    "Seamless third-party integrations",
-                    "Rapid deployment capabilities",
-                    "Scalable infrastructure for future growth",
-                ],
-            },
+        "cta_label": "Talk to Expert",
+        "metrics": [
+            {"value": "100%", "label": "Your Branding"},
+            {"value": "3x", "label": "Faster Product Launch"},
+            {"value": "24/7", "label": "Platform Support"},
+            {"value": "99.99%", "label": "Server Uptime"},
         ],
-        "highlights": [
-            {
-                "title": "Why Choose Urbanrupee White Label Solutions?",
-                "body": "Built to accelerate launch velocity while giving your business full control of the branded payment experience.",
-            },
-            {
-                "title": "Faster Time-to-Market",
-                "body": (
-                    "Launch your branded payment platform quickly without investing in complex "
-                    "infrastructure development."
-                ),
-            },
-            {
-                "title": "Complete Brand Ownership",
-                "body": (
-                    "Deliver a fully customized experience that strengthens customer trust and "
-                    "brand recognition."
-                ),
-            },
-            {
-                "title": "Scalable Growth",
-                "body": (
-                    "Expand your services and capabilities as your business evolves without "
-                    "operational limitations."
-                ),
-            },
-            {
-                "title": "Secure & Compliant",
-                "body": (
-                    "Leverage enterprise-grade security, compliance frameworks, and proven payment "
-                    "infrastructure."
-                ),
-            },
-            {
-                "title": "Operational Efficiency",
-                "body": (
-                    "Automate payment operations, settlements, reconciliation, and reporting "
-                    "through a unified platform."
-                ),
-            },
-        ],
+        "platform": {
+            "title": "Your Brand. Your payment Platform. Our Technology.",
+            "body": (
+                "Deliver a seamless experience under your own brand with a customizable platform "
+                "powered by reliable technology."
+            ),
+            "tagline": "Build Your Brand • Run Your Way • Scale Today",
+        },
+        "steps": {
+            "title": "Launch in 3 Simple Steps",
+            "body": (
+                "Payment orchestration acts as a centralized layer between your business and "
+                "payment providers, helping you connect, manage, route, and optimize payments "
+                "through a single integration."
+            ),
+            "items": [
+                {
+                    "number": "01.",
+                    "title": "Customize Your Brand",
+                    "body": (
+                        "Add your logo, brand colors to create a consistent platform experience "
+                        "that reflects your unique brand identity."
+                    ),
+                    "image": "/images/figma-white-label/step-01.png",
+                    "image_width": 375,
+                    "image_height": 242,
+                },
+                {
+                    "number": "02.",
+                    "title": "Configure Your Platform",
+                    "body": (
+                        "Choose the features, settings, and workflows that best match your "
+                        "business requirements and operational needs."
+                    ),
+                    "image": "/images/figma-white-label/step-02.png",
+                    "image_width": 498,
+                    "image_height": 249,
+                },
+                {
+                    "number": "03.",
+                    "title": "Launch Under Your Brand",
+                    "body": (
+                        "Deliver a fully branded platform experience to your customers while "
+                        "managing everything through one centralized solution."
+                    ),
+                    "image": "/images/figma-white-label/step-03.png",
+                    "image_width": 319,
+                    "image_height": 269,
+                },
+            ],
+        },
+        "benefits": {
+            "title": "More Control. Stronger Brand Experience.",
+            "body": (
+                "Deliver a seamless experience under your own brand while managing your platform "
+                "with greater flexibility, customization, and centralized control."
+            ),
+            "cards": [
+                {
+                    "title": "Flexible Configuration",
+                    "body": "Configure features and workflows according to your requirements.",
+                    "icon": "/images/figma-white-label/icon-config.svg",
+                    "icon_framed": True,
+                },
+                {
+                    "title": "Easy to Scale",
+                    "body": "Scale with confidence without managing complex infrastructure.",
+                    "icon": "/images/figma-white-label/icon-scale.svg",
+                    "icon_framed": False,
+                },
+                {
+                    "title": "Lower Development Costs",
+                    "body": (
+                        "Save time and resources on product development and maintenance."
+                    ),
+                    "icon": "/images/figma-white-label/icon-costs.svg",
+                    "icon_framed": False,
+                },
+                {
+                    "title": "Centralized Management",
+                    "body": "Manage your operations and services from one platform.",
+                    "icon": "/images/figma-white-label/icon-manage.svg",
+                    "icon_framed": False,
+                },
+            ],
+        },
     },
     "custom-checkout": {
-        "type": "marketing",
-        "title": "Customized Checkout Solutions",
+        "type": "custom-checkout",
+        "eyebrow": "Custom Checkout",
+        "title": "Own every step from cart to payment with a branded checkout",
         "intro": (
-            "Your Brand. Your Experience. Your Checkout.\n\n"
-            "Urbanrupee's Customized Checkout Solutions empower businesses to create payment "
-            "experiences that feel like a natural extension of their brand. Unlike standard checkout "
-            "pages that redirect customers away from your platform, our white-label checkout "
-            "infrastructure keeps users within your ecosystem—delivering a seamless, trusted, and "
-            "conversion-focused payment journey.\n\n"
-            "Built for businesses that prioritize customer experience, brand consistency, and "
-            "performance, Custom Checkout combines intelligent payment technology with complete "
-            "design flexibility to help maximize conversions and strengthen customer trust."
+            "Design a checkout experience that matches your brand and gives you the flexibility "
+            "to create a smooth, simple, and seamless payment journey for your customers."
         ),
-        "sections": [
-            {
-                "title": "What is Custom Checkout?",
-                "body": (
-                    "Urbanrupee's Custom Checkout Solution gives businesses complete control over "
-                    "the payment experience—from branding and user interface to payment flow and "
-                    "customer interactions. By eliminating unnecessary redirects and maintaining a "
-                    "consistent brand presence throughout the payment journey, businesses can reduce "
-                    "friction, improve trust, and create a more engaging checkout experience.\n\n"
-                    "The result is a faster, smoother, and more personalized payment process that "
-                    "helps convert more visitors into customers."
-                ),
-            },
-            {
-                "title": "Key Features",
-                "subhead": "Everything You Need to Build a High-Converting Checkout",
-                "cards": [
-                    {
-                        "title": "🎨 Complete Brand Customization",
-                        "body": (
-                            "Personalize colors, typography, layouts, logos, messaging, and user "
-                            "journeys to create a checkout experience that reflects your brand identity."
-                        ),
-                    },
-                    {
-                        "title": "📱 Mobile-First Experience",
-                        "body": (
-                            "Deliver flawless payment experiences across smartphones, tablets, and "
-                            "desktops through responsive, performance-driven design."
-                        ),
-                    },
-                    {
-                        "title": "Comprehensive Payment Acceptance",
-                        "body": (
-                            "Support UPI, cards, net banking, wallets, EMI, and emerging payment "
-                            "methods through one unified checkout."
-                        ),
-                    },
-                    {
-                        "title": "Lightning-Fast Performance",
-                        "body": (
-                            "Optimized architecture ensures faster page loads, smoother interactions, "
-                            "and reduced customer drop-offs."
-                        ),
-                    },
-                    {
-                        "title": "Enterprise-Grade Security",
-                        "body": (
-                            "Built on PCI DSS and security-focused infrastructure with advanced "
-                            "encryption and fraud prevention capabilities."
-                        ),
-                    },
-                    {
-                        "title": "Analytics & Conversion Insights",
-                        "body": (
-                            "Understand customer behavior, identify friction points, and continuously "
-                            "improve checkout performance through actionable insights."
-                        ),
-                    },
-                ],
-            },
-            {
-                "title": "Why Choose Customized Checkout?",
-                "subhead": "Turn Payments Into a Competitive Advantage",
-                "body": (
-                    "Today's customers expect payment experiences that are simple, secure, and "
-                    "seamless. Customized Checkout helps businesses create a checkout journey that "
-                    "not only processes payments but also strengthens customer trust and drives "
-                    "measurable business growth."
-                ),
-                "bullets_heading": "Benefits",
-                "bullets": [
-                    "Improve conversion rates through frictionless payment journeys",
-                    "Reduce checkout abandonment with seamless user experiences",
-                    "Strengthen brand trust through consistent customer interactions",
-                    "Gain valuable customer and payment behavior insights",
-                    "Create differentiated payment experiences that stand out from competitors",
-                    "Maintain complete ownership of the customer journey",
-                ],
-            },
-            {
-                "title": "How It Works",
-                "steps": [
-                    {
-                        "title": "Step 1 — Design Your Experience",
-                        "body": (
-                            "Create a checkout journey that aligns perfectly with your brand, "
-                            "customer expectations, and business goals."
-                        ),
-                    },
-                    {
-                        "title": "Step 2 — Integrate with Ease",
-                        "body": (
-                            "Implement our developer-friendly APIs and SDKs with minimal effort "
-                            "and rapid deployment timelines."
-                        ),
-                    },
-                    {
-                        "title": "Step 3 — Launch Faster",
-                        "body": (
-                            "Go live quickly with a production-ready payment infrastructure built "
-                            "for reliability and scale."
-                        ),
-                    },
-                    {
-                        "title": "Step 4 — Optimize & Grow",
-                        "body": (
-                            "Leverage analytics, customer insights, and performance data to "
-                            "continuously improve checkout effectiveness."
-                        ),
-                    },
-                ],
-            },
-        ],
-        "highlights": [
-            {
-                "title": "Why Businesses Love Urbanrupee Checkout",
-                "body": (
-                    "A white-label checkout built for conversion, brand control, and long-term "
-                    "payment performance."
-                ),
-            },
-            {
-                "title": "Higher Conversion Rates",
-                "body": (
-                    "Reduce friction and create faster payment experiences that encourage customers "
-                    "to complete transactions."
-                ),
-            },
-            {
-                "title": "Complete Brand Ownership",
-                "body": (
-                    "Deliver a checkout experience that feels fully integrated with your platform "
-                    "and customer journey."
-                ),
-            },
-            {
-                "title": "Superior Performance",
-                "body": (
-                    "Provide fast, responsive, and reliable payment experiences across all devices "
-                    "and channels."
-                ),
-            },
-            {
-                "title": "Secure & Compliant Infrastructure",
-                "body": (
-                    "Protect customer data through enterprise-grade security, compliance standards, "
-                    "and trusted payment technology."
-                ),
-            },
-            {
-                "title": "Continuous Optimization",
-                "body": (
-                    "Monitor customer behavior, identify opportunities, and improve performance "
-                    "through actionable insights."
-                ),
-            },
-        ],
+        "cta_label": "Talk to Expert",
+        "showcase": {
+            "title": "One Checkout. Built Around Your Customers.",
+            "body": (
+                "Customize payment methods, checkout flows, and the overall experience from one place."
+            ),
+            "image": "/images/figma-custom-checkout/platform-visual.png",
+            "image_width": 1291,
+            "image_height": 813,
+        },
+        "features": {
+            "title": "Customize Every Step of Checkout",
+            "body": (
+                "Payment orchestration acts as a centralized layer between your business and "
+                "payment providers, helping you connect, manage, route, and optimize payments "
+                "through a single integration."
+            ),
+            "items": [
+                {
+                    "title": "Your Branding and Logo",
+                    "body": (
+                        "Show your logo and brand identity throughout checkout, so every payment "
+                        "step feels like part of your product—not a third-party redirect."
+                    ),
+                    "image": "/images/figma-custom-checkout/feature-branding.png",
+                    "image_width": 637,
+                    "image_height": 349,
+                    "reverse": False,
+                },
+                {
+                    "title": "Configure Payment Methods",
+                    "body": (
+                        "Choose and manage the payment methods you want to offer, giving customers "
+                        "more flexibility to pay using their preferred option."
+                    ),
+                    "image": "/images/figma-custom-checkout/feature-methods.png",
+                    "image_width": 616,
+                    "image_height": 351,
+                    "reverse": True,
+                },
+                {
+                    "title": "Design Your Experience",
+                    "body": (
+                        "Customize every detail of your checkout, from the layout and visual "
+                        "elements to branding, ensuring it feels consistent with your business identity."
+                    ),
+                    "image": "/images/figma-custom-checkout/feature-design.png",
+                    "image_width": 586,
+                    "image_height": 427,
+                    "reverse": False,
+                },
+            ],
+        },
+        "benefits": {
+            "title": "Custom Checkout built for your brand",
+            "body": (
+                "Deliver a seamless experience under your own brand while managing your platform "
+                "with greater flexibility, customization, and centralized control."
+            ),
+            "cards": [
+                {
+                    "title": "Your Brand, Your Checkout",
+                    "body": "Customize the checkout experience to match your brand identity.",
+                    "icon": "/images/figma-custom-checkout/icon-brand.svg",
+                },
+                {
+                    "title": "Flexible Payment Options",
+                    "body": "Offer customers the payment methods that work best for them.",
+                    "icon": "/images/figma-custom-checkout/icon-flexible.svg",
+                },
+                {
+                    "title": "Smooth Payment Experience",
+                    "body": "Create a simple and seamless journey from checkout to payment.",
+                    "icon": "/images/figma-custom-checkout/icon-smooth.svg",
+                },
+                {
+                    "title": "Built for Your Business",
+                    "body": "Configure checkout flows based on your business requirements.",
+                    "icon": "/images/figma-custom-checkout/icon-business.svg",
+                },
+            ],
+        },
     },
     "hyper-checkout": {
         "type": "marketing",

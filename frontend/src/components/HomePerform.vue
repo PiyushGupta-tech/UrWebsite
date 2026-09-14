@@ -110,7 +110,7 @@ defineProps({
 .home-perform__stack {
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  gap: 14px;
   min-width: 0;
   min-height: 0;
 }
