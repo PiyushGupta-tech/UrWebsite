@@ -36,6 +36,8 @@ frontend/public/videos/
 .DS_Store
 *.pem
 legacy-reference/
+# scratch design references pulled in while working (video frames, mockup crops)
+.cursor-*
 
 # debug
 npm-debug.log*

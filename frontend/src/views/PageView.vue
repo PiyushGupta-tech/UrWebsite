@@ -8,6 +8,7 @@ import AboutPage from "@/components/pages/AboutPage.vue";
 import MarketingPage from "@/components/pages/MarketingPage.vue";
 import WhiteLabelPage from "@/components/pages/WhiteLabelPage.vue";
 import CustomCheckoutPage from "@/components/pages/CustomCheckoutPage.vue";
+import HyperCheckoutPage from "@/components/pages/HyperCheckoutPage.vue";
 import FaqPage from "@/components/pages/FaqPage.vue";
 import BlogPage from "@/components/pages/BlogPage.vue";
 import PrivacyPage from "@/components/pages/PrivacyPage.vue";
@@ -36,6 +37,7 @@ const pageComponent = computed(() => {
     marketing: MarketingPage,
     "white-label": WhiteLabelPage,
     "custom-checkout": CustomCheckoutPage,
+    "hyper-checkout": HyperCheckoutPage,
     faq: FaqPage,
     blog: BlogPage,
     privacy: PrivacyPage,

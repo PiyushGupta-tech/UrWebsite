@@ -211,7 +211,7 @@ onUnmounted(() => {
 
         <div class="nav__actions">
           <RouterLink :to="ctaTo" class="nav__cta" @click="closeMenus">
-            Talk to an Expert
+            <span class="nav__cta-label">Talk to an Expert</span>
             <img
               class="nav__cta-arrow"
               src="/images/figma-contact/nav-arrow.svg"
@@ -450,7 +450,8 @@ onUnmounted(() => {
   align-items: center;
   justify-content: center;
   gap: 4px;
-  width: 155px;
+  width: auto;
+  min-width: 155px;
   height: 52px;
   padding: 0 16px;
   box-sizing: border-box;
@@ -460,7 +461,8 @@ onUnmounted(() => {
   font-size: 16px;
   font-weight: 700;
   letter-spacing: -0.32px;
-  line-height: normal;
+  line-height: 1;
+  text-align: center;
   text-decoration: none;
   white-space: nowrap;
   transition: opacity 0.15s ease;
@@ -471,11 +473,18 @@ onUnmounted(() => {
   color: #ffffff;
 }
 
+.nav__cta-label {
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
+}
+
 .nav__cta-arrow {
   display: block;
   width: 18px;
   height: 18px;
   flex-shrink: 0;
+  align-self: center;
 }
 
 .nav__menu-btn {

@@ -45,7 +45,7 @@ defineProps({
   margin: 0 auto 56px;
   max-width: 517px;
   text-align: center;
-  font-size: 40px;
+  font-size: 42px;
   font-weight: 700;
   line-height: 56px;
   letter-spacing: -1.2px;
@@ -139,8 +139,8 @@ defineProps({
     margin: 0 auto 0;
     max-width: 689px;
     height: auto;
-    font-size: 32px;
-    line-height: 36px;
+    font-size: 42px;
+    line-height: 52px;
     letter-spacing: -0.96px;
   }
 
@@ -210,7 +210,7 @@ defineProps({
   .marketing-audiences__title {
     margin: 0 auto 20px;
     max-width: 313px;
-    font-size: 28px;
+    font-size: 42px;
     line-height: 1.22;
   }
 

@@ -787,6 +787,7 @@ PAGES = {
                         "Show your logo and brand identity throughout checkout, so every payment "
                         "step feels like part of your product—not a third-party redirect."
                     ),
+                    "graphic": "branding",
                     "image": "/images/figma-custom-checkout/feature-branding.png",
                     "image_width": 637,
                     "image_height": 349,
@@ -798,6 +799,7 @@ PAGES = {
                         "Choose and manage the payment methods you want to offer, giving customers "
                         "more flexibility to pay using their preferred option."
                     ),
+                    "graphic": "methods",
                     "image": "/images/figma-custom-checkout/feature-methods.png",
                     "image_width": 616,
                     "image_height": 351,
@@ -809,6 +811,7 @@ PAGES = {
                         "Customize every detail of your checkout, from the layout and visual "
                         "elements to branding, ensuring it feels consistent with your business identity."
                     ),
+                    "graphic": "design",
                     "image": "/images/figma-custom-checkout/feature-design.png",
                     "image_width": 586,
                     "image_height": 427,
@@ -847,155 +850,166 @@ PAGES = {
         },
     },
     "hyper-checkout": {
-        "type": "marketing",
-        "title": "Hyper Checkout Experience",
+        "type": "hyper-checkout",
+        "eyebrow": "Hyper Checkout experience",
+        "title": "Turn every checkout into a conversion opportunity",
         "intro": (
-            "Faster Payments. Higher Conversions.\n\n"
-            "Urbanrupee's Hyper Checkout Experience is engineered to remove friction from the "
-            "payment journey and maximize transaction completion rates. Designed for speed, "
-            "simplicity, and performance, it delivers a seamless checkout experience across devices "
-            "and payment methods while helping businesses reduce drop-offs and improve customer "
-            "satisfaction.\n\n"
-            "From one-tap UPI payments to tokenized card transactions, Hyper Checkout combines "
-            "intelligent routing, optimized user journeys, and enterprise-grade security to create "
-            "a payment experience customers trust and complete."
+            "Create faster, smoother and more intuitive payment experiences that help customers "
+            "complete their purchases with confidence."
         ),
-        "sections": [
-            {
-                "title": "Frictionless Checkout Experience",
-                "body": (
-                    "Remove unnecessary steps and create seamless payment journeys that help "
-                    "customers complete transactions quickly and effortlessly."
-                ),
-                "bullets_heading": "Features",
-                "bullets": [
-                    "One-click payments",
-                    "Saved payment methods",
-                    "Smart retry mechanisms",
-                    "Optimized checkout flows",
-                    "Minimal customer effort",
-                ],
-            },
-            {
-                "title": "Built for Higher Conversion Rates",
-                "body": (
-                    "Every element of the checkout experience is designed to improve payment "
-                    "completion rates and reduce customer abandonment."
-                ),
-                "bullets_heading": "Features",
-                "bullets": [
-                    "Mobile-first user experience",
-                    "Lightning-fast payment flows",
-                    "Intelligent payment routing",
-                    "Optimized customer journeys",
-                    "Reduced checkout friction",
-                ],
-            },
-            {
-                "title": "Complete Brand Control",
-                "body": (
-                    "Deliver payment experiences that feel like a natural extension of your brand "
-                    "while maintaining consistency throughout the customer journey."
-                ),
-                "cards": [
-                    {
-                        "title": "Brand-Ready Interface",
-                        "body": (
-                            "Customize checkout screens, payment pages, and customer interactions "
-                            "to reflect your brand identity."
-                        ),
-                    },
-                    {
-                        "title": "Event-Driven Automation",
-                        "body": (
-                            "Use webhooks and real-time events to automate notifications, "
-                            "fulfillment processes, and backend operations."
-                        ),
-                    },
-                    {
-                        "title": "Checkout Performance Insights",
-                        "body": (
-                            "Gain visibility into customer behavior and identify opportunities "
-                            "to optimize conversion rates."
-                        ),
-                    },
-                ],
-            },
-            {
-                "title": "Security & Customer Trust",
-                "body": (
-                    "Protect every transaction through advanced security standards, tokenization "
-                    "technologies, and compliance-focused infrastructure."
-                ),
-                "bullets_heading": "Features",
-                "bullets": [
-                    "Tokenized payment credentials",
-                    "PCI DSS compliant architecture",
-                    "Advanced fraud prevention controls",
-                    "Secure transaction processing",
-                    "Transparent customer communication",
-                ],
-            },
-            {
-                "title": "Built for Developers",
-                "body": (
-                    "Launch quickly and scale confidently with flexible APIs, SDKs, and integration "
-                    "frameworks designed for modern businesses."
-                ),
-                "bullets_heading": "Features",
-                "bullets": [
-                    "Developer-friendly APIs",
-                    "Flexible integration architecture",
-                    "Modular checkout components",
-                    "Faster implementation cycles",
-                    "Scalable payment infrastructure",
-                ],
-            },
-        ],
-        "highlights": [
-            {
-                "title": "Why Businesses Choose Hyper Checkout",
-                "body": (
-                    "Built to accelerate checkout completion with performance, security, and "
-                    "conversion-focused design."
-                ),
-            },
-            {
-                "title": "Faster Checkout Experience",
-                "body": (
-                    "Reduce friction and accelerate transaction completion through optimized "
-                    "payment journeys."
-                ),
-            },
-            {
-                "title": "Higher Conversion Rates",
-                "body": (
-                    "Increase successful transactions with intelligent routing, recovery "
-                    "mechanisms, and streamlined payment flows."
-                ),
-            },
-            {
-                "title": "Superior Performance",
-                "body": (
-                    "Deliver fast, responsive, and reliable payment experiences across every "
-                    "device and payment method."
-                ),
-            },
-            {
-                "title": "Enterprise-Grade Security",
-                "body": (
-                    "Protect customer data and transactions through secure, compliant, and "
-                    "trusted infrastructure."
-                ),
-            },
-            {
-                "title": "Better Customer Experience",
-                "body": (
-                    "Create seamless payment interactions that build trust, improve satisfaction, "
-                    "and encourage repeat business."
-                ),
-            },
-        ],
+        "cta_label": "Talk to Expert",
+        "showcase": {
+            "title": "Designed for less friction. Built for more conversions.",
+            "body": (
+                "Every interaction at checkout matters. Give your customers a payment experience "
+                "that feels simple from the first click to the final confirmation."
+            ),
+            "image": "/images/figma-hyper-checkout/showcase-adaptive.png",
+            "image_alt": "Adaptive Hyper Checkout with smart routing and payment modes",
+            "image_width": 1291,
+            "image_height": 638,
+        },
+        "smarter": {
+            "title": "A Smarter Checkout, Built for Every Customer",
+            "body": (
+                "Deliver a seamless payment experience with intelligent payment selection, "
+                "flexible payment options, and frictionless checkout."
+            ),
+            "image": "/images/figma-hyper-checkout/smarter-phone.svg",
+            "image_alt": "Mobile Hyper Checkout with payment method logos",
+            "image_width": 531,
+            "image_height": 702,
+            "cards": [
+                {
+                    "title": "Smart Payment Selection",
+                    "body": (
+                        "Offer the right payment options based on customer preferences. "
+                        "Make checkout faster and easier to complete."
+                    ),
+                    "icon": "/images/figma-hyper-checkout/icons/smart-pay.svg",
+                },
+                {
+                    "title": "Outage",
+                    "body": (
+                        "Real-time alerts in the event of payment downtimes. "
+                        "Stay ahead of disruptions and keep transactions flowing."
+                    ),
+                    "icon": "/images/figma-hyper-checkout/icons/quick-flow.svg",
+                },
+                {
+                    "title": "Responsive Interface",
+                    "body": (
+                        "Deliver a seamless checkout experience across all devices. "
+                        "Keep the interface simple, clear, and easy to use."
+                    ),
+                    "icon": "/images/figma-hyper-checkout/icons/responsive.svg",
+                },
+                {
+                    "title": "Seamless Experience",
+                    "body": (
+                        "Create a smooth and consistent payment journey across every touchpoint. "
+                        "Make every interaction simple, fast, and effortless."
+                    ),
+                    "icon": "/images/figma-hyper-checkout/icons/seamless.svg",
+                },
+            ],
+        },
+        "journey": {
+            "title": "Turn a complex payment journey into a simple one",
+            "body": (
+                "Make every step of the payment journey simpler, faster and more relevant with an "
+                "intelligent checkout built around customer preferences and payment behavior."
+            ),
+            "cards": [
+                {
+                    "title": "Intelligent Payment Selection",
+                    "body": (
+                        "Present customers with relevant payment options, making it easier to find "
+                        "their preferred way to pay and complete the transaction."
+                    ),
+                    "icon": "/images/figma-hyper-checkout/icons/payment.svg",
+                },
+                {
+                    "title": "Streamlined Payment Flow",
+                    "body": (
+                        "Reduce unnecessary steps and interactions across the checkout journey, "
+                        "helping customers move from payment selection to confirmation with ease."
+                    ),
+                    "icon": "/images/figma-hyper-checkout/icons/flow.svg",
+                },
+                {
+                    "title": "Smart Failure Recovery",
+                    "body": (
+                        "When a payment attempt fails, guide customers toward relevant alternatives "
+                        "instead of making them restart the entire checkout process."
+                    ),
+                    "icon": "/images/figma-hyper-checkout/icons/failure.svg",
+                },
+                {
+                    "title": "Personalized Experience",
+                    "body": (
+                        "Create a more intuitive checkout by adapting the payment journey to "
+                        "different devices, payment methods and customer preferences."
+                    ),
+                    "icon": "/images/figma-hyper-checkout/icons/chart.svg",
+                },
+                {
+                    "title": "One-Tap Repeat Payments",
+                    "body": (
+                        "Enable customers to complete repeat purchases with fewer steps by "
+                        "reducing unnecessary input across subsequent transactions."
+                    ),
+                    "icon": "/images/figma-hyper-checkout/icons/repeat.svg",
+                },
+            ],
+        },
+        "trust": {
+            "title": "Everything you need to build a better checkout",
+            "body": (
+                "Give customers a faster, more flexible and reliable payment journey with "
+                "capabilities designed to simplify every stage of checkout."
+            ),
+            "image": "/images/figma-hyper-checkout/trust-devices.png",
+            "image_alt": "Multi-device Hyper Checkout experience",
+            "image_width": 706,
+            "image_height": 644,
+            "cards": [
+                {
+                    "title": "Adaptive Checkout Experience",
+                    "body": (
+                        "Adapt the checkout across devices and customer journeys for a seamless, "
+                        "intuitive payment experience."
+                    ),
+                    "icon": "/images/figma-hyper-checkout/icons/trust-payment.svg",
+                    "image": "/images/figma-hyper-checkout/trust-devices.png",
+                    "image_alt": "Multi-device Hyper Checkout experience",
+                },
+                {
+                    "title": "Multi-Mode Payment Support",
+                    "body": (
+                        "Offer multiple payment methods in one unified checkout, giving customers "
+                        "the flexibility to pay their way."
+                    ),
+                    "icon": "/images/figma-hyper-checkout/icons/trust-modes.svg",
+                    "image": "/images/figma-hyper-checkout/trust-modes.png",
+                    "image_alt": (
+                        "UPI, cards, wallets and netbanking connected to a single checkout"
+                    ),
+                },
+                {
+                    "title": "Intelligent Routing Support",
+                    "body": (
+                        "Route transactions through the most suitable payment path to improve "
+                        "reliability and payment success."
+                    ),
+                    "icon": "/images/figma-hyper-checkout/icons/trust-routing.svg",
+                    "image": "/images/figma-hyper-checkout/trust-routing.png",
+                    "image_alt": (
+                        "A payment routed across providers with successful and fallback outcomes"
+                    ),
+                },
+            ],
+        },
     },
     "payment-orchestration": {
         "type": "marketing",

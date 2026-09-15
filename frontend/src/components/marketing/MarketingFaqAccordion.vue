@@ -111,7 +111,7 @@ function toggle(index) {
 
 .marketing-faq__title {
   margin: 0;
-  font-size: 40px;
+  font-size: 42px;
   font-weight: 700;
   line-height: 56px;
   color: #252b37;
@@ -252,15 +252,15 @@ function toggle(index) {
   .marketing-faq__title {
     max-width: 520px;
     margin-inline: auto;
-    font-size: 34px;
-    line-height: 42px;
+    font-size: 42px;
+    line-height: 56px;
     letter-spacing: -0.4px;
   }
 
   .marketing-faq__body {
     max-width: 100%;
-    font-size: 12px;
-    line-height: 20px;
+    font-size: 16px;
+    line-height: 24px;
     letter-spacing: 0.48px;
   }
 
@@ -298,7 +298,7 @@ function toggle(index) {
   }
 
   .marketing-faq__title {
-    font-size: 28px;
+    font-size: 42px;
     line-height: 1.25;
   }
 

@@ -116,9 +116,9 @@ const usesLink = computed(() => !!props.to && !props.href);
 .marketing-banner-cta__title {
   margin: 0;
   max-width: 728px;
-  font-size: 40px;
+  font-size: 42px;
   font-weight: 500;
-  line-height: 52px;
+  line-height: 54px;
   letter-spacing: 1.6px;
   color: #ffffff;
 }
@@ -126,8 +126,8 @@ const usesLink = computed(() => !!props.to && !props.href);
 .marketing-banner-cta__body {
   margin: 0;
   max-width: 728px;
-  font-size: 14px;
-  line-height: 22px;
+  font-size: 16px;
+  line-height: 24px;
   letter-spacing: 0.56px;
   color: rgba(255, 255, 255, 0.8);
 }
@@ -186,15 +186,15 @@ const usesLink = computed(() => !!props.to && !props.href);
 
   .marketing-banner-cta__title {
     max-width: 640px;
-    font-size: 34px;
-    line-height: 44px;
+    font-size: 42px;
+    line-height: 54px;
     letter-spacing: 0.8px;
   }
 
   .marketing-banner-cta__body {
     max-width: 523px;
-    font-size: 12px;
-    line-height: 20px;
+    font-size: 16px;
+    line-height: 24px;
     letter-spacing: 0.48px;
   }
 
@@ -226,7 +226,7 @@ const usesLink = computed(() => !!props.to && !props.href);
   .marketing-banner-cta__title {
     max-width: 320px;
     margin-inline: auto;
-    font-size: 26px;
+    font-size: 42px;
     line-height: 1.3;
     letter-spacing: 0.2px;
   }

@@ -2,12 +2,21 @@
 import { computed } from "vue";
 import { RouterLink } from "vue-router";
 import CustomCheckoutShowcaseGraphic from "./CustomCheckoutShowcaseGraphic.vue";
+import CustomCheckoutFeatureBranding from "./CustomCheckoutFeatureBranding.vue";
+import CustomCheckoutFeatureMethods from "./CustomCheckoutFeatureMethods.vue";
+import CustomCheckoutFeatureDesign from "./CustomCheckoutFeatureDesign.vue";
 
 const props = defineProps({
   page: { type: Object, required: true },
   dashboard: { type: Object, default: null },
   relatedLinks: { type: Array, default: () => [] },
 });
+
+const featureGraphics = {
+  branding: CustomCheckoutFeatureBranding,
+  methods: CustomCheckoutFeatureMethods,
+  design: CustomCheckoutFeatureDesign,
+};
 
 /** Figma 283:9211 left col (offset): cards 0,2; right col 283:9228: cards 1,3 */
 const benefitsLeft = computed(() => {
@@ -84,7 +93,13 @@ const benefitsRight = computed(() => {
           :class="{ 'cc-features__row--reverse': item.reverse }"
         >
           <div class="cc-features__visual">
+            <component
+              :is="featureGraphics[item.graphic]"
+              v-if="item.graphic && featureGraphics[item.graphic]"
+              :aria-label="item.title"
+            />
             <img
+              v-else
               :src="item.image"
               :alt="item.title"
               :width="item.image_width || 616"
@@ -389,10 +404,15 @@ const benefitsRight = computed(() => {
   width: min(637px, 52%);
 }
 
-.cc-features__visual img {
+.cc-features__visual > img {
   display: block;
   width: 100%;
   height: auto;
+}
+
+.cc-features__visual > :not(img) {
+  display: block;
+  width: 100%;
 }
 
 .cc-features__copy {
@@ -567,10 +587,14 @@ const benefitsRight = computed(() => {
 
   .cc-hero__title,
   .cc-showcase__title,
-  .cc-features__title,
-  .cc-benefits__title {
+  .cc-features__title {
     font-size: 32px;
     line-height: 1.25;
+  }
+
+  .cc-benefits__title {
+    font-size: 42px;
+    line-height: 56px;
   }
 
   .cc-showcase,
@@ -642,9 +666,13 @@ const benefitsRight = computed(() => {
   }
 
   .cc-showcase__title,
-  .cc-features__title,
-  .cc-benefits__title {
+  .cc-features__title {
     font-size: 26px;
+    line-height: 1.3;
+  }
+
+  .cc-benefits__title {
+    font-size: 42px;
     line-height: 1.3;
   }
 

@@ -93,19 +93,19 @@ function toggleMethod(rowId) {
 const wires = [
   {
     id: "tl",
-    d: "M340 254 C358 252, 376 238, 392 230 C400 226, 406 224, 414 224",
+    d: "M352 250 C362 248, 378 236, 392 230 C400 226, 406 224, 414 224",
   },
   {
     id: "bl",
-    d: "M340 523 C358 521, 376 507, 392 499 C400 495, 406 493, 414 493",
+    d: "M352 519 C362 517, 378 505, 392 499 C400 495, 406 493, 414 493",
   },
   {
     id: "tr",
-    d: "M964 327 C946 318, 920 300, 900 288 C890 282, 885 281, 880 281",
+    d: "M968 327 C946 318, 920 300, 900 288 C890 282, 885 281, 880 281",
   },
   {
     id: "br",
-    d: "M965 616 C947 607, 921 589, 901 577 C891 571, 886 570, 881 570",
+    d: "M968 616 C947 607, 921 589, 901 577 C891 571, 886 570, 881 570",
   },
 ];
 
@@ -291,40 +291,46 @@ onBeforeUnmount(stopCycle);
         stroke-width="2"
         stroke-linecap="round"
       />
-      <circle cx="340" cy="254" r="4.5" fill="#fff" />
-      <circle cx="340" cy="523" r="4.5" fill="#fff" />
+      <!-- Port dots toward center / platform (fixed white) -->
+      <circle cx="414" cy="224" r="4.5" fill="#fff" />
+      <circle cx="414" cy="493" r="4.5" fill="#fff" />
       <circle cx="880" cy="281" r="4.5" fill="#fff" />
       <circle cx="881" cy="570" r="4.5" fill="#fff" />
+      <!-- Connector rings at badges — fixed #38B7D3 (Figma), not theme accent -->
       <circle
-        cx="414"
-        cy="224"
+        class="cc-stage__port"
+        cx="352"
+        cy="250"
         r="4"
         fill="none"
-        stroke="var(--cc-accent)"
+        stroke="#38B7D3"
         stroke-width="1.5"
       />
       <circle
-        cx="414"
-        cy="493"
+        class="cc-stage__port"
+        cx="352"
+        cy="519"
         r="4"
         fill="none"
-        stroke="var(--cc-accent)"
+        stroke="#38B7D3"
         stroke-width="1.5"
       />
       <circle
-        cx="964"
+        class="cc-stage__port"
+        cx="968"
         cy="327"
         r="4"
         fill="none"
-        stroke="var(--cc-accent)"
+        stroke="#38B7D3"
         stroke-width="1.5"
       />
       <circle
-        cx="965"
+        class="cc-stage__port"
+        cx="968"
         cy="616"
         r="4"
         fill="none"
-        stroke="var(--cc-accent)"
+        stroke="#38B7D3"
         stroke-width="1.5"
       />
     </svg>
@@ -443,8 +449,14 @@ onBeforeUnmount(stopCycle);
       </div>
     </div>
 
+    <p class="cc-stage__hint">
+      <span class="cc-stage__hint-desktop">Interactive — try the colors and payment toggles</span>
+      <span class="cc-stage__hint-mobile">Interactive preview — watch colors update live</span>
+    </p>
+
     <span class="visually-hidden">
       Interactive branded checkout preview. Theme color cycles through design swatches.
+      Use the payment method toggles to enable or disable checkout options.
     </span>
   </div>
 </template>
@@ -461,6 +473,42 @@ onBeforeUnmount(stopCycle);
   font-family: "Manrope", "DM Sans", system-ui, sans-serif;
   color: #252b37;
   user-select: none;
+}
+
+.cc-stage__hint {
+  position: absolute;
+  z-index: 6;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  margin: 0;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(13, 23, 48, 0.28);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.3;
+  white-space: nowrap;
+  pointer-events: none;
+  animation: cc-hint-pulse 2.8s ease-in-out infinite;
+}
+
+.cc-stage__hint-mobile {
+  display: none;
+}
+
+@keyframes cc-hint-pulse {
+  0%,
+  100% {
+    opacity: 0.82;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 
 /* —— Floating cards —— */
@@ -823,6 +871,16 @@ onBeforeUnmount(stopCycle);
   }
 }
 
+@keyframes cc-skel-grow {
+  0%,
+  100% {
+    transform: scaleX(0.55);
+  }
+  50% {
+    transform: scaleX(1);
+  }
+}
+
 /* —— Browser —— */
 .cc-stage__browser {
   position: absolute;
@@ -1014,6 +1072,8 @@ onBeforeUnmount(stopCycle);
   display: block;
   border-radius: 6px;
   background: #eef2f6;
+  transform-origin: left center;
+  animation: cc-skel-grow 2.4s ease-in-out infinite;
 }
 
 .cc-stage__skel--lg {
@@ -1022,10 +1082,12 @@ onBeforeUnmount(stopCycle);
 }
 
 .cc-stage__skel--sm {
-  width: 41.3%;
+  width: 55%;
   height: 8px;
   opacity: 0.6;
   border-radius: 5px;
+  animation-duration: 2.8s;
+  animation-delay: 0.4s;
 }
 
 .cc-stage__pay-section {
@@ -1163,8 +1225,18 @@ onBeforeUnmount(stopCycle);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .cc-stage__wire {
+  .cc-stage__wire,
+  .cc-stage__skel {
     animation: none;
+  }
+
+  .cc-stage__skel {
+    transform: none;
+  }
+
+  .cc-stage__hint {
+    animation: none;
+    opacity: 0.92;
   }
 
   .cc-stage__mask-icon,
@@ -1186,6 +1258,22 @@ onBeforeUnmount(stopCycle);
   .cc-stage__badge,
   .cc-stage__wires {
     display: none;
+  }
+
+  .cc-stage__hint {
+    bottom: 12px;
+    font-size: 11px;
+    white-space: normal;
+    text-align: center;
+    max-width: calc(100% - 32px);
+  }
+
+  .cc-stage__hint-desktop {
+    display: none;
+  }
+
+  .cc-stage__hint-mobile {
+    display: inline;
   }
 
   .cc-stage__browser {

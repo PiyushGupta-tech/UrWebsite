@@ -220,7 +220,7 @@ onUnmounted(stopTestimonialAutoplay);
   max-width: 1240px;
   margin: 0 auto 56px;
   padding: 0 24px;
-  font-size: 40px;
+  font-size: 42px;
   font-weight: 600;
   line-height: 56px;
   letter-spacing: -1.2px;
@@ -230,9 +230,9 @@ onUnmounted(stopTestimonialAutoplay);
   margin: 0 auto 24px;
   max-width: 788px;
   padding: 0 24px;
-  font-size: 40px;
+  font-size: 42px;
   font-weight: 700;
-  line-height: 48px;
+  line-height: 52px;
 }
 
 .marketing-testimonials__track-wrap {
@@ -362,8 +362,8 @@ onUnmounted(stopTestimonialAutoplay);
   .marketing-testimonials--about .marketing-testimonials__title,
   .marketing-testimonials--home .marketing-testimonials__title {
     padding: 0 40px;
-    font-size: 34px !important;
-    line-height: 42px !important;
+    font-size: 42px !important;
+    line-height: 52px !important;
     letter-spacing: -0.8px !important;
   }
 
@@ -396,7 +396,7 @@ onUnmounted(stopTestimonialAutoplay);
   .marketing-testimonials--about .marketing-testimonials__title,
   .marketing-testimonials--home .marketing-testimonials__title {
     padding: 0 19px;
-    font-size: 28px !important;
+    font-size: 42px !important;
     line-height: 1.2 !important;
   }
 
