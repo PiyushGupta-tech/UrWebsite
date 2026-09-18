@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import AppLayout from "@/layouts/AppLayout.vue";
 import { fetchAdminMe } from "@/api/client";
+import { disableScrollRestore } from "@/utils/scrollRestoration.js";
 
 const routes = [
   {
@@ -31,22 +32,42 @@ const routes = [
         meta: { slug: "about" },
       },
       {
-        path: "services/payment",
-        name: "payment-services",
+        path: "services/collections",
+        name: "collections",
         component: () => import("@/views/PageView.vue"),
-        meta: { slug: "payment-services" },
+        meta: { slug: "collections" },
+      },
+      {
+        path: "services/payouts",
+        name: "payouts",
+        component: () => import("@/views/PageView.vue"),
+        meta: { slug: "payouts" },
+      },
+      {
+        path: "services/financial-operations",
+        name: "financial-operations",
+        component: () => import("@/views/PageView.vue"),
+        meta: { slug: "financial-operations" },
+      },
+      {
+        path: "services/payment",
+        redirect: { name: "collections" },
+      },
+      {
+        path: "products/collections",
+        redirect: { name: "collections" },
       },
       {
         path: "services/aml",
-        name: "aml-detector",
-        component: () => import("@/views/PageView.vue"),
-        meta: { slug: "aml-detector" },
+        redirect: { name: "financial-operations" },
       },
       {
         path: "services/reconciliation",
-        name: "automatic-reconciliation",
-        component: () => import("@/views/PageView.vue"),
-        meta: { slug: "automatic-reconciliation" },
+        redirect: { name: "financial-operations" },
+      },
+      {
+        path: "products/payout",
+        redirect: { name: "payouts" },
       },
       {
         path: "products",
@@ -97,12 +118,6 @@ const routes = [
         meta: { slug: "affordability" },
       },
       {
-        path: "products/payout",
-        name: "payout-portal",
-        component: () => import("@/views/PageView.vue"),
-        meta: { slug: "payout-portal" },
-      },
-      {
         path: "products/wallet",
         name: "close-route-wallet",
         component: () => import("@/views/PageView.vue"),
@@ -145,7 +160,19 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
-  scrollBehavior() {
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition;
+    }
+    if (to.hash) {
+      return { el: to.hash, top: 96 };
+    }
+    // Full page load / refresh — don't force top; manual restore runs after content paints.
+    if (!from.matched.length) {
+      return false;
+    }
+    // In-app link navigation — start at top.
+    disableScrollRestore();
     return { top: 0 };
   },
 });

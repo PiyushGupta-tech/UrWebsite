@@ -185,17 +185,11 @@ function measureRoutes() {
   routeBusPath.value = `M${x0},${busY} L${xLast},${busY}`;
   routingView.value = { w, h, hubX, busY };
 
+  // Failover orange follows the same hub → bus → branch tree as the blue routes,
+  // landing on the down PG (not a freehand curve).
   const downIndex = partners.findIndex((p) => p.id === mode.value.downId);
-  const downTile = downIndex >= 0 ? tiles[downIndex] : null;
-  if (downTile) {
-    const tr = downTile.getBoundingClientRect();
-    const x = Math.round(tr.left + tr.width / 2 - routingRect.left);
-    failoverPath.value = `M${x},${endY} C${x},${Math.round(h * 0.72)} ${hubX},${Math.round(
-      h * 0.72,
-    )} ${hubX},${hubY}`;
-  } else {
-    failoverPath.value = "";
-  }
+  failoverPath.value =
+    downIndex >= 0 && paths[downIndex] ? paths[downIndex] : "";
 }
 
 let resizeObserver = null;
@@ -484,6 +478,7 @@ onUnmounted(() => {
           :class="{
             'viz__partner--on': isPartnerActive(p.id),
             'viz__partner--off': isPartnerDown(p.id),
+            'viz__partner--failover': mode.id === 'failover' && isPartnerDown(p.id),
             'viz__partner--route': isPartnerRouteHot(p.id),
             'viz__partner--pick': mode.id === 'smart',
           }"
@@ -495,17 +490,20 @@ onUnmounted(() => {
           @keydown.space.prevent="onPartnerClick(i)"
         >
           <img :src="p.logo" :alt="p.name" loading="lazy" />
-          <span
-            v-if="mode.id === 'smart' && partnerRate(p.id)"
-            class="viz__rate"
-          >{{ partnerRate(p.id) }}%</span>
-          <span
-            v-if="mode.id === 'balance'"
-            class="viz__share"
-            :style="{ '--share': `${partnerShare(p.id)}%` }"
-          >
-            <span class="viz__share-bar" />
-            <span class="viz__share-num">{{ partnerShare(p.id) }}%</span>
+          <!-- Fixed-height metric slot so smart / failover / balance keep the same card height. -->
+          <span class="viz__metric">
+            <span
+              v-if="mode.id === 'smart' && partnerRate(p.id)"
+              class="viz__rate"
+            >{{ partnerRate(p.id) }}%</span>
+            <span
+              v-else-if="mode.id === 'balance'"
+              class="viz__share"
+              :style="{ '--share': `${partnerShare(p.id)}%` }"
+            >
+              <span class="viz__share-bar" />
+              <span class="viz__share-num">{{ partnerShare(p.id) }}%</span>
+            </span>
           </span>
           <span v-if="isPartnerDown(p.id)" class="viz__status viz__status--off">
             <svg viewBox="0 0 12 12" aria-hidden="true">
@@ -541,11 +539,14 @@ onUnmounted(() => {
 }
 
 .viz__card {
+  /* Tallest mode is load-balance (share bars); lock height so mode switches don't jump. */
+  min-height: 390px;
   padding: 14px 12px 12px;
   border-radius: 18px;
   background: linear-gradient(165deg, #f0f9ff 0%, #fff 55%, #ecfeff 100%);
   border: 1px solid #bae6fd;
   box-shadow: 0 16px 40px rgba(6, 182, 212, 0.14);
+  box-sizing: border-box;
 }
 
 .viz__modes {
@@ -808,6 +809,9 @@ onUnmounted(() => {
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: #64748b;
+  white-space: nowrap;
+  line-height: 1.2;
+  min-height: 12px;
 }
 
 .viz__tag--hub {
@@ -920,9 +924,12 @@ onUnmounted(() => {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   gap: 6px;
+  /* Matches load-balance (tallest) so smart/failover don't collapse the row. */
+  min-height: 82px;
   background: #fff;
   border-radius: 12px;
   border: 1px solid #e2e8f0;
+  box-sizing: border-box;
 }
 
 .viz__partner {
@@ -930,17 +937,21 @@ onUnmounted(() => {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 4px;
+  min-height: 65px;
   padding: 8px 4px 6px;
   border-radius: 10px;
   border: 2px solid #f1f5f9;
   background: #f8fafc;
   opacity: 0.55;
+  box-sizing: border-box;
   transition:
     opacity 0.25s,
     border-color 0.25s,
     transform 0.25s,
-    box-shadow 0.25s;
+    box-shadow 0.25s,
+    gap 0.55s cubic-bezier(0.6, 0.6, 0, 1);
 }
 
 .viz__partner--pick {
@@ -953,9 +964,36 @@ onUnmounted(() => {
 }
 
 .viz__partner img {
+  display: block;
   max-width: 100%;
   max-height: 22px;
   object-fit: contain;
+}
+
+.viz__metric {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  /* Reserve load-balance share (bar + label) so failover/smart don't shrink the row. */
+  height: 20px;
+  overflow: hidden;
+  opacity: 1;
+  transition:
+    height 0.55s cubic-bezier(0.6, 0.6, 0, 1),
+    opacity 0.35s ease;
+}
+
+/* Failover: collapse metrics so logos center; reverse animates back for other modes. */
+.viz--failover .viz__partner {
+  gap: 0;
+}
+
+.viz--failover .viz__metric {
+  height: 0;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .viz__partner--route {
@@ -980,6 +1018,19 @@ onUnmounted(() => {
   filter: grayscale(1);
   border-color: #fecaca;
   background: #fef2f2;
+}
+
+/* Failover target: full-color logo + orange border (not greyscale). */
+.viz__partner--failover {
+  opacity: 1;
+  filter: none;
+  border-color: #f97316;
+  background: #fff;
+  box-shadow: 0 4px 14px rgba(249, 115, 22, 0.18);
+}
+
+.viz--failover .viz__partner--failover .viz__status--off {
+  background: #f97316;
 }
 
 .viz__rate {
@@ -1026,6 +1077,7 @@ onUnmounted(() => {
 .viz__share-num {
   font-size: 8px;
   font-weight: 800;
+  line-height: 1;
   color: #6366f1;
 }
 
@@ -1102,6 +1154,15 @@ onUnmounted(() => {
 
   .viz__partners {
     grid-template-columns: repeat(3, 1fr);
+    min-height: 0;
+  }
+
+  .viz__partner {
+    min-height: 0;
+  }
+
+  .viz__card {
+    min-height: 0;
   }
 
   .viz__chevron {

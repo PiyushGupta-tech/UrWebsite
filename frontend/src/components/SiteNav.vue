@@ -167,35 +167,105 @@ onUnmounted(() => {
                 decoding="async"
               />
             </button>
-            <div v-show="openMenu === 'solutions'" class="nav__panel">
-              <div class="nav__panel-inner">
-                <p class="nav__panel-label">Services</p>
-                <RouterLink
-                  v-for="item in nav.services"
-                  :key="item.href"
-                  :to="item.href"
-                  @click="closeMenus"
-                >
-                  {{ item.label }}
-                </RouterLink>
-                <p class="nav__panel-label">Products</p>
-                <RouterLink
-                  v-for="item in nav.products"
-                  :key="item.href"
-                  :to="item.href"
-                  @click="closeMenus"
-                >
-                  {{ item.label }}
-                </RouterLink>
-                <p class="nav__panel-label">Resources</p>
-                <RouterLink
-                  v-for="item in nav.resources"
-                  :key="item.href"
-                  :to="item.href"
-                  @click="closeMenus"
-                >
-                  {{ item.label }}
-                </RouterLink>
+            <div
+              v-show="openMenu === 'solutions'"
+              class="nav__panel nav__panel--solutions"
+            >
+              <div class="nav__panel-inner nav__panel-inner--mega">
+                <div class="nav__mega-col">
+                  <p class="nav__panel-label">Products</p>
+                  <div class="nav__mega-list">
+                    <RouterLink
+                      v-for="item in nav.products"
+                      :key="item.href"
+                      :to="item.href"
+                      class="nav__mega-item"
+                      @click="closeMenus"
+                    >
+                      <span>{{ item.label }}</span>
+                      <img
+                        class="nav__mega-arrow"
+                        src="/images/figma-nav/item-arrow.svg"
+                        alt=""
+                        width="12"
+                        height="12"
+                        decoding="async"
+                      />
+                    </RouterLink>
+                  </div>
+                </div>
+                <div class="nav__mega-col nav__mega-col--services">
+                  <p class="nav__panel-label">Services</p>
+                  <div class="nav__mega-list">
+                    <RouterLink
+                      v-for="item in nav.services"
+                      :key="item.href"
+                      :to="item.href"
+                      class="nav__mega-item"
+                      @click="closeMenus"
+                    >
+                      <span>{{ item.label }}</span>
+                      <img
+                        class="nav__mega-arrow"
+                        src="/images/figma-nav/item-arrow.svg"
+                        alt=""
+                        width="12"
+                        height="12"
+                        decoding="async"
+                      />
+                    </RouterLink>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="nav__dropdown"
+            @mouseenter="openDropdown('resources')"
+            @mouseleave="closeMenus"
+          >
+            <button
+              type="button"
+              class="nav__link nav__link--btn"
+              :class="{ 'nav__link--open': openMenu === 'resources' }"
+              :aria-expanded="openMenu === 'resources'"
+              @click="toggleDropdown('resources')"
+            >
+              Resources
+              <img
+                class="nav__chevron"
+                src="/images/figma-contact/nav-chevron.svg"
+                alt=""
+                width="24"
+                height="24"
+                decoding="async"
+              />
+            </button>
+            <div
+              v-show="openMenu === 'resources'"
+              class="nav__panel nav__panel--resources"
+            >
+              <div class="nav__panel-inner nav__panel-inner--list">
+                <div class="nav__mega-list">
+                  <RouterLink
+                    v-for="item in nav.resources"
+                    :key="item.href"
+                    :to="item.href"
+                    class="nav__mega-item"
+                    @click="closeMenus"
+                  >
+                    <span>{{ item.label }}</span>
+                    <img
+                      class="nav__mega-arrow"
+                      src="/images/figma-nav/item-arrow.svg"
+                      alt=""
+                      width="12"
+                      height="12"
+                      decoding="async"
+                    />
+                  </RouterLink>
+                </div>
               </div>
             </div>
           </div>
@@ -316,7 +386,7 @@ onUnmounted(() => {
 .nav__link {
   padding: 0;
   font-size: 16px;
-  font-weight: 400;
+  font-weight: 700;
   line-height: normal;
   color: #052201;
   background: transparent;
@@ -333,6 +403,9 @@ onUnmounted(() => {
   font-weight: 700;
 }
 
+.nav__link.router-link-exact-active,
+.nav__link--contact.router-link-active,
+.nav__link--contact.router-link-exact-active,
 .nav--compact .nav__link.router-link-exact-active,
 .nav--compact .nav__link--contact.router-link-active,
 .nav--compact .nav__link--contact.router-link-exact-active {
@@ -347,10 +420,6 @@ onUnmounted(() => {
   text-shadow: none;
 }
 
-.nav__link.router-link-exact-active {
-  font-weight: 600;
-}
-
 .nav__link--contact {
   color: #052201;
 }
@@ -358,7 +427,6 @@ onUnmounted(() => {
 .nav__link--contact.router-link-active,
 .nav__link--contact.router-link-exact-active {
   color: #097495;
-  font-weight: 600;
 }
 
 .nav__link--btn {
@@ -367,7 +435,10 @@ onUnmounted(() => {
   align-items: center;
   gap: 0;
   cursor: pointer;
-  font: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: 700;
+  line-height: inherit;
   color: #052201;
   background: transparent;
   padding: 0;
@@ -395,47 +466,117 @@ onUnmounted(() => {
   left: 50%;
   transform: translateX(-50%);
   padding-top: 12px;
-  min-width: 260px;
   z-index: 20;
 }
 
+.nav__panel--solutions {
+  left: 50%;
+  min-width: 582px;
+}
+
+.nav__panel--resources {
+  min-width: 240px;
+}
+
 .nav__panel-inner {
-  padding: 8px;
   background: #ffffff;
-  border: 1px solid rgba(9, 116, 149, 0.12);
-  border-radius: 12px;
+  border-radius: 8px;
   box-shadow: 0 12px 32px rgba(15, 23, 42, 0.12);
+  overflow: hidden;
+}
+
+/* Figma 466:32322 / 466:32350 — 582×221, pad 16, Products | Services */
+.nav__panel-inner--mega {
   display: flex;
-  flex-direction: column;
-  max-height: min(70vh, 480px);
-  overflow: auto;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 582px;
+  max-width: min(582px, calc(100vw - 32px));
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.nav__panel-inner--list {
+  padding: 16px;
+  min-width: 220px;
+}
+
+.nav__mega-col {
+  width: 243px;
+  flex-shrink: 0;
+}
+
+.nav__mega-col--services {
+  width: 258px;
 }
 
 .nav__panel-label {
-  margin: 8px 12px 4px;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: #097495;
+  margin: 0 0 8px;
+  padding: 0 8px 0 10px;
+  font-family: Manrope, system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 20px;
+  letter-spacing: 0;
+  text-transform: none;
+  color: #535862;
 }
 
-.nav__panel-label:first-child {
-  margin-top: 4px;
+.nav__mega-col--services .nav__panel-label {
+  padding-left: 8px;
 }
 
-.nav__panel-inner a {
-  padding: 10px 12px;
+.nav__mega-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  width: 100%;
+}
+
+.nav__mega-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  width: fit-content;
+  max-width: 100%;
+  padding: 6px 8px;
+  box-sizing: border-box;
+  border-radius: 4px;
+  border: 0.5px solid transparent;
+  font-family: Manrope, system-ui, sans-serif;
   font-size: 14px;
-  border-radius: 8px;
+  font-weight: 500;
+  line-height: 20px;
   color: #252b37;
   text-decoration: none;
-  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 }
 
-.nav__panel-inner a:hover {
-  background: rgba(9, 116, 149, 0.08);
-  color: #097495;
+.nav__mega-item span {
+  min-width: 0;
+}
+
+.nav__mega-arrow {
+  display: none;
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+  transform: rotate(90deg);
+}
+
+.nav__mega-item:hover,
+.nav__mega-item:focus-visible,
+.nav__mega-item.router-link-active {
+  background: #097495;
+  border-color: rgba(213, 215, 218, 0.2);
+  color: #ffffff;
+}
+
+.nav__mega-item:hover .nav__mega-arrow,
+.nav__mega-item:focus-visible .nav__mega-arrow,
+.nav__mega-item.router-link-active .nav__mega-arrow {
+  display: block;
 }
 
 .nav__actions {
@@ -692,6 +833,27 @@ onUnmounted(() => {
     min-width: 0;
   }
 
+  .nav__panel--solutions {
+    min-width: 0;
+  }
+
+  .nav__panel-inner--mega {
+    width: 100%;
+    max-width: none;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .nav__mega-col,
+  .nav__mega-col--services {
+    width: 100%;
+  }
+
+  .nav__mega-item {
+    width: 100%;
+    white-space: normal;
+  }
+
   .nav__cta {
     width: auto;
     height: 44px;
@@ -743,9 +905,9 @@ onUnmounted(() => {
     padding: 10px;
   }
 
-  .nav__panel-inner a {
+  .nav__mega-item {
     font-size: 13px;
-    padding: 9px 10px;
+    padding: 8px;
   }
 }
 </style>

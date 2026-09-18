@@ -203,7 +203,7 @@ def _iter_chunks():
             " ".join(ps.get("bullets", [])),
         ),
         title=ps.get("title", "Payment Solutions"),
-        href="/services/payment",
+        href="/services/collections",
     )
 
     for feat in content.FEATURES.get("items", []):

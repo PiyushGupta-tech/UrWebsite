@@ -14,9 +14,9 @@ from .page_seo import PRODUCT_SLUGS, RESOURCE_SLUGS
 SITE_BASE_URL = getattr(settings, "SITE_BASE_URL", "https://urbanrupee.com").rstrip("/")
 
 SERVICE_SLUGS = frozenset({
-    "payment-services",
-    "aml-detector",
-    "automatic-reconciliation",
+    "collections",
+    "payouts",
+    "financial-operations",
 })
 
 

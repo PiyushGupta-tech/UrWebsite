@@ -260,113 +260,231 @@ PAGES = {
         ),
         "cta_label": "Talk to an Expert",
     },
-    "payment-services": {
-        "type": "marketing",
-        "title": "Payment Infrastructure That Powers Growth",
+    "collections": {
+        "type": "collections",
+        "eyebrow": "collections",
+        "title": "Collect Payments. Simplify Operations. Accelerate Growth from single API.",
         "intro": (
-            "Deliver seamless payment experiences with a unified platform built for speed, "
-            "reliability, security, and higher transaction success rates. Urbanrupee helps "
-            "businesses simplify payments, improve conversions, and scale with confidence."
+            "A smarter digital collections solution designed to help businesses accept, track, "
+            "reconcile, and manage payments seamlessly across multiple channels."
         ),
-        "hero_extra": {
-            "why_heading": "Why Urbanrupee?",
-            "why_items": [
-                "Smart Payment Orchestration – One integration, multiple payment partners.",
-                "Higher Success Rates – Intelligent routing for better transaction approvals.",
-                "Automated Reconciliation – Faster settlements and simplified operations.",
-                "Secure & Reliable – PCI DSS-compliant practices with 99.9% uptime.",
-                "Flexible Checkout – Smooth payment experiences across all channels.",
-            ],
-            "methods_heading": "Supported Payment Methods",
-            "methods": "UPI • Cards • Net Banking • Wallets • EMI & Pay Later",
-            "tagline": "One Platform. Smarter Payments. Faster Growth.",
+        "cta_label": "Talk to Expert",
+        "stats": [
+            {"value": "80%", "label": "Reduction in Operational Time"},
+            {"value": "93%", "label": "Transaction Success Rate"},
+            {"value": "40%", "label": "Reduction in Failover Time"},
+            {"value": "90+", "label": "Transaction Per Seconds"},
+        ],
+        "smarter": {
+            "title": "A Smarter Way to Manage Every Collection",
+            "body": (
+                "Built for businesses handling high-volume payments, the solution helps reduce "
+                "manual processes, improve visibility, and create a smoother collection "
+                "experience for both businesses and customers."
+            ),
+            "image": "/images/figma-collections/diagram.png",
+            "image_alt": (
+                "Collections platform connecting customers, Urbanrupee, merchants, and payment methods"
+            ),
         },
-        "sections": [
-            {
-                "title": "Multi-Channel Payment Processing",
-                "subhead": "Accept Payments Anywhere. Deliver Seamless Experiences Everywhere.",
-                "body": (
-                    "Enable your business to accept payments across multiple channels through a "
-                    "single, intelligent payment infrastructure. Urbanrupee's Multi-Channel "
-                    "Payment Processing solution supports UPI, cards, net banking, wallets, and "
-                    "emerging payment methods, ensuring a frictionless experience for every "
-                    "customer.\n\n"
-                    "Powered by intelligent transaction routing, real-time failover mechanisms, "
-                    "and enterprise-grade security, our platform maximizes payment success rates "
-                    "while delivering speed, reliability, and scalability for businesses of all "
-                    "sizes."
-                ),
-                "bullets_heading": "Key Highlights",
-                "bullets": [
-                    "Unified payment acceptance across multiple payment methods",
-                    "Intelligent routing for higher transaction success rates",
-                    "Real-time failover and smart switching capabilities",
-                    "Faster, secure, and reliable transaction processing",
-                    "Seamless customer experience across all channels",
-                    "PCI DSS & ISO 27001 certified infrastructure",
-                    "Scalable architecture built for high-volume transactions",
-                ],
-            },
-            {
-                "title": "Real-Time Transaction Processing",
-                "subhead": "Speed, Reliability, and Performance at Scale",
-                "body": (
-                    "Deliver exceptional payment experiences with Urbanrupee's high-performance "
-                    "transaction processing infrastructure. Engineered for speed and resilience, "
-                    "our platform processes transactions in real time, ensuring rapid "
-                    "authorizations, minimal latency, and uninterrupted payment flows even during "
-                    "peak transaction volumes.\n\n"
-                    "Built on enterprise-grade architecture, Urbanrupee enables businesses to "
-                    "handle millions of transactions efficiently while maintaining high "
-                    "availability, operational stability, and a seamless customer experience."
-                ),
-            },
-            {
-                "title": "Advanced Payment Features",
-                "subhead": "Intelligent Payment Capabilities Built for Modern Businesses",
-                "body": (
-                    "Go beyond basic payment processing with a powerful suite of advanced payment "
-                    "features designed to streamline operations, enhance customer experiences, and "
-                    "improve financial efficiency. From recurring billing and split settlements to "
-                    "automated reconciliation and intelligent refund management, Urbanrupee provides "
-                    "the flexibility businesses need to scale with confidence.\n\n"
-                    "Powered by advanced fraud prevention, real-time monitoring, and "
-                    "enterprise-grade security, our platform helps businesses automate complex "
-                    "payment workflows while ensuring every transaction remains secure and compliant."
-                ),
-                "cards": [
-                    {"title": "Recurring Payments", "body": "Automated subscription billing"},
-                    {"title": "Split Payments", "body": "Multi-party payment processing"},
-                    {"title": "Smart Refunds", "body": "Instant refund processing"},
-                ],
-            },
-        ],
-        "highlights": [
-            {
-                "title": "Higher Conversion Rates",
-                "body": (
-                    "Drive more successful transactions through smart payment orchestration, "
-                    "optimized customer journeys, and intelligent routing that enhances checkout "
-                    "performance."
-                ),
-            },
-            {
-                "title": "Security & Compliance",
-                "body": (
-                    "Operate with confidence on a secure, compliant, and enterprise-ready "
-                    "infrastructure backed by PCI DSS certification, ISO 27001 standards, and "
-                    "advanced risk management frameworks."
-                ),
-            },
-            {
-                "title": "Fast & Flexible Integration",
-                "body": (
-                    "Connect effortlessly with your existing systems through scalable APIs and "
-                    "plug-and-play integrations, helping your business go live quickly and "
-                    "efficiently."
-                ),
-            },
-        ],
+        "flow": {
+            "title": "How Your Payment Journey Works",
+            "body": (
+                "From integration to settlement, manage every step through one "
+                "connected payment infrastructure."
+            ),
+            "steps": [
+                {
+                    "number": "01.",
+                    "title": "API Integration",
+                    "body": (
+                        "Connect your business to Urbanrupee APIs and access unified payment "
+                        "capabilities through a seamless integration."
+                    ),
+                    "side": "left",
+                    "visual": "api",
+                },
+                {
+                    "number": "02.",
+                    "title": "Payment Initiation",
+                    "body": (
+                        "Create and initiate payment requests with flexible workflows designed "
+                        "around your business requirements."
+                    ),
+                    "side": "right",
+                    "visual": "initiate",
+                },
+                {
+                    "number": "03.",
+                    "title": "Customer Pays",
+                    "body": (
+                        "Customers complete payments through their preferred payment method, "
+                        "creating a smooth and reliable checkout experience."
+                    ),
+                    "side": "left",
+                    "visual": "pay",
+                },
+                {
+                    "number": "04.",
+                    "title": "Real-Time Notification",
+                    "body": (
+                        "Receive instant payment status updates and keep your business systems "
+                        "informed throughout the transaction journey."
+                    ),
+                    "side": "right",
+                    "visual": "notify",
+                },
+                {
+                    "number": "05.",
+                    "title": "Settlement & Reconciliation",
+                    "body": (
+                        "Track settlements and reconcile transaction records with clear visibility "
+                        "into payment data and financial outcomes."
+                    ),
+                    "side": "left",
+                    "visual": "settle",
+                },
+            ],
+        },
+        "journey": {
+            "title": "From Payment Request to Reconciliation",
+            "body": (
+                "Built for businesses handling high-volume payments, the solution helps reduce "
+                "manual processes, improve visibility, and create a smoother collection experience."
+            ),
+            "cards": [
+                {
+                    "title": "Initiate Collection",
+                    "body": (
+                        "Create and send payment requests through your preferred collection "
+                        "channel, making it easy for customers."
+                    ),
+                    "icon": "/images/figma-collections/journey/initiate.svg",
+                },
+                {
+                    "title": "Accept Payments",
+                    "body": (
+                        "Let customers pay through multiple digital payment modes with a smooth "
+                        "and convenient payment experience."
+                    ),
+                    "icon": "/images/figma-collections/journey/accept.svg",
+                },
+                {
+                    "title": "Track & Reconcile",
+                    "body": (
+                        "Monitor transactions in real time and automatically match payments with "
+                        "the relevant orders, invoices, or accounts."
+                    ),
+                    "icon": "/images/figma-collections/journey/track.svg",
+                },
+                {
+                    "title": "Settle & Analyze",
+                    "body": (
+                        "Access timely settlements and actionable transaction insights to improve "
+                        "collection performance."
+                    ),
+                    "icon": "/images/figma-collections/journey/settle.svg",
+                },
+            ],
+        },
+        "experiences": {
+            "title": "Designed for Frictionless Payment Experiences",
+            "body": (
+                "Make every collection simple for your customers and effortless for your business "
+                "with a payment journey built for speed, convenience, and reliability."
+            ),
+            "cards": [
+                {
+                    "title": "Easy Payment Initiation",
+                    "body": (
+                        "Make it simple for customers to start a payment with intuitive payment "
+                        "requests and streamlined collection journeys."
+                    ),
+                    "image": "/images/figma-collections/experiences/easy-payment-initiation.svg",
+                    "image_alt": (
+                        "Payment request card connected to email, WhatsApp, SMS, QR, and send channels"
+                    ),
+                },
+                {
+                    "title": "Seamless Checkout",
+                    "body": (
+                        "Reduce payment friction with a smooth, responsive checkout experience "
+                        "designed to help customers complete transactions effortlessly."
+                    ),
+                    "image": "/images/figma-collections/experiences/seamless-checkout.svg",
+                    "image_alt": (
+                        "Checkout card with product, delivery to Home Bengaluru, Pay Securely CTA, "
+                        "and progress steps Details, Payment, Review, Complete"
+                    ),
+                },
+                {
+                    "title": "Multiple Payment Modes",
+                    "body": (
+                        "Give customers the flexibility to pay using their preferred digital "
+                        "payment method for a more convenient experience."
+                    ),
+                    "image": "/images/figma-collections/experiences/multiple-payment-modes.svg",
+                    "image_alt": (
+                        "Payment methods panel with Cards, UPI, Net Banking, Wallets, and EMI "
+                        "connected to Visa, Mastercard, UPI, GPay, PhonePe, and Paytm"
+                    ),
+                },
+                {
+                    "title": "Smart Payment Journeys",
+                    "body": (
+                        "Deliver optimized payment flows based on transaction requirements, "
+                        "helping create a more efficient and reliable collection experience."
+                    ),
+                    "image": "/images/figma-collections/experiences/smart-payment-journeys.svg",
+                    "image_alt": (
+                        "Transaction request routed through smart routing to Card, UPI, "
+                        "Net Banking, and Alternate Route"
+                    ),
+                },
+                {
+                    "title": "Real-Time Payment Status",
+                    "body": (
+                        "Keep customers and businesses informed with instant visibility into "
+                        "successful, failed, and pending payment transactions."
+                    ),
+                    "image": "/images/figma-collections/experiences/realtime-payment-status.svg",
+                    "image_alt": (
+                        "Stacked payment status cards for successful, pending, and failed transactions"
+                    ),
+                },
+                {
+                    "title": "Secure Transactions",
+                    "body": (
+                        "Build customer confidence with secure payment journeys designed to "
+                        "protect transaction data throughout the collection process."
+                    ),
+                    "image": "/images/figma-collections/experiences/secure-transactions.svg",
+                    "image_alt": (
+                        "Security shield surrounded by data encryption, fraud detection, "
+                        "secure APIs, and regulatory compliance"
+                    ),
+                },
+            ],
+        },
+    },
+    "payouts": {
+        "type": "marketing",
+        "title": "Payouts",
+        "intro": (
+            "Move money faster with a unified payouts platform for beneficiaries, vendors, "
+            "partners, and marketplace sellers — from initiation to completion."
+        ),
+        "sections": [],
+    },
+    "financial-operations": {
+        "type": "marketing",
+        "title": "Financial Operations Infrastructure",
+        "intro": (
+            "Build smarter financial experiences without building the infrastructure. Power "
+            "banking operations, payment flows, account services, and financial workflows "
+            "through a connected ecosystem."
+        ),
+        "sections": [],
     },
     "aml-detector": {
         "type": "marketing",
@@ -1012,147 +1130,172 @@ PAGES = {
         },
     },
     "payment-orchestration": {
-        "type": "marketing",
-        "title": "Payment Orchestration Platform",
+        "type": "orchestration",
+        "eyebrow": "Payment Orchestration",
+        "title": "Simplify and optimize your payments with your rules.",
         "intro": (
-            "Smarter Payment Decisions. Higher Success Rates.\n\n"
-            "Urbanrupee's Payment Orchestration Platform unifies your payment ecosystem through a "
-            "single intelligent layer that optimizes transaction flow, enhances payment "
-            "performance, and improves customer experiences. By dynamically selecting the most "
-            "efficient payment path based on performance, availability, and business rules, our "
-            "platform helps maximize transaction success while reducing operational complexity."
+            "Connect multiple payment providers, intelligently route transactions, improve "
+            "approval rates, and manage your entire payment ecosystem from one powerful platform."
         ),
-        "sections": [
-            {
-                "title": "Intelligent Payment Routing",
-                "body": (
-                    "Optimize every transaction with intelligent routing capabilities that analyze "
-                    "performance metrics, availability, and predefined business rules to ensure the "
-                    "best possible payment outcome."
-                ),
-                "bullets_heading": "Key Features",
-                "bullets": [
-                    "Intelligent transaction routing",
-                    "Performance-based decision engine",
-                    "Dynamic routing rules",
-                    "Centralized payment management",
-                    "Enhanced payment success rates",
-                ],
-            },
-            {
-                "title": "Business Continuity & Reliability",
-                "body": (
-                    "Ensure uninterrupted payment processing with automated failover capabilities "
-                    "and continuous infrastructure monitoring designed to maintain operational "
-                    "stability."
-                ),
-                "bullets_heading": "Key Features",
-                "bullets": [
-                    "Automated failover protection",
-                    "Real-time health monitoring",
-                    "High availability infrastructure",
-                    "Consistent payment performance",
-                    "Enhanced operational resilience",
-                ],
-            },
-            {
-                "title": "Analytics & Optimization",
-                "body": (
-                    "Gain complete visibility into payment performance through real-time insights, "
-                    "intelligent analytics, and optimization tools that help improve efficiency and "
-                    "business outcomes."
-                ),
-                "bullets_heading": "Key Features",
-                "bullets": [
-                    "Real-time performance dashboards",
-                    "Transaction analytics and reporting",
-                    "Payment trend monitoring",
-                    "Routing optimization controls",
-                    "Actionable business insights",
-                ],
-            },
-            {
-                "title": "Performance Highlights",
-                "cards": [
-                    {
-                        "title": "Smart Payment Routing",
-                        "body": (
-                            "Optimize transaction flow through intelligent decision-making and "
-                            "dynamic routing strategies."
-                        ),
-                    },
-                    {
-                        "title": "Real-Time Monitoring",
-                        "body": (
-                            "Track payment performance, uptime, and transaction metrics as they "
-                            "happen."
-                        ),
-                    },
-                    {
-                        "title": "Automated Failover",
-                        "body": (
-                            "Maintain uninterrupted payment processing with built-in redundancy and "
-                            "recovery mechanisms."
-                        ),
-                    },
-                    {
-                        "title": "Centralized Control",
-                        "body": (
-                            "Manage payment operations, analytics, and optimization from a single "
-                            "platform."
-                        ),
-                    },
-                ],
-            },
+        "cta_label": "Talk to Expert",
+        "stats": [
+            {"value": "95%", "label": "Payment Success Rate"},
+            {"value": "80%", "label": "Reduced Failovers"},
+            {"value": "92%", "label": "Reduced Ops Effort"},
+            {"value": "50%", "label": "Reduced Latency"},
         ],
-        "highlights": [
-            {
-                "title": "Why Choose Urbanrupee Payment Orchestration?",
-                "body": (
-                    "Purpose-built to improve payment performance, reliability, and operational "
-                    "control as transaction volumes grow."
-                ),
-            },
-            {
-                "title": "Maximize Transaction Success",
-                "body": (
-                    "Intelligent payment optimization helps improve authorization and acceptance "
-                    "rates across payment channels."
-                ),
-            },
-            {
-                "title": "Optimize Processing Costs",
-                "body": (
-                    "Route transactions through the most efficient payment pathways to improve "
-                    "operational efficiency and cost management."
-                ),
-            },
-            {
-                "title": "Ensure Business Continuity",
-                "body": (
-                    "Automated failover and resilient infrastructure minimize disruptions and "
-                    "maintain payment availability."
-                ),
-            },
-            {
-                "title": "Complete Visibility",
-                "body": (
-                    "Monitor, analyze, and optimize payment performance from a centralized "
-                    "dashboard."
-                ),
-            },
-            {
-                "title": "Scale with Confidence",
-                "body": (
-                    "Enterprise-grade infrastructure designed to support growing transaction "
-                    "volumes and evolving business requirements."
-                ),
-            },
-        ],
+        "layer": {
+            "title": "One Layer to Manage Every Payment",
+            "body": (
+                "Payment orchestration acts as a centralized layer between your business and "
+                "payment providers, helping you connect, manage, route, and optimize payments "
+                "through a single integration."
+            ),
+            "image": "/images/figma-orchestration/layer.svg",
+            "image_alt": (
+                "Payment methods flowing into a business rule engine that routes across gateways"
+            ),
+            "image_width": 1240,
+            "image_height": 782,
+        },
+        "growth": {
+            "title": "Turn Payment Complexity Into Business Growth",
+            "body": (
+                "Payment orchestration acts as a centralized layer between your business and "
+                "payment providers, helping you connect, manage, route, and optimize payments "
+                "through a single integration."
+            ),
+            "cards": [
+                {
+                    "title": "↑ Higher Approval Rates",
+                    "body": "Increase successful transactions through smarter routing.",
+                    "icon": "/images/figma-orchestration/growth/higher-approval.svg",
+                    "icon_width": 53,
+                    "icon_height": 55,
+                    "framed": True,
+                },
+                {
+                    "title": "↑ More Revenue Recovered",
+                    "body": "Recover transactions that might otherwise fail.",
+                    "icon": "/images/figma-orchestration/growth/more-revenue.svg",
+                    "icon_width": 26,
+                    "icon_height": 26,
+                },
+                {
+                    "title": "↓ Lower Payment Costs",
+                    "body": "Optimize provider selection and processing costs.",
+                    "icon": "/images/figma-orchestration/growth/lower-costs.svg",
+                    "icon_width": 26,
+                    "icon_height": 26,
+                },
+                {
+                    "title": "↓ Less Operational Complexity",
+                    "body": "Centralize payment operations in one platform.",
+                    "icon": "/images/figma-orchestration/growth/less-complexity.svg",
+                    "icon_width": 26,
+                    "icon_height": 26,
+                },
+            ],
+        },
+        "routing": {
+            "title": "Smarter Routing for Better Payments",
+            "body": (
+                "Route every transaction intelligently with flexible rules designed to improve "
+                "success, reduce costs, and optimize payment performance."
+            ),
+            "cards": [
+                {
+                    "title": "Least Cost Routing",
+                    "body": (
+                        "Adapt the checkout across devices and customer journeys for a seamless, "
+                        "intuitive payment experience."
+                    ),
+                    "image": "/images/figma-orchestration/routing/least-cost.svg",
+                    "image_alt": (
+                        "A payment routed to the lowest-cost gateway among three providers"
+                    ),
+                },
+                {
+                    "title": "Priority Based Routing",
+                    "body": (
+                        "Handle growing transaction volumes with infrastructure designed for "
+                        "high-throughput payment environments."
+                    ),
+                    "image": "/images/figma-orchestration/routing/priority-based.svg",
+                    "image_alt": (
+                        "A payment request of 25000 rupees routed by gateway priority"
+                    ),
+                },
+                {
+                    "title": "MID Cascading",
+                    "body": (
+                        "Monitor transaction activity and payment performance through a "
+                        "centralized view."
+                    ),
+                    "image": "/images/figma-orchestration/routing/mid-cascading.svg",
+                    "image_alt": (
+                        "A payment cascading across merchant IDs until one succeeds"
+                    ),
+                },
+                {
+                    "title": "Rule Based Routing",
+                    "body": (
+                        "Direct transactions through configured routes to support better payment "
+                        "performance."
+                    ),
+                    "image": "/images/figma-orchestration/routing/rule-based.svg",
+                    "image_alt": (
+                        "A cost rule sending a payment to a fallback gateway after a failure"
+                    ),
+                },
+            ],
+        },
+        "control": {
+            "title": "More Control Over Every Transaction",
+            "body": (
+                "Payment orchestration acts as a centralized layer between your business and "
+                "payment providers, helping you connect, manage, route, and optimize payments "
+                "through a single integration."
+            ),
+            "steps": [
+                {
+                    "num": "01",
+                    "title": "Increase Payment Success Rates",
+                    "body": (
+                        "Route transactions intelligently to improve authorization and approval "
+                        "rates."
+                    ),
+                },
+                {
+                    "num": "02",
+                    "title": "Optimize Processing Costs",
+                    "body": (
+                        "Route transactions through the most efficient payment pathways to improve "
+                        "operational efficiency and cost management."
+                    ),
+                },
+                {
+                    "num": "03",
+                    "title": "Ensure Business Continuity",
+                    "body": (
+                        "Automated failover and resilient infrastructure minimize disruptions and "
+                        "maintain payment availability."
+                    ),
+                },
+                {
+                    "num": "04",
+                    "title": "Complete Visibility",
+                    "body": (
+                        "Monitor, analyze, and optimize payment performance from a centralized "
+                        "dashboard."
+                    ),
+                },
+            ],
+        },
     },
     "payout-portal": {
         "type": "marketing",
-        "title": "Payout Portal",
+        "title": "Payouts",
         "intro": (
             "Simplify Disbursements. Accelerate Business Operations.\n\n"
             "Urbanrupee's Payout Portal is a powerful and secure disbursement platform designed to "
@@ -1511,7 +1654,7 @@ PAGES = {
                 {"label": "Custom Checkout", "href": "/products/custom-checkout"},
                 {"label": "Payment Orchestration", "href": "/products/orchestration"},
                 {"label": "UPI Switch", "href": "/products/upi-switch"},
-                {"label": "Payout Portal", "href": "/products/payout"},
+                {"label": "Payouts", "href": "/services/payouts"},
                 {"label": "Affordability (EMI & BNPL)", "href": "/products/affordability"},
             ],
         },
@@ -2255,6 +2398,14 @@ PAGES = {
                 "heading": "Accept & Route Payments",
                 "items": [
                     {
+                        "title": "Collections",
+                        "body": (
+                            "Accept, track, reconcile, and manage payments across channels from a "
+                            "single API built for high-volume businesses."
+                        ),
+                        "href": "/services/collections",
+                    },
+                    {
                         "title": "Payment Orchestration",
                         "body": (
                             "Route transactions intelligently across PSPs and banks to maximize success "
@@ -2308,12 +2459,12 @@ PAGES = {
                         "href": "/products/white-label",
                     },
                     {
-                        "title": "Payout Portal",
+                        "title": "Payouts",
                         "body": (
                             "Automated vendor, merchant, and customer disbursements with bulk payouts "
                             "and real-time tracking."
                         ),
-                        "href": "/products/payout",
+                        "href": "/services/payouts",
                     },
                     {
                         "title": "Close Route Wallet",
@@ -2452,16 +2603,16 @@ ROUTE_SLUGS = {
     "/products": "products-index",
     "/resources": "resources-index",
     "/about": "about",
-    "/services/payment": "payment-services",
-    "/services/aml": "aml-detector",
-    "/services/reconciliation": "automatic-reconciliation",
+    "/services/payment": "collections",
+    "/services/collections": "collections",
+    "/services/payouts": "payouts",
+    "/services/financial-operations": "financial-operations",
     "/products/white-label": "white-label-platform",
     "/products/custom-checkout": "custom-checkout",
     "/products/hyper-checkout": "hyper-checkout",
     "/products/orchestration": "payment-orchestration",
     "/products/upi-switch": "upi-switch",
     "/products/affordability": "affordability",
-    "/products/payout": "payout-portal",
     "/products/wallet": "close-route-wallet",
     "/faq": "faq",
     "/blog": "blog",

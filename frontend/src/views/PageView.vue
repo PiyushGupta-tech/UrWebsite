@@ -1,14 +1,17 @@
 <script setup>
-import { computed, onMounted, ref, watch } from "vue";
+import { computed, nextTick, onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import { fetchPage } from "@/api/client";
 import { applySeo } from "@/utils/seo";
+import { scheduleScrollRestore } from "@/utils/scrollRestoration.js";
 import HomeClosing from "@/components/HomeClosing.vue";
 import AboutPage from "@/components/pages/AboutPage.vue";
 import MarketingPage from "@/components/pages/MarketingPage.vue";
 import WhiteLabelPage from "@/components/pages/WhiteLabelPage.vue";
 import CustomCheckoutPage from "@/components/pages/CustomCheckoutPage.vue";
 import HyperCheckoutPage from "@/components/pages/HyperCheckoutPage.vue";
+import OrchestrationPage from "@/components/pages/OrchestrationPage.vue";
+import CollectionsPage from "@/components/pages/CollectionsPage.vue";
 import FaqPage from "@/components/pages/FaqPage.vue";
 import BlogPage from "@/components/pages/BlogPage.vue";
 import PrivacyPage from "@/components/pages/PrivacyPage.vue";
@@ -38,6 +41,8 @@ const pageComponent = computed(() => {
     "white-label": WhiteLabelPage,
     "custom-checkout": CustomCheckoutPage,
     "hyper-checkout": HyperCheckoutPage,
+    orchestration: OrchestrationPage,
+    collections: CollectionsPage,
     faq: FaqPage,
     blog: BlogPage,
     privacy: PrivacyPage,
@@ -47,17 +52,55 @@ const pageComponent = computed(() => {
   return map[type] || MarketingPage;
 });
 
-async function loadPage() {
-  loading.value = true;
-  error.value = null;
+function pageCacheKey(pageSlug) {
+  return `ur:page-bootstrap:${pageSlug}`;
+}
+
+function readPageCache(pageSlug) {
   try {
-    payload.value = await fetchPage(slug.value);
-    applySeo(payload.value.seo, payload.value.structured_data);
+    return JSON.parse(sessionStorage.getItem(pageCacheKey(pageSlug)) || "null");
+  } catch {
+    return null;
+  }
+}
+
+function writePageCache(pageSlug, data) {
+  try {
+    sessionStorage.setItem(pageCacheKey(pageSlug), JSON.stringify(data));
+  } catch {
+    /* ignore */
+  }
+}
+
+async function loadPage() {
+  const pageSlug = slug.value;
+  const cached = readPageCache(pageSlug);
+  error.value = null;
+
+  if (cached) {
+    payload.value = cached;
+    loading.value = false;
+    applySeo(cached.seo, cached.structured_data);
+    await nextTick();
+    scheduleScrollRestore(route.fullPath);
+  } else {
+    loading.value = true;
+  }
+
+  try {
+    const data = await fetchPage(pageSlug);
+    payload.value = data;
+    writePageCache(pageSlug, data);
+    applySeo(data.seo, data.structured_data);
   } catch (e) {
-    error.value = e.status === 404 ? "Page not found." : e.message;
-    payload.value = null;
+    if (!cached) {
+      error.value = e.status === 404 ? "Page not found." : e.message;
+      payload.value = null;
+    }
   } finally {
     loading.value = false;
+    await nextTick();
+    scheduleScrollRestore(route.fullPath);
   }
 }
 

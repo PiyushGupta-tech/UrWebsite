@@ -14,6 +14,7 @@ import {
   formatStatValue,
   parseStatValue,
 } from "@/composables/useCountUp.js";
+import { scheduleScrollRestore } from "@/utils/scrollRestoration.js";
 
 defineProps({
   site: { type: Object, default: null },
@@ -92,7 +93,9 @@ onMounted(async () => {
     applySeo(bootstrap.seo, bootstrap.structured_data);
     resetStatValues();
     loading.value = false;
-    nextTick(setupStatsObserver);
+    await nextTick();
+    setupStatsObserver();
+    scheduleScrollRestore();
     return;
   }
   try {
@@ -103,7 +106,9 @@ onMounted(async () => {
     error.value = e.message;
   } finally {
     loading.value = false;
-    nextTick(setupStatsObserver);
+    await nextTick();
+    setupStatsObserver();
+    scheduleScrollRestore();
   }
 });
 

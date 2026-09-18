@@ -4,12 +4,9 @@ import { useRoute } from "vue-router";
 import { checkoutMethodHeroFor } from "@/constants/checkoutMethodHero";
 import { customCheckoutMethodHeroFor } from "@/constants/customCheckoutMethodHero";
 import { walletMetricHeroFor } from "@/constants/walletMetricHero";
-import { orchestrationStoryLineFor } from "@/constants/orchestrationStoryHero";
 import PageHero from "./PageHero.vue";
-import PaymentServicesHeroGraphic from "./PaymentServicesHeroGraphic.vue";
 import AmlDetectorHeroGraphic from "./AmlDetectorHeroGraphic.vue";
 import ReconciliationHeroGraphic from "./ReconciliationHeroGraphic.vue";
-import PaymentOrchestrationHeroGraphic from "./PaymentOrchestrationHeroGraphic.vue";
 import CustomCheckoutHeroGraphic from "./CustomCheckoutHeroGraphic.vue";
 import HyperCheckoutHeroGraphic from "./HyperCheckoutHeroGraphic.vue";
 import UpiSwitchHeroGraphic from "./UpiSwitchHeroGraphic.vue";
@@ -28,7 +25,6 @@ const route = useRoute();
 const heroReady = ref(false);
 const activeCheckoutMethod = ref("upi");
 const activeWalletMetric = ref("wallets");
-const activeOrchestrationStory = ref("smart");
 
 const syncsCheckoutHeroCopy = computed(
   () => route.name === "custom-checkout" || route.name === "hyper-checkout",
@@ -36,14 +32,6 @@ const syncsCheckoutHeroCopy = computed(
 
 const syncsWalletHeroCopy = computed(
   () => route.name === "close-route-wallet",
-);
-
-const syncsOrchestrationHeroCopy = computed(
-  () => route.name === "orchestration",
-);
-
-const showPaymentServicesHeroExtra = computed(
-  () => route.name === "payment-services" && !!props.page?.hero_extra,
 );
 
 const checkoutMethodDetail = computed(() => {
@@ -58,10 +46,6 @@ const walletMetricDetail = computed(() =>
   walletMetricHeroFor(activeWalletMetric.value),
 );
 
-const orchestrationStoryLine = computed(() =>
-  orchestrationStoryLineFor(activeOrchestrationStory.value),
-);
-
 function onCheckoutMethodChange(methodId) {
   if (syncsCheckoutHeroCopy.value) {
     activeCheckoutMethod.value = methodId;
@@ -74,27 +58,13 @@ function onWalletMetricChange(metricId) {
   }
 }
 
-function onOrchestrationStoryChange(storyId) {
-  if (syncsOrchestrationHeroCopy.value) {
-    activeOrchestrationStory.value = storyId;
-  }
-}
-
 const HERO_PAGES = {
-  "payment-services": {
-    component: PaymentServicesHeroGraphic,
-    graphicPosition: "right",
-  },
   "aml-detector": {
     component: AmlDetectorHeroGraphic,
     graphicPosition: "right",
   },
   "automatic-reconciliation": {
     component: ReconciliationHeroGraphic,
-    graphicPosition: "right",
-  },
-  orchestration: {
-    component: PaymentOrchestrationHeroGraphic,
     graphicPosition: "right",
   },
   "custom-checkout": {
@@ -168,46 +138,12 @@ onMounted(() => {
       :graphic-position="heroGraphicPosition"
     >
       <template
-        v-if="
-          showPaymentServicesHeroExtra ||
-          syncsCheckoutHeroCopy ||
-          syncsWalletHeroCopy ||
-          syncsOrchestrationHeroCopy
-        "
+        v-if="syncsCheckoutHeroCopy || syncsWalletHeroCopy"
         #copy-extra
       >
-        <div v-if="showPaymentServicesHeroExtra" class="hero-payment-extra">
-          <h3 class="hero-payment-extra__heading">
-            {{ page.hero_extra.why_heading }}
-          </h3>
-          <ul class="hero-payment-extra__list">
-            <li
-              v-for="item in page.hero_extra.why_items"
-              :key="item"
-            >
-              {{ item }}
-            </li>
-          </ul>
-          <h3 class="hero-payment-extra__heading">
-            {{ page.hero_extra.methods_heading }}
-          </h3>
-          <p class="hero-payment-extra__methods">
-            {{ page.hero_extra.methods }}
-          </p>
-          <p class="hero-payment-extra__tagline">
-            {{ page.hero_extra.tagline }}
-          </p>
-        </div>
-        <Transition v-else name="hero-method" mode="out-in">
-          <p
-            v-if="syncsOrchestrationHeroCopy"
-            :key="`orch-${activeOrchestrationStory}`"
-            class="hero-orchestration-line"
-          >
-            {{ orchestrationStoryLine }}
-          </p>
+        <Transition name="hero-method" mode="out-in">
           <div
-            v-else-if="syncsCheckoutHeroCopy"
+            v-if="syncsCheckoutHeroCopy"
             :key="`checkout-${activeCheckoutMethod}`"
             class="hero-method-detail"
           >
@@ -267,7 +203,6 @@ onMounted(() => {
           v-bind="heroBind"
           @method-change="onCheckoutMethodChange"
           @metric-change="onWalletMetricChange"
-          @story-change="onOrchestrationStoryChange"
         />
       </template>
     </PageHero>
@@ -343,82 +278,6 @@ onMounted(() => {
 <style scoped>
 .marketing-page {
   font-family: "Manrope", "DM Sans", system-ui, sans-serif;
-}
-
-.hero-payment-extra {
-  display: grid;
-  gap: 12px;
-  text-align: left;
-}
-
-.hero-payment-extra__heading {
-  margin: 8px 0 0;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--text-primary);
-}
-
-.hero-payment-extra__heading:first-child {
-  margin-top: 0;
-}
-
-.hero-payment-extra__list {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  display: grid;
-  gap: 8px;
-  justify-items: start;
-}
-
-.hero-payment-extra__list li {
-  display: inline-block;
-  padding-left: 18px;
-  position: relative;
-  font-size: 14px;
-  color: var(--text-secondary);
-  line-height: 1.5;
-  text-align: left;
-}
-
-.hero-payment-extra__list li::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 7px;
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--accent-blue);
-}
-
-.hero-payment-extra__methods {
-  margin: 0;
-  font-size: 15px;
-  font-weight: 500;
-  color: var(--text-secondary);
-  line-height: 1.55;
-  text-align: left;
-}
-
-.hero-payment-extra__tagline {
-  margin: 4px 0 0;
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--text-primary);
-  letter-spacing: -0.01em;
-  text-align: left;
-}
-
-.hero-orchestration-line {
-  margin: 0;
-  font-size: 16px;
-  line-height: 1.55;
-  color: var(--text-secondary);
-  font-weight: 500;
-  text-align: left;
 }
 
 .hero-method-detail__headline {

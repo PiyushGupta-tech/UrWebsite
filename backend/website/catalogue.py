@@ -113,7 +113,7 @@ PRODUCT_SUITE = {
             "href": "/products/affordability",
         },
         {
-            "title": "Payout Portal",
+            "title": "Payouts",
             "body": (
                 "Automated vendor, merchant, and customer disbursements with bulk payouts, "
                 "real-time tracking, and streamlined settlement workflows."
@@ -126,7 +126,7 @@ PRODUCT_SUITE = {
                 "Secure payout infrastructure",
                 "Operational visibility",
             ],
-            "href": "/products/payout",
+            "href": "/services/payouts",
         },
         {
             "title": "Close Route Wallet",

@@ -28,7 +28,7 @@ CHAT_FAQS = [
             "& Monitoring; AML Detection Tools for risk and fraud monitoring; and Automatic "
             "Reconciliation to simplify financial operations."
         ),
-        "href": "/services/payment",
+        "href": "/services/collections",
     },
     {
         "question": "What is a Unified Dashboard?",
@@ -63,7 +63,7 @@ CHAT_FAQS = [
             "identify suspicious patterns, enabling businesses to manage risk and comply with "
             "regulatory requirements."
         ),
-        "href": "/services/aml",
+        "href": "/services/financial-operations",
     },
     {
         "question": "How does Automatic Reconciliation help businesses?",
@@ -71,7 +71,7 @@ CHAT_FAQS = [
             "Automatic reconciliation matches transactions with settlements, reducing manual "
             "effort, minimizing errors, and improving financial accuracy."
         ),
-        "href": "/services/reconciliation",
+        "href": "/services/financial-operations",
     },
     {
         "question": "Does Urbanrupee store cardholder data (CHD)?",
@@ -159,7 +159,7 @@ CHAT_FAQS = [
             "By automating processes like reconciliation, transaction tracking, and reporting, "
             "Urbanrupee significantly reduces manual effort and operational complexity."
         ),
-        "href": "/services/reconciliation",
+        "href": "/services/financial-operations",
     },
     {
         "question": "Can I customize the payment flow for my business?",
@@ -183,7 +183,7 @@ CHAT_FAQS = [
             "Yes, our AML detection and monitoring tools help identify suspicious activities and "
             "reduce the risk of fraudulent transactions."
         ),
-        "href": "/services/aml",
+        "href": "/services/financial-operations",
     },
     {
         "question": "How does reconciliation work on the platform?",
@@ -191,7 +191,7 @@ CHAT_FAQS = [
             "Our system automatically matches transaction data with settlement reports, helping you "
             "quickly identify mismatches and resolve discrepancies."
         ),
-        "href": "/services/reconciliation",
+        "href": "/services/financial-operations",
     },
     {
         "question": "What industries does Urbanrupee serve?",

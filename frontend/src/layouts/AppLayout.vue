@@ -1,16 +1,36 @@
 <script setup>
-import { onMounted, onUnmounted, ref } from "vue";
+import { nextTick, onMounted, onUnmounted, ref } from "vue";
 import { fetchSite } from "@/api/client";
 import SiteNav from "@/components/SiteNav.vue";
 import SiteFooter from "@/components/SiteFooter.vue";
 import ChatWidget from "@/components/ChatWidget.vue";
 import { startResponsiveBand } from "@/composables/useResponsiveBand.js";
+import { scheduleScrollRestore } from "@/utils/scrollRestoration.js";
 
-const site = ref(null);
-const nav = ref(null);
-const footer = ref(null);
+const SITE_CACHE_KEY = "ur:site-bootstrap";
+
+function readSiteCache() {
+  try {
+    return JSON.parse(sessionStorage.getItem(SITE_CACHE_KEY) || "null");
+  } catch {
+    return null;
+  }
+}
+
+function writeSiteCache(data) {
+  try {
+    sessionStorage.setItem(SITE_CACHE_KEY, JSON.stringify(data));
+  } catch {
+    /* ignore */
+  }
+}
+
+const cached = readSiteCache();
+const site = ref(cached?.site ?? null);
+const nav = ref(cached?.nav ?? null);
+const footer = ref(cached?.footer ?? null);
 const error = ref(null);
-const loading = ref(true);
+const loading = ref(!cached);
 
 let stopBand = null;
 
@@ -21,10 +41,13 @@ onMounted(async () => {
     site.value = data.site;
     nav.value = data.nav;
     footer.value = data.footer;
+    writeSiteCache(data);
   } catch (e) {
-    error.value = e.message;
+    if (!cached) error.value = e.message;
   } finally {
     loading.value = false;
+    await nextTick();
+    scheduleScrollRestore();
   }
 });
 

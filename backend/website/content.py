@@ -18,10 +18,12 @@ SITE = {
         "hyper_checkout": "https://urbanrupee.com/products/hyper-checkout",
         "custom_checkout": "https://urbanrupee.com/products/custom-checkout",
         "orchestration": "https://urbanrupee.com/products/orchestration",
+        "collections": "https://urbanrupee.com/services/collections",
         "white_label": "https://urbanrupee.com/products/white-label",
         "upi_switch": "https://urbanrupee.com/products/upi-switch",
         "affordability": "https://urbanrupee.com/products/affordability",
-        "payout_portal": "https://urbanrupee.com/products/payout",
+        "payouts": "https://urbanrupee.com/services/payouts",
+        "financial_operations": "https://urbanrupee.com/services/financial-operations",
         "close_route_wallet": "https://urbanrupee.com/products/wallet",
     },
 }
@@ -31,20 +33,35 @@ NAV = {
         {"label": "Home", "href": "/"},
         {"label": "About Us", "href": "/about"},
     ],
+    # Figma Dropdown 466:32322 / 466:32350 — Products | Services columns
     "services": [
-        {"label": "Payment Services", "href": "/services/payment"},
-        {"label": "AML Detector", "href": "/services/aml"},
-        {"label": "Automatic Reconciliation", "href": "/services/reconciliation"},
+        {"label": "Collection", "href": "/services/collections"},
+        {"label": "Payouts", "href": "/services/payouts"},
+        {
+            "label": "Financial Operations Infrastructure",
+            "href": "/services/financial-operations",
+        },
+        {"label": "Risk & Fraud Management", "href": "/services/aml"},
+        {
+            "label": "Settlement & Reconciliation",
+            "href": "/services/reconciliation",
+        },
     ],
     "products": [
         {"label": "Payment Orchestration", "href": "/products/orchestration"},
-        {"label": "White Label Platform", "href": "/products/white-label"},
-        {"label": "Payout Portal", "href": "/products/payout"},
-        {"label": "Close Route Wallet", "href": "/products/wallet"},
-        {"label": "Hyper Checkout", "href": "/products/hyper-checkout"},
-        {"label": "Custom Checkout", "href": "/products/custom-checkout"},
-        {"label": "UPI Switch", "href": "/products/upi-switch"},
-        {"label": "Affordability (EMI & Pay Later)", "href": "/products/affordability"},
+        {
+            "label": "White - Label Payment Experience",
+            "href": "/products/white-label",
+        },
+        {
+            "label": "Hosted & Branded Checkout",
+            "href": "/products/custom-checkout",
+        },
+        {
+            "label": "Hyper Checkout Experience",
+            "href": "/products/hyper-checkout",
+        },
+        {"label": "Seamless UPI Switch", "href": "/products/upi-switch"},
     ],
     "resources": [
         {"label": "All Resources", "href": "/resources"},
@@ -137,7 +154,7 @@ FEATURES = {
     "title": "Powerful Products Designed for Faster, Smarter Payments",
     "items": [
         {
-            "title": "Payout Portal",
+            "title": "Payouts",
             "body": (
                 "Simplify vendor, merchant, and customer payouts through one centralized payout "
                 "management platform with automated workflows and real-time visibility."
@@ -336,14 +353,16 @@ FOOTER = {
         {"label": "Terms & Conditions", "href": "/terms-and-conditions"},
     ],
     "services": [
-        {"label": "Payment Services", "href": "/services/payment"},
-        {"label": "AML Detector", "href": "/services/aml"},
-        {"label": "Automatic Reconciliation", "href": "/services/reconciliation"},
+        {"label": "Collections", "href": "/services/collections"},
+        {"label": "Payouts", "href": "/services/payouts"},
+        {
+            "label": "Financial Operations Infrastructure",
+            "href": "/services/financial-operations",
+        },
     ],
     "products": [
         {"label": "Payment Orchestration", "href": "/products/orchestration"},
         {"label": "White Label Platform", "href": "/products/white-label"},
-        {"label": "Payout Portal", "href": "/products/payout"},
         {"label": "Close Route Wallet", "href": "/products/wallet"},
         {"label": "Hyper Checkout", "href": "/products/hyper-checkout"},
         {"label": "Custom Checkout", "href": "/products/custom-checkout"},

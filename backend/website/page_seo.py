@@ -10,15 +10,14 @@ PRODUCT_SLUGS = frozenset({
     "payment-orchestration",
     "upi-switch",
     "affordability",
-    "payout-portal",
     "close-route-wallet",
 })
 RESOURCE_SLUGS = frozenset({"faq", "blog", "privacy-policy", "terms-and-conditions"})
 CONTACT_SLUGS = frozenset({"contact"})
 SERVICE_SLUGS = frozenset({
-    "payment-services",
-    "aml-detector",
-    "automatic-reconciliation",
+    "collections",
+    "payouts",
+    "financial-operations",
 })
 HUB_SLUGS = frozenset({"products-index", "resources-index"})
 
@@ -91,9 +90,9 @@ RELATED_LINKS = {
             "description": "Conversion-focused checkout on top of orchestration.",
         },
         {
-            "label": "Payment Services",
-            "href": "/services/payment",
-            "description": "Full-stack gateway and infrastructure services.",
+            "label": "Collections",
+            "href": "/services/collections",
+            "description": "Accept, track, and reconcile payments across channels.",
         },
     ],
     "white-label-platform": [
@@ -103,8 +102,8 @@ RELATED_LINKS = {
             "description": "Tailored checkout experiences for your merchants.",
         },
         {
-            "label": "Payout Portal",
-            "href": "/products/payout",
+            "label": "Payouts",
+            "href": "/services/payouts",
             "description": "Automated disbursements and bulk payouts.",
         },
         {
@@ -125,8 +124,8 @@ RELATED_LINKS = {
             "description": "Fast UPI-first checkout for end customers.",
         },
         {
-            "label": "Payment Services",
-            "href": "/services/payment",
+            "label": "Collections",
+            "href": "/services/collections",
             "description": "Gateway services that pair with UPI Switch.",
         },
     ],
@@ -147,15 +146,15 @@ RELATED_LINKS = {
             "description": "Route affordability providers intelligently.",
         },
     ],
-    "payout-portal": [
+    "payouts": [
         {
             "label": "Close Route Wallet",
             "href": "/products/wallet",
             "description": "Wallet balances and payout controls.",
         },
         {
-            "label": "Automatic Reconciliation",
-            "href": "/services/reconciliation",
+            "label": "Financial Operations Infrastructure",
+            "href": "/services/financial-operations",
             "description": "Match payouts with settlements automatically.",
         },
         {
@@ -166,8 +165,8 @@ RELATED_LINKS = {
     ],
     "close-route-wallet": [
         {
-            "label": "Payout Portal",
-            "href": "/products/payout",
+            "label": "Payouts",
+            "href": "/services/payouts",
             "description": "Disburse funds to vendors and customers.",
         },
         {
@@ -181,7 +180,7 @@ RELATED_LINKS = {
             "description": "Wallet-aware checkout experiences.",
         },
     ],
-    "payment-services": [
+    "collections": [
         {
             "label": "Hyper Checkout",
             "href": "/products/hyper-checkout",
@@ -198,38 +197,21 @@ RELATED_LINKS = {
             "description": "Enterprise UPI routing layer.",
         },
     ],
-    "aml-detector": [
+    "financial-operations": [
         {
-            "label": "Payment Services",
-            "href": "/services/payment",
-            "description": "Gateway infrastructure with compliance built in.",
+            "label": "Collections",
+            "href": "/services/collections",
+            "description": "Digital collections with compliance built in.",
         },
         {
-            "label": "Automatic Reconciliation",
-            "href": "/services/reconciliation",
-            "description": "Audit-ready reconciliation workflows.",
+            "label": "Payouts",
+            "href": "/services/payouts",
+            "description": "Disburse funds to vendors, partners, and beneficiaries.",
         },
         {
             "label": "Privacy Policy",
             "href": "/privacy-policy",
             "description": "How Urbanrupee protects your data.",
-        },
-    ],
-    "automatic-reconciliation": [
-        {
-            "label": "Payout Portal",
-            "href": "/products/payout",
-            "description": "Reconcile payouts alongside collections.",
-        },
-        {
-            "label": "Payment Orchestration",
-            "href": "/products/orchestration",
-            "description": "Unified view across payment partners.",
-        },
-        {
-            "label": "Payment Services",
-            "href": "/services/payment",
-            "description": "End-to-end payment operations.",
         },
     ],
     "faq": [
@@ -268,9 +250,9 @@ RELATED_LINKS = {
     ],
     "about": [
         {
-            "label": "Payment Services",
-            "href": "/services/payment",
-            "description": "Core gateway and infrastructure services.",
+            "label": "Collections",
+            "href": "/services/collections",
+            "description": "Digital collections infrastructure.",
         },
         {
             "label": "Product catalogue",
@@ -336,8 +318,8 @@ RELATED_LINKS = {
     ],
     "privacy-policy": [
         {
-            "label": "Payment Services",
-            "href": "/services/payment",
+            "label": "Collections",
+            "href": "/services/collections",
             "description": "How Urbanrupee handles payment data.",
         },
         {
@@ -381,29 +363,29 @@ PAGE_SEO = {
         ),
         "h1": "Powering the Future of Digital Payments",
     },
-    "payment-services": {
-        "title": "Payment Gateway & Infrastructure India | Urbanrupee",
+    "collections": {
+        "title": "Payment Collections Platform India | Urbanrupee",
         "description": (
-            "Urbanrupee payment services: UPI, cards, net banking, wallets, orchestration, and "
-            "checkout with high success rates, fast settlements, and seamless onboarding."
+            "Urbanrupee Collections: accept, track, reconcile, and manage payments across UPI, "
+            "cards, net banking, and wallets from a single API built for high-volume businesses."
         ),
-        "h1": "Payment Infrastructure That Powers Growth",
+        "h1": "Collect Payments. Simplify Operations. Accelerate Growth from single API.",
     },
-    "aml-detector": {
-        "title": "AML Detector & Compliance Platform | Urbanrupee",
+    "payouts": {
+        "title": "Payouts & Disbursements | Urbanrupee",
         "description": (
-            "AI-powered AML detection and risk intelligence from Urbanrupee. Real-time monitoring, "
-            "suspicious activity alerts, and regulatory compliance for Indian businesses."
+            "Urbanrupee Payouts: send payments to beneficiaries, vendors, partners, and "
+            "marketplace sellers with real-time tracking and multi-channel disbursement."
         ),
-        "h1": "AML Detector",
+        "h1": "Payouts",
     },
-    "automatic-reconciliation": {
-        "title": "Automatic Payment Reconciliation | Urbanrupee",
+    "financial-operations": {
+        "title": "Financial Operations Infrastructure | Urbanrupee",
         "description": (
-            "Automate payment reconciliation with Urbanrupee. Match transactions, reduce manual "
-            "effort, resolve discrepancies faster, and gain real-time financial visibility."
+            "Urbanrupee Financial Operations Infrastructure powers banking operations, payment "
+            "flows, account services, and financial workflows through a connected ecosystem."
         ),
-        "h1": "Automatic Reconciliation",
+        "h1": "Financial Operations Infrastructure",
     },
     "products-index": {
         "title": "Urbanrupee Payment Products | Gateway, Checkout & UPI",
@@ -451,15 +433,7 @@ PAGE_SEO = {
             "Urbanrupee payment orchestration routes transactions intelligently across PSPs and "
             "banks to maximize success rates, uptime, and performance at scale."
         ),
-        "h1": "Payment Orchestration Platform",
-    },
-    "payout-portal": {
-        "title": "Payout Portal & Disbursements | Urbanrupee",
-        "description": (
-            "Urbanrupee Payout Portal simplifies vendor, merchant, and customer disbursements with "
-            "automated workflows, bulk payouts, and real-time payout tracking."
-        ),
-        "h1": "Payout Portal",
+        "h1": "Simplify and optimize your payments with your rules.",
     },
     "close-route-wallet": {
         "title": "Close Route Wallet | Urbanrupee",
