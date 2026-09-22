@@ -41,9 +41,9 @@ NAV = {
             "label": "Financial Operations Infrastructure",
             "href": "/services/financial-operations",
         },
-        {"label": "Risk & Fraud Management", "href": "/services/aml"},
+        {"label": "Risk & Fraud Management", "href": "/services/risk-fraud-management"},
         {
-            "label": "Settlement & Reconciliation",
+            "label": "Reconciliation",
             "href": "/services/reconciliation",
         },
     ],
@@ -359,6 +359,8 @@ FOOTER = {
             "label": "Financial Operations Infrastructure",
             "href": "/services/financial-operations",
         },
+        {"label": "Risk & Fraud Management", "href": "/services/risk-fraud-management"},
+        {"label": "Reconciliation", "href": "/services/reconciliation"},
     ],
     "products": [
         {"label": "Payment Orchestration", "href": "/products/orchestration"},

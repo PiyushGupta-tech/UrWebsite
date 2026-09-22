@@ -1,11 +1,7 @@
 <script setup>
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { RouterLink } from "vue-router";
-import {
-  animateStatValues,
-  formatStatValue,
-  parseStatValue,
-} from "@/composables/useCountUp.js";
+import MetricCards from "@/components/MetricCards.vue";
 import OrchestrationLayerVisual from "./OrchestrationLayerVisual.vue";
 import PaymentOrchestrationHeroGraphic from "./PaymentOrchestrationHeroGraphic.vue";
 
@@ -25,11 +21,7 @@ const controlInteracted = ref(false);
 const controlReady = ref(false);
 let controlTimer = null;
 
-const statsRef = ref(null);
 const controlRowRef = ref(null);
-const statDisplays = ref([]);
-let statsObserver = null;
-let cancelStatAnimation = null;
 
 const growthCards = computed(() => props.page?.growth?.cards || []);
 const growthLeft = computed(() => [growthCards.value[0], growthCards.value[1]].filter(Boolean));
@@ -37,52 +29,6 @@ const growthRight = computed(() => [growthCards.value[2], growthCards.value[3]].
 const controlSteps = computed(() => props.page?.control?.steps || []);
 const controlOthers = computed(() => Math.max(controlSteps.value.length - 1, 0));
 const pageStats = computed(() => props.page?.stats || []);
-const parsedStats = computed(() => pageStats.value.map((stat) => parseStatValue(stat.value)));
-
-function setFinalStatValues() {
-  statDisplays.value = pageStats.value.map((stat) => stat.value);
-}
-
-function resetStatValues() {
-  statDisplays.value = parsedStats.value.map((parsed) => formatStatValue(parsed, 0));
-}
-
-function runStatsCountUp() {
-  cancelStatAnimation?.();
-  if (!parsedStats.value.length) return;
-  cancelStatAnimation = animateStatValues(parsedStats.value, {
-    duration: 1800,
-    onFrame: (values) => {
-      statDisplays.value = values;
-    },
-    onComplete: setFinalStatValues,
-  });
-}
-
-function setupStatsObserver() {
-  statsObserver?.disconnect();
-  if (!pageStats.value.length) return;
-
-  if (
-    typeof window !== "undefined" &&
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches
-  ) {
-    setFinalStatValues();
-    return;
-  }
-
-  resetStatValues();
-  statsObserver = new IntersectionObserver(
-    ([entry]) => {
-      if (!entry?.isIntersecting) return;
-      runStatsCountUp();
-      statsObserver?.disconnect();
-    },
-    { threshold: 0.25, rootMargin: "0px 0px -8% 0px" },
-  );
-
-  if (statsRef.value) statsObserver.observe(statsRef.value);
-}
 
 function startControlCycle() {
   stopControlCycle();
@@ -139,25 +85,15 @@ onMounted(() => {
     typeof window !== "undefined" &&
     window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   startControlCycle();
-  resetStatValues();
-  nextTick(setupStatsObserver);
 });
 
 onBeforeUnmount(() => {
   stopControlCycle();
-  statsObserver?.disconnect();
-  cancelStatAnimation?.();
 });
 
 watch(controlSteps, async () => {
   await nextTick();
   if (!controlInteracted.value) startControlCycle();
-});
-
-watch(pageStats, async () => {
-  resetStatValues();
-  await nextTick();
-  setupStatsObserver();
 });
 </script>
 
@@ -202,21 +138,12 @@ watch(pageStats, async () => {
           </div>
         </div>
 
-        <div
+        <MetricCards
           v-if="pageStats.length"
-          ref="statsRef"
-          class="po-stats"
+          :items="pageStats"
+          :ready="heroReady"
           aria-label="Orchestration outcomes"
-        >
-          <article
-            v-for="(stat, index) in pageStats"
-            :key="stat.label"
-            class="po-stats__card"
-          >
-            <p class="po-stats__value">{{ statDisplays[index] || stat.value }}</p>
-            <p class="po-stats__label">{{ stat.label }}</p>
-          </article>
-        </div>
+        />
       </div>
     </section>
 
@@ -526,60 +453,6 @@ watch(pageStats, async () => {
   width: min(520px, 100%);
   max-width: 520px;
   min-width: 0;
-}
-
-/* —— Stats — Figma 296:2979 —— */
-.po-stats {
-  display: flex;
-  align-items: stretch;
-  gap: 52px;
-  width: 100%;
-  max-width: 1208px;
-}
-
-.po-stats__card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  flex: 1 1 0;
-  width: 263px;
-  min-width: 0;
-  height: 181px;
-  padding: 20px 16px;
-  box-sizing: border-box;
-  background: #ffffff;
-  border: 1px solid #e9eaeb;
-  border-radius: 14.141px;
-  box-shadow:
-    0 1px 3px rgba(0, 0, 0, 0.1),
-    0 1px 2px -1px rgba(0, 0, 0, 0.1);
-}
-
-.po-stats__value {
-  margin: 0;
-  min-height: 72px;
-  font-size: 64px;
-  font-weight: 600;
-  line-height: 72px;
-  letter-spacing: -1.92px;
-  text-align: center;
-  color: #181d27;
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-}
-
-.po-stats__label {
-  margin: 0;
-  max-width: 100%;
-  font-size: 18px;
-  font-weight: 600;
-  line-height: 28px;
-  letter-spacing: -0.4px;
-  text-align: center;
-  color: #414651;
-  white-space: nowrap;
 }
 
 /* —— One layer — Figma 330:1521 —— */
@@ -1084,8 +957,7 @@ watch(pageStats, async () => {
 
 @media (max-width: 1200px) {
   .po-hero__row,
-  .po-growth,
-  .po-stats {
+  .po-growth {
     flex-wrap: wrap;
     justify-content: center;
   }
@@ -1093,18 +965,13 @@ watch(pageStats, async () => {
   .po-hero__copy,
   .po-hero__graphic,
   .po-growth__copy,
-  .po-growth__cols,
-  .po-stats__card {
+  .po-growth__cols {
     width: 100%;
     flex: 1 1 auto;
   }
 
   .po-hero__graphic {
     flex-basis: 552px;
-  }
-
-  .po-stats__card {
-    max-width: 263px;
   }
 
   .po-growth__col--left {
@@ -1238,26 +1105,6 @@ watch(pageStats, async () => {
   .po-control__title {
     font-size: 32px;
     line-height: 42px;
-  }
-
-  .po-stats {
-    gap: 16px;
-  }
-
-  .po-stats__card {
-    height: auto;
-    min-height: 140px;
-  }
-
-  .po-stats__value {
-    font-size: 48px;
-    line-height: 56px;
-    min-height: 56px;
-  }
-
-  .po-stats__label {
-    font-size: 15px;
-    line-height: 22px;
   }
 
   .po-growth__cols {

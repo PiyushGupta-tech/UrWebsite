@@ -17,6 +17,8 @@ SERVICE_SLUGS = frozenset({
     "collections",
     "payouts",
     "financial-operations",
+    "risk-fraud-management",
+    "reconciliation",
 })
 
 

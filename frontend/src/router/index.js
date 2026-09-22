@@ -50,6 +50,18 @@ const routes = [
         meta: { slug: "financial-operations" },
       },
       {
+        path: "services/risk-fraud-management",
+        name: "risk-fraud-management",
+        component: () => import("@/views/PageView.vue"),
+        meta: { slug: "risk-fraud-management" },
+      },
+      {
+        path: "services/reconciliation",
+        name: "reconciliation",
+        component: () => import("@/views/PageView.vue"),
+        meta: { slug: "reconciliation" },
+      },
+      {
         path: "services/payment",
         redirect: { name: "collections" },
       },
@@ -59,11 +71,7 @@ const routes = [
       },
       {
         path: "services/aml",
-        redirect: { name: "financial-operations" },
-      },
-      {
-        path: "services/reconciliation",
-        redirect: { name: "financial-operations" },
+        redirect: { name: "risk-fraud-management" },
       },
       {
         path: "products/payout",

@@ -468,23 +468,666 @@ PAGES = {
         },
     },
     "payouts": {
-        "type": "marketing",
-        "title": "Payouts",
+        "type": "payouts",
+        "eyebrow": "Payouts",
+        "title": "Send every payout faster with greater control and visibility",
         "intro": (
-            "Move money faster with a unified payouts platform for beneficiaries, vendors, "
-            "partners, and marketplace sellers — from initiation to completion."
+            "Send fast, secure, and reliable payouts through one unified platform—built to "
+            "simplify operations and keep every transaction on track."
         ),
-        "sections": [],
+        "cta_label": "Talk to Expert",
+        "hero_image_alt": (
+            "Distribute funds card sending payouts to employees, vendors, partners, and freelancers"
+        ),
+        "stats": [
+            {"value": "<5 sec", "label": "Transaction Latency"},
+            {"value": "99.8%", "label": "Platform Uptime"},
+            {"value": "10 sec", "label": "Failure Alert Time"},
+            {"value": "<1 min", "label": "Downtime Alerts"},
+        ],
+        "platform": {
+            "title": "One Platform for Every Payout",
+            "body": (
+                "Connect your business, beneficiaries, and multiple payout methods "
+                "through one unified platform for faster, simpler, and more reliable payouts."
+            ),
+            "image_alt": (
+                "Urbanrupee withdrawals platform connecting customers, beneficiaries, "
+                "and payment methods"
+            ),
+        },
+        "features": {
+            "title": "Built for smarter payout operations",
+            "body": (
+                "Streamline payouts through one unified platform, automate repetitive tasks, "
+                "and manage high-volume disbursements with less manual effort."
+            ),
+            "cards": [
+                {
+                    "title": "Beneficiary Ready",
+                    "body": (
+                        "Easily add, manage, and organize beneficiaries while keeping recipient "
+                        "details secure, updated, and ready for every payout."
+                    ),
+                    "icon": "/images/figma-payouts/icons/beneficiary.svg",
+                },
+                {
+                    "title": "Operational Visibility",
+                    "body": (
+                        "Get real-time visibility into payout activity, track transaction status, "
+                        "and quickly identify issues to keep operations running smoothly."
+                    ),
+                    "icon": "/images/figma-payouts/icons/visibility.svg",
+                },
+                {
+                    "title": "Simplify Disbursement",
+                    "body": (
+                        "Streamline payouts through one unified platform, automate repetitive "
+                        "tasks, and manage high-volume disbursements with less manual effort."
+                    ),
+                    "icon": "/images/figma-payouts/icons/disbursement.svg",
+                },
+                {
+                    "title": "Fast payouts",
+                    "body": (
+                        "Move funds quickly with reliable infrastructure, support instant or "
+                        "scheduled payouts, and track every transaction with real-time updates."
+                    ),
+                    "icon": "/images/figma-payouts/icons/fast.svg",
+                },
+            ],
+        },
+        "path": {
+            "title": "Where every payout finds its path.",
+            "body": [
+                (
+                    "Manage every payout from initiation to completion through one unified "
+                    "platform. Connect multiple payout methods, automate transactions, choose "
+                    "the right payment route, and keep every disbursement on track."
+                ),
+            ],
+            "icons": [
+                {
+                    "id": "bank",
+                    "src": "/images/figma-payouts/path/badge-1.svg",
+                    "left": "22px",
+                    "top": "280px",
+                    "width": 22,
+                    "height": 22,
+                },
+                {
+                    "id": "trend",
+                    "src": "/images/figma-payouts/path/badge-2.svg",
+                    "left": "144px",
+                    "top": "687px",
+                    "width": 19,
+                    "height": 19,
+                },
+                {
+                    "id": "pod",
+                    "src": "/images/figma-payouts/path/badge-3.svg",
+                    "left": "857px",
+                    "top": "311px",
+                    "width": 21,
+                    "height": 21,
+                },
+                {
+                    "id": "route",
+                    "src": "/images/figma-payouts/path/badge-4.svg",
+                    "left": "1008px",
+                    "top": "521px",
+                    "width": 21,
+                    "height": 21,
+                },
+            ],
+        },
+        "control": {
+            "title": "Complete Control Over Every Payout",
+            "body": (
+                "Manage beneficiaries, track transactions, and send funds across multiple "
+                "payment channels through one unified payout infrastructure."
+            ),
+            "cards": [
+                {
+                    "title": "Beneficiary Payouts",
+                    "body": (
+                        "Send payments to customers, vendors, partners, employees, and other "
+                        "beneficiaries through one unified payout flow."
+                    ),
+                    "image": "/images/figma-payouts/control/beneficiary.png",
+                    "image_alt": (
+                        "Beneficiary list with initiate payout flow and transfer status"
+                    ),
+                    "image_width": 765,
+                    "image_height": 411,
+                },
+                {
+                    "title": "Payout Tracking",
+                    "body": (
+                        "Monitor every payout from initiation to completion with real-time status "
+                        "updates, transaction visibility, and clear operational insights for "
+                        "better control."
+                    ),
+                    "image": "/images/figma-payouts/control/tracking.png",
+                    "image_alt": (
+                        "Payout tracking stepper and recent payouts table with live statuses"
+                    ),
+                    "image_width": 704,
+                    "image_height": 413,
+                },
+                {
+                    "title": "Multi Channel Disbursement",
+                    "body": (
+                        "Support payout journeys across different transfer methods through one "
+                        "connected infrastructure."
+                    ),
+                    "image": "/images/figma-payouts/control/multichannel.png",
+                    "image_alt": (
+                        "Business connected to UPI, cards, bank transfer, and wallets"
+                    ),
+                    "image_width": 800,
+                    "image_height": 269,
+                },
+            ],
+        },
+    },
+    "risk-fraud-management": {
+        "type": "risk-fraud",
+        "eyebrow": "risk and fraud management",
+        "title": "Stay Ahead of Risk. Protect Every Transaction.",
+        "intro": (
+            "Build safer payment experiences with intelligent risk monitoring and fraud "
+            "management solutions designed to identify suspicious activity, reduce transaction "
+            "risk, and protect your business."
+        ),
+        "cta_label": "Talk to Expert",
+        "hero_image_alt": (
+            "Risk management shield clearing payment attempts while flagging unusual location, "
+            "stolen cards, fake accounts, suspicious transactions, and bot activity"
+        ),
+        "secure": {
+            "title": "Make Every Transaction More Secure and More Predictable",
+            "body": (
+                "UrbanRupee helps businesses manage payment risk through intelligent monitoring, "
+                "configurable controls, and real-time transaction insights. Identify unusual "
+                "activity and potential threats before they impact your business."
+            ),
+            "image": "/images/figma-risk-fraud/platform/diagram-engine.png",
+            "image_alt": (
+                "Urbanrupee Risk Management Engine connecting multiple data inputs to "
+                "real-time risk outcomes"
+            ),
+            "image_width": 1291,
+            "image_height": 568,
+        },
+        "growth": {
+            "title": "Turn Payment Complexity Into Business Growth",
+            "body": (
+                "Monitor payment risks, prevent fraud, and make faster, smarter decisions."
+            ),
+            # Figma 538:5121 — 2×2 grid, row-major
+            "cards": [
+                {
+                    "title": "Fraud Monitoring",
+                    "body": (
+                        "Identify unusual transaction behavior and suspicious payment "
+                        "patterns in real time."
+                    ),
+                    "icon": "/images/figma-risk-fraud/icons/monitor.svg",
+                },
+                {
+                    "title": "Chargeback Risk Visibility",
+                    "body": (
+                        "Track dispute exposure with clearer transaction and merchant-level "
+                        "risk insights."
+                    ),
+                    "icon": "/images/figma-risk-fraud/icons/chargeback.svg",
+                },
+                {
+                    "title": "Risk Review Workflows",
+                    "body": (
+                        "Streamline approve, decline, review, and challenge actions through "
+                        "structured workflows."
+                    ),
+                    "icon": "/images/figma-risk-fraud/icons/workflows.svg",
+                },
+                {
+                    "title": "Operational Risk Insights",
+                    "body": (
+                        "Gain clear visibility into risk trends, alerts, and operational "
+                        "performance for better decisions."
+                    ),
+                    "icon": "/images/figma-risk-fraud/icons/insights.svg",
+                },
+            ],
+        },
+        "detect": {
+            "title": "Detect Risk Before It Becomes Fraud",
+            "body": (
+                "Identify unusual transaction signals in real time with intelligent monitoring "
+                "across IP activity, transaction patterns, timing, location, and suspicious "
+                "behavior."
+            ),
+            "cards": [
+                {
+                    "title": "IP Detection",
+                    "body": (
+                        "Identify unusual or high-risk IP activity to detect potentially "
+                        "unauthorized access and suspicious transaction behavior."
+                    ),
+                    "image": "/images/figma-risk-fraud/illustration-container.svg",
+                    "image_width": 436,
+                    "image_height": 331,
+                },
+                {
+                    "title": "Transaction Patterns",
+                    "body": (
+                        "Analyze transaction frequency, value, and behavior to identify "
+                        "patterns that differ from established user activity."
+                    ),
+                    "image": "/images/figma-risk-fraud/Frame%202147226663.svg",
+                    "image_width": 403,
+                    "image_height": 300,
+                },
+                {
+                    "title": "Suspicious Transactions",
+                    "body": (
+                        "Flag transactions that match predefined risk conditions or demonstrate "
+                        "characteristics associated with potential fraud."
+                    ),
+                    "image": "/images/figma-risk-fraud/Frame%202147226808.svg",
+                    "image_width": 454,
+                    "image_height": 308,
+                },
+                {
+                    "title": "Unusual Locations",
+                    "body": (
+                        "Identify activity from unexpected or inconsistent locations to help "
+                        "detect suspicious access and transaction attempts."
+                    ),
+                    "image": "/images/figma-risk-fraud/Frame%202147226810.svg",
+                    "image_width": 382,
+                    "image_height": 256,
+                },
+            ],
+        },
+        "safer": {
+            "title": "Designed for Safer Financial Operations",
+            "body": (
+                "Create a stronger risk management layer with continuous monitoring, "
+                "configurable controls, and greater visibility across your transaction ecosystem."
+            ),
+            "items": [
+                {
+                    "num": "01",
+                    "title": "Continuous Monitoring",
+                    "body": (
+                        "Keep track of transaction activity and risk signals across connected "
+                        "payment flows."
+                    ),
+                },
+                {
+                    "num": "02",
+                    "title": "Minimize Financial Loss",
+                    "body": (
+                        "Prevent avoidable fraud-related losses by identifying risky transactions "
+                        "before they become costly incidents."
+                    ),
+                },
+                {
+                    "num": "03",
+                    "title": "Improve Chargeback Readiness",
+                    "body": (
+                        "Stay prepared for disputes with better visibility into transaction "
+                        "behavior, risk signals, and potential chargeback triggers."
+                    ),
+                },
+                {
+                    "num": "04",
+                    "title": "Stay Ahead of Emerging Risks",
+                    "body": (
+                        "Continuously monitor transaction patterns and changing risk signals to "
+                        "respond proactively as new threats emerge."
+                    ),
+                },
+            ],
+        },
+    },
+    "reconciliation": {
+        "type": "reconciliation",
+        "eyebrow": "RECONCILIATION",
+        "title": "One Connected Layer for Reconciliation",
+        "intro": (
+            "Manage reconciliation through one operational layer that brings together "
+            "transaction records, payment data, and financial visibility."
+        ),
+        "cta_label": "Talk to Expert",
+        "hero_image_alt": (
+            "Urbanrupee reconciliation hub connecting payment gateways, banks, internal "
+            "systems, and settlement outcomes"
+        ),
+        "clarity": {
+            "title": "Bring Clarity to Every Transaction",
+            "body": (
+                "Urbanrupee helps businesses connect transaction data across payment systems, "
+                "orders, and financial records through a centralized operational layer."
+            ),
+            "image": "/images/figma-reconciliation/Frame%20214722621.svg",
+            "image_alt": (
+                "Urbanrupee Reconciliation Engine ingesting data sources and producing "
+                "matched, exception, and unmatched outcomes"
+            ),
+            "image_width": 1291,
+            "image_height": 627,
+        },
+        "features": {
+            "title": "Everything You Need to Simplify Reconciliation",
+            "body": (
+                "Power your financial operations with connected capabilities designed to make "
+                "transaction matching and exception management more efficient."
+            ),
+            "cards": [
+                {
+                    "title": "Reliable",
+                    "body": (
+                        "Support payment continuity with fallback routing, operational "
+                        "visibility, and infrastructure designed for high-volume environments."
+                    ),
+                    "icon": "/images/figma-reconciliation/icons/reliable.svg",
+                },
+                {
+                    "title": "Merchant Centric",
+                    "body": (
+                        "Give businesses direct control over checkout, chargebacks, reporting, "
+                        "and payment operations through one connected platform."
+                    ),
+                    "icon": "/images/figma-reconciliation/icons/merchant.svg",
+                },
+                {
+                    "title": "Scalable",
+                    "body": (
+                        "Support growing transaction volumes, multiple payment methods, and "
+                        "expanding business needs without fragmented systems."
+                    ),
+                    "icon": "/images/figma-reconciliation/icons/scalable.svg",
+                },
+                {
+                    "title": "Actionable",
+                    "body": (
+                        "Turn transactions, settlements, routing outcomes, and risk signals "
+                        "into clear operational visibility for faster decisions."
+                    ),
+                    "icon": "/images/figma-reconciliation/icons/actionable.svg",
+                },
+            ],
+        },
+        "path": {
+            "title": "Built for Seamless Reconciliation",
+            "body": [
+                (
+                    "Urbanrupee brings settlement tracking, transaction matching, and "
+                    "reconciliation into one connected financial workflow, helping businesses "
+                    "maintain greater accuracy and visibility across every payment."
+                ),
+            ],
+            "icons": [
+                {
+                    "id": "bank",
+                    "src": "/images/figma-reconciliation/path/bank.svg",
+                    "left": "22px",
+                    "top": "280px",
+                    "width": 22,
+                    "height": 22,
+                },
+                {
+                    "id": "trend",
+                    "src": "/images/figma-reconciliation/path/trend.svg",
+                    "left": "144px",
+                    "top": "687px",
+                    "width": 19,
+                    "height": 19,
+                },
+                {
+                    "id": "pod",
+                    "src": "/images/figma-reconciliation/path/pod.svg",
+                    "left": "857px",
+                    "top": "311px",
+                    "width": 21,
+                    "height": 21,
+                },
+                {
+                    "id": "route",
+                    "src": "/images/figma-reconciliation/path/route.svg",
+                    "left": "1008px",
+                    "top": "521px",
+                    "width": 21,
+                    "height": 21,
+                },
+            ],
+        },
+        "showcase": {
+            "title": "Everything You Need to Simplify Reconciliation",
+            "body": (
+                "Power your financial operations with connected capabilities designed to make "
+                "transaction matching, and exception management more efficient."
+            ),
+            "rows": [
+                {
+                    "title": "Automated Matching",
+                    "body": (
+                        "Automatically match payment transactions with settlement records to "
+                        "improve reconciliation accuracy and reduce manual effort."
+                    ),
+                    "image": "/images/figma-reconciliation/Frame%202147226717.svg",
+                    "image_alt": (
+                        "Settlement reconciliation dashboard showing matched transactions and "
+                        "an amount mismatch detail"
+                    ),
+                    "image_width": 642,
+                    "image_height": 365,
+                    "side": "left",
+                },
+                {
+                    "title": "Exception Visibility",
+                    "body": (
+                        "Identify mismatches, missing transactions, and settlement exceptions "
+                        "with clear visibility into issues that need attention."
+                    ),
+                    "image": "/images/figma-reconciliation/Frame%202147226717.svg",
+                    "image_alt": (
+                        "Settlement transactions table highlighting an exception with a "
+                        "detected mismatch alert"
+                    ),
+                    "image_width": 642,
+                    "image_height": 365,
+                    "side": "right",
+                },
+                {
+                    "title": "Faster Resolution",
+                    "body": (
+                        "Give finance and operations teams the information they need to "
+                        "investigate discrepancies and resolve settlement issues faster."
+                    ),
+                    "image": "/images/figma-reconciliation/Group%201171275349.svg",
+                    "image_alt": (
+                        "Side-by-side transaction and settlement records with a reconciled "
+                        "success state"
+                    ),
+                    "image_width": 570,
+                    "image_height": 373,
+                    "side": "left",
+                },
+            ],
+        },
     },
     "financial-operations": {
-        "type": "marketing",
-        "title": "Financial Operations Infrastructure",
+        "type": "financial-operations",
+        "eyebrow": "financial operations infrastructure",
+        "title": "Build Smarter Financial Experiences Without Building the Infrastructure",
         "intro": (
-            "Build smarter financial experiences without building the infrastructure. Power "
+            "Power your products with scalable financial infrastructure that simplifies "
             "banking operations, payment flows, account services, and financial workflows "
             "through a connected ecosystem."
         ),
-        "sections": [],
+        "cta_label": "Talk to Expert",
+        "infra": {
+            "title": "The Infrastructure Behind Modern\nFinancial Operations",
+            "body": (
+                "Build and manage financial workflows through a flexible infrastructure "
+                "designed to connect banking capabilities with your existing products and "
+                "platforms."
+            ),
+        },
+        "diagram": {
+            "image": "/images/figma-financial-ops/baas-diagram.png",
+            "image_alt": (
+                "Urbanrupee BAAS platform connecting customers, beneficiaries, and payment "
+                "methods through a single integration"
+            ),
+            "image_width": 1291,
+            "image_height": 813,
+        },
+        "advantages": {
+            "title": "Turn Financial Complexity Into Operational Advantage",
+            "body": (
+                "Simplify financial operations while creating a more connected, scalable, "
+                "and efficient infrastructure for your business."
+            ),
+            "cards": [
+                {
+                    "title": "Faster Time to Market",
+                    "body": (
+                        "Launch financial capabilities faster with ready-to-integrate "
+                        "infrastructure that eliminates the need to build every component "
+                        "from scratch."
+                    ),
+                },
+                {
+                    "title": "Reduced Operational Complexity",
+                    "body": (
+                        "Bring fragmented financial workflows together through a connected "
+                        "infrastructure layer that simplifies day-to-day operations."
+                    ),
+                },
+                {
+                    "title": "Greater Financial Visibility",
+                    "body": (
+                        "Gain a centralized view of accounts, transactions, payments, and "
+                        "payouts for better operational control and decision-making."
+                    ),
+                },
+                {
+                    "title": "Automated Workflows",
+                    "body": (
+                        "Reduce manual intervention by automating repetitive financial "
+                        "processes, from transaction tracking to reconciliation."
+                    ),
+                },
+                {
+                    "title": "Scalable Infrastructure",
+                    "body": (
+                        "Adapt to growing transaction volumes and evolving business "
+                        "requirements with flexible infrastructure built for scale."
+                    ),
+                },
+                {
+                    "title": "Better Customer Experiences",
+                    "body": (
+                        "Embed financial capabilities directly into your products to create "
+                        "smoother, more connected experiences for your customers."
+                    ),
+                },
+            ],
+        },
+        "showcase": {
+            "title": "One Infrastructure. Every Financial Flow.",
+            "body": (
+                "Connect collections, payouts, operational insights, and reconciliation "
+                "through a unified platform built for seamless financial experiences."
+            ),
+            "cards": [
+                {
+                    "id": "visibility",
+                    "title": "Operational Visibility",
+                    "body": (
+                        "Access better insight into transactions, settlements, and service "
+                        "activity."
+                    ),
+                    "image": "/images/figma-financial-ops/showcase/visibility.svg",
+                    "image_alt": "Operational visibility dashboard with transaction KPIs",
+                    "image_width": 604,
+                    "image_height": 576,
+                },
+                {
+                    "id": "collections",
+                    "title": "Collections",
+                    "body": (
+                        "Send payments to customers, vendors, partners, employees, and other "
+                        "beneficiaries through one unified payout flow."
+                    ),
+                    "image": "/images/figma-financial-ops/showcase/collections.svg",
+                    "image_alt": "Collections QR scan and pay flow with payment received",
+                    "image_width": 576,
+                    "image_height": 542,
+                },
+                {
+                    "id": "payout",
+                    "title": "Payout",
+                    "body": (
+                        "Enable outgoing payment workflows for customers, partners, and "
+                        "business operations."
+                    ),
+                    "image": "/images/figma-financial-ops/showcase/payout.svg",
+                    "image_alt": "Payout workflow with beneficiaries and success confirmation",
+                    "image_width": 600,
+                    "image_height": 576,
+                },
+                {
+                    "id": "reconciliation",
+                    "title": "Reconciliation Support",
+                    "body": (
+                        "Track and manage financial workflows with stronger reporting and "
+                        "operational clarity."
+                    ),
+                    "image": "/images/figma-financial-ops/showcase/reconciliation.svg",
+                    "image_alt": (
+                        "Auto reconciliation connecting payouts, payments, and settlements "
+                        "to balanced books"
+                    ),
+                    "image_width": 600,
+                    "image_height": 576,
+                },
+            ],
+        },
+        "mid_cta": {
+            "title": "Build the Financial Infrastructure\nYour Business Needs",
+            "body": (
+                "Connect your products to scalable financial infrastructure and create "
+                "smarter, more connected financial experiences."
+            ),
+            "cta_label": "Talk to Expert",
+            "cards": [
+                {
+                    "id": "accounts",
+                    "label": "Virtual Accounts",
+                    "value": "12,480 Active Accounts",
+                    "icon": "/images/figma-financial-ops/icons/account.svg",
+                },
+                {
+                    "id": "transactions",
+                    "label": "Transactions",
+                    "value": "98.7% Success Rate",
+                    "icon": "/images/figma-financial-ops/icons/transaction.svg",
+                },
+                {
+                    "id": "dashboard",
+                    "title": "Operational Dashboard",
+                    "label": "Processed this month",
+                    "value": "+18.2%",
+                    "icon": "/images/figma-financial-ops/icons/dashboard.svg",
+                },
+            ],
+        },
     },
     "aml-detector": {
         "type": "marketing",
@@ -2050,175 +2693,184 @@ PAGES = {
         },
     },
     "upi-switch": {
-        "type": "marketing",
-        "title": "Seamless UPI Switch",
+        "type": "upi-switch",
+        "eyebrow": "seamless upi switch",
+        "title": "Power every UPI transaction with smarter switching",
         "intro": (
-            "Powering Faster, Smarter & More Reliable UPI Transactions\n\n"
-            "Urbanrupee's Seamless UPI Switch is a high-performance transaction routing "
-            "infrastructure designed to deliver exceptional reliability, speed, and scalability "
-            "for businesses processing UPI payments at scale. Built to intelligently manage "
-            "transaction flow across banking and payment networks, our UPI Switch ensures higher "
-            "success rates, reduced failures, and a frictionless payment experience for every "
-            "customer.\n\n"
-            "Whether handling daily transactions or peak-volume events, Urbanrupee keeps your UPI "
-            "ecosystem running efficiently with intelligent routing, real-time monitoring, and "
-            "enterprise-grade resilience."
+            "Connect, route and manage UPI payments through a reliable switching "
+            "infrastructure built for speed, scale and higher payment success."
         ),
-        "sections": [
-            {
-                "title": "Intelligent UPI Transaction Routing",
-                "body": (
-                    "Optimize every UPI transaction through a smart routing engine that dynamically "
-                    "selects the most efficient processing path based on performance, availability, "
-                    "and transaction health."
+        "cta_label": "Talk to Expert",
+        "architecture": {
+            "title": "One switching layer. Multiple payment connections.",
+            "body": (
+                "Connect your merchant ecosystem to the UPI network through a centralized "
+                "transaction management layer."
+            ),
+            "image": "/images/figma-upi/architecture.png?v=3",
+            "image_alt": (
+                "Urbanrupee Seamless UPI Switch connecting payment initiation, UPI network, "
+                "bank pipes, and settlement"
+            ),
+            "image_width": 1291,
+            "image_height": 813,
+        },
+        "features": {
+            "title": "Everything you need to manage UPI at scale",
+            "body": (
+                "Power your UPI payment ecosystem with flexible routing, centralized "
+                "connectivity and real-time transaction visibility."
+            ),
+            "cards": [
+                {
+                    "title": "Unified UPI API",
+                    "body": (
+                        "Connect merchant payment flows to UPI acceptance through one "
+                        "simplified integration layer."
+                    ),
+                    "icon": "/images/figma-upi/icons/api.svg",
+                    "icon_width": 28,
+                    "icon_height": 28,
+                },
+                {
+                    "title": "Routing Engine",
+                    "body": (
+                        "Apply business rules and routing intelligence to guide UPI "
+                        "transactions through the most suitable path."
+                    ),
+                    "icon": "/images/figma-upi/icons/routing.svg",
+                    "icon_width": 28,
+                    "icon_height": 28,
+                },
+                {
+                    "title": "Intent & QR Support",
+                    "body": (
+                        "Support different UPI payment experiences through seamless intent "
+                        "and QR based journeys."
+                    ),
+                    "icon": "/images/figma-upi/icons/qr.svg",
+                    "icon_width": 28,
+                    "icon_height": 28,
+                },
+                {
+                    "title": "Reconciliation Support",
+                    "body": (
+                        "Improve operational control with better visibility into settlement "
+                        "and transaction outcome status."
+                    ),
+                    "icon": "/images/figma-upi/icons/support.svg",
+                    "icon_width": 28,
+                    "icon_height": 28,
+                },
+            ],
+        },
+        "path": {
+            "title": "Where every UPI transaction finds its path.",
+            "body": [
+                (
+                    "Urbanrupee’s Seamless UPI Switch connects your business with the wider "
+                    "UPI ecosystem through a unified switching layer. It simplifies payment "
+                    "connectivity and gives you greater control over how transactions are "
+                    "processed and routed."
                 ),
-                "bullets_heading": "Key Features",
-                "bullets": [
-                    "Intelligent transaction routing",
-                    "Real-time route optimization",
-                    "Dynamic PSP selection",
-                    "Enhanced transaction success rates",
-                    "Automated traffic distribution",
-                ],
-            },
-            {
-                "title": "Built for High-Volume Performance",
-                "body": (
-                    "Designed to support businesses operating at scale, our infrastructure ensures "
-                    "consistent performance even during transaction surges and peak business hours."
+                (
+                    "With intelligent routing, real-time visibility and reliable transaction "
+                    "management, businesses can deliver smoother UPI payment experiences while "
+                    "staying ready to scale."
                 ),
-                "bullets_heading": "Key Features",
-                "bullets": [
-                    "High-volume transaction processing",
-                    "Peak-load performance optimization",
-                    "Low-latency transaction handling",
-                    "Scalable infrastructure architecture",
-                    "Consistent payment performance",
-                ],
-            },
-            {
-                "title": "Secure & Reliable UPI Infrastructure",
-                "body": (
-                    "Deliver trusted payment experiences through a resilient platform built with "
-                    "advanced security controls, compliance standards, and continuous monitoring."
-                ),
-                "bullets_heading": "Key Features",
-                "bullets": [
-                    "Enterprise-grade security",
-                    "Continuous transaction monitoring",
-                    "Secure payment processing",
-                    "Compliance-focused architecture",
-                    "High-availability infrastructure",
-                ],
-            },
-            {
-                "title": "Performance Highlights",
-                "cards": [
-                    {
-                        "title": "High UPI Success Rates",
-                        "body": (
-                            "Improve payment acceptance through intelligent transaction optimization."
-                        ),
-                    },
-                    {
-                        "title": "Low-Latency Processing",
-                        "body": (
-                            "Deliver fast and seamless payment experiences that customers expect."
-                        ),
-                    },
-                    {
-                        "title": "Multi-Bank Connectivity",
-                        "body": (
-                            "Seamlessly connect with multiple banking and payment networks through "
-                            "a unified infrastructure."
-                        ),
-                    },
-                    {
-                        "title": "Real-Time Routing Intelligence",
-                        "body": (
-                            "Continuously evaluate transaction paths to ensure optimal performance "
-                            "and reliability."
-                        ),
-                    },
-                    {
-                        "title": "Peak-Ready Infrastructure",
-                        "body": (
-                            "Maintain consistent payment performance even during high-traffic "
-                            "periods and transaction spikes."
-                        ),
-                    },
-                ],
-            },
-            {
-                "title": "Key Advantages",
-                "cards": [
-                    {
-                        "title": "Peak-Ready Performance",
-                        "body": (
-                            "Handle transaction surges effortlessly while maintaining speed, "
-                            "stability, and customer satisfaction."
-                        ),
-                    },
-                    {
-                        "title": "Trusted UPI Experience",
-                        "body": (
-                            "Deliver secure, seamless, and reliable payment journeys that build "
-                            "customer confidence."
-                        ),
-                    },
-                    {
-                        "title": "Smart Routing Intelligence",
-                        "body": (
-                            "Automatically direct transactions through the healthiest available "
-                            "route to maximize success rates and minimize disruptions."
-                        ),
-                    },
-                ],
-            },
-        ],
-        "highlights": [
-            {
-                "title": "Why Businesses Choose Urbanrupee UPI Switch",
-                "body": (
-                    "Built for scale, speed, and reliability across every UPI transaction you process."
-                ),
-            },
-            {
-                "title": "High Transaction Success Rates",
-                "body": (
-                    "Maximize successful UPI payments through intelligent routing and optimized "
-                    "transaction management."
-                ),
-            },
-            {
-                "title": "Lightning-Fast Processing",
-                "body": (
-                    "Enable near real-time transaction execution with low-latency infrastructure "
-                    "and rapid response times."
-                ),
-            },
-            {
-                "title": "Built for Scale",
-                "body": (
-                    "Confidently process growing transaction volumes without compromising "
-                    "performance or customer experience."
-                ),
-            },
-            {
-                "title": "Intelligent Traffic Management",
-                "body": (
-                    "Automatically route payments through the most efficient available network "
-                    "to maintain reliability."
-                ),
-            },
-            {
-                "title": "Trusted & Secure",
-                "body": (
-                    "Protect every transaction through enterprise-grade security frameworks and "
-                    "continuous risk monitoring."
-                ),
-            },
-        ],
+            ],
+            "icons": [
+                {
+                    "id": "bank",
+                    "src": "/images/figma-upi/icons/bank.svg",
+                    "left": "22px",
+                    "top": "280px",
+                    "width": 22,
+                    "height": 22,
+                },
+                {
+                    "id": "trend",
+                    "src": "/images/figma-upi/icons/trend.svg",
+                    "left": "144px",
+                    "top": "687px",
+                    "width": 19,
+                    "height": 19,
+                },
+                {
+                    "id": "pod",
+                    "src": "/images/figma-upi/icons/pod.svg",
+                    "left": "857px",
+                    "top": "311px",
+                    "width": 21,
+                    "height": 21,
+                },
+                {
+                    "id": "route",
+                    "src": "/images/figma-upi/icons/path-route.svg",
+                    "left": "1008px",
+                    "top": "521px",
+                    "width": 21,
+                    "height": 21,
+                },
+            ],
+        },
+        "capabilities": {
+            "title": "Built to keep every UPI payment moving",
+            "body": (
+                "Simplify UPI connectivity and intelligently manage transaction flows "
+                "through a single switching layer."
+            ),
+            "cards": [
+                {
+                    "title": "Reliable Connectivity",
+                    "body": (
+                        "Connect your payment ecosystem through a centralized UPI switching "
+                        "infrastructure."
+                    ),
+                    "image": "/images/figma-upi/caps/connectivity.svg",
+                    "image_alt": (
+                        "Primary and backup servers staying always connected through UPI switch"
+                    ),
+                    "image_width": 466,
+                    "image_height": 373,
+                },
+                {
+                    "title": "Intelligent Routing",
+                    "body": (
+                        "Direct transactions through configured routes to support better "
+                        "payment performance."
+                    ),
+                    "image": "/images/figma-upi/caps/routing.svg",
+                    "image_alt": (
+                        "Payment request routed to the optimal gateway among available options"
+                    ),
+                    "image_width": 339,
+                    "image_height": 367,
+                },
+                {
+                    "title": "Real-Time Visibility",
+                    "body": (
+                        "Monitor transaction activity and payment performance through a "
+                        "centralized view."
+                    ),
+                    "image": "/images/figma-upi/caps/visibility.svg",
+                    "image_alt": "Live transactions dashboard with success rate and latency",
+                    "image_width": 466,
+                    "image_height": 373,
+                },
+                {
+                    "title": "Built to Scale",
+                    "body": (
+                        "Handle growing transaction volumes with infrastructure designed for "
+                        "high-throughput payment environments."
+                    ),
+                    "image": "/images/figma-upi/caps/scale.svg",
+                    "image_alt": "Transaction volume scaling from 10K to 1M+ transactions per minute",
+                    "image_width": 466,
+                    "image_height": 366,
+                },
+            ],
+        },
     },
     "affordability": {
         "type": "marketing",
@@ -2607,6 +3259,8 @@ ROUTE_SLUGS = {
     "/services/collections": "collections",
     "/services/payouts": "payouts",
     "/services/financial-operations": "financial-operations",
+    "/services/risk-fraud-management": "risk-fraud-management",
+    "/services/reconciliation": "reconciliation",
     "/products/white-label": "white-label-platform",
     "/products/custom-checkout": "custom-checkout",
     "/products/hyper-checkout": "hyper-checkout",

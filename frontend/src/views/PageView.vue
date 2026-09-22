@@ -12,6 +12,11 @@ import CustomCheckoutPage from "@/components/pages/CustomCheckoutPage.vue";
 import HyperCheckoutPage from "@/components/pages/HyperCheckoutPage.vue";
 import OrchestrationPage from "@/components/pages/OrchestrationPage.vue";
 import CollectionsPage from "@/components/pages/CollectionsPage.vue";
+import UpiSwitchPage from "@/components/pages/UpiSwitchPage.vue";
+import PayoutsPage from "@/components/pages/PayoutsPage.vue";
+import RiskFraudPage from "@/components/pages/RiskFraudPage.vue";
+import ReconciliationPage from "@/components/pages/ReconciliationPage.vue";
+import FinancialOperationsPage from "@/components/pages/FinancialOperationsPage.vue";
 import FaqPage from "@/components/pages/FaqPage.vue";
 import BlogPage from "@/components/pages/BlogPage.vue";
 import PrivacyPage from "@/components/pages/PrivacyPage.vue";
@@ -43,6 +48,11 @@ const pageComponent = computed(() => {
     "hyper-checkout": HyperCheckoutPage,
     orchestration: OrchestrationPage,
     collections: CollectionsPage,
+    "upi-switch": UpiSwitchPage,
+    payouts: PayoutsPage,
+    "risk-fraud": RiskFraudPage,
+    reconciliation: ReconciliationPage,
+    "financial-operations": FinancialOperationsPage,
     faq: FaqPage,
     blog: BlogPage,
     privacy: PrivacyPage,
@@ -152,7 +162,7 @@ watch(() => route.path, loadPage);
 }
 
 .page-view > .site-closing {
-  margin-top: var(--ur-section-gap);
+  margin-top: 100px;
 }
 
 .page-view--solutions {

@@ -18,6 +18,8 @@ SERVICE_SLUGS = frozenset({
     "collections",
     "payouts",
     "financial-operations",
+    "risk-fraud-management",
+    "reconciliation",
 })
 HUB_SLUGS = frozenset({"products-index", "resources-index"})
 
@@ -209,9 +211,43 @@ RELATED_LINKS = {
             "description": "Disburse funds to vendors, partners, and beneficiaries.",
         },
         {
-            "label": "Privacy Policy",
-            "href": "/privacy-policy",
-            "description": "How Urbanrupee protects your data.",
+            "label": "Reconciliation",
+            "href": "/services/reconciliation",
+            "description": "Match transactions and settlements in one layer.",
+        },
+    ],
+    "risk-fraud-management": [
+        {
+            "label": "Collections",
+            "href": "/services/collections",
+            "description": "Digital collections with compliance built in.",
+        },
+        {
+            "label": "Payouts",
+            "href": "/services/payouts",
+            "description": "Disburse funds to vendors, partners, and beneficiaries.",
+        },
+        {
+            "label": "Reconciliation",
+            "href": "/services/reconciliation",
+            "description": "Match transactions and settlements in one layer.",
+        },
+    ],
+    "reconciliation": [
+        {
+            "label": "Collections",
+            "href": "/services/collections",
+            "description": "Digital collections with compliance built in.",
+        },
+        {
+            "label": "Payouts",
+            "href": "/services/payouts",
+            "description": "Disburse funds to vendors, partners, and beneficiaries.",
+        },
+        {
+            "label": "Risk & Fraud Management",
+            "href": "/services/risk-fraud-management",
+            "description": "Detect risk and protect every transaction.",
         },
     ],
     "faq": [
@@ -377,7 +413,7 @@ PAGE_SEO = {
             "Urbanrupee Payouts: send payments to beneficiaries, vendors, partners, and "
             "marketplace sellers with real-time tracking and multi-channel disbursement."
         ),
-        "h1": "Payouts",
+        "h1": "Send every payout faster with greater control and visibility",
     },
     "financial-operations": {
         "title": "Financial Operations Infrastructure | Urbanrupee",
@@ -385,7 +421,23 @@ PAGE_SEO = {
             "Urbanrupee Financial Operations Infrastructure powers banking operations, payment "
             "flows, account services, and financial workflows through a connected ecosystem."
         ),
-        "h1": "Financial Operations Infrastructure",
+        "h1": "Build Smarter Financial Experiences Without Building the Infrastructure",
+    },
+    "risk-fraud-management": {
+        "title": "Risk & Fraud Management | Urbanrupee",
+        "description": (
+            "Urbanrupee Risk & Fraud Management: real-time monitoring, configurable controls, "
+            "and transaction insights to detect suspicious activity and protect every payment."
+        ),
+        "h1": "Stay Ahead of Risk. Protect Every Transaction.",
+    },
+    "reconciliation": {
+        "title": "Reconciliation | Urbanrupee",
+        "description": (
+            "Urbanrupee Reconciliation: one connected layer for transaction matching, "
+            "exception visibility, and settlement accuracy across payment systems."
+        ),
+        "h1": "One Connected Layer for Reconciliation",
     },
     "products-index": {
         "title": "Urbanrupee Payment Products | Gateway, Checkout & UPI",
@@ -446,10 +498,10 @@ PAGE_SEO = {
     "upi-switch": {
         "title": "UPI Switch & Transaction Routing | Urbanrupee",
         "description": (
-            "Urbanrupee UPI Switch provides high-volume UPI routing, multi-bank connectivity, "
-            "low-latency processing, and enterprise-grade reliability for payment businesses."
+            "Connect, route and manage UPI payments through Urbanrupee Seamless UPI Switch — "
+            "a reliable switching infrastructure built for speed, scale and higher payment success."
         ),
-        "h1": "Seamless UPI Switch",
+        "h1": "Power every UPI transaction with smarter switching",
     },
     "affordability": {
         "title": "EMI & BNPL Affordability Solutions | Urbanrupee",

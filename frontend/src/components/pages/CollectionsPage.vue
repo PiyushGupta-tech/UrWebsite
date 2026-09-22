@@ -1,11 +1,7 @@
 <script setup>
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { RouterLink } from "vue-router";
-import {
-  animateStatValues,
-  formatStatValue,
-  parseStatValue,
-} from "@/composables/useCountUp.js";
+import MetricCards from "@/components/MetricCards.vue";
 import CollectionsSmarterDiagram from "./CollectionsSmarterDiagram.vue";
 
 const props = defineProps({
@@ -14,10 +10,6 @@ const props = defineProps({
 });
 
 const heroReady = ref(false);
-const statsRef = ref(null);
-const statDisplays = ref([]);
-let statsObserver = null;
-let cancelStatAnimation = null;
 
 const EXP_GAP = 24;
 const EXP_SIDE_SCALE = 0.8;
@@ -48,7 +40,6 @@ let expVisibilityHandler = null;
 let expIntersectObserver = null;
 
 const pageStats = computed(() => props.page?.stats || []);
-const parsedStats = computed(() => pageStats.value.map((stat) => parseStatValue(stat.value)));
 const journeyCards = computed(() => props.page?.journey?.cards || []);
 const experienceCards = computed(() => props.page?.experiences?.cards || []);
 const flowSteps = computed(() => props.page?.flow?.steps || []);
@@ -567,51 +558,6 @@ function setupExperienceCarousel() {
   setupExperienceAutoscroll();
 }
 
-function setFinalStatValues() {
-  statDisplays.value = pageStats.value.map((stat) => stat.value);
-}
-
-function resetStatValues() {
-  statDisplays.value = parsedStats.value.map((parsed) => formatStatValue(parsed, 0));
-}
-
-function runStatsCountUp() {
-  cancelStatAnimation?.();
-  if (!parsedStats.value.length) return;
-  cancelStatAnimation = animateStatValues(parsedStats.value, {
-    duration: 1800,
-    onFrame: (values) => {
-      statDisplays.value = values;
-    },
-    onComplete: setFinalStatValues,
-  });
-}
-
-function setupStatsObserver() {
-  statsObserver?.disconnect();
-  if (!pageStats.value.length) return;
-
-  if (
-    typeof window !== "undefined" &&
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches
-  ) {
-    setFinalStatValues();
-    return;
-  }
-
-  resetStatValues();
-  statsObserver = new IntersectionObserver(
-    ([entry]) => {
-      if (!entry?.isIntersecting) return;
-      runStatsCountUp();
-      statsObserver?.disconnect();
-    },
-    { threshold: 0.25, rootMargin: "0px 0px -8% 0px" },
-  );
-
-  if (statsRef.value) statsObserver.observe(statsRef.value);
-}
-
 function setupSmarterObserver() {
   smarterObserver?.disconnect();
   if (!smarterRef.value) return;
@@ -644,9 +590,7 @@ onMounted(() => {
   window.addEventListener("scroll", onFlowScroll, { passive: true });
   window.addEventListener("resize", onFlowResize, { passive: true });
   window.addEventListener("keydown", onExperienceKeydown);
-  resetStatValues();
   nextTick(() => {
-    setupStatsObserver();
     setupSmarterObserver();
     setupFlowConnectors();
     setupExperienceCarousel();
@@ -654,22 +598,14 @@ onMounted(() => {
 });
 
 onBeforeUnmount(() => {
-  statsObserver?.disconnect();
   smarterObserver?.disconnect();
   flowResizeObserver?.disconnect();
   expResizeObserver?.disconnect();
   teardownExperienceAutoscroll();
-  cancelStatAnimation?.();
   if (flowScrollRaf) cancelAnimationFrame(flowScrollRaf);
   window.removeEventListener("scroll", onFlowScroll);
   window.removeEventListener("resize", onFlowResize);
   window.removeEventListener("keydown", onExperienceKeydown);
-});
-
-watch(pageStats, async () => {
-  resetStatValues();
-  await nextTick();
-  setupStatsObserver();
 });
 
 watch(experienceCards, async () => {
@@ -724,21 +660,12 @@ watch(
           </div>
         </div>
 
-        <div
+        <MetricCards
           v-if="pageStats.length"
-          ref="statsRef"
-          class="col-stats"
+          :items="pageStats"
+          :ready="heroReady"
           aria-label="Collections outcomes"
-        >
-          <article
-            v-for="(stat, index) in pageStats"
-            :key="stat.label"
-            class="col-stats__card"
-          >
-            <p class="col-stats__value">{{ statDisplays[index] || stat.value }}</p>
-            <p class="col-stats__label">{{ stat.label }}</p>
-          </article>
-        </div>
+        />
       </div>
     </section>
 
@@ -1121,67 +1048,6 @@ watch(
   display: block;
   width: 18px;
   height: 18px;
-}
-
-.col-stats {
-  display: flex;
-  align-items: stretch;
-  gap: 52px;
-  width: 100%;
-  max-width: 1208px;
-  opacity: 0;
-  transform: translateY(20px);
-  transition:
-    opacity 0.6s ease 0.12s,
-    transform 0.6s ease 0.12s;
-}
-
-.col-hero--ready .col-stats {
-  opacity: 1;
-  transform: none;
-}
-
-.col-stats__card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  flex: 1 1 0;
-  min-width: 0;
-  height: 174px;
-  padding: 20px 16px;
-  box-sizing: border-box;
-  background: #ffffff;
-  border: 1px solid #e9eaeb;
-  border-radius: 14.141px;
-  box-shadow:
-    0 1px 3px rgba(0, 0, 0, 0.1),
-    0 1px 2px -1px rgba(0, 0, 0, 0.1);
-}
-
-.col-stats__value {
-  margin: 0;
-  min-height: 72px;
-  font-size: 64px;
-  font-weight: 600;
-  line-height: 72px;
-  letter-spacing: -1.92px;
-  text-align: center;
-  color: #181d27;
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-}
-
-.col-stats__label {
-  margin: 0;
-  max-width: 185px;
-  font-size: 20px;
-  font-weight: 600;
-  line-height: 32px;
-  letter-spacing: -0.6px;
-  text-align: center;
-  color: #414651;
 }
 
 /* —— Smarter diagram —— */
@@ -1763,21 +1629,6 @@ watch(
     padding-right: 40px;
   }
 
-  .col-stats {
-    gap: 20px;
-  }
-
-  .col-stats__value {
-    font-size: 48px;
-    line-height: 56px;
-    min-height: 56px;
-  }
-
-  .col-stats__label {
-    font-size: 16px;
-    line-height: 24px;
-  }
-
   .col-flow__row,
   .col-flow__row--reverse {
     grid-template-columns: 1fr;
@@ -1824,17 +1675,6 @@ watch(
     line-height: 1.3;
   }
 
-  .col-stats {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 16px;
-  }
-
-  .col-stats__card {
-    height: auto;
-    min-height: 140px;
-  }
-
   .col-journey__grid {
     grid-template-columns: 1fr;
   }
@@ -1877,8 +1717,7 @@ watch(
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .col-hero__copy,
-  .col-stats {
+  .col-hero__copy {
     transition: none;
   }
 }
