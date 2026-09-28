@@ -228,11 +228,13 @@ onUnmounted(stopTestimonialAutoplay);
 
 .marketing-testimonials--home .marketing-testimonials__title {
   margin: 0 auto 24px;
-  max-width: 788px;
+  max-width: 1100px;
+  width: max-content;
   padding: 0 24px;
   font-size: 42px;
   font-weight: 700;
   line-height: 52px;
+  white-space: nowrap;
 }
 
 .marketing-testimonials__track-wrap {
@@ -369,6 +371,9 @@ onUnmounted(stopTestimonialAutoplay);
 
   .marketing-testimonials--home .marketing-testimonials__title {
     margin-bottom: 24px;
+    max-width: 100%;
+    width: auto;
+    white-space: normal;
   }
 
   .marketing-testimonials--home .marketing-testimonials__dots {

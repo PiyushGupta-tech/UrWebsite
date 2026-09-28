@@ -1,6 +1,11 @@
 <script setup>
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { RouterLink } from "vue-router";
+import RfDetectIpGraphic from "./RfDetectIpGraphic.vue";
+import RfDetectLocationsGraphic from "./RfDetectLocationsGraphic.vue";
+import RfDetectPatternsGraphic from "./RfDetectPatternsGraphic.vue";
+import RfDetectTransactionsGraphic from "./RfDetectTransactionsGraphic.vue";
+import RfSecureDiagram from "./RfSecureDiagram.vue";
 
 const props = defineProps({
   page: { type: Object, required: true },
@@ -11,7 +16,7 @@ const SAFER_INTERVAL = 3500;
 const SAFER_HEIGHT = 307;
 const SAFER_NUM_SIZE = 55;
 const SAFER_NUM_GAP = 16;
-const SAFER_TEXT_WIDTH = 388;
+const SAFER_TEXT_WIDTH = 492;
 const SAFER_NUM_TOP_FALLBACK = 46.5;
 
 const heroReady = ref(false);
@@ -27,6 +32,13 @@ let saferTimer = null;
 
 const growthCards = computed(() => props.page?.growth?.cards || []);
 const detectCards = computed(() => props.page?.detect?.cards || []);
+/** Detect-card images replaced by an animated inline version of the same artwork. */
+const DETECT_GRAPHICS = {
+  "/images/figma-risk-fraud/illustration-container.svg": RfDetectIpGraphic,
+  "/images/figma-risk-fraud/Frame%202147226663.svg": RfDetectPatternsGraphic,
+  "/images/figma-risk-fraud/Frame%202147226808.svg": RfDetectTransactionsGraphic,
+  "/images/figma-risk-fraud/Frame%202147226810.svg": RfDetectLocationsGraphic,
+};
 const saferItems = computed(() => {
   const items = props.page?.safer?.items || [];
   return items.map((item) => ({
@@ -63,7 +75,7 @@ function numTopFor(index) {
 }
 
 /**
- * Measure title+body at the expanded 388px width so wrapping (and thus
+ * Measure title+body at the expanded 492px width so wrapping (and thus
  * vertical center) matches the final card — never the collapsed pill width.
  */
 function measureStepTextHeight(textEl) {
@@ -229,10 +241,10 @@ watch(saferItems, async () => {
         <div class="rf-hero__visual">
           <img
             class="rf-hero__graphic"
-            src="/images/figma-risk-fraud/hero/graphic.png"
+            src="/images/figma-risk-fraud/Frame%202147226977.svg?v=2"
             :alt="page.hero_image_alt || page.title"
-            width="706"
-            height="464"
+            width="612"
+            height="463"
             decoding="async"
           />
         </div>
@@ -249,17 +261,10 @@ watch(saferItems, async () => {
           {{ page.secure.body }}
         </p>
       </div>
-      <div class="rf-secure__diagram">
-        <img
-          class="rf-secure__img"
-          :src="page.secure.image"
-          :alt="page.secure.image_alt || page.secure.title"
-          :width="page.secure.image_width || 1291"
-          :height="page.secure.image_height || 841"
-          decoding="async"
-          loading="lazy"
-        />
-      </div>
+      <RfSecureDiagram
+        :image="page.secure.image"
+        :alt="page.secure.image_alt || page.secure.title"
+      />
     </section>
 
     <!-- Growth — Figma 538:5121 cards (682×550, 2×2) -->
@@ -309,7 +314,13 @@ watch(saferItems, async () => {
           class="rf-detect__card"
         >
           <div class="rf-detect__visual">
+            <component
+              :is="DETECT_GRAPHICS[card.image]"
+              v-if="DETECT_GRAPHICS[card.image]"
+              class="rf-detect__img"
+            />
             <img
+              v-else
               class="rf-detect__img"
               :src="card.image"
               alt=""
@@ -528,9 +539,9 @@ watch(saferItems, async () => {
 .rf-hero__graphic {
   display: block;
   width: 100%;
-  max-width: 705.87px;
+  max-width: 612px;
   height: auto;
-  aspect-ratio: 705.8728 / 463.8696;
+  aspect-ratio: 612 / 463;
   object-fit: contain;
   object-position: center;
   opacity: 0;
@@ -597,22 +608,6 @@ watch(saferItems, async () => {
 .rf-section__title--secure {
   max-width: 905px;
   margin-inline: auto;
-}
-
-/* Figma 538:5076 — top/bottom padding cropped; 12px corners preserved */
-.rf-secure__diagram {
-  width: min(1291px, 100%);
-  aspect-ratio: 1291 / 568;
-  border-radius: 12px;
-  overflow: hidden;
-}
-
-.rf-secure__img {
-  display: block;
-  width: 100%;
-  height: auto;
-  object-fit: contain;
-  border-radius: 12px;
 }
 
 /* —— Growth — Figma 538:5121 (cards 682×550, 2×2) —— */
@@ -684,6 +679,18 @@ watch(saferItems, async () => {
   align-items: flex-start;
   justify-content: flex-end;
   gap: 12px;
+  box-shadow:
+    0 1px 2px -1px rgba(0, 0, 0, 0.1),
+    0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.25s ease;
+}
+
+.rf-growth__card:hover {
+  box-shadow:
+    0 0.904px 0.904px 0 rgba(0, 0, 0, 0.05),
+    0 1.807px 2.711px 0 rgba(0, 0, 0, 0.04),
+    0 3.614px 5.422px 0 rgba(34, 42, 53, 0.04),
+    0 21.686px 61.444px 0 rgba(47, 48, 55, 0.05);
 }
 
 .rf-growth__icon {
@@ -928,8 +935,8 @@ watch(saferItems, async () => {
 }
 
 /*
- * Cluster = ghost num slot + text. Fixed 388px width keeps wrap/height
- * (and therefore vertical center) constant while the card width morphs.
+ * Cluster = ghost num slot + text. Fixed 492px width matches Figma 434:2838
+ * so wrap/height (and vertical center) stay stable while the card width morphs.
  */
 .rf-safer__cluster {
   position: relative;
@@ -937,7 +944,7 @@ watch(saferItems, async () => {
   flex-direction: column;
   align-items: center;
   gap: var(--rf-num-gap);
-  width: min(388px, 100%);
+  width: min(492px, 100%);
   max-width: 100%;
   min-height: 0;
   box-sizing: border-box;
@@ -1021,7 +1028,7 @@ watch(saferItems, async () => {
   justify-content: flex-start;
   gap: 8px;
   width: 100%;
-  max-width: 388px;
+  max-width: 492px;
   text-align: center;
   opacity: 0;
   pointer-events: none;
@@ -1046,12 +1053,12 @@ watch(saferItems, async () => {
 
 .rf-safer__step-body {
   margin: 0;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 400;
   line-height: 24px;
-  letter-spacing: 0.56px;
-  color: #e9eaeb;
-  max-width: 388px;
+  letter-spacing: 0.64px;
+  color: #ffffff;
+  max-width: 492px;
   text-wrap: balance;
 }
 
@@ -1213,11 +1220,11 @@ watch(saferItems, async () => {
   }
 
   .rf-safer__step--active .rf-safer__cluster {
-    width: min(388px, 100%);
+    width: min(492px, 100%);
   }
 
   .rf-safer__step--active .rf-safer__step-body {
-    color: #e9eaeb;
+    color: #ffffff;
   }
 }
 

@@ -9,27 +9,20 @@ PAGES = {
         "title": "About Urbanrupee",
         "hero_paragraphs": [
             (
-                "At Urbanrupee, we are transforming how businesses manage and experience digital "
-                "payments. We offer a unified payment ecosystem that helps organizations accept, "
-                "process, route, and manage transactions through a secure, scalable, and "
-                "intelligent platform."
+                "At Urbanrupee, we're transforming how businesses manage digital payments through "
+                "a secure, scalable, and intelligent payment ecosystem. Our platform helps "
+                "businesses accept, process, route, and manage transactions seamlessly."
             ),
             (
-                "Our solutions are built to simplify payment operations, improve transaction "
-                "success rates, and create seamless customer experiences. From payment "
-                "orchestration and UPI infrastructure to branded checkout solutions and payouts, "
-                "Urbanrupee empowers businesses to grow with confidence in an increasingly "
-                "digital economy."
-            ),
-            (
-                "We believe payments are more than transactions. They are the foundation of "
-                "trust, growth, and lasting customer relationships. By combining technology, "
-                "innovation, and reliability, Urbanrupee helps businesses unlock new "
-                "opportunities and scale sustainably."
+                "Our solutions simplify payment operations, improve transaction success, and "
+                "enable seamless checkout and payout experiences. With reliable technology and "
+                "innovative payment infrastructure, we help businesses grow confidently and "
+                "scale sustainably."
             ),
         ],
         "intro": (
-            "At Urbanrupee, we are transforming how businesses manage and experience digital payments."
+            "At Urbanrupee, we're transforming how businesses manage digital payments through "
+            "a secure, scalable, and intelligent payment ecosystem."
         ),
         "merchant_partners": content.MERCHANT_PARTNERS,
         "stats": [
@@ -522,8 +515,8 @@ PAGES = {
                 {
                     "title": "Simplify Disbursement",
                     "body": (
-                        "Streamline payouts through one unified platform, automate repetitive "
-                        "tasks, and manage high-volume disbursements with less manual effort."
+                        "Streamline payouts on one platform, automate repetitive tasks, and "
+                        "manage high-volume disbursements with less effort."
                     ),
                     "icon": "/images/figma-payouts/icons/disbursement.svg",
                 },
@@ -652,7 +645,7 @@ PAGES = {
                 "configurable controls, and real-time transaction insights. Identify unusual "
                 "activity and potential threats before they impact your business."
             ),
-            "image": "/images/figma-risk-fraud/platform/diagram-engine.png",
+            "image": "/images/figma-risk-fraud/platform/diagram-engine.png?v=3",
             "image_alt": (
                 "Urbanrupee Risk Management Engine connecting multiple data inputs to "
                 "real-time risk outcomes"
@@ -779,7 +772,7 @@ PAGES = {
                     "title": "Improve Chargeback Readiness",
                     "body": (
                         "Stay prepared for disputes with better visibility into transaction "
-                        "behavior, risk signals, and potential chargeback triggers."
+                        "behavior, risk signals, and chargeback triggers."
                     ),
                 },
                 {
@@ -933,13 +926,13 @@ PAGES = {
                         "Identify mismatches, missing transactions, and settlement exceptions "
                         "with clear visibility into issues that need attention."
                     ),
-                    "image": "/images/figma-reconciliation/Frame%202147226717.svg",
+                    "image": "/images/figma-reconciliation/Frame%202147226952.svg?v=2",
                     "image_alt": (
                         "Settlement transactions table highlighting an exception with a "
                         "detected mismatch alert"
                     ),
-                    "image_width": 642,
-                    "image_height": 365,
+                    "image_width": 637,
+                    "image_height": 372,
                     "side": "right",
                 },
                 {
@@ -979,7 +972,7 @@ PAGES = {
             ),
         },
         "diagram": {
-            "image": "/images/figma-financial-ops/baas-diagram.png",
+            "image": "/images/figma-financial-ops/baas-diagram.png?v=3",
             "image_alt": (
                 "Urbanrupee BAAS platform connecting customers, beneficiaries, and payment "
                 "methods through a single integration"
@@ -1072,15 +1065,15 @@ PAGES = {
                 },
                 {
                     "id": "payout",
-                    "title": "Payout",
+                    "title": "Payouts",
                     "body": (
                         "Enable outgoing payment workflows for customers, partners, and "
                         "business operations."
                     ),
-                    "image": "/images/figma-financial-ops/showcase/payout.svg",
-                    "image_alt": "Payout workflow with beneficiaries and success confirmation",
-                    "image_width": 600,
-                    "image_height": 576,
+                    "image": "/images/figma-financial-ops/showcase/payout.svg?v=2",
+                    "image_alt": "Payout workflow distributing funds to multiple recipients",
+                    "image_width": 576,
+                    "image_height": 505,
                 },
                 {
                     "id": "reconciliation",
@@ -1089,13 +1082,13 @@ PAGES = {
                         "Track and manage financial workflows with stronger reporting and "
                         "operational clarity."
                     ),
-                    "image": "/images/figma-financial-ops/showcase/reconciliation.svg",
+                    "image": "/images/figma-financial-ops/showcase/reconciliation.svg?v=2",
                     "image_alt": (
                         "Auto reconciliation connecting payouts, payments, and settlements "
                         "to balanced books"
                     ),
-                    "image_width": 600,
-                    "image_height": 576,
+                    "image_width": 576,
+                    "image_height": 505,
                 },
             ],
         },
@@ -1435,7 +1428,6 @@ PAGES = {
                 "Deliver a seamless experience under your own brand with a customizable platform "
                 "powered by reliable technology."
             ),
-            "tagline": "Build Your Brand • Run Your Way • Scale Today",
         },
         "steps": {
             "title": "Launch in 3 Simple Steps",
@@ -1452,7 +1444,7 @@ PAGES = {
                         "Add your logo, brand colors to create a consistent platform experience "
                         "that reflects your unique brand identity."
                     ),
-                    "image": "/images/figma-white-label/step-01.png",
+                    "image": "/images/figma-white-label/Frame%202147225861.svg?v=2",
                     "image_width": 375,
                     "image_height": 242,
                 },
@@ -1463,7 +1455,7 @@ PAGES = {
                         "Choose the features, settings, and workflows that best match your "
                         "business requirements and operational needs."
                     ),
-                    "image": "/images/figma-white-label/step-02.png",
+                    "image": "/images/figma-white-label/Frame%202147225859.svg?v=3",
                     "image_width": 498,
                     "image_height": 249,
                 },
@@ -1474,43 +1466,53 @@ PAGES = {
                         "Deliver a fully branded platform experience to your customers while "
                         "managing everything through one centralized solution."
                     ),
-                    "image": "/images/figma-white-label/step-03.png",
+                    "image": "/images/figma-white-label/Frame%202147225873.svg?v=2",
                     "image_width": 319,
                     "image_height": 269,
                 },
             ],
         },
         "benefits": {
-            "title": "More Control. Stronger Brand Experience.",
+            "title": "Why Choose White Label?",
             "body": (
-                "Deliver a seamless experience under your own brand while managing your platform "
-                "with greater flexibility, customization, and centralized control."
+                "Build a payment experience that strengthens your business without "
+                "adding operational complexity."
             ),
             "cards": [
                 {
-                    "title": "Flexible Configuration",
-                    "body": "Configure features and workflows according to your requirements.",
-                    "icon": "/images/figma-white-label/icon-config.svg",
+                    "title": "Lower Overhead",
+                    "body": (
+                        "Reduce the need for multiple payment systems and simplify how "
+                        "your business manages its payment ecosystem."
+                    ),
+                    "icon": "/images/figma-white-label/icon-overhead.svg",
                     "icon_framed": True,
                 },
                 {
-                    "title": "Easy to Scale",
-                    "body": "Scale with confidence without managing complex infrastructure.",
-                    "icon": "/images/figma-white-label/icon-scale.svg",
-                    "icon_framed": False,
-                },
-                {
-                    "title": "Lower Development Costs",
+                    "title": "Stronger Trust",
                     "body": (
-                        "Save time and resources on product development and maintenance."
+                        "Deliver a consistent, professional payment experience that builds "
+                        "confidence at every customer touchpoint."
                     ),
-                    "icon": "/images/figma-white-label/icon-costs.svg",
+                    "icon": "/images/figma-white-label/icon-trust.svg",
                     "icon_framed": False,
                 },
                 {
-                    "title": "Centralized Management",
-                    "body": "Manage your operations and services from one platform.",
-                    "icon": "/images/figma-white-label/icon-manage.svg",
+                    "title": "Business Focus",
+                    "body": (
+                        "Let your team focus on customers and growth while the underlying "
+                        "payment infrastructure is handled for you."
+                    ),
+                    "icon": "/images/figma-white-label/icon-business.svg",
+                    "icon_framed": False,
+                },
+                {
+                    "title": "Ready to Scale",
+                    "body": (
+                        "Support growing transaction volumes and evolving business needs "
+                        "without rebuilding your payment operations."
+                    ),
+                    "icon": "/images/figma-white-label/icon-scale-ready.svg",
                     "icon_framed": False,
                 },
             ],
@@ -1518,7 +1520,7 @@ PAGES = {
     },
     "custom-checkout": {
         "type": "custom-checkout",
-        "eyebrow": "Custom Checkout",
+        "eyebrow": "Hosted & Branded Checkout",
         "title": "Own every step from cart to payment with a branded checkout",
         "intro": (
             "Design a checkout experience that matches your brand and gives you the flexibility "
@@ -1730,7 +1732,7 @@ PAGES = {
                 "Give customers a faster, more flexible and reliable payment journey with "
                 "capabilities designed to simplify every stage of checkout."
             ),
-            "image": "/images/figma-hyper-checkout/trust-devices.png",
+            "image": "/images/figma-hyper-checkout/Frame%202147226308.svg",
             "image_alt": "Multi-device Hyper Checkout experience",
             "image_width": 706,
             "image_height": 644,
@@ -1742,7 +1744,7 @@ PAGES = {
                         "intuitive payment experience."
                     ),
                     "icon": "/images/figma-hyper-checkout/icons/trust-payment.svg",
-                    "image": "/images/figma-hyper-checkout/trust-devices.png",
+                    "image": "/images/figma-hyper-checkout/Frame%202147226308.svg",
                     "image_alt": "Multi-device Hyper Checkout experience",
                 },
                 {
@@ -1911,26 +1913,26 @@ PAGES = {
                 },
                 {
                     "num": "02",
-                    "title": "Optimize Processing Costs",
+                    "title": "One Unified Payment Platform",
                     "body": (
-                        "Route transactions through the most efficient payment pathways to improve "
-                        "operational efficiency and cost management."
+                        "Manage multiple providers and payment methods through one integration, "
+                        "giving you greater control."
                     ),
                 },
                 {
                     "num": "03",
-                    "title": "Ensure Business Continuity",
+                    "title": "Simplify Your Payment Infrastructure",
                     "body": (
-                        "Automated failover and resilient infrastructure minimize disruptions and "
-                        "maintain payment availability."
+                        "Connect and manage multiple payment providers through a centralized "
+                        "orchestration layer."
                     ),
                 },
                 {
                     "num": "04",
-                    "title": "Complete Visibility",
+                    "title": "Smarter Payment Gateway Routing",
                     "body": (
-                        "Monitor, analyze, and optimize payment performance from a centralized "
-                        "dashboard."
+                        "Route every transaction through the most suitable gateway based on "
+                        "performance and business rules."
                     ),
                 },
             ],
@@ -2104,6 +2106,169 @@ PAGES = {
                 ),
             },
         ],
+    },
+    "unified-dashboard": {
+        "type": "unified-dashboard",
+        "eyebrow": "Unified Dashboard",
+        "title": "One Dashboard. Complete Payment Visibility.",
+        "intro": (
+            "Manage transactions, settlements, payment performance, and merchant operations "
+            "from one intelligent dashboard built for complete control."
+        ),
+        "cta_label": "Talk to Expert",
+        "platform": {
+            "title": "Everything You Need, All in One View",
+            "body": (
+                "Centralize transactions, payments, settlements, and insights in one dashboard."
+            ),
+            "image": "/images/figma-unified-dashboard/platform-diagram.png?v=4",
+            "image_alt": (
+                "Unified merchant dashboard connected to payment gateways and merchants"
+            ),
+            "image_width": 1291,
+            "image_height": 523,
+        },
+        "control": {
+            "title": "Built for Complete Payment Control",
+            "body": (
+                "Manage every aspect of your payment operations from one centralized dashboard."
+            ),
+            "cards": [
+                {
+                    "title": "Unified Visibility",
+                    "body": (
+                        "Get a centralized view of payment activity, transaction status, "
+                        "settlements, providers, MIDs, and chargeback exposure in one place."
+                    ),
+                    "icon": "/images/figma-unified-dashboard/icons/api.svg",
+                    "icon_width": 28,
+                    "icon_height": 28,
+                },
+                {
+                    "title": "Simplified Operations",
+                    "body": (
+                        "Manage day to day payment operations through a single interface "
+                        "instead of switching between gateways, reports, and support workflows."
+                    ),
+                    "icon": "/images/figma-unified-dashboard/icons/graph.svg",
+                    "icon_width": 24,
+                    "icon_height": 24,
+                },
+                {
+                    "title": "Smarter Routing Control",
+                    "body": (
+                        "Track provider performance, MID usage, fallback routes, and cascading "
+                        "activity to improve payment continuity and success rates."
+                    ),
+                    "icon": "/images/figma-unified-dashboard/icons/routing.svg",
+                    "icon_width": 24,
+                    "icon_height": 24,
+                },
+                {
+                    "title": "Chargeback Readiness",
+                    "body": (
+                        "Monitor dispute status, held funds, response timelines, and evidence "
+                        "handling so teams can act faster and stay fully in control."
+                    ),
+                    "icon": "/images/figma-unified-dashboard/icons/cube.svg",
+                    "icon_width": 24,
+                    "icon_height": 24,
+                },
+            ],
+        },
+        "features": {
+            "title": "Complete Visibility. Smarter Operations.",
+            "body": (
+                "Gain centralized control over payments, chargebacks, MIDs, and performance "
+                "from one platform."
+            ),
+            "rows": [
+                {
+                    "title": "Centralized Visibility",
+                    "body": (
+                        "Access transaction activity, settlements, reports, and payment "
+                        "operations from one dashboard."
+                    ),
+                    "image": "/images/figma-unified-dashboard/features/visibility-graphic.png",
+                    "image_alt": (
+                        "Payment overview dashboard with methods, volume, and settlements"
+                    ),
+                    "image_width": 571,
+                    "image_height": 332,
+                },
+                {
+                    "title": "MID Cascading Visibility",
+                    "body": (
+                        "See how traffic is routed across providers and MIDs, where fallback "
+                        "happens, and how cascading improves continuity."
+                    ),
+                    "image": "/images/figma-unified-dashboard/features/cascading-graphic.svg",
+                    "image_alt": (
+                        "Parent and child MID hierarchy with transaction volume drill-down"
+                    ),
+                    "image_width": 709,
+                    "image_height": 357,
+                },
+                {
+                    "title": "Performance Insights",
+                    "body": (
+                        "Monitor payment trends, transaction outcomes, provider performance, "
+                        "and operational patterns to identify improvement opportunities."
+                    ),
+                    "image": "/images/figma-unified-dashboard/features/insights-graphic.png",
+                    "image_alt": (
+                        "Revenue by payment method and transaction volume trend charts"
+                    ),
+                    "image_width": 600,
+                    "image_height": 304,
+                },
+            ],
+        },
+        "path": {
+            "title": "Built for Payment Operations at Scale",
+            "body": [
+                (
+                    "Urbanrupee’s Unified Merchant Dashboard brings your payment operations "
+                    "into one place. Track transactions, monitor performance, manage "
+                    "settlements, and gain actionable insights all from a single, intuitive "
+                    "platform."
+                ),
+            ],
+            "icons": [
+                {
+                    "id": "bank",
+                    "src": "/images/figma-unified-dashboard/path/icon-bank.svg",
+                    "left": "22px",
+                    "top": "280px",
+                    "width": 22,
+                    "height": 22,
+                },
+                {
+                    "id": "trend",
+                    "src": "/images/figma-unified-dashboard/path/icon-trend.svg",
+                    "left": "144px",
+                    "top": "687px",
+                    "width": 19,
+                    "height": 19,
+                },
+                {
+                    "id": "pod",
+                    "src": "/images/figma-unified-dashboard/path/icon-pod.svg",
+                    "left": "857px",
+                    "top": "311px",
+                    "width": 21,
+                    "height": 21,
+                },
+                {
+                    "id": "route",
+                    "src": "/images/figma-unified-dashboard/path/icon-routing.svg",
+                    "left": "1008px",
+                    "top": "521px",
+                    "width": 21,
+                    "height": 21,
+                },
+            ],
+        },
     },
     "close-route-wallet": {
         "type": "marketing",
@@ -2293,6 +2458,7 @@ PAGES = {
             "title": "Popular Urbanrupee products",
             "intro": "Explore product pages for checkout, orchestration, UPI, and payouts.",
             "items": [
+                {"label": "Unified Dashboard", "href": "/products/unified-dashboard"},
                 {"label": "Hyper Checkout", "href": "/products/hyper-checkout"},
                 {"label": "Custom Checkout", "href": "/products/custom-checkout"},
                 {"label": "Payment Orchestration", "href": "/products/orchestration"},
@@ -2827,12 +2993,12 @@ PAGES = {
                         "Connect your payment ecosystem through a centralized UPI switching "
                         "infrastructure."
                     ),
-                    "image": "/images/figma-upi/caps/connectivity.svg",
+                    "image": "/images/figma-upi/Frame 214722634.png?v=3",
                     "image_alt": (
                         "Primary and backup servers staying always connected through UPI switch"
                     ),
-                    "image_width": 466,
-                    "image_height": 373,
+                    "image_width": 530,
+                    "image_height": 488,
                 },
                 {
                     "title": "Intelligent Routing",
@@ -2840,12 +3006,12 @@ PAGES = {
                         "Direct transactions through configured routes to support better "
                         "payment performance."
                     ),
-                    "image": "/images/figma-upi/caps/routing.svg",
+                    "image": "/images/figma-upi/Group 1171275350.svg",
                     "image_alt": (
                         "Payment request routed to the optimal gateway among available options"
                     ),
-                    "image_width": 339,
-                    "image_height": 367,
+                    "image_width": 466,
+                    "image_height": 373,
                 },
                 {
                     "title": "Real-Time Visibility",
@@ -2853,7 +3019,7 @@ PAGES = {
                         "Monitor transaction activity and payment performance through a "
                         "centralized view."
                     ),
-                    "image": "/images/figma-upi/caps/visibility.svg",
+                    "image": "/images/figma-upi/Frame 2147226346.svg",
                     "image_alt": "Live transactions dashboard with success rate and latency",
                     "image_width": 466,
                     "image_height": 373,
@@ -2864,10 +3030,10 @@ PAGES = {
                         "Handle growing transaction volumes with infrastructure designed for "
                         "high-throughput payment environments."
                     ),
-                    "image": "/images/figma-upi/caps/scale.svg",
+                    "image": "/images/figma-upi/Frame 2147226365.svg",
                     "image_alt": "Transaction volume scaling from 10K to 1M+ transactions per minute",
                     "image_width": 466,
-                    "image_height": 366,
+                    "image_height": 373,
                 },
             ],
         },
@@ -3119,6 +3285,14 @@ PAGES = {
                         "href": "/services/payouts",
                     },
                     {
+                        "title": "Unified Dashboard",
+                        "body": (
+                            "Centralize transactions, settlements, MID cascading, chargebacks, and "
+                            "payment performance in one merchant control plane."
+                        ),
+                        "href": "/products/unified-dashboard",
+                    },
+                    {
                         "title": "Close Route Wallet",
                         "body": (
                             "Secure closed-loop wallet infrastructure with real-time visibility and "
@@ -3267,6 +3441,7 @@ ROUTE_SLUGS = {
     "/products/orchestration": "payment-orchestration",
     "/products/upi-switch": "upi-switch",
     "/products/affordability": "affordability",
+    "/products/unified-dashboard": "unified-dashboard",
     "/products/wallet": "close-route-wallet",
     "/faq": "faq",
     "/blog": "blog",

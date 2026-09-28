@@ -9,6 +9,7 @@ from rest_framework.views import APIView
 from . import content
 from . import page_content
 from .homepage import homepage_payload
+from .page_faqs import closing_for_slug
 from .page_seo import page_context_for_slug
 from .seo_audit import run_seo_audit
 from .seo_schema import structured_data_graph
@@ -125,7 +126,7 @@ class PageDetailAPIView(APIView):
                 "site": content.SITE,
                 "nav": content.NAV,
                 "footer": content.FOOTER,
-                "common_closing": content.HOME_CLOSING,
+                "common_closing": closing_for_slug(slug),
                 "checkout_demo": content.CHECKOUT_DEMO,
                 "dashboard_preview": content.DASHBOARD_PREVIEW,
             }

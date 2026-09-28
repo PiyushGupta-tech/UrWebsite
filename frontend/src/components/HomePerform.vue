@@ -216,6 +216,7 @@ defineProps({
   width: 100%;
   max-width: 805px;
   height: auto;
+  overflow: visible;
 }
 
 .home-perform__copy--reconcile {

@@ -43,13 +43,15 @@ defineProps({
 
 .marketing-audiences__title {
   margin: 0 auto 56px;
-  max-width: 517px;
+  width: max-content;
+  max-width: min(920px, 100%);
   text-align: center;
   font-size: 42px;
   font-weight: 700;
   line-height: 56px;
   letter-spacing: -1.2px;
   color: #ffffff;
+  white-space: nowrap;
 }
 
 .marketing-audiences__grid {
@@ -137,11 +139,13 @@ defineProps({
 
   .marketing-audiences__title {
     margin: 0 auto 0;
-    max-width: 689px;
+    max-width: 100%;
+    width: auto;
     height: auto;
     font-size: 42px;
     line-height: 52px;
     letter-spacing: -0.96px;
+    white-space: normal;
   }
 
   .marketing-audiences__grid {
@@ -209,9 +213,11 @@ defineProps({
 
   .marketing-audiences__title {
     margin: 0 auto 20px;
-    max-width: 313px;
+    max-width: 100%;
+    width: auto;
     font-size: 42px;
     line-height: 1.22;
+    white-space: normal;
   }
 
   .marketing-audiences__grid {

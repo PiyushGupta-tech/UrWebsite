@@ -16,6 +16,7 @@ SITE = {
     # Phase 6 — canonical product URLs for social, docs, and external listings
     "product_urls": {
         "hyper_checkout": "https://urbanrupee.com/products/hyper-checkout",
+        "unified_dashboard": "https://urbanrupee.com/products/unified-dashboard",
         "custom_checkout": "https://urbanrupee.com/products/custom-checkout",
         "orchestration": "https://urbanrupee.com/products/orchestration",
         "collections": "https://urbanrupee.com/services/collections",
@@ -61,24 +62,31 @@ NAV = {
             "label": "Hyper Checkout Experience",
             "href": "/products/hyper-checkout",
         },
+        {"label": "Unified Dashboard", "href": "/products/unified-dashboard"},
         {"label": "Seamless UPI Switch", "href": "/products/upi-switch"},
     ],
     "resources": [
-        {"label": "All Resources", "href": "/resources"},
         {"label": "FAQ", "href": "/faq"},
         {"label": "Blog", "href": "/blog"},
         {"label": "Privacy Policy", "href": "/privacy-policy"},
+        {"label": "Terms & Conditions", "href": "/terms-and-conditions"},
     ],
     "contact_href": "/contact",
 }
 
 HOME_SEO = {
-    "title": "Urbanrupee",
+    "title": "Urbanrupee | Payment Orchestration & Infrastructure India",
     "description": (
-        "Online payments India: accept UPI, cards, net banking and more with Urbanrupee's payment "
-        "suite — orchestration, checkout, payouts, and analytics for growing businesses."
+        "Urbanrupee is a payment infrastructure platform in India for payment orchestration, "
+        "smart routing, white label, custom checkout, payouts, and reconciliation."
     ),
     "h1": "The Payment Infrastructure Built for Scale.",
+    "keywords": (
+        "payment orchestration platform India, payment infrastructure India, "
+        "payment platform India, smart payment routing, white label payment platform, "
+        "payout platform India, payment reconciliation software"
+    ),
+    "service_type": "",
     "canonical": "https://urbanrupee.com/",
     "path": "/",
 }
@@ -368,6 +376,7 @@ FOOTER = {
         {"label": "Close Route Wallet", "href": "/products/wallet"},
         {"label": "Hyper Checkout", "href": "/products/hyper-checkout"},
         {"label": "Custom Checkout", "href": "/products/custom-checkout"},
+        {"label": "Unified Dashboard", "href": "/products/unified-dashboard"},
         {"label": "UPI Switch", "href": "/products/upi-switch"},
     ],
 }
@@ -544,93 +553,37 @@ PRODUCTS = {
     "items": [
         {
             "eyebrow": "White Label",
-            "title": "Your brand. Your payments.",
+            "title": "White Label Solutions",
             "body": (
                 "Offer a complete payment experience under your own brand—without building the "
-                "infrastructure from scratch."
+                "infrastructure from scratch. Launch faster with a seamless payment experience."
             ),
             "image": "/images/figma-home/Frame%202147225785.svg?v=5",
             "image_mobile": "/images/figma-home/products/mobile/white-label.svg?v=2",
-            "points": [
-                {
-                    "title": "01 — Full Brand Control",
-                    "body": "Your brand, your identity, your customer experience.",
-                },
-                {
-                    "title": "02 — Your Choice of Services",
-                    "body": "Choose the payment capabilities your business needs.",
-                },
-                {
-                    "title": "03 — Smart Routing & Higher Success",
-                    "body": (
-                        "Optimize payment flows with intelligent routing and automatic failover."
-                    ),
-                },
-            ],
+            "points": [],
         },
         {
             "eyebrow": "Checkout",
-            "title": "Checkout built for conversion",
+            "title": "Custom Checkout",
             "body": (
-                "A fully branded checkout with more ways to pay—so more payment attempts become "
-                "successful transactions."
+                "Create a seamless, fully branded checkout experience that gives customers more "
+                "ways to pay—while helping you convert more payment attempts into successful "
+                "transactions."
             ),
             "image": "/images/figma-home/Frame%202147225787.svg",
             "image_mobile": "/images/figma-home/products/mobile/checkout.svg?v=2",
-            "points": [
-                {
-                    "title": "01 — Full Brand Control",
-                    "body": (
-                        "Customize the checkout to match your brand, colors, logo, and customer "
-                        "journey."
-                    ),
-                },
-                {
-                    "title": "02 — Multiple Payment Methods",
-                    "body": (
-                        "Offer UPI, cards, net banking, wallets, EMI, and other payment options "
-                        "in one checkout."
-                    ),
-                },
-                {
-                    "title": "03 — Secure by Design",
-                    "body": (
-                        "Deliver a trusted payment experience with secure payment processing and "
-                        "data protection."
-                    ),
-                },
-            ],
+            "points": [],
         },
         {
             "eyebrow": "Orchestration",
-            "title": "Route every payment smarter",
+            "title": "Payment Orchestration",
             "body": (
-                "Send each transaction through the best available path with intelligent "
+                "Route every transaction through the best available payment path with intelligent "
                 "orchestration, automatic failover, and real-time optimization."
             ),
             "image": "/images/figma-home/Frame%202147225952-clean.svg?v=5",
             "image_mobile": "/images/figma-home/products/mobile/orchestration.svg?v=2",
-            "points": [
-                {
-                    "title": "01 — Multi-PSP Connectivity",
-                    "body": (
-                        "Connect and manage multiple payment providers through one unified layer."
-                    ),
-                },
-                {
-                    "title": "02 — Automatic Failover",
-                    "body": (
-                        "Keep payments moving when a provider experiences downtime or failures."
-                    ),
-                },
-                {
-                    "title": "03 — Real-Time Optimization",
-                    "body": (
-                        "Continuously optimize routing based on performance, availability, and "
-                        "transaction conditions."
-                    ),
-                },
-            ],
+            "points": [],
         },
     ],
 }

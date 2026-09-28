@@ -2,6 +2,9 @@
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { RouterLink } from "vue-router";
 import MetricCards from "@/components/MetricCards.vue";
+import PayoutsControlBeneficiaryGraphic from "./PayoutsControlBeneficiaryGraphic.vue";
+import PayoutsControlTrackingGraphic from "./PayoutsControlTrackingGraphic.vue";
+import PayoutsControlMultichannelGraphic from "./PayoutsControlMultichannelGraphic.vue";
 import PayoutsHeroGraphic from "./PayoutsHeroGraphic.vue";
 import PayoutsPlatformDiagram from "./PayoutsPlatformDiagram.vue";
 import UpiPathSection from "./UpiPathSection.vue";
@@ -253,7 +256,20 @@ watch(controlCount, async () => {
                 <p class="po-control__body">{{ card.body }}</p>
               </div>
               <div class="po-control__visual">
+                <PayoutsControlBeneficiaryGraphic
+                  v-if="i === 0"
+                  :alt="card.image_alt || card.title"
+                />
+                <PayoutsControlTrackingGraphic
+                  v-else-if="i === 1"
+                  :alt="card.image_alt || card.title"
+                />
+                <PayoutsControlMultichannelGraphic
+                  v-else-if="i === 2"
+                  :alt="card.image_alt || card.title"
+                />
                 <img
+                  v-else
                   class="po-control__media"
                   :src="card.image"
                   :alt="card.image_alt || card.title"
@@ -422,7 +438,8 @@ watch(controlCount, async () => {
 /* —— Stats strip spacing (cards styled by MetricCards) —— */
 .po-stats {
   width: 100%;
-  max-width: 1208px;
+  /* Content box = 1208px strip, matching the other metric rows. */
+  max-width: calc(1208px + 48px);
   margin: 0 auto;
   padding: 24px 24px 0;
   box-sizing: border-box;
@@ -525,6 +542,18 @@ watch(controlCount, async () => {
   border: 1px solid #e9eaeb;
   border-radius: 12px;
   background: #ffffff;
+  box-shadow:
+    0 1px 2px -1px rgba(0, 0, 0, 0.1),
+    0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.25s ease;
+}
+
+.po-features__card:hover {
+  box-shadow:
+    0 0.904px 0.904px 0 rgba(0, 0, 0, 0.05),
+    0 1.807px 2.711px 0 rgba(0, 0, 0, 0.04),
+    0 3.614px 5.422px 0 rgba(34, 42, 53, 0.04),
+    0 21.686px 61.444px 0 rgba(47, 48, 55, 0.05);
 }
 
 .po-features__icon {
@@ -729,6 +758,7 @@ watch(controlCount, async () => {
   min-height: 0;
   height: 100%;
   max-height: 100%;
+  overflow: visible;
 }
 
 .po-control__media {
@@ -740,6 +770,19 @@ watch(controlCount, async () => {
   object-fit: contain;
   pointer-events: none;
   user-select: none;
+}
+
+.po-control__visual :deep(.po-ben),
+.po-control__visual :deep(.po-trk),
+.po-control__visual :deep(.po-mc) {
+  width: 100%;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.po-control__visual:has(.po-trk) {
+  align-items: flex-start;
+  padding-top: 2px;
 }
 
 @media (max-width: 1200px) {

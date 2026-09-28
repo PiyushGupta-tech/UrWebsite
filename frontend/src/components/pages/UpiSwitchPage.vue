@@ -3,6 +3,10 @@ import { computed, onMounted, ref } from "vue";
 import { RouterLink } from "vue-router";
 import UpiArchitectureDiagram from "./UpiArchitectureDiagram.vue";
 import UpiPathSection from "./UpiPathSection.vue";
+import UpiCapsConnectivityGraphic from "./UpiCapsConnectivityGraphic.vue";
+import UpiCapsRoutingGraphic from "./UpiCapsRoutingGraphic.vue";
+import UpiCapsVisibilityGraphic from "./UpiCapsVisibilityGraphic.vue";
+import UpiCapsScaleGraphic from "./UpiCapsScaleGraphic.vue";
 
 const props = defineProps({
   page: { type: Object, required: true },
@@ -13,6 +17,15 @@ const heroReady = ref(false);
 
 const featureCards = computed(() => props.page?.features?.cards || []);
 const capabilityCards = computed(() => props.page?.capabilities?.cards || []);
+
+function capGraphic(card) {
+  const title = String(card?.title || "").toLowerCase();
+  if (title.includes("connectivity")) return "connectivity";
+  if (title.includes("routing")) return "routing";
+  if (title.includes("visibility")) return "visibility";
+  if (title.includes("scale")) return "scale";
+  return null;
+}
 
 onMounted(() => {
   requestAnimationFrame(() => {
@@ -117,14 +130,25 @@ onMounted(() => {
           :key="card.title"
           class="upi-caps__card"
         >
-          <div
-            class="upi-caps__visual"
-            :style="{
-              width: `min(100%, ${card.image_width || 466}px)`,
-              aspectRatio: `${card.image_width || 466} / ${card.image_height || 373}`,
-            }"
-          >
+          <div class="upi-caps__visual">
+            <UpiCapsConnectivityGraphic
+              v-if="capGraphic(card) === 'connectivity'"
+              :alt="card.image_alt || card.title"
+            />
+            <UpiCapsRoutingGraphic
+              v-else-if="capGraphic(card) === 'routing'"
+              :alt="card.image_alt || card.title"
+            />
+            <UpiCapsVisibilityGraphic
+              v-else-if="capGraphic(card) === 'visibility'"
+              :alt="card.image_alt || card.title"
+            />
+            <UpiCapsScaleGraphic
+              v-else-if="capGraphic(card) === 'scale'"
+              :alt="card.image_alt || card.title"
+            />
             <img
+              v-else
               class="upi-caps__media"
               :src="card.image"
               :alt="card.image_alt || card.title"
@@ -443,15 +467,17 @@ onMounted(() => {
 }
 
 .upi-caps__card {
-  /* Figma 296:2660 / 296:2722 — 514 × ~513, p24, gap12, r12 */
+  /* Figma 296:2660 — 514 × 511, p24, gap12, r12 */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 12px;
   width: 514px;
+  height: 511px;
   max-width: 100%;
   min-height: 511px;
+  max-height: 511px;
   padding: 24px;
   box-sizing: border-box;
   border: 1px solid #e9eaeb;
@@ -461,17 +487,28 @@ onMounted(() => {
 }
 
 .upi-caps__visual {
-  /* Exact Figma visual slots (466×373 / 339×367 / 466×366) via inline style */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  height: auto;
+  /* Figma 296:2661 — exact 466 × 373.02 visual slot; no inner frame */
+  position: relative;
+  display: block;
+  flex: 0 0 auto;
+  width: 466px;
+  height: 373.02px;
+  max-width: 100%;
   overflow: hidden;
-  border: none;
+  border: 0;
   outline: none;
   box-shadow: none;
   background: transparent;
+  line-height: 0;
+  isolation: isolate;
+}
+
+.upi-caps__visual :deep(.upi-conn),
+.upi-caps__visual :deep(.upi-route),
+.upi-caps__visual :deep(.upi-vis),
+.upi-caps__visual :deep(.upi-scale) {
+  width: 100%;
+  height: 100%;
 }
 
 .upi-caps__media {
@@ -491,6 +528,7 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  flex-shrink: 0;
   width: 100%;
 }
 
@@ -533,6 +571,15 @@ onMounted(() => {
 
   .upi-caps__card {
     width: 100%;
+    height: auto;
+    min-height: 0;
+    max-height: none;
+  }
+
+  .upi-caps__visual {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 466 / 373.02;
     min-height: 0;
   }
 }

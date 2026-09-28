@@ -1,0 +1,24 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="226.507" height="85.153" viewBox="0 0 226.507 85.153" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="sparkline-container">
+<path id="area-fill" d="M1.70289 85.1528V53.2205L26.3064 31.9323H51.4691H76.0725L101.235 21.2882L125.839 31.9323L151.001 10.6441H175.605L200.768 21.2882L225.371 0V85.1528H1.70289Z" fill="#FF5B5B" fill-opacity="0.06"/>
+<line id="Line" x1="1.57729" y1="76.0841" x2="26.5547" y2="70.4094" stroke="#FF5B5B" stroke-width="1.13537"/>
+<line id="Line_2" x1="26.6812" y1="70.3932" x2="52.2271" y2="70.3932" stroke="#FF5B5B" stroke-width="1.13537"/>
+<line id="Line_3" x1="52.2271" y1="70.3932" x2="77.2052" y2="70.3932" stroke="#FF5B5B" stroke-width="1.13537"/>
+<line id="Line_4" x1="77.1426" y1="70.3966" x2="102.69" y2="67.5581" stroke="#FF5B5B" stroke-width="1.13537"/>
+<line id="Line_5" x1="102.815" y1="67.5584" x2="127.792" y2="70.3952" stroke="#FF5B5B" stroke-width="1.13537"/>
+<line id="Line_6" x1="127.606" y1="70.4067" x2="153.153" y2="64.729" stroke="#FF5B5B" stroke-width="1.13537"/>
+<line id="Line_7" x1="153.275" y1="64.7163" x2="178.253" y2="64.7163" stroke="#FF5B5B" stroke-width="1.13537"/>
+<line id="Line_8" x1="178.316" y1="64.7198" x2="203.864" y2="67.5583" stroke="#FF5B5B" stroke-width="1.13537"/>
+<line id="Line_9" x1="203.673" y1="67.569" x2="223.542" y2="63.0275" stroke="#FF5B5B" stroke-width="1.13537"/>
+<circle id="Ellipse" cx="1.70306" cy="76.6377" r="1.41921" fill="#FF5B5B" stroke="white" stroke-width="0.567686"/>
+<circle id="Ellipse_2" cx="26.6812" cy="70.9608" r="1.41921" fill="#FF5B5B" stroke="white" stroke-width="0.567686"/>
+<circle id="Ellipse_3" cx="52.2271" cy="70.9608" r="1.41921" fill="#FF5B5B" stroke="white" stroke-width="0.567686"/>
+<circle id="Ellipse_4" cx="77.2052" cy="70.9608" r="1.41921" fill="#FF5B5B" stroke="white" stroke-width="0.567686"/>
+<circle id="Ellipse_5" cx="102.751" cy="68.1224" r="1.41921" fill="#FF5B5B" stroke="white" stroke-width="0.567686"/>
+<circle id="Ellipse_6" cx="127.729" cy="70.9608" r="1.41921" fill="#FF5B5B" stroke="white" stroke-width="0.567686"/>
+<circle id="Ellipse_7" cx="153.275" cy="65.284" r="1.41921" fill="#FF5B5B" stroke="white" stroke-width="0.567686"/>
+<circle id="Ellipse_8" cx="178.253" cy="65.284" r="1.41921" fill="#FF5B5B" stroke="white" stroke-width="0.567686"/>
+<circle id="Ellipse_9" cx="203.799" cy="68.1224" r="1.41921" fill="#FF5B5B" stroke="white" stroke-width="0.567686"/>
+<circle id="Ellipse_10" cx="224.803" cy="63.0132" r="1.41921" fill="#FF5B5B" stroke="white" stroke-width="0.567686"/>
+</g>
+</svg>

@@ -7,20 +7,10 @@ import json
 from django.conf import settings
 
 from . import content
+from .page_faqs import page_faq_items
 from .page_seo import breadcrumb_trail, resolve_page_seo
 
 SITE_BASE_URL = getattr(settings, "SITE_BASE_URL", "https://urbanrupee.com").rstrip("/")
-
-PRODUCT_SLUGS = frozenset({
-    "white-label-platform",
-    "custom-checkout",
-    "hyper-checkout",
-    "payment-orchestration",
-    "upi-switch",
-    "affordability",
-    "payout-portal",
-    "close-route-wallet",
-})
 
 
 def organization_jsonld() -> dict:
@@ -86,20 +76,21 @@ def webpage_jsonld(seo: dict, slug: str | None) -> dict:
         "isPartOf": {"@id": f"{SITE_BASE_URL}/#website"},
         "about": {"@id": f"{SITE_BASE_URL}/#organization"},
     }
-    if slug in PRODUCT_SLUGS:
-        data["@type"] = "WebPage"
+    if slug and seo.get("service_type"):
         data["mainEntity"] = {"@id": f"{page_id}#service"}
     return data
 
 
 def service_jsonld(seo: dict, slug: str) -> dict | None:
-    if slug not in PRODUCT_SLUGS:
+    service_type = seo.get("service_type")
+    if not service_type:
         return None
     page_id = seo.get("canonical", SITE_BASE_URL)
     return {
         "@type": "Service",
         "@id": f"{page_id}#service",
         "name": seo.get("h1", seo.get("title", "")),
+        "serviceType": service_type,
         "description": seo.get("description", ""),
         "url": page_id,
         "provider": {"@id": f"{SITE_BASE_URL}/#organization"},
@@ -123,12 +114,13 @@ def _nav_url(href: str) -> str:
     return f"{SITE_BASE_URL}{href}" if href.startswith("/") else f"{SITE_BASE_URL}/{href}"
 
 
-def faq_page_jsonld() -> dict:
+def faq_page_jsonld(items: list[dict] | None = None, page_url: str | None = None) -> dict:
     """FAQ rich results — similar to Razorpay 'People also ask' eligibility."""
-    items = content.FAQS.get("items", [])[:6]
+    if items is None:
+        items = content.FAQS.get("items", [])[:6]
     return {
         "@type": "FAQPage",
-        "@id": f"{SITE_BASE_URL}/#faq",
+        "@id": f"{page_url}#faq" if page_url else f"{SITE_BASE_URL}/#faq",
         "mainEntity": [
             {
                 "@type": "Question",
@@ -158,7 +150,7 @@ def site_navigation_jsonld() -> list[dict]:
             for item in content.NAV["products"]
             if item["href"] != "/products"
         ],
-        *[{"name": item["label"], "href": item["href"]} for item in content.NAV["resources"][1:]],
+        *[{"name": item["label"], "href": item["href"]} for item in content.NAV["resources"]],
         *[{"name": item["label"], "href": item["href"]} for item in content.NAV["services"]],
     ]
     seen: set[str] = set()
@@ -222,6 +214,9 @@ def structured_data_graph(slug: str | None, page: dict, seo: dict) -> list[dict]
     service = service_jsonld(seo, slug) if slug else None
     if service:
         graph.append(service)
+    page_faqs = page_faq_items(slug) if slug else []
+    if page_faqs:
+        graph.append(faq_page_jsonld(page_faqs, canonical))
     return graph
 
 

@@ -286,7 +286,7 @@ onUnmounted(stopCycle);
 .hero-diagram__connector--base {
   stroke: #0892b1;
   stroke-width: 1.5;
-  stroke-dasharray: 4 4;
+  stroke-dasharray: 3.4 10;
   opacity: 0.52;
 }
 

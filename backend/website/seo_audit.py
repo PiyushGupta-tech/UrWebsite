@@ -14,15 +14,11 @@ SITE_BASE_URL = getattr(settings, "SITE_BASE_URL", "https://urbanrupee.com").rst
 TITLE_MAX = 60
 DESCRIPTION_MIN = 50
 DESCRIPTION_MAX = 160
+KEYWORDS_MAX = 8
 
 
-def _check_page(slug: str, page: dict) -> list[dict]:
+def _check_meta(slug: str, seo: dict) -> list[dict]:
     issues = []
-    seo = resolve_page_seo(slug, page)
-    route = SLUG_TO_ROUTE.get(slug, f"/{slug}")
-
-    if slug not in PAGE_SEO:
-        issues.append({"slug": slug, "level": "warn", "message": "Missing entry in PAGE_SEO."})
 
     title = seo.get("title", "")
     if not title:
@@ -49,6 +45,27 @@ def _check_page(slug: str, page: dict) -> list[dict]:
             "level": "warn",
             "message": f"Description length {len(description)} exceeds {DESCRIPTION_MAX} characters.",
         })
+
+    keywords = [k for k in seo.get("keywords", "").split(",") if k.strip()]
+    if len(keywords) > KEYWORDS_MAX:
+        issues.append({
+            "slug": slug,
+            "level": "warn",
+            "message": f"{len(keywords)} meta keywords exceeds {KEYWORDS_MAX}; avoid keyword stuffing.",
+        })
+
+    return issues
+
+
+def _check_page(slug: str, page: dict) -> list[dict]:
+    seo = resolve_page_seo(slug, page)
+    route = SLUG_TO_ROUTE.get(slug, f"/{slug}")
+    issues = []
+
+    if slug not in PAGE_SEO:
+        issues.append({"slug": slug, "level": "warn", "message": "Missing entry in PAGE_SEO."})
+
+    issues.extend(_check_meta(slug, seo))
 
     if not seo.get("h1"):
         issues.append({"slug": slug, "level": "warn", "message": "Missing H1."})
@@ -77,6 +94,7 @@ def run_seo_audit() -> dict:
     pages_checked += 1
     if not home_seo.get("canonical"):
         issues.append({"slug": "home", "level": "error", "message": "Homepage missing canonical."})
+    issues.extend(_check_meta("home", home_seo))
 
     for slug, page in sorted(PAGES.items()):
         pages_checked += 1

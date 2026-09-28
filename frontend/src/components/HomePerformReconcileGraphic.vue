@@ -19,12 +19,13 @@ let mobileMediaQuery = null;
 let handleMobileQueryChange = null;
 
 const DESKTOP_CONNECTORS = {
-  viewBox: "0 0 805 138",
-  // Y values = source-pill centers (36px pills + 8px gaps → 18 / 62 / 106)
-  top: "M291 18H385.5C392.127 18 397.5 23.373 397.5 30V54C397.5 60.627 402.873 62 409.5 62H519.5",
-  middle: { x1: 291, y1: 62, x2: 519.5, y2: 62 },
+  viewBox: "0 0 805 210",
+  // Y values = centered source-pill centers (36px pills + 8px gaps in 210px frame)
+  // All three paths meet on the middle lane Y (105) at the card.
+  top: "M291 61H385.5C392.127 61 397.5 66.373 397.5 73V93C397.5 99.627 402.873 105 409.5 105H519.5",
+  middle: { x1: 291, y1: 105, x2: 519.5, y2: 105 },
   bottom:
-    "M291 106H385.733C392.36 106 397.733 100.627 397.733 94V78C397.733 71.373 403.106 62 409.733 62H520",
+    "M291 149H385.733C392.36 149 397.733 143.627 397.733 137V117C397.733 110.373 403.106 105 409.733 105H520",
 };
 
 const MOBILE_CONNECTORS = {
@@ -101,7 +102,7 @@ onUnmounted(() => {
       v-if="!isMobile"
       class="reconcile-graphic__connectors"
       :viewBox="DESKTOP_CONNECTORS.viewBox"
-      preserveAspectRatio="xMinYMin meet"
+      preserveAspectRatio="none"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
@@ -229,7 +230,8 @@ onUnmounted(() => {
   position: relative;
   width: 100%;
   max-width: 805px;
-  aspect-ratio: 805 / 138;
+  /* Tall enough that the right card can hold badge + title + body at typical widths */
+  aspect-ratio: 805 / 210;
   font-family: "Manrope", "DM Sans", system-ui, sans-serif;
 }
 
@@ -246,7 +248,7 @@ onUnmounted(() => {
   fill: none;
   stroke: #d5d7da;
   stroke-width: 1.5;
-  stroke-dasharray: 5 5;
+  stroke-dasharray: 3.4 10;
   stroke-linecap: round;
   transition: stroke 0.25s ease;
 }
@@ -265,10 +267,9 @@ onUnmounted(() => {
   width: 29.81%;
   height: 100%;
   display: grid;
-  /* 36 + 8 + 36 + 8 + 36 = 124 → ~14px design padding under Refunds */
-  grid-template-rows: repeat(3, calc(36 / 138 * 100%));
-  gap: calc(8 / 138 * 100%);
-  align-content: start;
+  grid-template-rows: repeat(3, minmax(28px, 36px));
+  gap: 8px;
+  align-content: center;
   box-sizing: border-box;
 }
 
@@ -359,7 +360,7 @@ onUnmounted(() => {
   left: 3.38%;
   top: 0;
   width: 92.75%;
-  height: 11.6%;
+  height: 10px;
   border: 1px solid #d5d7da;
   border-bottom: none;
   border-radius: 16px 16px 0 0;
@@ -370,9 +371,10 @@ onUnmounted(() => {
 .reconcile-graphic__stack-layer {
   position: absolute;
   left: 0;
-  top: 5.8%;
+  top: 8px;
   width: 100%;
-  height: 94.2%;
+  bottom: 0;
+  height: auto;
   border: 1px solid #d5d7da;
   border-radius: 24px;
   background: #ffffff;
@@ -404,9 +406,11 @@ onUnmounted(() => {
 .reconcile-graphic__main-card {
   position: absolute;
   left: 0;
-  top: 5.8%;
+  top: 8px;
+  right: 0;
+  bottom: 0;
   width: 100%;
-  height: 93.5%;
+  height: auto;
   border: 1px solid #d5d7da;
   border-radius: 24px;
   background: #ffffff;
@@ -414,19 +418,21 @@ onUnmounted(() => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  padding: 8px 10px 10px;
+  justify-content: center;
+  gap: 6px;
+  padding: 14px 14px 18px;
   overflow: hidden;
 }
 
 .reconcile-graphic__badge {
   display: grid;
   place-items: center;
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
   border-radius: 999px;
   background: #ecfdf5;
-  margin-bottom: 10px;
+  margin-bottom: 0;
 }
 
 .reconcile-graphic__badge.is-active {
@@ -449,14 +455,16 @@ onUnmounted(() => {
 
 .reconcile-graphic__copy {
   text-align: center;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .reconcile-graphic__copy h3 {
-  margin: 0 0 4px;
+  margin: 0 0 6px;
   color: #535862;
   font-size: 12px;
   font-weight: 800;
-  line-height: 18px;
+  line-height: 1.3;
 }
 
 .reconcile-graphic__copy p {
@@ -464,7 +472,7 @@ onUnmounted(() => {
   color: #535862;
   font-size: 10px;
   font-weight: 400;
-  line-height: 13px;
+  line-height: 1.35;
 }
 
 @keyframes reconcile-dot-strobe {
@@ -508,7 +516,7 @@ onUnmounted(() => {
 
 @keyframes reconcile-dash-move {
   to {
-    stroke-dashoffset: -20;
+    stroke-dashoffset: -13.4;
   }
 }
 
@@ -579,7 +587,7 @@ onUnmounted(() => {
 
   .reconcile-graphic__connectors--mobile .reconcile-graphic__connector {
     stroke-width: 2;
-    stroke-dasharray: 4 5;
+    stroke-dasharray: 3.4 10;
     stroke: #d5d7da;
     stroke-opacity: 1;
   }
@@ -692,8 +700,12 @@ onUnmounted(() => {
   }
 
   .reconcile-graphic__main-card--mobile {
-    padding: 12px 14px;
+    top: 8px;
+    bottom: 0;
+    padding: 12px 14px 16px;
     border-radius: 24px;
+    overflow: hidden;
+    justify-content: center;
   }
 
   .reconcile-graphic__badge {

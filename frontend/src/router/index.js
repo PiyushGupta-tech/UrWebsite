@@ -126,6 +126,12 @@ const routes = [
         meta: { slug: "affordability" },
       },
       {
+        path: "products/unified-dashboard",
+        name: "unified-dashboard",
+        component: () => import("@/views/PageView.vue"),
+        meta: { slug: "unified-dashboard" },
+      },
+      {
         path: "products/wallet",
         name: "close-route-wallet",
         component: () => import("@/views/PageView.vue"),

@@ -11,6 +11,7 @@ PRODUCT_SLUGS = frozenset({
     "upi-switch",
     "affordability",
     "close-route-wallet",
+    "unified-dashboard",
 })
 RESOURCE_SLUGS = frozenset({"faq", "blog", "privacy-policy", "terms-and-conditions"})
 CONTACT_SLUGS = frozenset({"contact"})
@@ -163,6 +164,23 @@ RELATED_LINKS = {
             "label": "White Label Platform",
             "href": "/products/white-label",
             "description": "Offer payouts under your brand.",
+        },
+    ],
+    "unified-dashboard": [
+        {
+            "label": "Payment Orchestration",
+            "href": "/products/orchestration",
+            "description": "Route transactions across PSPs for higher success rates.",
+        },
+        {
+            "label": "Financial Operations",
+            "href": "/services/financial-operations",
+            "description": "Collections, payouts, and settlement operations in one layer.",
+        },
+        {
+            "label": "Reconciliation",
+            "href": "/services/reconciliation",
+            "description": "Match transactions and settle exceptions faster.",
         },
     ],
     "close-route-wallet": [
@@ -388,64 +406,119 @@ RELATED_LINKS = {
     ],
 }
 
-# slug -> { title, description, h1 }
+# slug -> { title, description, h1, keywords?, service_type? }
 # h1 must match the visible PageHero heading (page.title) on each route.
+# keywords: a short list (<= 8) of terms the page's copy already supports; Google
+# ignores meta keywords, so these are for other engines only — never stuff them.
+# service_type: set only on pages describing a real Urbanrupee service (Service JSON-LD).
 PAGE_SEO = {
     "about": {
-        "title": "About Urbanrupee | Payment Infrastructure Company India",
+        "title": "About Urbanrupee | Payment Technology Company India",
         "description": (
-            "Learn about Urbanrupee — a unified payment ecosystem for orchestration, UPI, "
-            "checkout, payouts, and white-label solutions built for businesses across India."
+            "Urbanrupee is a payment technology company in India building secure, scalable "
+            "infrastructure for payment orchestration, checkout, payouts, and reconciliation."
         ),
         "h1": "Powering the Future of Digital Payments",
+        "keywords": [
+            "payment technology company India",
+            "payment infrastructure India",
+            "fintech payment platform India",
+            "digital payment platform India",
+        ],
     },
     "collections": {
-        "title": "Payment Collections Platform India | Urbanrupee",
+        "title": "Online Payment Collection Platform India | Urbanrupee",
         "description": (
-            "Urbanrupee Collections: accept, track, reconcile, and manage payments across UPI, "
-            "cards, net banking, and wallets from a single API built for high-volume businesses."
+            "Accept, track, and reconcile online payments across UPI, cards, net banking, "
+            "wallets, and EMI from a single API with Urbanrupee Collections."
         ),
         "h1": "Collect Payments. Simplify Operations. Accelerate Growth from single API.",
+        "keywords": [
+            "online payment collection India",
+            "payment collection platform",
+            "online payment processing India",
+            "UPI payment collection",
+            "digital payment platform India",
+        ],
+        "service_type": "Online payment collection",
     },
     "payouts": {
-        "title": "Payouts & Disbursements | Urbanrupee",
+        "title": "Payout Platform India | Bulk & Instant Payouts | Urbanrupee",
         "description": (
-            "Urbanrupee Payouts: send payments to beneficiaries, vendors, partners, and "
-            "marketplace sellers with real-time tracking and multi-channel disbursement."
+            "Send bulk, instant, and scheduled payouts to vendors, employees, and partners over "
+            "UPI, bank transfer, cards, and wallets with real-time tracking."
         ),
         "h1": "Send every payout faster with greater control and visibility",
+        "keywords": [
+            "payout platform India",
+            "bulk payout solution",
+            "instant payout platform",
+            "automated payouts India",
+            "payment disbursement platform",
+        ],
+        "service_type": "Payouts and disbursements",
     },
     "financial-operations": {
-        "title": "Financial Operations Infrastructure | Urbanrupee",
+        "title": "Financial Operations Infrastructure India | Urbanrupee",
         "description": (
-            "Urbanrupee Financial Operations Infrastructure powers banking operations, payment "
-            "flows, account services, and financial workflows through a connected ecosystem."
+            "Embed collections, payouts, reconciliation, and financial workflows into your "
+            "product with Urbanrupee's ready-to-integrate financial infrastructure."
         ),
         "h1": "Build Smarter Financial Experiences Without Building the Infrastructure",
+        "keywords": [
+            "financial operations infrastructure",
+            "payment infrastructure for fintech",
+            "fintech payment infrastructure",
+            "embedded finance platform India",
+        ],
+        "service_type": "Financial operations infrastructure",
     },
     "risk-fraud-management": {
-        "title": "Risk & Fraud Management | Urbanrupee",
+        "title": "Payment Risk & Fraud Management India | Urbanrupee",
         "description": (
-            "Urbanrupee Risk & Fraud Management: real-time monitoring, configurable controls, "
-            "and transaction insights to detect suspicious activity and protect every payment."
+            "Detect suspicious transactions in real time with Urbanrupee risk monitoring across "
+            "IP, location, and payment patterns, plus chargeback visibility."
         ),
         "h1": "Stay Ahead of Risk. Protect Every Transaction.",
+        "keywords": [
+            "payment fraud detection",
+            "payment risk management",
+            "fraud management India",
+            "transaction monitoring",
+            "chargeback risk management",
+        ],
+        "service_type": "Payment risk and fraud management",
     },
     "reconciliation": {
-        "title": "Reconciliation | Urbanrupee",
+        "title": "Payment Reconciliation Software India | Urbanrupee",
         "description": (
-            "Urbanrupee Reconciliation: one connected layer for transaction matching, "
-            "exception visibility, and settlement accuracy across payment systems."
+            "Automate payment reconciliation with Urbanrupee: match transactions to settlements, "
+            "flag mismatches and exceptions, and resolve discrepancies faster."
         ),
         "h1": "One Connected Layer for Reconciliation",
+        "keywords": [
+            "payment reconciliation software",
+            "automated payment reconciliation",
+            "payment settlement reconciliation",
+            "transaction reconciliation",
+            "payment reconciliation India",
+        ],
+        "service_type": "Payment reconciliation",
     },
     "products-index": {
-        "title": "Urbanrupee Payment Products | Gateway, Checkout & UPI",
+        "title": "Urbanrupee Payment Products | Checkout, UPI & Payouts",
         "description": (
-            "Explore Urbanrupee payment products — orchestration, Hyper Checkout, custom checkout, "
-            "UPI switch, white-label platform, payouts, wallets, and EMI solutions for India."
+            "Explore Urbanrupee payment products: orchestration, Hyper Checkout, custom checkout, "
+            "UPI switch, white label, payouts, wallets, and EMI for India."
         ),
         "h1": "Urbanrupee Payment Products",
+        "keywords": [
+            "payment products India",
+            "payment platform India",
+            "payment orchestration platform",
+            "payment checkout solution",
+            "payout platform India",
+        ],
     },
     "resources-index": {
         "title": "Urbanrupee Resources | FAQ, Blog & Guides",
@@ -454,70 +527,154 @@ PAGE_SEO = {
             "orchestration, and fintech for Indian businesses."
         ),
         "h1": "Urbanrupee Resources",
+        "keywords": [
+            "payment guides India",
+            "payments FAQ",
+            "fintech blog India",
+        ],
     },
     "white-label-platform": {
-        "title": "White Label Payment Platform | Urbanrupee",
+        "title": "White Label Payment Platform India | Urbanrupee",
         "description": (
-            "Launch your branded payment platform with Urbanrupee white-label solutions. "
-            "Custom UI, multi-rail acceptance, APIs, and scalable infrastructure under your brand."
+            "Launch a branded payment platform with Urbanrupee white label: your logo and "
+            "colours, configurable features, and managed payment infrastructure."
         ),
         "h1": "White Label Solutions",
+        "keywords": [
+            "white label payment platform India",
+            "white label payment solution",
+            "branded payment platform",
+            "white label fintech platform",
+            "payment platform under your brand",
+        ],
+        "service_type": "White label payment platform",
     },
     "custom-checkout": {
-        "title": "Custom Checkout Solutions | Urbanrupee",
+        "title": "Custom Payment Checkout & Branded Payment Page | Urbanrupee",
         "description": (
-            "Urbanrupee custom checkout keeps customers on your site with branded payment flows, "
-            "UPI, cards, net banking, wallets, EMI, and conversion-focused checkout design."
+            "Build a branded checkout with Urbanrupee: custom layout, your logo, and UPI, cards, "
+            "net banking, wallets, and EMI, with no third-party redirect."
         ),
         "h1": "Customized Checkout Solutions",
+        "keywords": [
+            "custom payment checkout",
+            "branded checkout",
+            "custom payment page",
+            "payment checkout solution",
+            "online checkout solution India",
+        ],
+        "service_type": "Custom payment checkout",
     },
     "hyper-checkout": {
-        "title": "Urbanrupee Hyper Checkout | UPI, Cards & Fast Payments",
+        "title": "Hyper Checkout: High-Conversion Checkout | Urbanrupee",
         "description": (
-            "Urbanrupee Hyper Checkout delivers faster UPI, card, net banking, wallet, and EMI "
-            "payments with smart routing, one-click flows, and higher conversion rates."
+            "Urbanrupee Hyper Checkout speeds up UPI, card, net banking, wallet, and EMI payments "
+            "with smart routing and one-click flows for higher conversion."
         ),
         "h1": "Hyper Checkout Experience",
+        "keywords": [
+            "hyper checkout",
+            "high conversion checkout",
+            "fast payment checkout",
+            "one click payment checkout",
+            "payment checkout optimization",
+            "UPI checkout",
+        ],
+        "service_type": "High-conversion payment checkout",
     },
     "payment-orchestration": {
-        "title": "Payment Orchestration Platform | Urbanrupee",
+        "title": "Payment Orchestration Platform India | Urbanrupee",
         "description": (
-            "Urbanrupee payment orchestration routes transactions intelligently across PSPs and "
-            "banks to maximize success rates, uptime, and performance at scale."
+            "Connect multiple payment providers, route transactions with smart rules, recover "
+            "failed payments with failover, and improve payment success rates."
         ),
         "h1": "Simplify and optimize your payments with your rules.",
+        "keywords": [
+            "payment orchestration platform India",
+            "payment orchestration",
+            "smart payment routing",
+            "intelligent payment routing",
+            "multi gateway payment platform",
+            "payment failover",
+        ],
+        "service_type": "Payment orchestration",
+    },
+    "unified-dashboard": {
+        "title": "Unified Payment Dashboard & Analytics | Urbanrupee",
+        "description": (
+            "Track transactions, settlements, MIDs, routing, chargebacks, and payment performance "
+            "in one Urbanrupee dashboard built for payment operations."
+        ),
+        "h1": "One Dashboard. Complete Payment Visibility.",
+        "keywords": [
+            "unified payment dashboard",
+            "payment analytics dashboard",
+            "payment operations dashboard",
+            "transaction analytics platform",
+            "payment reporting platform",
+        ],
+        "service_type": "Payment analytics dashboard",
     },
     "close-route-wallet": {
-        "title": "Close Route Wallet | Urbanrupee",
+        "title": "Closed-Loop Wallet Infrastructure India | Urbanrupee",
         "description": (
-            "Urbanrupee Close Route Wallet offers secure, controlled wallet infrastructure with "
-            "real-time visibility, reconciliation, and operational control for businesses."
+            "Run secure closed-loop wallet programs with Urbanrupee Close Route Wallet: "
+            "ledger-based control, spending limits, approved routes, and full visibility."
         ),
         "h1": "Close Route Wallet",
+        "keywords": [
+            "closed loop wallet",
+            "closed loop wallet platform",
+            "wallet infrastructure India",
+            "digital wallet platform",
+        ],
+        "service_type": "Closed-loop wallet infrastructure",
     },
     "upi-switch": {
-        "title": "UPI Switch & Transaction Routing | Urbanrupee",
+        "title": "UPI Switch & UPI Payment Routing India | Urbanrupee",
         "description": (
-            "Connect, route and manage UPI payments through Urbanrupee Seamless UPI Switch — "
-            "a reliable switching infrastructure built for speed, scale and higher payment success."
+            "Connect, route, and manage UPI payments through Urbanrupee UPI Switch, with intent "
+            "and QR journeys, smart routing, and real-time visibility."
         ),
         "h1": "Power every UPI transaction with smarter switching",
+        "keywords": [
+            "UPI switch",
+            "UPI payment routing",
+            "UPI payment infrastructure",
+            "UPI payment processing platform",
+            "UPI intent",
+            "UPI QR payment",
+        ],
+        "service_type": "UPI payment switching",
     },
     "affordability": {
-        "title": "EMI & BNPL Affordability Solutions | Urbanrupee",
+        "title": "EMI, Cardless EMI & BNPL at Checkout | Urbanrupee",
         "description": (
-            "Urbanrupee affordability solutions offer EMI, cardless EMI, and Buy Now Pay Later at "
-            "checkout to increase AOV, conversions, and customer purchasing power."
+            "Offer EMI, cardless EMI, and Buy Now Pay Later at checkout with Urbanrupee to lift "
+            "conversions and order value, with real-time eligibility checks."
         ),
         "h1": "Affordability Solutions",
+        "keywords": [
+            "EMI at checkout",
+            "cardless EMI",
+            "buy now pay later India",
+            "BNPL checkout",
+            "EMI payment option",
+        ],
+        "service_type": "EMI and Buy Now Pay Later",
     },
     "faq": {
         "title": "FAQ | Urbanrupee Payment Solutions",
         "description": (
-            "Answers to common questions about Urbanrupee payment gateway, UPI, checkout, "
-            "orchestration, payouts, integration, security, and onboarding for businesses."
+            "Answers to common questions about Urbanrupee payment orchestration, UPI, checkout, "
+            "payouts, integration, security, and onboarding for businesses."
         ),
         "h1": "Frequently Asked Questions",
+        "keywords": [
+            "Urbanrupee FAQ",
+            "payment orchestration FAQ",
+            "UPI payments FAQ",
+        ],
     },
     "blog": {
         "title": "Blog | Urbanrupee Payments & Fintech Insights",
@@ -526,30 +683,40 @@ PAGE_SEO = {
             "orchestration, compliance, and fintech trends for Indian businesses."
         ),
         "h1": "Urbanrupee Blog",
+        "keywords": [
+            "payments blog India",
+            "fintech insights India",
+            "payment orchestration guide",
+        ],
     },
     "privacy-policy": {
         "title": "Privacy Policy | Urbanrupee",
         "description": (
-            "Urbanrupee privacy policy: how we collect, use, protect, and handle your data across "
-            "our website and payment services. PCI-aware practices and your rights explained."
+            "How Urbanrupee collects, uses, shares, and protects your information across our "
+            "website and payment services, and the privacy rights you have."
         ),
         "h1": "Privacy Policy",
     },
     "terms-and-conditions": {
         "title": "Terms and Conditions | Urbanrupee",
         "description": (
-            "Urbanrupee terms and conditions governing access to our website, payment platform, "
-            "checkout, payouts, APIs, reconciliation, merchant tools, and related services."
+            "Terms governing use of Urbanrupee's website, payment platform, checkout, payouts, "
+            "APIs, reconciliation, dashboards, and merchant tools."
         ),
         "h1": "Terms and Conditions",
     },
     "contact": {
-        "title": "Contact Urbanrupee | Get Started",
+        "title": "Contact Urbanrupee | Payment Solutions Demo & Support",
         "description": (
-            "Contact Urbanrupee for payment gateway demos, merchant onboarding, and support. "
-            "Reach our team in Greater Noida for UPI, checkout, and payout solutions."
+            "Contact Urbanrupee for product demos, merchant onboarding, and support for payment "
+            "orchestration, UPI, checkout, and payouts. Based in Greater Noida."
         ),
         "h1": "Let’s Start a Conversation",
+        "keywords": [
+            "contact Urbanrupee",
+            "payment solutions demo",
+            "merchant onboarding India",
+        ],
     },
 }
 
@@ -571,6 +738,8 @@ def resolve_page_seo(slug: str, page: dict) -> dict:
         "title": title,
         "description": description,
         "h1": h1,
+        "keywords": ", ".join(meta.get("keywords", [])),
+        "service_type": meta.get("service_type", ""),
         "canonical": canonical,
         "path": route,
     }

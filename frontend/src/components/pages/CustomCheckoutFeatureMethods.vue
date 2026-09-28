@@ -361,7 +361,7 @@ function isOn(id) {
 }
 
 .cfm__wire {
-  stroke-dasharray: 5 6;
+  stroke-dasharray: 3.4 10;
   animation: cfm-dash 0.95s linear infinite;
 }
 
@@ -523,7 +523,7 @@ function isOn(id) {
 
 @keyframes cfm-dash {
   to {
-    stroke-dashoffset: -22;
+    stroke-dashoffset: -13.4;
   }
 }
 

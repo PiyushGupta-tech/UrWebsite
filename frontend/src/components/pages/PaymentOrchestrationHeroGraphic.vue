@@ -319,7 +319,7 @@ onUnmounted(() => {
             stroke="url(#vizFlow)"
             stroke-width="3"
             stroke-linecap="round"
-            stroke-dasharray="8 10"
+            stroke-dasharray="3.4 10"
           />
           <circle v-if="ready" r="5" fill="#fbbf24" stroke="#fff" stroke-width="2">
             <animateMotion dur="2.2s" repeatCount="indefinite" path="M48,36 H432" />
@@ -636,7 +636,7 @@ onUnmounted(() => {
 
 @keyframes viz-dash {
   to {
-    stroke-dashoffset: -36;
+    stroke-dashoffset: -13.4;
   }
 }
 
@@ -861,7 +861,7 @@ onUnmounted(() => {
 
 .viz__route {
   stroke: #cbd5e1;
-  stroke-dasharray: 4 6;
+  stroke-dasharray: 3.4 10;
   opacity: 0.5;
   transition:
     stroke 0.35s,
@@ -894,7 +894,7 @@ onUnmounted(() => {
 .viz__route--off {
   stroke: #fca5a5;
   opacity: 0.35;
-  stroke-dasharray: 3 5;
+  stroke-dasharray: 3.4 10;
 }
 
 .viz--story-balance .viz__route--share {
@@ -910,7 +910,7 @@ onUnmounted(() => {
 .viz__route--redirect {
   stroke: #f97316;
   opacity: 1;
-  stroke-dasharray: 6 5;
+  stroke-dasharray: 3.4 10;
 }
 
 .viz--ready .viz__route--redirect {

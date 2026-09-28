@@ -473,9 +473,20 @@ onMounted(() => {
   background: #ffffff;
   border-radius: 14.141px;
   padding: 20px;
+  /* Figma 722:7669 — default soft shadow */
   box-shadow:
     0 1px 2px -1px rgba(0, 0, 0, 0.1),
     0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.25s ease;
+}
+
+.about-purpose__card:hover {
+  /* Figma 722:7640 — elevated 4-layer hover shadow */
+  box-shadow:
+    0 0.904px 0.904px 0 rgba(0, 0, 0, 0.05),
+    0 1.807px 2.711px 0 rgba(0, 0, 0, 0.04),
+    0 3.614px 5.422px 0 rgba(34, 42, 53, 0.04),
+    0 21.686px 61.444px 0 rgba(47, 48, 55, 0.05);
 }
 
 .about-purpose__icon-wrap {
@@ -896,6 +907,7 @@ onMounted(() => {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .about-purpose__card,
   .about-audiences__card {
     transition: none;
   }

@@ -312,7 +312,7 @@ onUnmounted(stopCycle);
   fill: none;
   stroke: #d5d7da;
   stroke-width: 1.2;
-  stroke-dasharray: 2.24 2.24;
+  stroke-dasharray: 3.4 10;
   stroke-linecap: round;
   transition: stroke 0.35s ease;
 }
@@ -320,7 +320,7 @@ onUnmounted(stopCycle);
 .control-graphic__path.is-active {
   stroke: #097495;
   stroke-width: 1.6;
-  stroke-dasharray: 3 5;
+  stroke-dasharray: 3.4 10;
   animation: control-dots 1s linear infinite;
 }
 
@@ -401,7 +401,7 @@ onUnmounted(stopCycle);
 
 @keyframes control-dots {
   to {
-    stroke-dashoffset: 16;
+    stroke-dashoffset: -13.4;
   }
 }
 
@@ -441,7 +441,7 @@ onUnmounted(stopCycle);
 
   .control-graphic__path.is-active {
     animation: none;
-    stroke-dasharray: 2.24 2.24;
+    stroke-dasharray: 3.4 10;
   }
 
   .control-graphic__mode.is-active .control-graphic__badge {

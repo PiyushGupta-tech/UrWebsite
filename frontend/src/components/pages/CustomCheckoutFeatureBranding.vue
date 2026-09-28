@@ -229,7 +229,7 @@ onBeforeUnmount(stop);
 }
 
 .cfb__wave {
-  stroke-dasharray: 8 10;
+  stroke-dasharray: 3.4 10;
   animation: cfb-dash 1.4s linear infinite;
 }
 
@@ -490,7 +490,7 @@ onBeforeUnmount(stop);
 
 @keyframes cfb-dash {
   to {
-    stroke-dashoffset: -36;
+    stroke-dashoffset: -13.4;
   }
 }
 

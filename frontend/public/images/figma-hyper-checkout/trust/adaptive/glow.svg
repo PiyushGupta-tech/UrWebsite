@@ -1,0 +1,22 @@
+<svg width="644" height="644" viewBox="0 0 644 644" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Mobile responsive">
+
+
+<g id="Section 9">
+
+
+<g id="Frame 2147227057">
+<g id="bg-glow-blue" filter="url(#filter0_f_0_1)">
+<circle cx="321.757" cy="321.757" r="222.755" fill="#097495" fill-opacity="0.1"/>
+</g>
+</g>
+</g>
+</g>
+<defs>
+<filter id="filter0_f_0_1" x="-0.000244141" y="-0.000244141" width="643.514" height="643.514" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feGaussianBlur stdDeviation="49.5011" result="effect1_foregroundBlur_0_1"/>
+</filter>
+</defs>
+</svg>

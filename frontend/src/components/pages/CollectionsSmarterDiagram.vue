@@ -86,49 +86,100 @@ const methods = [
 ];
 
 /**
- * Exact Figma dotted connectors — node 466:37632 (1291×813).
+ * Animated connectors — exact Figma strokes.
+ * Left fan 466:37720 @ (310, 159.88); right fork 466:37836 @ (822, 261).
  */
+const LEFT_FAN = {
+  x: 310,
+  y: 159.88174438476562,
+  w: 168.40603637695312,
+  h: 239.23651123046875,
+  strokeWidth: 1.37341964245,
+  dash: [3.4, 10],
+  /** Top → bottom */
+  wires: [
+    {
+      id: "466:37733",
+      matrix: [
+        0.999723613262, -0.0235103741288, 0.0167667362839, 0.999859452248, 11.37890625,
+        4.6015625,
+      ],
+      d: "M 0.00028893828857690096 0 C -0.12888483225833625 1.837087869644165 43.09036636352539 3.7681546211242676 55.72230911254883 10.353615760803223 C 68.35425186157227 16.939076900482178 85.85188674926758 55.5427303314209 102.17642211914062 77.18728637695312 C 118.50095748901367 98.83184242248535 140.00416564941406 96.68557739257812 140.00416564941406 96.68557739257812 L 149.09913635253906 96.82103729248047",
+    },
+    {
+      id: "466:37727",
+      matrix: [
+        0.999723613262, -0.0235103741288, 0.0167667362839, 0.999859452248, 11, 79.2265625,
+      ],
+      d: "M 0.000309460939451924 0 C -0.13290497926315648 0.7470762512126294 42.77955358242141 0.5514684563419876 57.46536063082776 4.210436007258696 C 72.1511676792341 7.869403558175405 88.53741720239591 22.587194647288158 105.37259936790765 31.389242112312107 C 122.20778153341939 40.19128957733606 144.38362930287272 39.31848171060508 144.38362930287272 39.31848171060508 L 153.7631072998047 39.373565673828125",
+    },
+    {
+      id: "466:37738",
+      matrix: [
+        0.999723613262, -0.0235103741288, -0.0167667362839, -0.999859452248, 14.48046875,
+        157.064453125,
+      ],
+      d: "M 0.0003052728421166825 0 C -0.13110633040749892 0.5380553334227276 42.20060252803542 0.3971755122331593 56.68766118855893 3.0324178608324805 C 71.17471984908244 5.667660209431801 87.33921175697373 16.267629349552635 103.94655770728822 22.606993537212535 C 120.55390365760272 28.946357724872435 142.42963201768612 28.317750052455345 142.42963201768612 28.317750052455345 L 151.6821746826172 28.357421875",
+    },
+    {
+      id: "466:37722",
+      matrix: [
+        0.999723613262, 0.0235103741288, 0.0167667362839, -0.999859452248, 14, 232.97265625,
+      ],
+      d: "M 0.0002922335252025084 0 C -0.13035472009554577 1.8637708977447613 43.58179891968654 3.8228846742967493 56.35780574847236 10.503997762718559 C 69.13381257725817 17.18511085114037 86.83101032286721 56.34948295962266 103.34172082856051 78.30841659196166 C 119.85243133425381 100.26735022430066 141.6008733745496 98.08990194071293 141.6008733745496 98.08990194071293 L 150.79957580566406 98.22732543945312",
+    },
+  ],
+  /** Outer source nodes (ring) + hub-side join dots */
+  sources: [
+    { cx: 7.238, cy: 6 },
+    { cx: 6.238, cy: 80 },
+    { cx: 8.238, cy: 156 },
+    { cx: 7.238, cy: 233.001 },
+  ],
+  joins: [
+    { cx: 171.301, cy: 98 },
+    { cx: 171.302, cy: 114 },
+    { cx: 171.301, cy: 125 },
+    { cx: 171.301, cy: 146.406 },
+  ],
+};
+
+const RIGHT_FAN = {
+  x: 822,
+  y: 261,
+  w: 147,
+  h: 90,
+  strokeWidth: 1.05808460712,
+  dash: [3.4, 10],
+  /** Top branch then bottom — Figma path runs card→hub; reverse motion for flow */
+  wires: [
+    {
+      id: "466:37838",
+      matrix: [
+        -0.999866187572, -0.016357216984, -0.024098807946, 0.999709546566, 147, 2.38671875,
+      ],
+      d: "M 0.00028281229322946725 0 C -0.12615225194039592 0.8518299082950612 42.17677423541813 1.7472361324103867 54.540899134653905 4.800815191701221 C 66.90502403388967 7.854394250992056 84.03168846843835 25.75432841888238 100.01011490033865 35.790581709302174 C 115.98854133223895 45.82683499972197 137.035833727654 44.83164418760241 137.035833727654 44.83164418760241 L 145.93797302246094 44.89445114135742",
+    },
+    {
+      id: "466:37837",
+      matrix: [
+        -0.999866187572, 0.016357216984, -0.024098807946, -0.999709546566, 147, 87.150390625,
+      ],
+      d: "M 0.00028281226803383554 0 C -0.1261522439116181 0.85182995558051 42.17677164374403 1.747236017849696 54.54089640473347 4.800815126499955 C 66.90502116572291 7.854394235150213 84.03168522105696 25.754329395846362 100.01011086629866 35.79058271310549 C 115.98853651154036 45.826836030364625 137.03583067143387 44.83164426849857 137.03583067143387 44.83164426849857 L 145.93797302246094 44.89445114135742",
+    },
+  ],
+};
+
+function matrixAttr(m) {
+  return `matrix(${m.join(" ")})`;
+}
+
+function dashAttr(dash) {
+  return dash.join(" ");
+}
+
+/** Static endpoint assets that aren't part of the animated stroke frames */
 const connectors = [
-  {
-    id: "l3",
-    src: `${ASSET}/wire-l3.svg`,
-    left: 311,
-    top: 160,
-    width: 166.406,
-    height: 101.409,
-  },
-  {
-    id: "l2",
-    src: `${ASSET}/wire-l2.svg`,
-    left: 310,
-    top: 234,
-    width: 167.407,
-    height: 45.364,
-  },
-  {
-    id: "l4",
-    src: `${ASSET}/wire-l4.svg`,
-    left: 312,
-    top: 283,
-    width: 165.406,
-    height: 39.236,
-  },
-  {
-    id: "l1",
-    src: `${ASSET}/wire-l1.svg`,
-    left: 311,
-    top: 295,
-    width: 167.406,
-    height: 104.477,
-  },
-  {
-    id: "right-lines",
-    src: `${ASSET}/wire-right-b.svg`,
-    left: 822,
-    top: 261,
-    width: 147,
-    height: 90,
-  },
   {
     id: "right-dot-top",
     src: `${ASSET}/wire-right-dot.svg`,
@@ -180,6 +231,115 @@ const connectors = [
         }"
       >
         <div class="csd__wires" aria-hidden="true">
+          <!-- Left fan — exact Figma 466:37720 -->
+          <svg
+            class="csd__fan csd__fan--left"
+            :viewBox="`0 0 ${LEFT_FAN.w} ${LEFT_FAN.h}`"
+            fill="none"
+            :style="{
+              left: `${LEFT_FAN.x}px`,
+              top: `${LEFT_FAN.y}px`,
+              width: `${LEFT_FAN.w}px`,
+              height: `${LEFT_FAN.h}px`,
+            }"
+          >
+            <g
+              v-for="(wire, i) in LEFT_FAN.wires"
+              :key="wire.id"
+              :transform="matrixAttr(wire.matrix)"
+            >
+              <path
+                class="csd__dash"
+                :d="wire.d"
+                fill="none"
+                stroke="#ffffff"
+                :stroke-width="LEFT_FAN.strokeWidth"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                :stroke-dasharray="dashAttr(LEFT_FAN.dash)"
+              />
+              <circle
+                v-show="ready && !reduceMotion"
+                class="csd__flow-dot"
+                r="2.4"
+              >
+                <animateMotion
+                  :dur="`${2.8 + i * 0.28}s`"
+                  :begin="`${i * 0.4}s`"
+                  repeatCount="indefinite"
+                  :path="wire.d"
+                />
+              </circle>
+            </g>
+            <g class="csd__nodes">
+              <g v-for="(n, i) in LEFT_FAN.sources" :key="`ls-${i}`">
+                <circle
+                  :cx="n.cx"
+                  :cy="n.cy"
+                  r="6"
+                  fill="#80DBED"
+                  stroke="#ffffff"
+                  stroke-width="1.5"
+                />
+                <circle :cx="n.cx" :cy="n.cy" r="4.2" fill="#38B7D3" />
+              </g>
+              <circle
+                v-for="(n, i) in LEFT_FAN.joins"
+                :key="`lj-${i}`"
+                :cx="n.cx"
+                :cy="n.cy"
+                r="4"
+                fill="#80DBED"
+              />
+            </g>
+          </svg>
+
+          <!-- Right fork — exact Figma 466:37836 -->
+          <svg
+            class="csd__fan csd__fan--right"
+            :viewBox="`0 0 ${RIGHT_FAN.w} ${RIGHT_FAN.h}`"
+            fill="none"
+            :style="{
+              left: `${RIGHT_FAN.x}px`,
+              top: `${RIGHT_FAN.y}px`,
+              width: `${RIGHT_FAN.w}px`,
+              height: `${RIGHT_FAN.h}px`,
+            }"
+          >
+            <g
+              v-for="(wire, i) in RIGHT_FAN.wires"
+              :key="wire.id"
+              :transform="matrixAttr(wire.matrix)"
+            >
+              <path
+                class="csd__dash csd__dash--rtl"
+                :d="wire.d"
+                fill="none"
+                stroke="#ffffff"
+                :stroke-width="RIGHT_FAN.strokeWidth"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                :stroke-dasharray="dashAttr(RIGHT_FAN.dash)"
+              />
+              <circle
+                v-show="ready && !reduceMotion"
+                class="csd__flow-dot"
+                r="2.2"
+              >
+                <!-- Path runs card→hub; reverse so the dot travels hub→business -->
+                <animateMotion
+                  :dur="`${2.8 + i * 0.28}s`"
+                  :begin="`${0.2 + i * 0.4}s`"
+                  repeatCount="indefinite"
+                  calcMode="linear"
+                  keyPoints="1;0"
+                  keyTimes="0;1"
+                  :path="wire.d"
+                />
+              </circle>
+            </g>
+          </svg>
+
           <img
             v-for="conn in connectors"
             :key="conn.id"
@@ -322,6 +482,25 @@ const connectors = [
   pointer-events: none;
 }
 
+.csd__fan {
+  position: absolute;
+  display: block;
+  overflow: visible;
+}
+
+.csd--ready .csd__dash {
+  animation: csd-dash-march 1.1s linear infinite;
+}
+
+.csd--ready .csd__dash--rtl {
+  animation-name: csd-dash-march-rtl;
+}
+
+.csd__flow-dot {
+  fill: #80dbed;
+  filter: drop-shadow(0 0 3px rgba(128, 219, 237, 0.95));
+}
+
 .csd__wire {
   position: absolute;
   display: block;
@@ -330,31 +509,28 @@ const connectors = [
   transform-origin: center center;
 }
 
-.csd--ready .csd__wire {
+.csd--ready .csd__wire--down {
   animation: csd-wire-flow 1.35s ease-in-out infinite;
+  animation-delay: 0.45s;
 }
 
-.csd--ready .csd__wire--l2 {
-  animation-delay: 0.12s;
-}
-
-.csd--ready .csd__wire--l4 {
-  animation-delay: 0.24s;
-}
-
-.csd--ready .csd__wire--l1 {
-  animation-delay: 0.36s;
-}
-
-.csd--ready .csd__wire--right-lines,
 .csd--ready .csd__wire--right-dot-top,
 .csd--ready .csd__wire--right-dot-bot,
 .csd--ready .csd__wire--right-hub {
+  animation: csd-wire-flow 1.35s ease-in-out infinite;
   animation-delay: 0.2s;
 }
 
-.csd--ready .csd__wire--down {
-  animation-delay: 0.45s;
+@keyframes csd-dash-march {
+  to {
+    stroke-dashoffset: -13.4;
+  }
+}
+
+@keyframes csd-dash-march-rtl {
+  to {
+    stroke-dashoffset: 13.4;
+  }
 }
 
 @keyframes csd-wire-flow {
@@ -776,6 +952,7 @@ const connectors = [
 
 @media (prefers-reduced-motion: reduce) {
   .csd__wire,
+  .csd__dash,
   .csd__feature {
     animation: none !important;
   }

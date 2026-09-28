@@ -1,6 +1,7 @@
 <script setup>
-import { computed, onMounted, ref } from "vue";
+import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { RouterLink } from "vue-router";
+import FoiBaasDiagram from "./FoiBaasDiagram.vue";
 import FoiShowcaseCarousel from "./FoiShowcaseCarousel.vue";
 
 const props = defineProps({
@@ -17,6 +18,87 @@ onMounted(() => {
   requestAnimationFrame(() => {
     heroReady.value = true;
   });
+});
+
+/** Mid CTA card metrics that count up from 0 whenever the section scrolls into view. */
+const MID_COUNTS = {
+  accounts: { value: 12480, decimals: 0 },
+  success: { value: 98.7, decimals: 1, suffix: "%" },
+  processed: { value: 18.2, decimals: 1, prefix: "+", suffix: "%" },
+};
+const MID_COUNT_MS = 1400;
+/** Share of the section that must be visible before the count starts. */
+const MID_COUNT_THRESHOLD = 0.4;
+
+const canAnimateCounts =
+  typeof window !== "undefined" &&
+  "IntersectionObserver" in window &&
+  !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+function formatMidCount(key, progress) {
+  const { value, decimals, prefix = "", suffix = "" } = MID_COUNTS[key];
+  const number = (value * progress).toLocaleString("en-US", {
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals,
+  });
+  return `${prefix}${number}${suffix}`;
+}
+
+const midFinal = Object.fromEntries(
+  Object.keys(MID_COUNTS).map((key) => [key, formatMidCount(key, 1)]),
+);
+const midSection = ref(null);
+const midProgress = ref(canAnimateCounts ? 0 : 1);
+const midCounts = computed(() => {
+  const eased = 1 - (1 - midProgress.value) ** 3;
+  return Object.fromEntries(
+    Object.keys(MID_COUNTS).map((key) => [key, formatMidCount(key, eased)]),
+  );
+});
+
+let midFrame = 0;
+let midPlayed = false;
+let midObserver = null;
+
+function playMidCounts() {
+  cancelAnimationFrame(midFrame);
+  const start = performance.now();
+  const step = (now) => {
+    midProgress.value = Math.min(1, (now - start) / MID_COUNT_MS);
+    if (midProgress.value < 1) midFrame = requestAnimationFrame(step);
+  };
+  midFrame = requestAnimationFrame(step);
+}
+
+if (canAnimateCounts) {
+  midObserver = new IntersectionObserver(
+    (entries) => {
+      const entry = entries[entries.length - 1];
+      if (!entry.isIntersecting) {
+        cancelAnimationFrame(midFrame);
+        midPlayed = false;
+        midProgress.value = 0;
+      } else if (!midPlayed && entry.intersectionRatio >= MID_COUNT_THRESHOLD) {
+        midPlayed = true;
+        playMidCounts();
+      }
+    },
+    { threshold: [0, MID_COUNT_THRESHOLD] },
+  );
+
+  watch(
+    midSection,
+    (el, previous) => {
+      if (previous) midObserver.unobserve(previous);
+      if (el) midObserver.observe(el);
+    },
+    { flush: "post" },
+  );
+}
+
+onBeforeUnmount(() => {
+  cancelAnimationFrame(midFrame);
+  midObserver?.disconnect();
 });
 </script>
 
@@ -62,17 +144,10 @@ onMounted(() => {
 
     <!-- BAAS diagram — Figma 391:11616 (1291×813 @ x=75) -->
     <section v-if="page.diagram" class="foi-section foi-section--diagram">
-      <div class="foi-diagram">
-        <img
-          class="foi-diagram__img"
-          :src="page.diagram.image"
-          :alt="page.diagram.image_alt || page.infra?.title || page.title"
-          width="1291"
-          height="813"
-          decoding="async"
-          loading="lazy"
-        />
-      </div>
+      <FoiBaasDiagram
+        :image="page.diagram.image"
+        :alt="page.diagram.image_alt || page.infra?.title || page.title"
+      />
     </section>
 
     <!-- Advantages — Figma 405:3132 (1202×608 @ x=119) -->
@@ -128,7 +203,7 @@ onMounted(() => {
       </div>
     </section>
     <!-- Mid CTA — Figma 385:8558 (1440×557) -->
-    <section v-if="page.mid_cta" class="foi-mid">
+    <section v-if="page.mid_cta" ref="midSection" class="foi-mid">
       <div class="foi-mid__frame">
         <div class="foi-mid__stage">
           <!-- Soft teal glows (CSS radial — fades to transparent, no hard box edge) -->
@@ -186,7 +261,13 @@ onMounted(() => {
             </div>
             <div class="foi-mid__card-copy">
               <p class="foi-mid__card-label">Virtual Accounts</p>
-              <p class="foi-mid__card-value">12,480 Active Accounts</p>
+              <p class="foi-mid__card-value">
+                <span class="foi-mid__count">
+                  <span class="foi-mid__count-size" aria-hidden="true">{{ midFinal.accounts }}</span>
+                  <span class="foi-mid__count-live">{{ midCounts.accounts }}</span>
+                </span>
+                Active Accounts
+              </p>
             </div>
           </article>
 
@@ -202,7 +283,13 @@ onMounted(() => {
             </div>
             <div class="foi-mid__card-copy">
               <p class="foi-mid__card-label">Transactions</p>
-              <p class="foi-mid__card-value">98.7% Success Rate</p>
+              <p class="foi-mid__card-value">
+                <span class="foi-mid__count">
+                  <span class="foi-mid__count-size" aria-hidden="true">{{ midFinal.success }}</span>
+                  <span class="foi-mid__count-live">{{ midCounts.success }}</span>
+                </span>
+                Success Rate
+              </p>
             </div>
           </article>
 
@@ -236,7 +323,12 @@ onMounted(() => {
             </div>
             <div class="foi-mid__card-copy">
               <p class="foi-mid__card-label">Processed this month</p>
-              <p class="foi-mid__card-value foi-mid__card-value--semi">+18.2%</p>
+              <p class="foi-mid__card-value foi-mid__card-value--semi">
+                <span class="foi-mid__count">
+                  <span class="foi-mid__count-size" aria-hidden="true">{{ midFinal.processed }}</span>
+                  <span class="foi-mid__count-live">{{ midCounts.processed }}</span>
+                </span>
+              </p>
             </div>
             <div class="foi-mid__progress" aria-hidden="true">
               <span class="foi-mid__progress-fill" />
@@ -438,24 +530,6 @@ onMounted(() => {
   display: flex;
   justify-content: center;
   padding-inline: 10px;
-}
-
-.foi-diagram {
-  width: fit-content;
-  max-width: calc(100vw - 20px);
-  margin-inline: auto;
-  border-radius: 14px;
-  overflow: hidden;
-  line-height: 0;
-}
-
-.foi-diagram__img {
-  display: block;
-  width: auto;
-  height: auto;
-  max-width: min(1291px, calc(100vw - 20px));
-  max-height: calc(100svh - var(--page-nav-offset, 129px) - 20px);
-  object-fit: contain;
 }
 
 /* —— Advantages 405:3132 —— */
@@ -753,8 +827,9 @@ onMounted(() => {
   overflow: hidden;
 }
 
+/* 48px left of Figma so the card clears the body copy (starts at x≈420). */
 .foi-mid__card--accounts {
-  left: 160px;
+  left: 112px;
   top: 269px;
   width: 283px;
 }
@@ -812,6 +887,26 @@ onMounted(() => {
   font-weight: 600;
 }
 
+/*
+ * A hidden copy of the final value holds the layout width; the live value is
+ * overlaid, so the words after it never shift while counting.
+ */
+.foi-mid__count {
+  position: relative;
+  display: inline-block;
+}
+
+.foi-mid__count-size {
+  visibility: hidden;
+}
+
+.foi-mid__count-live {
+  position: absolute;
+  top: 0;
+  left: 0;
+  white-space: nowrap;
+}
+
 .foi-mid__dash-head {
   display: flex;
   align-items: center;
@@ -858,12 +953,24 @@ onMounted(() => {
   overflow: hidden;
 }
 
+/* Resting fill is Figma's 97 of 138px; the loop sweeps it fuller and back. */
 .foi-mid__progress-fill {
   display: block;
-  width: 97px;
+  width: 100%;
   height: 100%;
   border-radius: 8px;
   background: var(--foi-teal);
+  clip-path: inset(0 29.71% 0 0 round 8px);
+  animation: foi-mid-progress 2.4s cubic-bezier(0.42, 0, 0.58, 1) infinite alternate;
+}
+
+@keyframes foi-mid-progress {
+  from {
+    clip-path: inset(0 85% 0 0 round 8px);
+  }
+  to {
+    clip-path: inset(0 0 0 0 round 8px);
+  }
 }
 
 /* Scale full artboard down on narrower desktops */
@@ -981,6 +1088,10 @@ onMounted(() => {
     opacity: 1;
     transform: none;
     transition: none;
+  }
+
+  .foi-mid__progress-fill {
+    animation: none;
   }
 }
 </style>

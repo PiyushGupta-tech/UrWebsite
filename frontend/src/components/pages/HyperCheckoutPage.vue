@@ -2,6 +2,8 @@
 import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import { RouterLink } from "vue-router";
 import HyperCheckoutShowcaseGraphic from "./HyperCheckoutShowcaseGraphic.vue";
+import HyperCheckoutSmarterGraphic from "./HyperCheckoutSmarterGraphic.vue";
+import HyperCheckoutTrustGraphic from "./HyperCheckoutTrustGraphic.vue";
 
 const props = defineProps({
   page: { type: Object, required: true },
@@ -9,19 +11,13 @@ const props = defineProps({
   relatedLinks: { type: Array, default: () => [] },
 });
 
-const TRUST_INTERVAL = 5000;
+const TRUST_INTERVAL = 10000;
 
 const activeTrust = ref(0);
-const trustPaused = ref(false);
 const trustReduceMotion = ref(false);
 let trustTimer = null;
 
 const trustCards = computed(() => props.page?.trust?.cards || []);
-
-/** Falls back to the section-level image for any card without its own. */
-function trustImage(card) {
-  return card.image || props.page?.trust?.image;
-}
 
 function trustAlt(card) {
   return card.image_alt || card.title || props.page?.trust?.image_alt || "";
@@ -29,7 +25,7 @@ function trustAlt(card) {
 
 function startTrustCycle() {
   stopTrustCycle();
-  if (trustReduceMotion.value || trustPaused.value || trustCards.value.length < 2) return;
+  if (trustReduceMotion.value || trustCards.value.length < 2) return;
   trustTimer = window.setInterval(() => {
     activeTrust.value = (activeTrust.value + 1) % trustCards.value.length;
   }, TRUST_INTERVAL);
@@ -46,13 +42,12 @@ function selectTrust(index) {
   startTrustCycle();
 }
 
-function pauseTrust() {
-  trustPaused.value = true;
+/** Hover/focus: pause tab auto-advance only — graphics keep looping. */
+function pauseTrustTabs() {
   stopTrustCycle();
 }
 
-function resumeTrust() {
-  trustPaused.value = false;
+function resumeTrustTabs() {
   startTrustCycle();
 }
 
@@ -124,12 +119,8 @@ onBeforeUnmount(stopTrustCycle);
 
       <div class="hc-smarter__row">
         <div class="hc-smarter__visual">
-          <img
-            :src="page.smarter.image"
+          <HyperCheckoutSmarterGraphic
             :alt="page.smarter.image_alt || page.smarter.title"
-            :width="page.smarter.image_width || 531"
-            :height="page.smarter.image_height || 702"
-            decoding="async"
           />
         </div>
         <div class="hc-smarter__cards" aria-label="Checkout features">
@@ -182,10 +173,10 @@ onBeforeUnmount(stopTrustCycle);
 
       <div
         class="hc-trust__row"
-        @mouseenter="pauseTrust"
-        @mouseleave="resumeTrust"
-        @focusin="pauseTrust"
-        @focusout="resumeTrust"
+        @mouseenter="pauseTrustTabs"
+        @mouseleave="resumeTrustTabs"
+        @focusin="pauseTrustTabs"
+        @focusout="resumeTrustTabs"
       >
         <div
           class="hc-trust__tabs"
@@ -215,23 +206,16 @@ onBeforeUnmount(stopTrustCycle);
             </span>
           </button>
         </div>
-        <!-- All graphics stay mounted and crossfade, so switching never flashes. -->
+        <!-- Animated storyboard graphic (Figma 841:*); crossfade stays inside the graphic. -->
         <div
           id="hc-trust-panel"
           class="hc-trust__visual"
           role="tabpanel"
           :aria-labelledby="`hc-trust-tab-${activeTrust}`"
         >
-          <img
-            v-for="(card, index) in trustCards"
-            :key="card.title"
-            class="hc-trust__visual-img"
-            :class="{ 'hc-trust__visual-img--active': activeTrust === index }"
-            :src="trustImage(card)"
-            :alt="trustAlt(card)"
-            :aria-hidden="activeTrust === index ? null : 'true'"
-            decoding="async"
-            :loading="index === 0 ? 'eager' : 'lazy'"
+          <HyperCheckoutTrustGraphic
+            :active-index="activeTrust"
+            :alt="trustAlt(trustCards[activeTrust] || {})"
           />
         </div>
       </div>
@@ -283,13 +267,13 @@ onBeforeUnmount(stopTrustCycle);
   width: 100%;
   max-width: 1440px;
   margin-inline: auto;
-  min-height: min(471px, calc(100svh - var(--page-nav-offset, 129px)));
-  padding: 80px 56px 48px;
+  min-height: 0;
+  padding: 80px 56px 100px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .hc-hero__copy {
@@ -385,7 +369,7 @@ onBeforeUnmount(stopTrustCycle);
 /* —— Showcase — Figma 296:1744 —— */
 .hc-showcase {
   max-width: 1291px;
-  margin: 56px auto 0;
+  margin: 0 auto;
   padding: 0 74.5px;
   box-sizing: border-box;
   display: flex;
@@ -476,21 +460,26 @@ onBeforeUnmount(stopTrustCycle);
   width: 100%;
 }
 
-/* Figma 296:1395 — 471.22 x 620.53. */
+/* Figma 296:1395 / 744:8012 — 471.22 x 620.53. */
 .hc-smarter__visual {
   flex: 0 1 471px;
   min-width: 0;
 }
 
-/* The asset is exported at 531x702 because Figma grows the export bounds to
-   cover the shadow bleed, leaving the artwork inset by 18.8px left / 20.1px
-   top. Oversizing the image and pulling it back by that bleed makes the
-   artwork itself measure 471x620. Percentage margins resolve against the
-   wrapper's width, so all four stay locked to the same scale. */
-.hc-smarter__visual img {
+.hc-smarter__visual :deep(.hc-smart) {
+  display: block;
+  width: 100%;
+  max-width: 471px;
+  aspect-ratio: 471 / 621;
+  height: auto;
+  margin-inline: 0;
+}
+
+/* Legacy static SVG bleed (kept for fallbacks). */
+.hc-smarter__visual > img {
   display: block;
   width: 112.6861%;
-  max-width: none; /* overrides the global img { max-width: 100% } */
+  max-width: none;
   height: auto;
   margin: -4.2708% -8.6968% -13.0177% -3.9892%;
 }
@@ -796,8 +785,7 @@ onBeforeUnmount(stopTrustCycle);
   color: rgba(255, 255, 255, 0.8);
 }
 
-/* Fixed box: the three graphics have different aspect ratios, so a fluid
-   height would make the whole row jump on every cycle. */
+/* Fixed box: graphics have different aspect ratios; keep the row height stable. */
 .hc-trust__visual {
   position: relative;
   flex: 1 1 0;
@@ -806,40 +794,23 @@ onBeforeUnmount(stopTrustCycle);
   aspect-ratio: 706 / 644;
 }
 
-.hc-trust__visual-img {
+.hc-trust__visual :deep(.hc-trust-g) {
   position: absolute;
   inset: 0;
-  display: block;
   width: 100%;
   height: 100%;
-  object-fit: contain;
-  opacity: 0;
-  transition:
-    opacity 0.55s ease,
-    transform 0.55s ease;
-  transform: scale(0.985);
-  pointer-events: none;
-}
-
-.hc-trust__visual-img--active {
-  opacity: 1;
-  transform: scale(1);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hc-trust__visual-img {
+  .hc-trust__visual :deep(.hc-trust-g__frame) {
     transition: none;
-    transform: none;
-  }
-
-  .hc-trust__visual-img--active {
     transform: none;
   }
 }
 
 @media (max-width: 1200px) {
   .hc-hero__inner {
-    padding: 64px 40px 40px;
+    padding: 64px 40px 100px;
     min-height: 0;
   }
 
@@ -886,9 +857,13 @@ onBeforeUnmount(stopTrustCycle);
     margin: 0 auto;
   }
 
-  .hc-smarter__visual img {
+  .hc-smarter__visual > img {
     width: 100%;
     margin: 0;
+  }
+
+  .hc-smarter__visual :deep(.hc-smart) {
+    max-width: 100%;
   }
 
   .hc-journey__grid {
@@ -902,7 +877,7 @@ onBeforeUnmount(stopTrustCycle);
 
 @media (max-width: 700px) {
   .hc-hero__inner {
-    padding: 48px 20px 32px;
+    padding: 48px 20px 100px;
   }
 
   .hc-hero__title {
@@ -914,13 +889,22 @@ onBeforeUnmount(stopTrustCycle);
     line-height: 22px;
   }
 
+  .hc-showcase {
+    margin-top: 0;
+  }
+
   .hc-showcase,
   .hc-smarter,
   .hc-journey,
   .hc-trust {
-    margin-top: 48px;
     padding-left: 20px;
     padding-right: 20px;
+  }
+
+  .hc-smarter,
+  .hc-journey,
+  .hc-trust {
+    margin-top: 48px;
   }
 
   .hc-showcase__title,

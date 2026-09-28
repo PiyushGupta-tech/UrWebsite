@@ -517,23 +517,20 @@ const benefitsRight = computed(() => {
   box-shadow:
     0 1px 2px -1px rgba(0, 0, 0, 0.1),
     0 1px 3px 0 rgba(0, 0, 0, 0.1);
-  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  transition: box-shadow 0.25s ease;
 }
 
 .cc-benefits__card:hover {
-  transform: translateY(-4px);
   box-shadow:
-    0 4px 12px -2px rgba(0, 0, 0, 0.12),
-    0 2px 6px 0 rgba(0, 0, 0, 0.08);
+    0 0.904px 0.904px 0 rgba(0, 0, 0, 0.05),
+    0 1.807px 2.711px 0 rgba(0, 0, 0, 0.04),
+    0 3.614px 5.422px 0 rgba(34, 42, 53, 0.04),
+    0 21.686px 61.444px 0 rgba(47, 48, 55, 0.05);
 }
 
 @media (prefers-reduced-motion: reduce) {
   .cc-benefits__card {
     transition: none;
-  }
-
-  .cc-benefits__card:hover {
-    transform: none;
   }
 }
 

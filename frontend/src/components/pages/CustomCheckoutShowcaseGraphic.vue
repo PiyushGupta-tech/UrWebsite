@@ -861,13 +861,13 @@ onBeforeUnmount(stopCycle);
 }
 
 .cc-stage__wire {
-  stroke-dasharray: 5 6;
+  stroke-dasharray: 3.4 10;
   animation: cc-wire-march 0.9s linear infinite;
 }
 
 @keyframes cc-wire-march {
   to {
-    stroke-dashoffset: -22;
+    stroke-dashoffset: -13.4;
   }
 }
 

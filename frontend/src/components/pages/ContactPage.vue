@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref } from "vue";
+import { computed, nextTick, ref } from "vue";
 import { submitContactForm } from "@/api/client.js";
 import { contactFieldSchemas, contactSchema } from "@/validation/contactSchema.js";
 
@@ -16,8 +16,12 @@ const form = ref({
   message: "",
 });
 
+/* Bump ?v= when the PDF is replaced: /downloads/ is served with a 1-year immutable cache. */
+const CATALOGUE_HREF = "/downloads/urbanrupee-product-catalogue.pdf?v=2";
+
 const submitted = ref(false);
 const submitting = ref(false);
+const successHeading = ref(null);
 const error = ref("");
 const fieldErrors = ref({
   name: "",
@@ -207,6 +211,8 @@ async function onSubmit() {
     const { value } = contactSchema.validate(form.value, { abortEarly: false });
     await submitContactForm({ ...value });
     submitted.value = true;
+    await nextTick();
+    successHeading.value?.focus();
   } catch (e) {
     if (e.fieldErrors && Object.keys(e.fieldErrors).length) {
       fieldErrors.value = { ...fieldErrors.value, ...e.fieldErrors };
@@ -277,107 +283,146 @@ async function onSubmit() {
             </figure>
           </article>
 
-          <form id="contact-form" class="contact-card__form" @submit.prevent="onSubmit">
-            <p v-if="submitted" class="contact-card__success">
-              Thank you — we'll get back to you shortly.
-            </p>
-
-            <template v-else>
-              <p v-if="error" class="contact-card__error" role="alert">{{ error }}</p>
-
-              <label class="contact-card__field">
-                <span>Full Name <em>*</em></span>
-                <input
-                  :value="form.name"
-                  type="text"
-                  required
-                  autocomplete="name"
-                  maxlength="50"
-                  :disabled="submitting"
-                  @beforeinput="onNameBeforeInput"
-                  @input="updateField('name', $event, sanitizeName)"
-                  @paste="handlePaste('name', $event, sanitizeName)"
-                  @blur="onFieldBlur('name')"
-                />
-                <small v-if="fieldErrors.name" class="contact-card__error-text">{{ fieldErrors.name }}</small>
-              </label>
-              <label class="contact-card__field">
-                <span>Email Address <em>*</em></span>
-                <input
-                  :value="form.email"
-                  type="email"
-                  required
-                  inputmode="email"
-                  autocomplete="email"
-                  maxlength="254"
-                  :disabled="submitting"
-                  @beforeinput="onEmailBeforeInput"
-                  @input="updateField('email', $event, sanitizeEmail)"
-                  @paste="handlePaste('email', $event, sanitizeEmail)"
-                  @blur="onFieldBlur('email')"
-                />
-                <small v-if="fieldErrors.email" class="contact-card__error-text">{{ fieldErrors.email }}</small>
-              </label>
-              <label class="contact-card__field">
-                <span>Phone Number <em>*</em></span>
-                <input
-                  :value="form.phone"
-                  type="tel"
-                  required
-                  inputmode="numeric"
-                  autocomplete="tel"
-                  maxlength="10"
-                  :disabled="submitting"
-                  @beforeinput="onPhoneBeforeInput"
-                  @input="updateField('phone', $event, sanitizePhone)"
-                  @paste="handlePhonePaste"
-                  @blur="onFieldBlur('phone')"
-                />
-                <small v-if="fieldErrors.phone" class="contact-card__error-text">{{ fieldErrors.phone }}</small>
-              </label>
-              <label class="contact-card__field">
-                <span>Subject <em>*</em></span>
-                <input
-                  :value="form.subject"
-                  type="text"
-                  required
-                  autocomplete="off"
-                  :disabled="submitting"
-                  @input="updateField('subject', $event)"
-                  @blur="onFieldBlur('subject')"
-                />
-                <small v-if="fieldErrors.subject" class="contact-card__error-text">{{ fieldErrors.subject }}</small>
-              </label>
-              <label class="contact-card__field contact-card__field--message">
-                <span>Message <em>*</em></span>
-                <textarea
-                  :value="form.message"
-                  required
-                  maxlength="500"
-                  :disabled="submitting"
-                  @input="updateField('message', $event, sanitizeMessage)"
-                  @blur="onFieldBlur('message')"
-                />
-                <small class="contact-card__hint">Maximum 500 characters.</small>
-                <small v-if="fieldErrors.message" class="contact-card__error-text">{{ fieldErrors.message }}</small>
-              </label>
-
-              <button
-                type="submit"
-                class="contact-card__submit"
-                :disabled="!canSubmit || submitting"
+          <div
+            v-if="submitted"
+            id="contact-form"
+            class="contact-card__form contact-success"
+            role="status"
+          >
+            <span class="contact-success__icon" aria-hidden="true">
+              <img
+                src="/images/figma-contact/success-checkmark.png"
+                alt=""
+                width="57"
+                height="57"
+                decoding="async"
+              />
+            </span>
+            <div class="contact-success__text">
+              <h2 ref="successHeading" class="contact-success__title" tabindex="-1">
+                Thank You for Connecting with Us!
+              </h2>
+              <p class="contact-success__body">
+                Your message has been successfully submitted. In the meantime, explore our
+                solutions to discover how Urbanrupee can help your business grow.
+              </p>
+            </div>
+            <div class="contact-success__actions">
+              <a
+                class="contact-success__download"
+                :href="CATALOGUE_HREF"
+                download="Urbanrupee-Product-Catalogue.pdf"
               >
-                {{ submitting ? "Sending…" : "Submit Now" }}
                 <img
-                  v-if="!submitting"
-                  src="/images/figma-contact/nav-arrow.svg"
+                  src="/images/figma-contact/download.svg"
                   alt=""
-                  width="18"
-                  height="18"
+                  width="20"
+                  height="20"
                   decoding="async"
                 />
-              </button>
-            </template>
+                Get Your Free Product Catalogue
+              </a>
+              <p class="contact-success__caption">
+                Explore our payment solutions, features, and capabilities in one place.
+              </p>
+            </div>
+          </div>
+
+          <form v-else id="contact-form" class="contact-card__form" @submit.prevent="onSubmit">
+            <p v-if="error" class="contact-card__error" role="alert">{{ error }}</p>
+
+            <label class="contact-card__field">
+              <span>Full Name <em>*</em></span>
+              <input
+                :value="form.name"
+                type="text"
+                required
+                autocomplete="name"
+                maxlength="50"
+                :disabled="submitting"
+                @beforeinput="onNameBeforeInput"
+                @input="updateField('name', $event, sanitizeName)"
+                @paste="handlePaste('name', $event, sanitizeName)"
+                @blur="onFieldBlur('name')"
+              />
+              <small v-if="fieldErrors.name" class="contact-card__error-text">{{ fieldErrors.name }}</small>
+            </label>
+            <label class="contact-card__field">
+              <span>Email Address <em>*</em></span>
+              <input
+                :value="form.email"
+                type="email"
+                required
+                inputmode="email"
+                autocomplete="email"
+                maxlength="254"
+                :disabled="submitting"
+                @beforeinput="onEmailBeforeInput"
+                @input="updateField('email', $event, sanitizeEmail)"
+                @paste="handlePaste('email', $event, sanitizeEmail)"
+                @blur="onFieldBlur('email')"
+              />
+              <small v-if="fieldErrors.email" class="contact-card__error-text">{{ fieldErrors.email }}</small>
+            </label>
+            <label class="contact-card__field">
+              <span>Phone Number <em>*</em></span>
+              <input
+                :value="form.phone"
+                type="tel"
+                required
+                inputmode="numeric"
+                autocomplete="tel"
+                maxlength="10"
+                :disabled="submitting"
+                @beforeinput="onPhoneBeforeInput"
+                @input="updateField('phone', $event, sanitizePhone)"
+                @paste="handlePhonePaste"
+                @blur="onFieldBlur('phone')"
+              />
+              <small v-if="fieldErrors.phone" class="contact-card__error-text">{{ fieldErrors.phone }}</small>
+            </label>
+            <label class="contact-card__field">
+              <span>Subject <em>*</em></span>
+              <input
+                :value="form.subject"
+                type="text"
+                required
+                autocomplete="off"
+                :disabled="submitting"
+                @input="updateField('subject', $event)"
+                @blur="onFieldBlur('subject')"
+              />
+              <small v-if="fieldErrors.subject" class="contact-card__error-text">{{ fieldErrors.subject }}</small>
+            </label>
+            <label class="contact-card__field contact-card__field--message">
+              <span>Message <em>*</em></span>
+              <textarea
+                :value="form.message"
+                required
+                maxlength="500"
+                :disabled="submitting"
+                @input="updateField('message', $event, sanitizeMessage)"
+                @blur="onFieldBlur('message')"
+              />
+              <small class="contact-card__hint">Maximum 500 characters.</small>
+              <small v-if="fieldErrors.message" class="contact-card__error-text">{{ fieldErrors.message }}</small>
+            </label>
+
+            <button
+              type="submit"
+              class="contact-card__submit"
+              :disabled="!canSubmit || submitting"
+            >
+              {{ submitting ? "Sending…" : "Submit Now" }}
+              <img
+                v-if="!submitting"
+                src="/images/figma-contact/nav-arrow.svg"
+                alt=""
+                width="18"
+                height="18"
+                decoding="async"
+              />
+            </button>
           </form>
         </div>
       </div>
@@ -673,11 +718,112 @@ async function onSubmit() {
   filter: brightness(0) invert(35%);
 }
 
-.contact-card__success {
-  margin: auto 0;
+/* ===== Success state (Figma 957:6058) ===== */
+.contact-success {
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  padding: 24px;
   text-align: center;
-  font-weight: 600;
-  color: #16803c;
+}
+
+.contact-success__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 88px;
+  height: 89px;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  border: 3.708px solid var(--contact-teal);
+  border-radius: 50%;
+}
+
+.contact-success__icon img {
+  display: block;
+  width: 56.861px;
+  height: 56.861px;
+  object-fit: contain;
+}
+
+.contact-success__text {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.contact-success__title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 32px;
+  color: var(--contact-ink);
+}
+
+.contact-success__title:focus {
+  outline: none;
+}
+
+.contact-success__body,
+.contact-success__caption {
+  margin: 0;
+  font-size: 14px;
+  line-height: 22px;
+  color: #535862;
+  opacity: 0.8;
+}
+
+.contact-success__body {
+  font-weight: 500;
+}
+
+.contact-success__caption {
+  max-width: 480px;
+  font-weight: 400;
+}
+
+.contact-success__actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 11px;
+  width: 100%;
+}
+
+.contact-success__download {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: min(100%, 479px);
+  height: 52px;
+  padding: 16px;
+  box-sizing: border-box;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.32px;
+  color: #ffffff;
+  text-decoration: none;
+  background: var(--contact-teal);
+  transition: opacity 0.15s ease;
+}
+
+.contact-success__download img {
+  display: block;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.contact-success__download:hover {
+  opacity: 0.92;
+}
+
+.contact-success__download:focus-visible {
+  outline: 3px solid rgba(9, 116, 149, 0.35);
+  outline-offset: 2px;
 }
 
 .contact-card__error {
@@ -1038,6 +1184,22 @@ async function onSubmit() {
 
   .contact-card__form {
     gap: 12px;
+  }
+
+  .contact-success {
+    gap: 20px;
+    padding: 32px 16px;
+  }
+
+  .contact-success__title {
+    font-size: 20px;
+    line-height: 28px;
+  }
+
+  .contact-success__download {
+    height: auto;
+    min-height: 52px;
+    font-size: 15px;
   }
 
   .contact-card__field {

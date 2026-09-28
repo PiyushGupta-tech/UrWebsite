@@ -1,0 +1,12 @@
+<svg preserveAspectRatio="xMidYMid meet" overflow="visible" style="display: block;" width="116.54" height="70.9696" viewBox="0 0 116.54 70.9696" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="arrow1">
+<path id="Line 605" d="M116.0396 66.6732 L98.9712 67.6087 C80.5664 68.6175 63.3201 59.0662 54.733 42.8649 C44.0745 18.7111 25.5587 5.603 4.3426 4.13" stroke="url(#paint0_linear_0_4)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3.4 10"/>
+<circle id="Ellipse 3531" cx="5.16247" cy="5.16247" r="5.16247" transform="matrix(-0.999703 0.0243649 0.0161785 0.999869 13.3228 0)" fill="#097495"/>
+</g>
+<defs>
+<linearGradient id="paint0_linear_0_4" x1="60.6904" y1="69.4781" x2="58.8912" y2="2.66108" gradientUnits="userSpaceOnUse">
+<stop stop-color="#0292B8"/>
+<stop offset="1" stop-color="#134E66"/>
+</linearGradient>
+</defs>
+</svg>

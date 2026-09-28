@@ -216,7 +216,7 @@ onUnmounted(() => {
       stroke="#097495"
       stroke-opacity="0.35"
       stroke-width="1.5"
-      stroke-dasharray="5 5"
+      stroke-dasharray="3.4 10"
       stroke-linecap="round"
     />
 
@@ -277,7 +277,7 @@ onUnmounted(() => {
       stroke="#097495"
       stroke-opacity="0.35"
       stroke-width="1.5"
-      stroke-dasharray="5 5"
+      stroke-dasharray="3.4 10"
       stroke-linecap="round"
     />
 
@@ -379,7 +379,7 @@ onUnmounted(() => {
       stroke="#097495"
       stroke-opacity="0.35"
       stroke-width="1.5"
-      stroke-dasharray="5 5"
+      stroke-dasharray="3.4 10"
       stroke-linecap="round"
     />
 
@@ -446,7 +446,7 @@ onUnmounted(() => {
       stroke="#097495"
       stroke-opacity="0.35"
       stroke-width="1.5"
-      stroke-dasharray="5 5"
+      stroke-dasharray="3.4 10"
       stroke-linecap="round"
     />
 
@@ -649,7 +649,7 @@ onUnmounted(() => {
 
 @keyframes success-dash-move {
   to {
-    stroke-dashoffset: -20;
+    stroke-dashoffset: -13.4;
   }
 }
 

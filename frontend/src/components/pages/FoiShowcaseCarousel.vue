@@ -1,5 +1,9 @@
 <script setup>
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue";
+import * as FoiPayinFlowGraphic from "./FoiPayinFlowGraphic.vue";
+import * as FoiPayoutFlowGraphic from "./FoiPayoutFlowGraphic.vue";
+import * as FoiReconciliationFlowGraphic from "./FoiReconciliationFlowGraphic.vue";
+import * as FoiVisibilityFlowGraphic from "./FoiVisibilityFlowGraphic.vue";
 
 const props = defineProps({
   cards: { type: Array, default: () => [] },
@@ -9,6 +13,18 @@ const props = defineProps({
 });
 
 const TRANSITION_MS = 900;
+
+/**
+ * Cards whose static image is replaced by an animated Figma graphic. Each
+ * module exports LOOP_MS and PLAYBACK_MS; autoplay holds a card until its
+ * play-through has finished.
+ */
+const ANIMATED_GRAPHICS = {
+  collections: FoiPayinFlowGraphic,
+  payout: FoiPayoutFlowGraphic,
+  reconciliation: FoiReconciliationFlowGraphic,
+  visibility: FoiVisibilityFlowGraphic,
+};
 
 const reduceMotion =
   typeof window !== "undefined" &&
@@ -21,6 +37,9 @@ const hovered = ref(false);
 /** Park unused cards on this side so the next enter is always a short slide */
 const parkSide = ref("back-right");
 const snapIds = ref(new Set());
+/** Per-card remount counter; bumping it restarts that card's animation. */
+const playRuns = ref({});
+let playStartedAt = 0;
 let timer = null;
 let busy = false;
 let settleTimer = null;
@@ -37,17 +56,42 @@ function clampInitial() {
 
 function stopAutoplay() {
   if (timer) {
-    clearInterval(timer);
+    clearTimeout(timer);
     timer = null;
   }
 }
 
-function startAutoplay() {
+/**
+ * Time until the centre card may move on: the end of its current animated
+ * play-through, or the plain autoplay delay for static cards.
+ */
+function remainingHold() {
+  const graphic = ANIMATED_GRAPHICS[slides.value[activeIndex.value]?.id];
+  if (!graphic) return props.autoplayDelay;
+  const { LOOP_MS, PLAYBACK_MS } = graphic;
+  const elapsed = (performance.now() - playStartedAt) % LOOP_MS;
+  return elapsed <= PLAYBACK_MS ? PLAYBACK_MS - elapsed : LOOP_MS - elapsed + PLAYBACK_MS;
+}
+
+function scheduleAdvance(delay) {
   stopAutoplay();
   if (reduceMotion || hovered.value || count.value < 2) return;
-  timer = window.setInterval(() => {
-    next();
-  }, props.autoplayDelay);
+  timer = window.setTimeout(() => {
+    timer = null;
+    if (busy) scheduleAdvance(TRANSITION_MS);
+    else next();
+  }, delay);
+}
+
+function startAutoplay() {
+  scheduleAdvance(remainingHold());
+}
+
+/** Restart the centre card's animation so it always plays from the top. */
+function replayCenter() {
+  const key = activeIndex.value;
+  playRuns.value = { ...playRuns.value, [key]: (playRuns.value[key] || 0) + 1 };
+  playStartedAt = performance.now();
 }
 
 function slotFor(index) {
@@ -137,7 +181,13 @@ function onCenterLeave() {
 }
 
 onMounted(() => {
+  playStartedAt = performance.now();
   clampInitial();
+  startAutoplay();
+});
+
+watch(activeIndex, () => {
+  replayCenter();
   startAutoplay();
 });
 
@@ -183,7 +233,14 @@ onBeforeUnmount(() => {
         ]"
         :aria-hidden="slotFor(index) !== 'center'"
       >
+        <component
+          :is="ANIMATED_GRAPHICS[card.id].default"
+          v-if="ANIMATED_GRAPHICS[card.id]"
+          :key="playRuns[index] || 0"
+          :alt="card.image_alt || card.title"
+        />
         <img
+          v-else
           class="foi-coverflow__img"
           :src="card.image"
           :alt="card.image_alt || card.title"

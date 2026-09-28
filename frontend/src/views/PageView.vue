@@ -17,6 +17,7 @@ import PayoutsPage from "@/components/pages/PayoutsPage.vue";
 import RiskFraudPage from "@/components/pages/RiskFraudPage.vue";
 import ReconciliationPage from "@/components/pages/ReconciliationPage.vue";
 import FinancialOperationsPage from "@/components/pages/FinancialOperationsPage.vue";
+import UnifiedDashboardPage from "@/components/pages/UnifiedDashboardPage.vue";
 import FaqPage from "@/components/pages/FaqPage.vue";
 import BlogPage from "@/components/pages/BlogPage.vue";
 import PrivacyPage from "@/components/pages/PrivacyPage.vue";
@@ -53,6 +54,7 @@ const pageComponent = computed(() => {
     "risk-fraud": RiskFraudPage,
     reconciliation: ReconciliationPage,
     "financial-operations": FinancialOperationsPage,
+    "unified-dashboard": UnifiedDashboardPage,
     faq: FaqPage,
     blog: BlogPage,
     privacy: PrivacyPage,
@@ -145,6 +147,7 @@ watch(() => route.path, loadPage);
       v-if="payload.common_closing"
       :section="payload.common_closing"
       :show-india-growth="false"
+      :show-audiences="slug !== 'unified-dashboard'"
       :show-faq="slug !== 'faq'"
       :show-cta="slug !== 'contact'"
     />

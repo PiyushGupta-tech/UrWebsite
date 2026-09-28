@@ -1,4 +1,4 @@
-/** Apply page SEO to document head (title, description, OG, canonical). */
+/** Apply page SEO to document head (title, description, keywords, OG/Twitter, canonical). */
 
 function setMeta(attr, key, value) {
   if (!value) return;
@@ -9,6 +9,14 @@ function setMeta(attr, key, value) {
     document.head.appendChild(el);
   }
   el.setAttribute("content", value);
+}
+
+function setOrRemoveMeta(attr, key, value) {
+  if (value) {
+    setMeta(attr, key, value);
+    return;
+  }
+  document.querySelector(`meta[${attr}="${key}"]`)?.remove();
 }
 
 function setCanonical(href) {
@@ -46,8 +54,11 @@ export function applySeo(seo, structuredData) {
   if (!seo) return;
   if (seo.title) document.title = seo.title;
   setMeta("name", "description", seo.description);
+  setOrRemoveMeta("name", "keywords", seo.keywords);
   setMeta("property", "og:title", seo.title);
   setMeta("property", "og:description", seo.description);
+  setMeta("name", "twitter:title", seo.title);
+  setMeta("name", "twitter:description", seo.description);
   if (seo.canonical) {
     setMeta("property", "og:url", seo.canonical);
     setCanonical(seo.canonical);

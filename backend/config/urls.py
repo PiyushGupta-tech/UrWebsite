@@ -36,7 +36,7 @@ for _gone in LEGACY_GONE_PATHS:
 
 frontend_dist = Path(settings.BASE_DIR).parent / "frontend" / "dist"
 if (frontend_dist / "index.html").exists():
-    public_static_dirs = ("assets", "logos", "images", "maps", "videos")
+    public_static_dirs = ("assets", "logos", "images", "maps", "videos", "downloads")
     for folder in public_static_dirs:
         document_root = frontend_dist / folder
         if document_root.is_dir():
@@ -49,7 +49,7 @@ if (frontend_dist / "index.html").exists():
             )
     urlpatterns.append(
         re_path(
-            r"^(?!api/|static/|assets/|logos/|images/|maps/|videos/|robots\.txt|sitemap\.xml).*$",
+            r"^(?!api/|static/|assets/|logos/|images/|maps/|videos/|downloads/|robots\.txt|sitemap\.xml).*$",
             SpaIndexView.as_view(),
             name="spa",
         )

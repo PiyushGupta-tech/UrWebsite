@@ -1,11 +1,12 @@
 /**
- * Parse display values like "75%", "02+", "30+" into animatable parts.
+ * Parse display values like "75%", "02+", "30+", "99.8%" into animatable parts.
+ * Values with no number, or a second number ("24/7"), are shown as-is.
  */
 export function parseStatValue(value) {
   const raw = String(value);
   const match = raw.match(/^([^0-9]*)([0-9]+(?:\.[0-9]+)?)(.*)$/);
-  if (!match) {
-    return { prefix: "", target: 0, suffix: raw, padMin: 0 };
+  if (!match || /[0-9]/.test(match[3])) {
+    return { fixed: raw, prefix: "", target: 0, suffix: "", padMin: 0, decimals: 0 };
   }
   const [, prefix, numStr, suffix] = match;
   return {
@@ -13,15 +14,19 @@ export function parseStatValue(value) {
     target: Number(numStr),
     suffix,
     padMin: /^0\d/.test(numStr) ? numStr.length : 0,
+    decimals: numStr.split(".")[1]?.length || 0,
   };
 }
 
 export function formatStatValue(parsed, amount) {
-  const int = Math.round(amount);
-  const numPart =
-    parsed.padMin > 0
-      ? String(int).padStart(parsed.padMin, "0")
-      : String(int);
+  if (parsed.fixed !== undefined) return parsed.fixed;
+  let numPart;
+  if (parsed.decimals > 0) {
+    numPart = amount.toFixed(parsed.decimals);
+  } else {
+    const int = Math.round(amount);
+    numPart = parsed.padMin > 0 ? String(int).padStart(parsed.padMin, "0") : String(int);
+  }
   return `${parsed.prefix}${numPart}${parsed.suffix}`;
 }
 

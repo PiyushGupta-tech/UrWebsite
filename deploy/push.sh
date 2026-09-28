@@ -62,8 +62,8 @@ chown -R www:www backend
 chmod 775 backend
 chmod 664 backend/db.sqlite3 2>/dev/null || true
 # rsync from macOS can leave dist/logos unreadable by gunicorn (www user).
-chmod -R a+rX frontend/dist/logos frontend/dist/maps frontend/dist/videos 2>/dev/null || true
-chown -R www:www frontend/dist/logos frontend/dist/maps frontend/dist/videos 2>/dev/null || true
+chmod -R a+rX frontend/dist/logos frontend/dist/maps frontend/dist/videos frontend/dist/downloads 2>/dev/null || true
+chown -R www:www frontend/dist/logos frontend/dist/maps frontend/dist/videos frontend/dist/downloads 2>/dev/null || true
 if [ -f deploy/urbanrupee-payout-refresh.service ]; then
   cp deploy/urbanrupee-payout-refresh.service /etc/systemd/system/
 fi

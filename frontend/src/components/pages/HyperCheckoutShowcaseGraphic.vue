@@ -4,45 +4,194 @@ import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 const ASSET = "/images/figma-hyper-checkout/showcase";
 const STAGE = { w: 1291, h: 638 };
 
-/** Card stack geometry used by connector SVG viewBoxes (px in local space). */
-const CARD_H = 44;
+/** Card stack — CSS nodes sit at each card mid-Y; fan viewBox matches this height. */
+const CARD_H = 66;
 const CARD_GAP = 16;
-const CARD_STACK_H = CARD_H * 4 + CARD_GAP * 3; // 224
+const CARD_STACK_H = CARD_H * 4 + CARD_GAP * 3; // 312
 const CARD_MIDS = [0, 1, 2, 3].map((i) => i * (CARD_H + CARD_GAP) + CARD_H / 2);
-/** Hub sits this far above the card-stack midpoint; must match --hc-hub-lift. */
+/** Hub is lifted in CSS; fan paths must meet that visual centre. */
 const HUB_LIFT = 10;
-const HUB_ATTACH_Y = CARD_STACK_H / 2 - HUB_LIFT; // 102
+const HUB_ATTACH_Y = CARD_STACK_H / 2 - HUB_LIFT; // 146
 
 /**
- * Fan width is measured rather than assumed, so each viewBox matches its rendered
- * size 1:1. That keeps the scale uniform — a stretched viewBox would turn the
- * travelling `circle` dots into ovals and skew the curves.
+ * Absolutized Figma strokes (652:8034 / 652:8189) in each frame's space.
+ * Remapped at runtime so endpoints snap to card nodes + hub.
+ * Order: top → bottom.
  */
+const LEFT_FIGMA = [
+  {
+    id: "652:8036",
+    start: [8.087, 7.855],
+    end: [79.137, 107.703],
+    d: "M 8.0870 7.8550 C 8.0553 9.7863 28.2447 11.2770 34.2391 18.0374 C 40.2334 24.7978 48.9946 65.1303 56.9452 87.6632 C 64.8959 110.1960 74.8926 107.6740 74.8926 107.6740 L 79.1370 107.7031",
+  },
+  {
+    id: "652:8041",
+    start: [4.133, 89.479],
+    end: [79.219, 119.102],
+    d: "M 4.1330 89.4790 C 4.0764 90.0846 25.7264 90.0827 32.0807 92.0609 C 38.4350 94.0390 47.3668 106.4681 55.6365 113.3410 C 63.9062 120.2139 74.6642 119.1918 74.6642 119.1918 L 79.2190 119.1023",
+  },
+  {
+    id: "652:8051",
+    start: [14.4347, 172.8857],
+    end: [78.9284, 135.7444],
+    d: "M 14.4347 172.8857 C 14.3894 172.1443 32.9407 171.9033 38.3959 169.4080 C 43.8511 166.9127 51.5692 151.5831 58.6911 143.0689 C 65.8130 134.5546 75.0259 135.6860 75.0259 135.6860 L 78.9284 135.7444",
+  },
+  {
+    id: "652:8046",
+    start: [14.7306, 255.1543],
+    end: [78.9674, 144.6417],
+    d: "M 14.7306 255.1543 C 14.7063 253.0226 32.9004 251.2928 38.3163 243.8054 C 43.7322 236.3180 51.7150 191.7610 58.9282 166.8552 C 66.1414 141.9494 75.1430 144.6916 75.1430 144.6916 L 78.9674 144.6417",
+  },
+];
+
+const RIGHT_FIGMA = [
+  {
+    id: "652:8190",
+    start: [120.7215, 6.0503],
+    end: [3.1715, 97.6785],
+    d: "M 120.7215 6.0503 C 120.7919 7.8430 87.1448 8.9343 77.2122 15.1210 C 67.2796 21.3077 53.0392 58.6083 39.9884 79.4031 C 26.9376 100.1978 10.2477 97.7129 10.2477 97.7129 L 3.1715 97.6785",
+  },
+  {
+    id: "652:8194",
+    start: [124.1209, 78.1265],
+    end: [7.5781, 109.6895],
+    d: "M 124.1209 78.1265 C 124.2104 78.7794 90.5834 78.6728 80.7193 80.7741 C 70.8552 82.8753 57.0164 96.2272 44.1908 103.5943 C 31.3652 110.9613 14.6529 109.8079 14.6529 109.8079 L 7.5781 109.6895",
+  },
+  {
+    id: "652:8203",
+    start: [123.9519, 164.4585],
+    end: [7.1716, 118.7271],
+    d: "M 123.9519 164.4585 C 124.0370 163.5367 90.4052 163.3607 80.5250 160.2958 C 70.6447 157.2308 56.7112 138.2299 43.8324 127.6954 C 30.9537 117.1610 14.2467 118.6285 14.2467 118.6285 L 7.1716 118.7271",
+  },
+  {
+    id: "652:8198",
+    start: [124.95, 243.3604],
+    end: [7.1057, 127.8844],
+    d: "M 124.9500 243.3604 C 125.0148 241.1121 91.3619 239.5876 81.4092 231.7814 C 71.4566 223.9753 57.0989 177.1221 43.9823 150.9782 C 30.8657 124.8342 14.1823 127.8740 14.1823 127.8740 L 7.1057 127.8844",
+  },
+];
+
+const FAN_DASH = [3.4, 10];
+const FAN_STROKE = 1.37;
+
 const leftFanEl = ref(null);
 const rightFanEl = ref(null);
-const leftFanW = ref(90);
-const rightFanW = ref(90);
+const leftFanW = ref(80);
+const rightFanW = ref(110);
 let fanObserver = null;
 
-/**
- * One wire per card: card edge → single hub join (slightly above centre).
- * The same path string drives the dashed stroke and its animateMotion dot.
- * Only card-side nodes are rendered (no hub-join dots).
- */
-function buildWires(width, prefix, toHub) {
-  return CARD_MIDS.map((y, i) => {
-    // Outer wires bow further out so the fan spreads evenly.
-    const bulge = 0.16 + Math.abs(i - 1.5) * 0.055;
-    const ease = HUB_ATTACH_Y + (y - HUB_ATTACH_Y) * 0.18;
+function parsePath(d) {
+  const tokens = d.match(/[MLC]|[-+]?(?:\d*\.\d+|\d+)(?:e[-+]?\d+)?/gi) || [];
+  const cmds = [];
+  let i = 0;
+  while (i < tokens.length) {
+    const cmd = tokens[i].toUpperCase();
+    i += 1;
+    const nums = [];
+    while (i < tokens.length && !/^[MLC]$/i.test(tokens[i])) {
+      nums.push(Number(tokens[i]));
+      i += 1;
+    }
+    cmds.push({ cmd, nums });
+  }
+  return cmds;
+}
+
+function formatPath(cmds) {
+  return cmds
+    .map(({ cmd, nums }) => `${cmd}${nums.map((n) => n.toFixed(2)).join(" ")}`)
+    .join("");
+}
+
+/** Map Figma curve onto layout endpoints while keeping relative shape. */
+function remapPath(d, fromStart, fromEnd, toStart, toEnd) {
+  const [x0, y0] = fromStart;
+  const [x1, y1] = fromEnd;
+  const [X0, Y0] = toStart;
+  const [X1, Y1] = toEnd;
+  const dx = x1 - x0 || 1e-6;
+  const dy = y1 - y0 || 1e-6;
+  const sx = (X1 - X0) / dx;
+  const sy = (Y1 - Y0) / dy;
+  const cmds = parsePath(d).map(({ cmd, nums }) => ({
+    cmd,
+    nums: nums.map((n, i) => {
+      if (i % 2 === 0) return X0 + (n - x0) * sx;
+      return Y0 + (n - y0) * sy;
+    }),
+  }));
+  return formatPath(cmds);
+}
+
+/** Reverse cubic path so animateMotion can run hub → card on right wires. */
+function reversePath(d) {
+  const cmds = parsePath(d);
+  const points = [];
+  let cur = null;
+  for (const { cmd, nums } of cmds) {
+    if (cmd === "M") {
+      cur = [nums[0], nums[1]];
+      points.push({ type: "M", p: cur });
+    } else if (cmd === "L") {
+      const p = [nums[0], nums[1]];
+      points.push({ type: "L", from: cur, to: p });
+      cur = p;
+    } else if (cmd === "C") {
+      const c1 = [nums[0], nums[1]];
+      const c2 = [nums[2], nums[3]];
+      const p = [nums[4], nums[5]];
+      points.push({ type: "C", from: cur, c1, c2, to: p });
+      cur = p;
+    }
+  }
+  const end = points[points.length - 1].to || points[points.length - 1].p;
+  const out = [{ cmd: "M", nums: end }];
+  for (let i = points.length - 1; i >= 1; i -= 1) {
+    const seg = points[i];
+    if (seg.type === "L") {
+      out.push({ cmd: "L", nums: seg.from });
+    } else if (seg.type === "C") {
+      out.push({
+        cmd: "C",
+        nums: [...seg.c2, ...seg.c1, ...seg.from],
+      });
+    }
+  }
+  return formatPath(out);
+}
+
+function buildWires(figma, width, toHub) {
+  /** Card ::after nodes hang ~5px off the card; fan margins pull ~2px over. */
+  const nodeX = 3;
+  return figma.map((wire, i) => {
+    const cardY = CARD_MIDS[i];
     const d = toHub
-      ? `M0 ${y} C ${(width * (0.3 + bulge)).toFixed(2)} ${y}, ${(width * 0.66).toFixed(2)} ${ease}, ${width} ${HUB_ATTACH_Y}`
-      : `M0 ${HUB_ATTACH_Y} C ${(width * 0.34).toFixed(2)} ${ease}, ${(width * (0.7 - bulge)).toFixed(2)} ${y}, ${width} ${y}`;
-    return { id: `${prefix}${i}`, d };
+      ? remapPath(wire.d, wire.start, wire.end, [nodeX, cardY], [width, HUB_ATTACH_Y])
+      : reversePath(
+          remapPath(
+            wire.d,
+            wire.start,
+            wire.end,
+            [width - nodeX, cardY],
+            [0, HUB_ATTACH_Y],
+          ),
+        );
+    return {
+      id: wire.id,
+      d,
+      strokeWidth: FAN_STROKE,
+      dash: FAN_DASH,
+    };
   });
 }
 
-const leftWires = computed(() => buildWires(leftFanW.value, "l", true));
-const rightWires = computed(() => buildWires(rightFanW.value, "r", false));
+const leftWires = computed(() => buildWires(LEFT_FIGMA, leftFanW.value, true));
+const rightWires = computed(() => buildWires(RIGHT_FIGMA, rightFanW.value, false));
+
+function dashAttr(dash) {
+  return dash.join(" ");
+}
 
 const features = [
   {
@@ -238,16 +387,20 @@ onBeforeUnmount(() => {
         ref="leftFanEl"
         class="hc-stage__fan hc-stage__fan--left"
         :viewBox="`0 0 ${leftFanW} ${CARD_STACK_H}`"
-        preserveAspectRatio="xMidYMid meet"
+        preserveAspectRatio="none"
         aria-hidden="true"
       >
         <path
-          v-for="wire in leftWires"
+          v-for="(wire, i) in leftWires"
           :key="`${wire.id}-stroke`"
           class="hc-stage__path"
           :d="wire.d"
           fill="none"
+          stroke="#ffffff"
+          :stroke-width="wire.strokeWidth"
           stroke-linecap="round"
+          stroke-linejoin="round"
+          :stroke-dasharray="dashAttr(wire.dash)"
           vector-effect="non-scaling-stroke"
         />
         <circle
@@ -255,7 +408,7 @@ onBeforeUnmount(() => {
           v-show="!reduceMotion"
           :key="`${wire.id}-dot`"
           class="hc-stage__flow-dot"
-          r="3.4"
+          r="3.2"
           vector-effect="non-scaling-stroke"
         >
           <animateMotion
@@ -447,7 +600,7 @@ onBeforeUnmount(() => {
         ref="rightFanEl"
         class="hc-stage__fan hc-stage__fan--right"
         :viewBox="`0 0 ${rightFanW} ${CARD_STACK_H}`"
-        preserveAspectRatio="xMidYMid meet"
+        preserveAspectRatio="none"
         aria-hidden="true"
       >
         <path
@@ -457,7 +610,11 @@ onBeforeUnmount(() => {
           :class="{ 'hc-stage__path--best': i === bestProvider }"
           :d="wire.d"
           fill="none"
+          stroke="#ffffff"
+          :stroke-width="wire.strokeWidth"
           stroke-linecap="round"
+          stroke-linejoin="round"
+          :stroke-dasharray="dashAttr(wire.dash)"
           vector-effect="non-scaling-stroke"
         />
         <circle
@@ -466,7 +623,7 @@ onBeforeUnmount(() => {
           :key="`${wire.id}-dot`"
           class="hc-stage__flow-dot"
           :class="{ 'hc-stage__flow-dot--best': i === bestProvider }"
-          r="3.4"
+          r="3.2"
           vector-effect="non-scaling-stroke"
         >
           <animateMotion
@@ -532,7 +689,7 @@ onBeforeUnmount(() => {
      glows or draws on the background uses this brighter tint of the same hue. */
   --hc-green-bright: #3ddc97;
   --hc-green-bright-rgb: 61, 220, 151;
-  /* Hub/connector rise above the card-stack midpoint; mirrors HUB_LIFT in script. */
+  /* Hub rise above the card-stack midpoint; mirrors HUB_LIFT in script. */
   --hc-hub-lift: 10px;
   --hc-ink: #252b37;
   position: relative;
@@ -547,8 +704,8 @@ onBeforeUnmount(() => {
 
 /* —— Side rails (CSS grid: heading / cards | fan | hub / more) —— */
 .hc-stage__rail {
-  --hc-stack: 224px;
-  --hc-card-col: minmax(132px, 170px);
+  --hc-stack: 312px;
+  --hc-card-col: minmax(200px, 230px);
   /* Fixed label rows keep the card stack — and the hub — dead-centre of the stage,
      so the bridges can anchor to 50% without depending on heading line count. */
   --hc-label-row: 44px;
@@ -576,13 +733,13 @@ onBeforeUnmount(() => {
 .hc-stage__rail--right {
   right: 2.2%;
   width: 36.5%;
-  grid-template-columns: minmax(48px, 1fr) auto minmax(48px, 1fr) minmax(128px, 160px);
+  grid-template-columns: minmax(48px, 1fr) auto minmax(48px, 1fr) minmax(140px, 160px);
 }
 
 .hc-stage__heading {
   margin: 0;
   width: 100%;
-  font-size: clamp(10px, 1.24vw, 16px);
+  font-size: 16px;
   font-weight: 600;
   line-height: 1.2;
   text-align: center;
@@ -628,7 +785,7 @@ onBeforeUnmount(() => {
   grid-column: 4;
   grid-row: 3;
   margin: 0;
-  font-size: clamp(8px, 0.78vw, 10px);
+  font-size: 10px;
   font-weight: 600;
   color: #ffffff;
   text-align: center;
@@ -640,12 +797,12 @@ onBeforeUnmount(() => {
   position: relative;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   width: 100%;
-  height: 44px;
-  min-height: 44px;
-  max-height: 44px;
-  padding: 0 12px;
+  height: 66px;
+  min-height: 66px;
+  max-height: 66px;
+  padding: 8px;
   box-sizing: border-box;
   background: #ffffff;
   border-radius: 10px;
@@ -733,33 +890,35 @@ onBeforeUnmount(() => {
 .hc-stage__card-text {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 3px;
   min-width: 0;
+  flex: 1;
 }
 
 .hc-stage__card-title {
   margin: 0;
-  font-size: clamp(6px, 0.62vw, 7.5px);
+  font-family: "Manrope", "DM Sans", system-ui, sans-serif;
+  font-size: 14px;
   font-weight: 600;
-  line-height: 1.15;
-  color: var(--hc-ink);
-  /* Sized to fit one line; clamps to two instead of truncating if it ever wraps. */
+  line-height: normal;
+  color: #252b37;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 1;
   overflow: hidden;
 }
 
 .hc-stage__card-body {
   margin: 0;
-  font-size: clamp(5.5px, 0.55vw, 6.5px);
-  font-weight: 600;
-  line-height: 1.2;
-  color: var(--hc-ink);
-  opacity: 0.85;
-  white-space: nowrap;
+  font-family: "Manrope", "DM Sans", system-ui, sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  line-height: normal;
+  color: #535862;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
   overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .hc-stage__rate {
@@ -807,13 +966,20 @@ onBeforeUnmount(() => {
   margin-right: -2px;
 }
 
-/* Short dashes on a thicker stroke so the round caps read as pills. */
+/* Short dashes on a thicker stroke so the round caps read as pills (bridges). */
 .hc-stage__path {
   stroke: #ffffff;
   stroke-width: 2.6;
-  stroke-dasharray: 2 7;
+  stroke-dasharray: 3.4 10;
   animation: hc-wire-march 1.4s linear infinite;
   transition: stroke 0.4s ease;
+}
+
+/* Sparse dash so the march reads clearly on fan connectors. */
+.hc-stage__fan .hc-stage__path {
+  stroke-width: 1.37;
+  stroke-dasharray: 3.4 10;
+  animation: hc-fan-march 1.1s linear infinite;
 }
 
 /* Wire feeding the winning provider. */
@@ -1313,10 +1479,16 @@ onBeforeUnmount(() => {
   color: #4a5565;
 }
 
-/* Offset must be a whole number of dash periods (2 + 7) to loop seamlessly. */
+/* Offset must be a whole number of dash periods to loop seamlessly. */
 @keyframes hc-wire-march {
   to {
-    stroke-dashoffset: -18;
+    stroke-dashoffset: -13.4;
+  }
+}
+
+@keyframes hc-fan-march {
+  to {
+    stroke-dashoffset: -13.4;
   }
 }
 
@@ -1440,6 +1612,7 @@ onBeforeUnmount(() => {
   .hc-stage__bridge-head,
   .hc-stage__bridge-dot,
   .hc-stage__path,
+  .hc-stage__fan .hc-stage__path,
   .hc-stage__live-dot,
   .hc-stage__badge,
   .hc-stage__caret,
@@ -1510,17 +1683,17 @@ onBeforeUnmount(() => {
 
   .hc-stage__card {
     height: auto;
-    min-height: 52px;
+    min-height: 66px;
     max-height: none;
-    padding: 12px;
+    padding: 8px;
   }
 
   .hc-stage__card-title {
-    font-size: 12px;
+    font-size: 14px;
   }
 
   .hc-stage__card-body {
-    font-size: 11px;
+    font-size: 10px;
     white-space: normal;
   }
 }

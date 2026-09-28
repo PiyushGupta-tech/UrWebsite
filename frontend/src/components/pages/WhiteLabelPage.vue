@@ -1,6 +1,10 @@
 <script setup>
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { RouterLink } from "vue-router";
+import MetricCards from "@/components/MetricCards.vue";
+import WlConfigureStepGraphic from "./WlConfigureStepGraphic.vue";
+import WlLaunchStepGraphic from "./WlLaunchStepGraphic.vue";
+import WlBrandStepGraphic from "./WlBrandStepGraphic.vue";
 
 const props = defineProps({
   page: { type: Object, required: true },
@@ -40,7 +44,7 @@ const platformBadges = [
 const PLATFORM_LEFT_WIRE = { x: 205, y: 221 };
 const PLATFORM_RIGHT_WIRE = { x: 919, y: 221 };
 
-/** Figma 31:3148 — left column (offset): cards 0,2; right column: cards 1,3 */
+/** Figma 274:2360 — left column (offset): cards 0,2; right column: cards 1,3 */
 const benefitsLeft = computed(() => {
   const cards = props.page?.benefits?.cards || [];
   return [cards[0], cards[2]].filter(Boolean);
@@ -290,12 +294,12 @@ watch(
           </RouterLink>
         </div>
 
-        <ul v-if="page.metrics?.length" class="wl-hero__metrics">
-          <li v-for="metric in page.metrics" :key="metric.label" class="wl-hero__metric">
-            <p class="wl-hero__metric-value">{{ metric.value }}</p>
-            <p class="wl-hero__metric-label">{{ metric.label }}</p>
-          </li>
-        </ul>
+        <MetricCards
+          v-if="page.metrics?.length"
+          class="wl-hero__metrics"
+          :items="page.metrics"
+          aria-label="White label platform highlights"
+        />
       </div>
     </section>
 
@@ -383,9 +387,6 @@ watch(
         </div>
         <span class="visually-hidden">White-label payment dashboard under your brand</span>
       </div>
-      <p v-if="page.platform.tagline" class="wl-platform__tagline">
-        {{ page.platform.tagline }}
-      </p>
     </section>
 
     <!-- Steps — Figma 31:2880 -->
@@ -469,7 +470,20 @@ watch(
             </div>
           </div>
           <div class="wl-steps__visual">
+            <WlConfigureStepGraphic
+              v-if="step.title === 'Configure Your Platform'"
+              :alt="step.title"
+            />
+            <WlLaunchStepGraphic
+              v-else-if="step.title === 'Launch Under Your Brand'"
+              :alt="step.title"
+            />
+            <WlBrandStepGraphic
+              v-else-if="step.title === 'Customize Your Brand'"
+              :alt="step.title"
+            />
             <img
+              v-else
               :src="step.image"
               :alt="step.title"
               :width="step.image_width || 498"
@@ -481,7 +495,7 @@ watch(
       </div>
     </section>
 
-    <!-- Benefits — Figma 31:3148 -->
+    <!-- Benefits — Figma 274:2360 -->
     <section v-if="page.benefits" class="wl-benefits">
       <div class="wl-benefits__copy">
         <h2 class="wl-benefits__title">{{ page.benefits.title }}</h2>
@@ -590,8 +604,8 @@ watch(
   width: 100%;
   max-width: 1440px;
   margin-inline: auto;
-  min-height: min(736px, calc(100svh - var(--page-nav-offset, 129px)));
-  padding: 80px 56px 48px;
+  min-height: 0;
+  padding: 80px 56px 100px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -669,61 +683,17 @@ watch(
   color: #ffffff;
 }
 
+/* Cards styled by shared MetricCards; keep them above the hero background. */
 .wl-hero__metrics {
   position: relative;
   z-index: 1;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 52px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  width: min(1208px, 100%);
-}
-
-.wl-hero__metric {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  width: 263px;
-  height: 147px;
-  padding: 20px;
-  box-sizing: border-box;
-  background: #ffffff;
-  border-radius: 14.141px;
-  box-shadow:
-    0 1px 2px -1px rgba(0, 0, 0, 0.1),
-    0 1px 3px 0 rgba(0, 0, 0, 0.1);
-}
-
-.wl-hero__metric-value {
-  margin: 0;
-  font-size: 64px;
-  font-weight: 600;
-  line-height: 72px;
-  letter-spacing: -1.92px;
-  color: #181d27;
-  text-align: center;
-}
-
-.wl-hero__metric-label {
-  margin: 0;
-  font-size: 20px;
-  font-weight: 600;
-  line-height: 32px;
-  letter-spacing: -0.6px;
-  color: #414651;
-  text-align: center;
 }
 
 /* —— Platform —— */
 .wl-platform {
   max-width: 1291px;
-  margin: 80px auto 0;
-  padding: 0 56px;
+  margin: 0 auto;
+  padding: 0 56px 100px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -839,11 +809,22 @@ watch(
   align-items: center;
   justify-content: center;
   padding: 16px 20px;
-  border-radius: 8px;
-  border: 1px solid rgba(2, 146, 184, 0.19);
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  /* Match home glass pills (Figma 89:2110) + frosted rim on dark stage */
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.16) 0%,
+      rgba(255, 255, 255, 0.04) 100%
+    ),
+    rgba(9, 116, 149, 0.22);
+  backdrop-filter: blur(14px) saturate(1.15);
+  -webkit-backdrop-filter: blur(14px) saturate(1.15);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.45),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.06),
+    0 6px 18px rgba(0, 0, 0, 0.16);
   transform-origin: center center;
   animation: wl-platform-breathe 3.6s ease-in-out infinite;
   overflow: visible;
@@ -871,7 +852,7 @@ watch(
   stroke-width: 2;
   stroke-linecap: round;
   stroke-linejoin: round;
-  stroke-dasharray: 4 4;
+  stroke-dasharray: 3.4 10;
   animation: wl-platform-dash 0.85s linear infinite;
 }
 
@@ -901,7 +882,7 @@ watch(
 
 @keyframes wl-platform-dash {
   to {
-    stroke-dashoffset: -8;
+    stroke-dashoffset: -13.4;
   }
 }
 
@@ -929,20 +910,10 @@ watch(
   }
 }
 
-.wl-platform__tagline {
-  margin: 0;
-  font-size: 20px;
-  font-weight: 600;
-  line-height: 32px;
-  letter-spacing: -0.4px;
-  color: #097495;
-  text-align: center;
-}
-
 /* —— Steps —— */
 .wl-steps {
   max-width: 964px;
-  margin: 100px auto 0;
+  margin: 0 auto;
   padding: 0 56px;
   box-sizing: border-box;
 }
@@ -995,7 +966,7 @@ watch(
   fill: none;
   stroke: #252b37;
   stroke-width: 1;
-  stroke-dasharray: 6 6;
+  stroke-dasharray: 3.4 10;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
@@ -1091,10 +1062,18 @@ watch(
   color: #535862;
 }
 
-.wl-steps__visual img {
+.wl-steps__visual {
+  overflow: visible;
+}
+
+.wl-steps__visual img,
+.wl-steps__visual :deep(.wl-cfg),
+.wl-steps__visual :deep(.wl-launch),
+.wl-steps__visual :deep(.wl-brand) {
   display: block;
   width: 100%;
   max-width: 498px;
+  aspect-ratio: 498 / 280;
   height: auto;
   margin-inline: auto;
 }
@@ -1174,6 +1153,15 @@ watch(
   box-shadow:
     0 1px 2px -1px rgba(0, 0, 0, 0.1),
     0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.25s ease;
+}
+
+.wl-benefits__card:hover {
+  box-shadow:
+    0 0.904px 0.904px 0 rgba(0, 0, 0, 0.05),
+    0 1.807px 2.711px 0 rgba(0, 0, 0, 0.04),
+    0 3.614px 5.422px 0 rgba(34, 42, 53, 0.04),
+    0 21.686px 61.444px 0 rgba(47, 48, 55, 0.05);
 }
 
 .wl-benefits__icon {
@@ -1230,7 +1218,7 @@ watch(
 /* —— Tablet —— */
 @media (max-width: 1200px) {
   .wl-hero__inner {
-    padding: 64px 40px 40px;
+    padding: 64px 40px 100px;
     gap: 40px;
     min-height: 0;
   }
@@ -1242,26 +1230,6 @@ watch(
     font-size: 32px;
     line-height: 1.25;
     letter-spacing: -0.8px;
-  }
-
-  .wl-hero__metric {
-    width: calc(50% - 16px);
-    height: auto;
-    min-height: 120px;
-  }
-
-  .wl-hero__metrics {
-    gap: 16px;
-  }
-
-  .wl-hero__metric-value {
-    font-size: 48px;
-    line-height: 56px;
-  }
-
-  .wl-hero__metric-label {
-    font-size: 16px;
-    line-height: 24px;
   }
 
   .wl-platform,
@@ -1299,7 +1267,7 @@ watch(
 /* —— Phone —— */
 @media (max-width: 700px) {
   .wl-hero__inner {
-    padding: 40px 19px 32px;
+    padding: 40px 19px 100px;
     gap: 32px;
   }
 
@@ -1316,21 +1284,24 @@ watch(
     max-width: 280px;
   }
 
-  .wl-hero__metric {
-    width: 100%;
-  }
-
-  .wl-hero__metric-value {
-    font-size: 40px;
-    line-height: 48px;
-  }
-
   .wl-platform,
   .wl-steps,
   .wl-benefits {
-    margin-top: 56px;
     padding-left: 19px;
     padding-right: 19px;
+  }
+
+  .wl-platform {
+    padding-bottom: 100px;
+    margin-top: 0;
+  }
+
+  .wl-steps {
+    margin-top: 0;
+  }
+
+  .wl-benefits {
+    margin-top: 56px;
   }
 
   .wl-steps__row,
@@ -1364,11 +1335,6 @@ watch(
 
   .wl-benefits__card {
     min-height: 0;
-  }
-
-  .wl-platform__tagline {
-    font-size: 16px;
-    line-height: 24px;
   }
 }
 </style>

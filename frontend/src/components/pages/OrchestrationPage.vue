@@ -571,9 +571,19 @@ watch(controlSteps, async () => {
   box-sizing: border-box;
   background: #ffffff;
   border-radius: 14.141px;
+  /* Match about-purpose__card default + hover (Figma 722:7669 / 722:7640) */
   box-shadow:
-    0 1px 3px rgba(0, 0, 0, 0.1),
-    0 1px 2px -1px rgba(0, 0, 0, 0.1);
+    0 1px 2px -1px rgba(0, 0, 0, 0.1),
+    0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.25s ease;
+}
+
+.po-growth__card:hover {
+  box-shadow:
+    0 0.904px 0.904px 0 rgba(0, 0, 0, 0.05),
+    0 1.807px 2.711px 0 rgba(0, 0, 0, 0.04),
+    0 3.614px 5.422px 0 rgba(34, 42, 53, 0.04),
+    0 21.686px 61.444px 0 rgba(47, 48, 55, 0.05);
 }
 
 .po-growth__icon {
@@ -882,8 +892,9 @@ watch(controlSteps, async () => {
   align-items: center;
   justify-content: flex-start;
   gap: 8px;
-  width: 100%;
-  max-width: 100%;
+  /* Fixed Figma copy width so line breaks don’t reflow while the card morphs */
+  width: 388px;
+  max-width: 388px;
   text-align: center;
   opacity: 0;
   transform: translateY(12px);
@@ -897,32 +908,39 @@ watch(controlSteps, async () => {
   opacity: 1;
   transform: translateY(0);
   pointer-events: auto;
+  /* Fade in after the width morph has mostly settled */
   transition:
-    transform var(--po-dur-in) var(--po-ease-out) 0.35s,
-    opacity var(--po-dur-in) ease-in 0.35s;
+    transform var(--po-dur-in) var(--po-ease-out) 0.55s,
+    opacity var(--po-dur-in) ease-in 0.55s;
 }
 
 .po-control__step-title {
   margin: 0;
+  width: 100%;
+  /* Figma 296:3228 / 719:7438 — fixed 87px title band */
+  height: 87px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 32px;
   font-weight: 700;
   line-height: 42px;
   color: #fafafa;
-  text-wrap: balance;
 }
 
 .po-control__step-body {
   margin: 0;
+  width: 100%;
   font-size: 14px;
   font-weight: 400;
   line-height: 24px;
   letter-spacing: 0.56px;
+  /* Figma 296:3229 (in-page); variants use rgba(255,255,255,0.8) */
   color: #e9eaeb;
-  max-width: 388px;
-  text-wrap: balance;
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .po-growth__card,
   .po-control__step,
   .po-control__step-text,
   .po-control__num,

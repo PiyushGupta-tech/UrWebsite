@@ -35,9 +35,10 @@ const FAN_DOTS = [
   { cx: 7.327, cy: 229.09 },
 ];
 
+/** Match Risk & Fraud fan density (3.4 on / 10 gap) */
 const FAN_STROKE = {
   width: 1.5,
-  dash: "2.747 2.747",
+  dash: "3.4 10",
   color: "#E8F8FB",
 };
 
@@ -62,7 +63,7 @@ const BRIDGE_LINES = [
 
 const BRIDGE_STROKE = {
   width: 1.73,
-  dash: "3.392 3.392",
+  dash: "3.4 10",
   color: "#62E9FE",
   opacity: 0.94,
 };
@@ -115,6 +116,8 @@ async function injectSvg() {
 
     svg.querySelectorAll("path[stroke-dasharray]").forEach((el) => {
       el.classList.add("rc-clarity-dash");
+      // Loosen baked dashes to match Risk & Fraud fan density
+      el.setAttribute("stroke-dasharray", FAN_STROKE.dash);
     });
     // Hide baked nearly-straight connector fills + junction dots
     // (exact Figma 652:9419 / 652:9401 curves are drawn in the overlay)
@@ -244,7 +247,7 @@ onBeforeUnmount(() => {
 
       <!-- Outputs → results (Figma 652:9401, mirrored) -->
       <g
-        class="rc-clarity-fx__fan"
+        class="rc-clarity-fx__fan rc-clarity-fx__fan--rtl"
         :class="{ 'rc-clarity-fx__fan--motion': !reduceMotion }"
         :transform="`translate(${RIGHT_FAN.x} ${RIGHT_FAN.y}) scale(-1 1)`"
       >
@@ -336,9 +339,20 @@ onBeforeUnmount(() => {
   animation: rc-clarity-fan-dash 1.1s linear infinite;
 }
 
+/* Mirrored right fan: flip dash march so flow still reads left → right */
+.rc-clarity-fx__fan--rtl.rc-clarity-fx__fan--motion .rc-clarity-fx__curve {
+  animation-name: rc-clarity-fan-dash-rtl;
+}
+
 @keyframes rc-clarity-fan-dash {
   to {
-    stroke-dashoffset: -5.494;
+    stroke-dashoffset: -13.4;
+  }
+}
+
+@keyframes rc-clarity-fan-dash-rtl {
+  to {
+    stroke-dashoffset: 13.4;
   }
 }
 
@@ -348,7 +362,7 @@ onBeforeUnmount(() => {
 
 @keyframes rc-clarity-bridge-dash {
   to {
-    stroke-dashoffset: -6.784;
+    stroke-dashoffset: -13.4;
   }
 }
 
@@ -356,7 +370,7 @@ onBeforeUnmount(() => {
   fill: none;
   stroke: #62e9fe;
   stroke-width: 1.4;
-  stroke-dasharray: 3.2 5.2;
+  stroke-dasharray: 3.4 10;
   transform-box: fill-box;
   transform-origin: center;
   animation: rc-clarity-ripple 2.8s ease-out infinite;
@@ -383,7 +397,7 @@ onBeforeUnmount(() => {
 
 @keyframes rc-clarity-dash-move {
   to {
-    stroke-dashoffset: -8.54;
+    stroke-dashoffset: -13.4;
   }
 }
 

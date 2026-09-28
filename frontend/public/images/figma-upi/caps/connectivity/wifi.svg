@@ -1,0 +1,14 @@
+<svg overflow="visible" width="67.2891" height="56.936" viewBox="0 0 67.2891 56.936" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+  <path d="M3.45089 21.3208C21.5671 -2.50599 45.722 -2.50599 63.8382 21.3208M15.5284 35.6161C26.3981 21.3208 40.891 21.3208 51.7608 35.6161" stroke="url(#upi-conn-wifi-a)" stroke-width="6.90141" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M33.6431 53.4853C35.3107 53.4853 36.6625 51.8853 36.6625 49.9115C36.6625 47.9377 35.3107 46.3377 33.6431 46.3377C31.9756 46.3377 30.6237 47.9377 30.6237 49.9115C30.6237 51.8853 31.9756 53.4853 33.6431 53.4853Z" stroke="url(#upi-conn-wifi-b)" stroke-width="6.90141" stroke-linecap="round" stroke-linejoin="round"/>
+  <defs>
+    <linearGradient id="upi-conn-wifi-a" x1="39.993" y1="-8.91403" x2="39.993" y2="85.2984" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#097495"/>
+      <stop offset="1" stop-color="#0292B8"/>
+    </linearGradient>
+    <linearGradient id="upi-conn-wifi-b" x1="34.278" y1="43.59" x2="34.278" y2="64.5255" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#097495"/>
+      <stop offset="1" stop-color="#0292B8"/>
+    </linearGradient>
+  </defs>
+</svg>

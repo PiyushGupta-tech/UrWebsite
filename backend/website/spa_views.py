@@ -40,47 +40,51 @@ def _attr(value: str) -> str:
     return escape(value, quote=True)
 
 
+def _meta_pattern(attr: str, key: str) -> str:
+    return rf'<meta\s+{attr}="{re.escape(key)}"\s+content="[^"]*"\s*/?>'
+
+
+def _set_meta(html: str, attr: str, key: str, value: str) -> str:
+    """Set a meta tag's content, inserting it before </head> when absent."""
+    tag = f'<meta {attr}="{key}" content="{_attr(value)}" />'
+    if re.search(_meta_pattern(attr, key), html):
+        return re.sub(_meta_pattern(attr, key), lambda _m: tag, html, count=1)
+    return html.replace("</head>", f"    {tag}\n  </head>", 1)
+
+
+def _remove_meta(html: str, attr: str, key: str) -> str:
+    return re.sub(rf"[ \t]*{_meta_pattern(attr, key)}\n?", "", html, count=1)
+
+
 def inject_seo(html: str, seo: dict) -> str:
-    """Replace title, description, OG tags, and canonical in index.html."""
+    """Replace title, description, keywords, OG/Twitter tags, and canonical in index.html."""
     title = seo.get("title", "")
     description = seo.get("description", "")
+    keywords = seo.get("keywords", "")
     canonical = seo.get("canonical", "")
 
     if title:
         html = re.sub(
             r"<title>[^<]*</title>",
-            f"<title>{escape(title)}</title>",
+            lambda _m: f"<title>{escape(title)}</title>",
             html,
             count=1,
         )
-        html = re.sub(
-            r'(<meta\s+property="og:title"\s+content=")[^"]*(")',
-            rf"\1{_attr(title)}\2",
-            html,
-            count=1,
-        )
+        html = _set_meta(html, "property", "og:title", title)
+        html = _set_meta(html, "name", "twitter:title", title)
 
     if description:
-        html = re.sub(
-            r'(<meta\s+name="description"\s+content=")[^"]*(")',
-            rf"\1{_attr(description)}\2",
-            html,
-            count=1,
-        )
-        html = re.sub(
-            r'(<meta\s+property="og:description"\s+content=")[^"]*(")',
-            rf"\1{_attr(description)}\2",
-            html,
-            count=1,
-        )
+        html = _set_meta(html, "name", "description", description)
+        html = _set_meta(html, "property", "og:description", description)
+        html = _set_meta(html, "name", "twitter:description", description)
+
+    if keywords:
+        html = _set_meta(html, "name", "keywords", keywords)
+    else:
+        html = _remove_meta(html, "name", "keywords")
 
     if canonical:
-        html = re.sub(
-            r'(<meta\s+property="og:url"\s+content=")[^"]*(")',
-            rf"\1{_attr(canonical)}\2",
-            html,
-            count=1,
-        )
+        html = _set_meta(html, "property", "og:url", canonical)
         if re.search(r'<link\s+rel="canonical"', html):
             html = re.sub(
                 r'(<link\s+rel="canonical"\s+href=")[^"]*(")',
@@ -146,6 +150,9 @@ class SpaIndexView(View):
                 slug = slug_for_path(normalized)
                 page = PAGES.get(slug, {"title": seo.get("h1", "")})
             html = inject_json_ld(html, structured_data_script(slug, page, seo))
+
+        if normalized == "/admin" or normalized.startswith("/admin/"):
+            html = _set_meta(html, "name", "robots", "noindex, nofollow")
 
         if normalized == "/":
             html = inject_homepage_bootstrap(html, homepage_payload())

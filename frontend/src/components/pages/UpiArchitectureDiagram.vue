@@ -843,7 +843,7 @@ const flowPaths = [
   stroke-width: 1.6;
   stroke-linecap: round;
   stroke-linejoin: round;
-  stroke-dasharray: 5 7;
+  stroke-dasharray: 3.4 10;
   opacity: 0.88;
   fill: none;
 }
@@ -885,7 +885,7 @@ const flowPaths = [
 
 @keyframes uad-dash {
   to {
-    stroke-dashoffset: -24;
+    stroke-dashoffset: -13.4;
   }
 }
 

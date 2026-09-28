@@ -3,6 +3,9 @@ import { computed, onMounted, ref } from "vue";
 import { RouterLink } from "vue-router";
 import UpiPathSection from "./UpiPathSection.vue";
 import ReconciliationClarityDiagram from "./ReconciliationClarityDiagram.vue";
+import RcExceptionGraphic from "./RcExceptionGraphic.vue";
+import RcMatchingGraphic from "./RcMatchingGraphic.vue";
+import RcReconciledGraphic from "./RcReconciledGraphic.vue";
 
 const props = defineProps({
   page: { type: Object, required: true },
@@ -13,6 +16,12 @@ const heroReady = ref(false);
 
 const featureCards = computed(() => props.page?.features?.cards || []);
 const showcaseRows = computed(() => props.page?.showcase?.rows || []);
+/** Showcase images replaced by an animated inline version of the same artwork. */
+const SHOWCASE_GRAPHICS = {
+  "/images/figma-reconciliation/Frame%202147226717.svg": RcMatchingGraphic,
+  "/images/figma-reconciliation/Group%201171275349.svg": RcReconciledGraphic,
+  "/images/figma-reconciliation/Frame%202147226952.svg?v=2": RcExceptionGraphic,
+};
 
 onMounted(() => {
   requestAnimationFrame(() => {
@@ -134,7 +143,14 @@ onMounted(() => {
           :class="`rc-showcase__row--${row.side || 'left'}`"
         >
           <div class="rc-showcase__visual">
+            <component
+              :is="SHOWCASE_GRAPHICS[row.image]"
+              v-if="SHOWCASE_GRAPHICS[row.image]"
+              class="rc-showcase__img"
+              :alt="row.image_alt || row.title"
+            />
             <img
+              v-else
               class="rc-showcase__img"
               :src="row.image"
               :alt="row.image_alt || row.title"
@@ -429,6 +445,18 @@ onMounted(() => {
   align-items: flex-start;
   justify-content: flex-end;
   gap: 12px;
+  box-shadow:
+    0 1px 2px -1px rgba(0, 0, 0, 0.1),
+    0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.25s ease;
+}
+
+.rc-features__card:hover {
+  box-shadow:
+    0 0.904px 0.904px 0 rgba(0, 0, 0, 0.05),
+    0 1.807px 2.711px 0 rgba(0, 0, 0, 0.04),
+    0 3.614px 5.422px 0 rgba(34, 42, 53, 0.04),
+    0 21.686px 61.444px 0 rgba(47, 48, 55, 0.05);
 }
 
 .rc-features__icon {

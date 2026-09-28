@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { RouterLink } from "vue-router";
 
 const props = defineProps({
@@ -15,6 +15,13 @@ const props = defineProps({
 });
 
 const openIndex = ref(props.initialOpenIndex);
+
+watch(
+  () => props.items,
+  () => {
+    openIndex.value = props.initialOpenIndex;
+  },
+);
 
 function toggle(index) {
   openIndex.value = openIndex.value === index ? -1 : index;
@@ -83,8 +90,13 @@ function toggle(index) {
   padding-right: 100px;
 }
 
+/* Resource FAQ page: one white card, items split by hairlines (matches Contact cards). */
 .marketing-faq--simple {
-  max-width: 720px;
+  padding: 8px 32px;
+  background: #ffffff;
+  border: 1px solid var(--rs-line, #eceef2);
+  border-radius: var(--rs-radius, 16px);
+  box-shadow: var(--rs-shadow, 0 12px 40px rgba(37, 43, 55, 0.08));
 }
 
 .marketing-faq__inner {
@@ -136,11 +148,11 @@ function toggle(index) {
 }
 
 .marketing-faq--simple .marketing-faq__item {
-  margin-bottom: 12px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-card);
-  overflow: hidden;
-  background: var(--bg-page);
+  border-bottom: 1px solid var(--rs-line, #eceef2);
+}
+
+.marketing-faq--simple .marketing-faq__item:last-child {
+  border-bottom: 0;
 }
 
 .marketing-faq__trigger {
@@ -163,9 +175,13 @@ function toggle(index) {
 .marketing-faq--simple .marketing-faq__trigger {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   min-height: 0;
-  padding: 20px 24px;
+  padding: 24px 0;
+}
+
+.marketing-faq--simple .marketing-faq__item--open .marketing-faq__question {
+  color: var(--rs-teal, #097495);
 }
 
 .marketing-faq__num,
@@ -183,13 +199,13 @@ function toggle(index) {
 }
 
 .marketing-faq--simple .marketing-faq__icon {
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   display: grid;
   place-items: center;
   border-radius: 50%;
-  background: var(--bg-page);
-  color: var(--text-muted);
+  background: var(--rs-teal-tint, rgba(9, 116, 149, 0.08));
+  color: var(--rs-teal, #097495);
   flex-shrink: 0;
 }
 
@@ -198,7 +214,7 @@ function toggle(index) {
 }
 
 .marketing-faq--simple .marketing-faq__answer {
-  padding: 0 24px 20px;
+  padding: 0 48px 24px 0;
 }
 
 .marketing-faq__answer p {
@@ -209,8 +225,13 @@ function toggle(index) {
 }
 
 .marketing-faq--simple .marketing-faq__answer p {
-  line-height: 1.65;
-  color: var(--text-secondary);
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--rs-muted, #535862);
+}
+
+.marketing-faq--simple .marketing-faq__links a {
+  color: var(--rs-teal, #097495);
 }
 
 .marketing-faq__links {
@@ -281,8 +302,12 @@ function toggle(index) {
     padding: 0 24px 24px;
   }
 
+  .marketing-faq--simple .marketing-faq__trigger {
+    padding: 24px 0;
+  }
+
   .marketing-faq--simple .marketing-faq__answer {
-    padding: 0 24px 20px;
+    padding: 0 48px 24px 0;
   }
 }
 
@@ -315,6 +340,18 @@ function toggle(index) {
 
   .marketing-faq__answer {
     padding: 0 16px 18px 56px;
+  }
+
+  .marketing-faq--simple {
+    padding: 4px 20px;
+  }
+
+  .marketing-faq--simple .marketing-faq__trigger {
+    padding: 20px 0;
+  }
+
+  .marketing-faq--simple .marketing-faq__answer {
+    padding: 0 0 20px;
   }
 }
 </style>

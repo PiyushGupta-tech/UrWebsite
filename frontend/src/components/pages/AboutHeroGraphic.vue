@@ -343,12 +343,12 @@ function handleHubKeydown(event) {
 
 .eco__orbit--outer {
   stroke-width: 1.75;
-  stroke-dasharray: 8 14;
+  stroke-dasharray: 3.4 10;
 }
 
 .eco__orbit--inner {
   stroke-width: 2.5;
-  stroke-dasharray: 5 11;
+  stroke-dasharray: 3.4 10;
 }
 
 .eco--ready .eco__orbit--outer {
@@ -362,7 +362,7 @@ function handleHubKeydown(event) {
 .eco__spoke {
   stroke: url(#ecoLine);
   stroke-width: 2;
-  stroke-dasharray: 8 10;
+  stroke-dasharray: 3.4 10;
   stroke-linecap: round;
   opacity: 0.4;
   transition:
@@ -374,7 +374,7 @@ function handleHubKeydown(event) {
   stroke: rgba(148, 163, 184, 0.62);
   stroke-width: 2.25;
   stroke-linecap: round;
-  stroke-dasharray: 8 10;
+  stroke-dasharray: 3.4 10;
   animation: eco-dash-flow 1.2s linear infinite;
 }
 
@@ -478,7 +478,7 @@ function handleHubKeydown(event) {
 
 @keyframes eco-dash-flow {
   to {
-    stroke-dashoffset: -36;
+    stroke-dashoffset: -13.4;
   }
 }
 

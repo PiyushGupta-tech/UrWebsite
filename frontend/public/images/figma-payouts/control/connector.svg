@@ -1,0 +1,21 @@
+<svg preserveAspectRatio="xMidYMid meet" overflow="visible" style="display: block;" width="58.2367" height="49.5167" viewBox="0 0 58.2367 49.5167" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Frame 2147226623">
+<path id="Line 604" d="M52.131 19.557 C46.5458 14.5327 38.1488 14.2006 32.1713 18.7677 L29.6693 20.6797 L20.2318 28.6863 C15.7703 32.4711 9.4612 33.2112 4.2445 30.5616" stroke="url(#paint0_linear_0_4)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3.4 10"/>
+<ellipse id="Ellipse 3530" cx="2.72145" cy="2.72145" rx="2.72145" ry="2.72145" transform="matrix(-0.780589 -0.625045 -0.625507 0.780218 7.65599 29.8709)" fill="#097495"/>
+<g id="Frame 2147225801">
+<rect x="0.00348577" y="0.707098" width="11" height="11" rx="5.5" transform="matrix(-0.703612 0.710584 0.710584 0.703612 49.2131 10.4896)" fill="white"/>
+<rect x="0.00348577" y="0.707098" width="11" height="11" rx="5.5" transform="matrix(-0.703612 0.710584 0.710584 0.703612 49.2131 10.4896)" stroke="url(#paint1_linear_0_4)"/>
+<circle id="Ellipse 3531" cx="4.5" cy="4.5" r="4.5" transform="matrix(-0.703612 0.710584 0.710584 0.703612 49.7201 12.4038)" fill="#38B7D3"/>
+</g>
+</g>
+<defs>
+<linearGradient id="paint0_linear_0_4" x1="40.7267" y1="9.47837" x2="16.2723" y2="40.151" gradientUnits="userSpaceOnUse">
+<stop stop-color="#0292B8"/>
+<stop offset="1" stop-color="#134E66"/>
+</linearGradient>
+<linearGradient id="paint1_linear_0_4" x1="6" y1="0" x2="6" y2="12" gradientUnits="userSpaceOnUse">
+<stop stop-color="#0292B8"/>
+<stop offset="1" stop-color="#134E66"/>
+</linearGradient>
+</defs>
+</svg>
