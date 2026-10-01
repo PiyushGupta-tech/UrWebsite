@@ -9,7 +9,7 @@ const loading = ref(false);
 const messages = ref([
   {
     role: "bot",
-    text: "Hi! Ask me about Urbanrupee—products, services, security, or how to get started.",
+    text: "Hi! Ask me about Urbanrupee: products, services, security, or how to get started.",
     sources: [],
   },
 ]);

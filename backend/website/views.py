@@ -92,7 +92,7 @@ class ContactSubmitAPIView(APIView):
                 status=status.HTTP_503_SERVICE_UNAVAILABLE,
             )
 
-        return Response({"ok": True, "message": "Thank you — we'll get back to you shortly."})
+        return Response({"ok": True, "message": "Thank you! We'll get back to you shortly."})
 
 
 class ChatAPIView(APIView):

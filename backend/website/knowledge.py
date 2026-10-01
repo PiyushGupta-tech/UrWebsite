@@ -278,7 +278,7 @@ def answer_query(query: str) -> dict:
             "reply": (
                 "I couldn't find a match for that on our site. Try asking about payment "
                 "orchestration, Hyper Checkout, white label solutions, AML, reconciliation, "
-                "or security—or contact our team for help."
+                "or security, or contact our team for help."
             ),
             "sources": [
                 {"title": "FAQ", "href": "/faq"},

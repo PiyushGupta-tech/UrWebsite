@@ -450,8 +450,8 @@ onBeforeUnmount(stopCycle);
     </div>
 
     <p class="cc-stage__hint">
-      <span class="cc-stage__hint-desktop">Interactive — try the colors and payment toggles</span>
-      <span class="cc-stage__hint-mobile">Interactive preview — watch colors update live</span>
+      <span class="cc-stage__hint-desktop">Interactive: try the colors and payment toggles</span>
+      <span class="cc-stage__hint-mobile">Interactive preview: watch colors update live</span>
     </p>
 
     <span class="visually-hidden">

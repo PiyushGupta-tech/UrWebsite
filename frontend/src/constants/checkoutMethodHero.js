@@ -1,7 +1,7 @@
 /** Hero copy synced to CheckoutCard payment tab (custom / hyper checkout). */
 export const CHECKOUT_METHOD_HERO = {
   upi: {
-    headline: "UPI — Instant, Familiar & High-Converting",
+    headline: "UPI: Instant, Familiar & High-Converting",
     body:
       "Enable customers to pay instantly through their preferred UPI apps with optimized payment flows and intelligent routing designed to maximize success rates.",
     bullets_heading: "Key Features",
@@ -14,7 +14,7 @@ export const CHECKOUT_METHOD_HERO = {
     ],
   },
   cards: {
-    headline: "Cards — Secure & Frictionless",
+    headline: "Cards: Secure & Frictionless",
     body:
       "Deliver a modern card payment experience with tokenization, secure authentication, and optimized checkout journeys that improve customer confidence.",
     bullets_heading: "Key Features",
@@ -27,7 +27,7 @@ export const CHECKOUT_METHOD_HERO = {
     ],
   },
   card: {
-    headline: "Cards — Secure & Frictionless",
+    headline: "Cards: Secure & Frictionless",
     body:
       "Deliver a modern card payment experience with tokenization, secure authentication, and optimized checkout journeys that improve customer confidence.",
     bullets_heading: "Key Features",
@@ -40,7 +40,7 @@ export const CHECKOUT_METHOD_HERO = {
     ],
   },
   netbanking: {
-    headline: "Net Banking — Trusted Banking Experience",
+    headline: "Net Banking: Trusted Banking Experience",
     body:
       "Provide customers with secure access to major banking networks through optimized redirects and seamless transaction processing.",
     bullets_heading: "Key Features",
@@ -53,7 +53,7 @@ export const CHECKOUT_METHOD_HERO = {
     ],
   },
   wallets: {
-    headline: "Wallets — Faster Payments for Returning Customers",
+    headline: "Wallets: Faster Payments for Returning Customers",
     body:
       "Offer convenient wallet-based payments that reduce checkout time and improve repeat purchase experiences.",
     bullets_heading: "Key Features",
@@ -66,7 +66,7 @@ export const CHECKOUT_METHOD_HERO = {
     ],
   },
   emi: {
-    headline: "EMI — Increase Affordability & Conversions",
+    headline: "EMI: Increase Affordability & Conversions",
     body:
       "Enable flexible payment options through EMI solutions that improve purchasing power and increase average transaction values.",
     bullets_heading: "Key Features",

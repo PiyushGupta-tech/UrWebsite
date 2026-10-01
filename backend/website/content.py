@@ -51,7 +51,7 @@ NAV = {
     "products": [
         {"label": "Payment Orchestration", "href": "/products/orchestration"},
         {
-            "label": "White - Label Payment Experience",
+            "label": "White-Label Payment Experience",
             "href": "/products/white-label",
         },
         {
@@ -287,7 +287,7 @@ FAQS = {
             "question": "What is Urbanrupee Hyper Checkout?",
             "answer": (
                 "Hyper Checkout is Urbanrupee's fast payment experience for UPI, cards, net banking, "
-                "wallets, and EMI — with smart routing and one-click flows designed to lift conversion."
+                "wallets, and EMI, with smart routing and one-click flows designed to lift conversion."
             ),
             "links": [
                 {"label": "Urbanrupee Hyper Checkout", "href": "/products/hyper-checkout"},
@@ -408,7 +408,7 @@ PROBLEM_TRIO = {
     "title": "Your Payments Are Working. Your Infrastructure Is Holding You Back.",
     "intro": (
         "Multiple providers, fragmented systems, failed transactions, and manual operations "
-        "make it harder to scale—and harder to know where your money is going."
+        "make it harder to scale and harder to know where your money is going."
     ),
     "items": [
         {
@@ -547,7 +547,7 @@ PRODUCTS = {
     "title": "Everything You Need to Power Payments.",
     "body": (
         "One unified infrastructure for payment acceptance, orchestration, payouts, checkout, "
-        "reconciliation, and analytics — built to simplify operations and scale with your business."
+        "reconciliation, and analytics, built to simplify operations and scale with your business."
     ),
     "cta": "Talk to an Expert",
     "items": [
@@ -555,7 +555,7 @@ PRODUCTS = {
             "eyebrow": "White Label",
             "title": "White Label Solutions",
             "body": (
-                "Offer a complete payment experience under your own brand—without building the "
+                "Offer a complete payment experience under your own brand, without building the "
                 "infrastructure from scratch. Launch faster with a seamless payment experience."
             ),
             "image": "/images/figma-home/Frame%202147225785.svg?v=5",
@@ -567,7 +567,7 @@ PRODUCTS = {
             "title": "Custom Checkout",
             "body": (
                 "Create a seamless, fully branded checkout experience that gives customers more "
-                "ways to pay—while helping you convert more payment attempts into successful "
+                "ways to pay, while helping you convert more payment attempts into successful "
                 "transactions."
             ),
             "image": "/images/figma-home/Frame%202147225787.svg",
@@ -604,15 +604,15 @@ HOME_CLOSING = {
         ),
         "points": [
             {
-                "title": "01 — Growing Client Network",
+                "title": "01. Growing Client Network",
                 "body": "Supporting businesses across multiple regions in India.",
             },
             {
-                "title": "02 — Reliable Payment Solutions",
+                "title": "02. Reliable Payment Solutions",
                 "body": "Built to deliver secure and seamless payment experiences.",
             },
             {
-                "title": "03 — Growing Together",
+                "title": "03. Growing Together",
                 "body": "Helping businesses simplify payments and scale with confidence.",
             },
         ],
@@ -637,7 +637,7 @@ HOME_CLOSING = {
                 "for traders in India, offering simulated challenges, clear rules, and a path "
                 "to internal capital for those who demonstrate consistency and discipline. "
                 "Simulated trading, education, and evaluation drive the experience, not a "
-                "broker - we do not execute trades or hold public investment funds."
+                "broker. We do not execute trades or hold public investment funds."
             ),
             "company": "Finlix Capital",
             "logo": "",
@@ -747,7 +747,7 @@ HOME_CLOSING = {
     "cta_title": "Ready to Build a Better Payment Infrastructure?",
     "cta_body": (
         "Bring payments, routing, payouts, reconciliation, and analytics together on one "
-        "unified platform—built to scale with your business."
+        "unified platform, built to scale with your business."
     ),
     "cta_label": "Talk to an Expert",
 }

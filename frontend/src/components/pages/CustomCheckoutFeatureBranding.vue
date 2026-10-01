@@ -1,92 +1,10 @@
 <script setup>
-import { computed, onBeforeUnmount, onMounted, ref } from "vue";
+import { useRateCycle } from "@/composables/useRateCycle.js";
 
 /** Figma 283:9106 — Your Branding and Logo graphic */
 const ASSET = "/images/figma-custom-checkout/showcase";
-const TARGET_RATE = 72.6;
-const CYCLE_MS = 3000;
-/** Matches cfb-draw keyframes: draw through 55% of the cycle */
-const DRAW_RATIO = 0.55;
 
-const displayRate = ref(0);
-const rateOpacity = ref(1);
-const chartOffset = ref(1);
-const chartOpacity = ref(1);
-let rafId = 0;
-let cycleStart = 0;
-let reduceMotion = false;
-
-const rateLabel = computed(() => `${displayRate.value.toFixed(2)}%`);
-
-function easeInOut(t) {
-  return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
-}
-
-function tick(now) {
-  if (!cycleStart) cycleStart = now;
-  const t = ((now - cycleStart) % CYCLE_MS) / CYCLE_MS;
-
-  if (t < DRAW_RATIO) {
-    const p = easeInOut(t / DRAW_RATIO);
-    displayRate.value = TARGET_RATE * p;
-    chartOffset.value = 1 - p;
-    rateOpacity.value = 1;
-    chartOpacity.value = 1;
-  } else if (t < 0.72) {
-    displayRate.value = TARGET_RATE;
-    chartOffset.value = 0;
-    rateOpacity.value = 1;
-    chartOpacity.value = 1;
-  } else if (t < 0.88) {
-    displayRate.value = TARGET_RATE;
-    chartOffset.value = 0;
-    const fade = 1 - (t - 0.72) / (0.88 - 0.72);
-    rateOpacity.value = fade;
-    chartOpacity.value = fade;
-  } else if (t < 0.89) {
-    displayRate.value = 0;
-    chartOffset.value = 1;
-    rateOpacity.value = 0;
-    chartOpacity.value = 0;
-  } else {
-    displayRate.value = 0;
-    chartOffset.value = 1;
-    const show = (t - 0.89) / (1 - 0.89);
-    rateOpacity.value = show;
-    chartOpacity.value = show;
-  }
-
-  rafId = window.requestAnimationFrame(tick);
-}
-
-function start() {
-  stop();
-  if (reduceMotion) {
-    displayRate.value = TARGET_RATE;
-    rateOpacity.value = 1;
-    chartOffset.value = 0;
-    chartOpacity.value = 1;
-    return;
-  }
-  cycleStart = 0;
-  rafId = window.requestAnimationFrame(tick);
-}
-
-function stop() {
-  if (rafId) {
-    window.cancelAnimationFrame(rafId);
-    rafId = 0;
-  }
-}
-
-onMounted(() => {
-  reduceMotion =
-    typeof window !== "undefined" &&
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  start();
-});
-
-onBeforeUnmount(stop);
+const { rateLabel, rateOpacity, chartOffset, chartOpacity } = useRateCycle(72.6);
 </script>
 
 <template>

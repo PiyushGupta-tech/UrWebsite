@@ -1,7 +1,7 @@
 /** Hero copy synced to Close Route Wallet dashboard metric highlight. */
 export const WALLET_METRIC_HERO = {
   wallets: {
-    headline: "Wallets — Controlled Digital Value",
+    headline: "Wallets: Controlled Digital Value",
     body:
       "Issue and manage digital wallets that operate within clearly defined program boundaries. Maintain complete control over how funds are loaded, transferred, spent, and tracked.",
     bullets_heading: "Key Benefits",
@@ -14,7 +14,7 @@ export const WALLET_METRIC_HERO = {
     ],
   },
   users: {
-    headline: "Users — Identity-Driven Access Control",
+    headline: "Users: Identity-Driven Access Control",
     body:
       "Enable only authorized participants to access and transact within your wallet ecosystem through configurable onboarding, verification, and eligibility frameworks.",
     bullets_heading: "Key Benefits",
@@ -27,7 +27,7 @@ export const WALLET_METRIC_HERO = {
     ],
   },
   journals: {
-    headline: "Journal Entries — Ledger-Grade Transparency",
+    headline: "Journal Entries: Ledger-Grade Transparency",
     body:
       "Every transaction is securely recorded through an immutable ledger, ensuring complete traceability, accountability, and audit readiness.",
     bullets_heading: "Key Benefits",

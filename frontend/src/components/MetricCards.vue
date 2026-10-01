@@ -5,6 +5,7 @@ import {
   formatStatValue,
   parseStatValue,
 } from "@/composables/useCountUp.js";
+import { useSingleLineFit } from "@/composables/useSingleLineFit.js";
 
 const props = defineProps({
   items: { type: Array, default: () => [] },
@@ -20,6 +21,10 @@ const displays = ref([]);
 let observer = null;
 let cancelAnimation = null;
 let hasAnimated = false;
+
+useSingleLineFit(rootRef, ".ur-metrics__label", {
+  watchSource: () => props.items.map((s) => s.label).join("|"),
+});
 
 const parsed = computed(() =>
   props.items.map((stat) => parseStatValue(stat.value)),
@@ -184,15 +189,29 @@ watch(
   white-space: nowrap;
 }
 
+/* One line always: the strip shrinks every label by the same --fit-scale (useSingleLineFit). */
 .ur-metrics__label {
+  --label-size: 20px;
+  align-self: stretch;
   margin: 0;
-  max-width: 185px;
-  font-size: 20px;
+  font-size: calc(var(--label-size) * var(--fit-scale, 1));
   font-weight: 600;
   line-height: 32px;
-  letter-spacing: -0.6px;
+  letter-spacing: -0.03em;
   text-align: center;
+  white-space: nowrap;
   color: #414651;
+}
+
+/* Narrower desktops: give the one-line labels the room the gutters were taking. */
+@media (max-width: 1280px) {
+  .ur-metrics {
+    gap: 24px;
+  }
+
+  .ur-metrics__card {
+    padding-inline: 12px;
+  }
 }
 
 @media (max-width: 1100px) {
@@ -207,12 +226,13 @@ watch(
   }
 
   .ur-metrics__label {
-    font-size: 16px;
+    --label-size: 16px;
     line-height: 24px;
   }
 }
 
-@media (max-width: 768px) {
+/* Four across gets too narrow for one-line labels below here. */
+@media (max-width: 1024px) {
   .ur-metrics {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -223,7 +243,9 @@ watch(
     height: auto;
     min-height: 140px;
   }
+}
 
+@media (max-width: 768px) {
   .ur-metrics__value {
     font-size: 40px;
     line-height: 48px;
@@ -231,8 +253,19 @@ watch(
   }
 
   .ur-metrics__label {
-    font-size: 15px;
+    --label-size: 15px;
     line-height: 22px;
+  }
+}
+
+@media (max-width: 560px) {
+  .ur-metrics {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .ur-metrics__card {
+    min-height: 120px;
   }
 }
 </style>

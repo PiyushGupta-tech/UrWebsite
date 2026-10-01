@@ -68,7 +68,7 @@ onUnmounted(stopCycle);
         <span class="afford__amount">{{ amount }}</span>
       </header>
 
-      <p class="afford__lead">Split checkout — cardless &amp; card EMI</p>
+      <p class="afford__lead">Split checkout: cardless &amp; card EMI</p>
 
       <div class="afford__plans" role="tablist">
         <button

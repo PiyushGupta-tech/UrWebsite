@@ -156,19 +156,24 @@ CSRF_TRUSTED_ORIGINS = [
     "https://www.urbanrupee.com",
 ]
 
-CONTACT_EMAIL_TO = os.environ.get("CONTACT_EMAIL_TO", "it.support@urbanrupee.com")
-DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", "noreply@urbanrupee.com")
+from .email_config import (  # noqa: E402
+    CONTACT_EMAIL_TO,
+    DEFAULT_FROM_EMAIL,
+    EMAIL_HOST,
+    EMAIL_HOST_USER,
+    EMAIL_PORT,
+    EMAIL_USE_SSL,
+    EMAIL_USE_TLS,
+)
 
-if os.environ.get("EMAIL_HOST"):
-    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-    EMAIL_HOST = os.environ.get("EMAIL_HOST")
-    EMAIL_PORT = int(os.environ.get("EMAIL_PORT", "587"))
-    EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "")
-    EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "")
-    EMAIL_USE_TLS = os.environ.get("EMAIL_USE_TLS", "true").lower() in ("1", "true", "yes")
-    EMAIL_USE_SSL = os.environ.get("EMAIL_USE_SSL", "false").lower() in ("1", "true", "yes")
-else:
-    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "").strip()
+# Without the app password (local dev), messages are printed to the console.
+EMAIL_BACKEND = (
+    "django.core.mail.backends.smtp.EmailBackend"
+    if EMAIL_HOST_PASSWORD
+    else "django.core.mail.backends.console.EmailBackend"
+)
+EMAIL_TIMEOUT = 15
 
 REST_FRAMEWORK = {
     "DEFAULT_RENDERER_CLASSES": [

@@ -24,7 +24,7 @@ export const ABOUT_ECO_NODES = [
     label: "Mission",
     icon: "mission",
     pos: "top-right",
-    hint: "RBI PA-PG by 2027—secure payments that scale with you.",
+    hint: "RBI PA-PG by 2027: secure payments that scale with you.",
     spoke: { x2: 248, y2: 110 },
   },
   {

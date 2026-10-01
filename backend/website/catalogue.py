@@ -2,7 +2,7 @@
 
 CATALOGUE_TAGLINE = (
     "A unified payment ecosystem built to optimize performance, enhance user "
-    "experience, and drive higher conversions—all in one powerful platform."
+    "experience, and drive higher conversions, all in one powerful platform."
 )
 
 PRODUCT_SUITE = {
@@ -149,7 +149,7 @@ PRODUCT_SUITE = {
 
 CATALOGUE_CONTACT = {
     "office_label": "Office",
-    "office": "NX-One, Gaur City (Ghaziabad) — A01 & A03",
+    "office": "A01 & A03, NX-One, Gaur City (Ghaziabad)",
     "phone": "+91 9305697870",
     "website": "https://urbanrupee.com",
 }

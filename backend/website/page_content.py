@@ -75,7 +75,7 @@ PAGES = {
         "principles_title": "The Principles Behind Every Payment We Power",
         "principles_intro": (
             "We build fintech solutions around trust, intelligence, seamless experiences, and "
-            "scalable infrastructure—keeping businesses and their customers at the heart of "
+            "scalable infrastructure, keeping businesses and their customers at the heart of "
             "every transaction."
         ),
         "principles": [
@@ -91,7 +91,7 @@ PAGES = {
                 "number": "02",
                 "title": "Customer-Centric Payments",
                 "body": (
-                    "Every product decision starts with the payer and payee experience—reducing "
+                    "Every product decision starts with the payer and payee experience, reducing "
                     "friction while keeping transactions fast and dependable."
                 ),
             },
@@ -108,7 +108,7 @@ PAGES = {
                 "title": "Built to Scale",
                 "body": (
                     "Infrastructure that grows with transaction volume, new payment methods, and "
-                    "expanding merchant needs—without re-architecting from scratch."
+                    "expanding merchant needs, without re-architecting from scratch."
                 ),
             },
             {
@@ -139,7 +139,7 @@ PAGES = {
                     "for traders in India, offering simulated challenges, clear rules, and a path "
                     "to internal capital for those who demonstrate consistency and discipline. "
                     "Simulated trading, education, and evaluation drive the experience, not a "
-                    "broker - we do not execute trades or hold public investment funds."
+                    "broker. We do not execute trades or hold public investment funds."
                 ),
                 "company": "Finlix Capital",
                 "logo": "",
@@ -249,7 +249,7 @@ PAGES = {
         "cta_title": "Ready to Build a Better Payment Infrastructure?",
         "cta_body": (
             "Bring payments, routing, payouts, reconciliation, and analytics together on one "
-            "unified platform—built to scale with your business."
+            "unified platform, built to scale with your business."
         ),
         "cta_label": "Talk to an Expert",
     },
@@ -270,7 +270,7 @@ PAGES = {
         ],
         "smarter": {
             "title": "A Smarter Way to Manage Every Collection",
-            "body": (
+                "body": (
                 "Built for businesses handling high-volume payments, the solution helps reduce "
                 "manual processes, improve visibility, and create a smoother collection "
                 "experience for both businesses and customers."
@@ -348,7 +348,7 @@ PAGES = {
             "cards": [
                 {
                     "title": "Initiate Collection",
-                    "body": (
+                "body": (
                         "Create and send payment requests through your preferred collection "
                         "channel, making it easy for customers."
                     ),
@@ -389,7 +389,7 @@ PAGES = {
             "cards": [
                 {
                     "title": "Easy Payment Initiation",
-                    "body": (
+                "body": (
                         "Make it simple for customers to start a payment with intuitive payment "
                         "requests and streamlined collection journeys."
                     ),
@@ -465,7 +465,7 @@ PAGES = {
         "eyebrow": "Payouts",
         "title": "Send every payout faster with greater control and visibility",
         "intro": (
-            "Send fast, secure, and reliable payouts through one unified platform—built to "
+            "Send fast, secure, and reliable payouts through one unified platform, built to "
             "simplify operations and keep every transaction on track."
         ),
         "cta_label": "Talk to Expert",
@@ -498,7 +498,7 @@ PAGES = {
             "cards": [
                 {
                     "title": "Beneficiary Ready",
-                    "body": (
+                "body": (
                         "Easily add, manage, and organize beneficiaries while keeping recipient "
                         "details secure, updated, and ready for every payout."
                     ),
@@ -583,7 +583,7 @@ PAGES = {
             "cards": [
                 {
                     "title": "Beneficiary Payouts",
-                    "body": (
+                "body": (
                         "Send payments to customers, vendors, partners, employees, and other "
                         "beneficiaries through one unified payout flow."
                     ),
@@ -596,7 +596,7 @@ PAGES = {
                 },
                 {
                     "title": "Payout Tracking",
-                    "body": (
+                "body": (
                         "Monitor every payout from initiation to completion with real-time status "
                         "updates, transaction visibility, and clear operational insights for "
                         "better control."
@@ -704,7 +704,7 @@ PAGES = {
             "cards": [
                 {
                     "title": "IP Detection",
-                    "body": (
+                "body": (
                         "Identify unusual or high-risk IP activity to detect potentially "
                         "unauthorized access and suspicious transaction behavior."
                     ),
@@ -754,15 +754,15 @@ PAGES = {
                 {
                     "num": "01",
                     "title": "Continuous Monitoring",
-                    "body": (
+                "body": (
                         "Keep track of transaction activity and risk signals across connected "
                         "payment flows."
-                    ),
-                },
-                {
+                ),
+            },
+            {
                     "num": "02",
                     "title": "Minimize Financial Loss",
-                    "body": (
+                "body": (
                         "Prevent avoidable fraud-related losses by identifying risky transactions "
                         "before they become costly incidents."
                     ),
@@ -818,8 +818,8 @@ PAGES = {
             "body": (
                 "Power your financial operations with connected capabilities designed to make "
                 "transaction matching and exception management more efficient."
-            ),
-            "cards": [
+                ),
+                "cards": [
                 {
                     "title": "Reliable",
                     "body": (
@@ -900,7 +900,7 @@ PAGES = {
         },
         "showcase": {
             "title": "Everything You Need to Simplify Reconciliation",
-            "body": (
+                "body": (
                 "Power your financial operations with connected capabilities designed to make "
                 "transaction matching, and exception management more efficient."
             ),
@@ -922,7 +922,7 @@ PAGES = {
                 },
                 {
                     "title": "Exception Visibility",
-                    "body": (
+                "body": (
                         "Identify mismatches, missing transactions, and settlement exceptions "
                         "with clear visibility into issues that need attention."
                     ),
@@ -937,7 +937,7 @@ PAGES = {
                 },
                 {
                     "title": "Faster Resolution",
-                    "body": (
+                "body": (
                         "Give finance and operations teams the information they need to "
                         "investigate discrepancies and resolve settlement issues faster."
                     ),
@@ -1424,14 +1424,14 @@ PAGES = {
         ],
         "platform": {
             "title": "Your Brand. Your payment Platform. Our Technology.",
-            "body": (
+                "body": (
                 "Deliver a seamless experience under your own brand with a customizable platform "
                 "powered by reliable technology."
             ),
         },
         "steps": {
             "title": "Launch in 3 Simple Steps",
-            "body": (
+                "body": (
                 "Payment orchestration acts as a centralized layer between your business and "
                 "payment providers, helping you connect, manage, route, and optimize payments "
                 "through a single integration."
@@ -1440,7 +1440,7 @@ PAGES = {
                 {
                     "number": "01.",
                     "title": "Customize Your Brand",
-                    "body": (
+                "body": (
                         "Add your logo, brand colors to create a consistent platform experience "
                         "that reflects your unique brand identity."
                     ),
@@ -1451,7 +1451,7 @@ PAGES = {
                 {
                     "number": "02.",
                     "title": "Configure Your Platform",
-                    "body": (
+                "body": (
                         "Choose the features, settings, and workflows that best match your "
                         "business requirements and operational needs."
                     ),
@@ -1462,7 +1462,7 @@ PAGES = {
                 {
                     "number": "03.",
                     "title": "Launch Under Your Brand",
-                    "body": (
+                "body": (
                         "Deliver a fully branded platform experience to your customers while "
                         "managing everything through one centralized solution."
                     ),
@@ -1474,48 +1474,48 @@ PAGES = {
         },
         "benefits": {
             "title": "Why Choose White Label?",
-            "body": (
+                "body": (
                 "Build a payment experience that strengthens your business without "
                 "adding operational complexity."
-            ),
+                ),
             "cards": [
-                {
+            {
                     "title": "Lower Overhead",
-                    "body": (
+                "body": (
                         "Reduce the need for multiple payment systems and simplify how "
                         "your business manages its payment ecosystem."
-                    ),
+                ),
                     "icon": "/images/figma-white-label/icon-overhead.svg",
                     "icon_framed": True,
-                },
-                {
+            },
+            {
                     "title": "Stronger Trust",
-                    "body": (
+                "body": (
                         "Deliver a consistent, professional payment experience that builds "
                         "confidence at every customer touchpoint."
-                    ),
+                ),
                     "icon": "/images/figma-white-label/icon-trust.svg",
                     "icon_framed": False,
-                },
-                {
+            },
+            {
                     "title": "Business Focus",
-                    "body": (
+                "body": (
                         "Let your team focus on customers and growth while the underlying "
                         "payment infrastructure is handled for you."
-                    ),
+                ),
                     "icon": "/images/figma-white-label/icon-business.svg",
                     "icon_framed": False,
-                },
-                {
+            },
+            {
                     "title": "Ready to Scale",
-                    "body": (
+                "body": (
                         "Support growing transaction volumes and evolving business needs "
                         "without rebuilding your payment operations."
-                    ),
+                ),
                     "icon": "/images/figma-white-label/icon-scale-ready.svg",
                     "icon_framed": False,
-                },
-            ],
+            },
+        ],
         },
     },
     "custom-checkout": {
@@ -1529,7 +1529,7 @@ PAGES = {
         "cta_label": "Talk to Expert",
         "showcase": {
             "title": "One Checkout. Built Around Your Customers.",
-            "body": (
+                "body": (
                 "Customize payment methods, checkout flows, and the overall experience from one place."
             ),
             "image": "/images/figma-custom-checkout/platform-visual.png",
@@ -1538,39 +1538,39 @@ PAGES = {
         },
         "features": {
             "title": "Customize Every Step of Checkout",
-            "body": (
+                        "body": (
                 "Payment orchestration acts as a centralized layer between your business and "
                 "payment providers, helping you connect, manage, route, and optimize payments "
                 "through a single integration."
-            ),
+                        ),
             "items": [
-                {
+                    {
                     "title": "Your Branding and Logo",
-                    "body": (
+                        "body": (
                         "Show your logo and brand identity throughout checkout, so every payment "
-                        "step feels like part of your product—not a third-party redirect."
-                    ),
+                        "step feels like part of your product, not a third-party redirect."
+                        ),
                     "graphic": "branding",
                     "image": "/images/figma-custom-checkout/feature-branding.png",
                     "image_width": 637,
                     "image_height": 349,
                     "reverse": False,
-                },
-                {
+                    },
+                    {
                     "title": "Configure Payment Methods",
-                    "body": (
+                        "body": (
                         "Choose and manage the payment methods you want to offer, giving customers "
                         "more flexibility to pay using their preferred option."
-                    ),
+                        ),
                     "graphic": "methods",
                     "image": "/images/figma-custom-checkout/feature-methods.png",
                     "image_width": 616,
                     "image_height": 351,
                     "reverse": True,
-                },
-                {
+                    },
+                    {
                     "title": "Design Your Experience",
-                    "body": (
+                        "body": (
                         "Customize every detail of your checkout, from the layout and visual "
                         "elements to branding, ensuring it feels consistent with your business identity."
                     ),
@@ -1579,12 +1579,12 @@ PAGES = {
                     "image_width": 586,
                     "image_height": 427,
                     "reverse": False,
-                },
-            ],
-        },
+                    },
+                ],
+            },
         "benefits": {
             "title": "Custom Checkout built for your brand",
-            "body": (
+                "body": (
                 "Deliver a seamless experience under your own brand while managing your platform "
                 "with greater flexibility, customization, and centralized control."
             ),
@@ -1608,9 +1608,9 @@ PAGES = {
                     "title": "Built for Your Business",
                     "body": "Configure checkout flows based on your business requirements.",
                     "icon": "/images/figma-custom-checkout/icon-business.svg",
-                },
-            ],
-        },
+                    },
+                ],
+            },
     },
     "hyper-checkout": {
         "type": "hyper-checkout",
@@ -1623,18 +1623,18 @@ PAGES = {
         "cta_label": "Talk to Expert",
         "showcase": {
             "title": "Designed for less friction. Built for more conversions.",
-            "body": (
+                "body": (
                 "Every interaction at checkout matters. Give your customers a payment experience "
                 "that feels simple from the first click to the final confirmation."
-            ),
+                ),
             "image": "/images/figma-hyper-checkout/showcase-adaptive.png",
             "image_alt": "Adaptive Hyper Checkout with smart routing and payment modes",
             "image_width": 1291,
             "image_height": 638,
-        },
+            },
         "smarter": {
             "title": "A Smarter Checkout, Built for Every Customer",
-            "body": (
+                "body": (
                 "Deliver a seamless payment experience with intelligent payment selection, "
                 "flexible payment options, and frictionless checkout."
             ),
@@ -1645,15 +1645,15 @@ PAGES = {
             "cards": [
                 {
                     "title": "Smart Payment Selection",
-                    "body": (
+                "body": (
                         "Offer the right payment options based on customer preferences. "
                         "Make checkout faster and easier to complete."
-                    ),
+                ),
                     "icon": "/images/figma-hyper-checkout/icons/smart-pay.svg",
-                },
-                {
+            },
+            {
                     "title": "Outage",
-                    "body": (
+                "body": (
                         "Real-time alerts in the event of payment downtimes. "
                         "Stay ahead of disruptions and keep transactions flowing."
                     ),
@@ -1661,7 +1661,7 @@ PAGES = {
                 },
                 {
                     "title": "Responsive Interface",
-                    "body": (
+                "body": (
                         "Deliver a seamless checkout experience across all devices. "
                         "Keep the interface simple, clear, and easy to use."
                     ),
@@ -1669,7 +1669,7 @@ PAGES = {
                 },
                 {
                     "title": "Seamless Experience",
-                    "body": (
+                "body": (
                         "Create a smooth and consistent payment journey across every touchpoint. "
                         "Make every interaction simple, fast, and effortless."
                     ),
@@ -1679,38 +1679,38 @@ PAGES = {
         },
         "journey": {
             "title": "Turn a complex payment journey into a simple one",
-            "body": (
+                "body": (
                 "Make every step of the payment journey simpler, faster and more relevant with an "
                 "intelligent checkout built around customer preferences and payment behavior."
-            ),
-            "cards": [
-                {
+                ),
+                "cards": [
+                    {
                     "title": "Intelligent Payment Selection",
-                    "body": (
+                        "body": (
                         "Present customers with relevant payment options, making it easier to find "
                         "their preferred way to pay and complete the transaction."
-                    ),
+                        ),
                     "icon": "/images/figma-hyper-checkout/icons/payment.svg",
-                },
-                {
+                    },
+                    {
                     "title": "Streamlined Payment Flow",
-                    "body": (
+                        "body": (
                         "Reduce unnecessary steps and interactions across the checkout journey, "
                         "helping customers move from payment selection to confirmation with ease."
-                    ),
+                        ),
                     "icon": "/images/figma-hyper-checkout/icons/flow.svg",
-                },
-                {
+                    },
+                    {
                     "title": "Smart Failure Recovery",
-                    "body": (
+                        "body": (
                         "When a payment attempt fails, guide customers toward relevant alternatives "
                         "instead of making them restart the entire checkout process."
-                    ),
+                        ),
                     "icon": "/images/figma-hyper-checkout/icons/failure.svg",
-                },
-                {
+            },
+            {
                     "title": "Personalized Experience",
-                    "body": (
+                "body": (
                         "Create a more intuitive checkout by adapting the payment journey to "
                         "different devices, payment methods and customer preferences."
                     ),
@@ -1718,7 +1718,7 @@ PAGES = {
                 },
                 {
                     "title": "One-Tap Repeat Payments",
-                    "body": (
+                "body": (
                         "Enable customers to complete repeat purchases with fewer steps by "
                         "reducing unnecessary input across subsequent transactions."
                     ),
@@ -1728,7 +1728,7 @@ PAGES = {
         },
         "trust": {
             "title": "Everything you need to build a better checkout",
-            "body": (
+                "body": (
                 "Give customers a faster, more flexible and reliable payment journey with "
                 "capabilities designed to simplify every stage of checkout."
             ),
@@ -1739,17 +1739,17 @@ PAGES = {
             "cards": [
                 {
                     "title": "Adaptive Checkout Experience",
-                    "body": (
+                "body": (
                         "Adapt the checkout across devices and customer journeys for a seamless, "
                         "intuitive payment experience."
-                    ),
+                ),
                     "icon": "/images/figma-hyper-checkout/icons/trust-payment.svg",
                     "image": "/images/figma-hyper-checkout/Frame%202147226308.svg",
                     "image_alt": "Multi-device Hyper Checkout experience",
-                },
-                {
+            },
+            {
                     "title": "Multi-Mode Payment Support",
-                    "body": (
+                "body": (
                         "Offer multiple payment methods in one unified checkout, giving customers "
                         "the flexibility to pay their way."
                     ),
@@ -1757,11 +1757,11 @@ PAGES = {
                     "image": "/images/figma-hyper-checkout/trust-modes.png",
                     "image_alt": (
                         "UPI, cards, wallets and netbanking connected to a single checkout"
-                    ),
-                },
-                {
+                ),
+            },
+            {
                     "title": "Intelligent Routing Support",
-                    "body": (
+                "body": (
                         "Route transactions through the most suitable payment path to improve "
                         "reliability and payment success."
                     ),
@@ -1769,9 +1769,9 @@ PAGES = {
                     "image": "/images/figma-hyper-checkout/trust-routing.png",
                     "image_alt": (
                         "A payment routed across providers with successful and fallback outcomes"
-                    ),
-                },
-            ],
+                ),
+            },
+        ],
         },
     },
     "payment-orchestration": {
@@ -1791,7 +1791,7 @@ PAGES = {
         ],
         "layer": {
             "title": "One Layer to Manage Every Payment",
-            "body": (
+                "body": (
                 "Payment orchestration acts as a centralized layer between your business and "
                 "payment providers, helping you connect, manage, route, and optimize payments "
                 "through a single integration."
@@ -1805,7 +1805,7 @@ PAGES = {
         },
         "growth": {
             "title": "Turn Payment Complexity Into Business Growth",
-            "body": (
+                "body": (
                 "Payment orchestration acts as a centralized layer between your business and "
                 "payment providers, helping you connect, manage, route, and optimize payments "
                 "through a single integration."
@@ -1848,94 +1848,94 @@ PAGES = {
                 "Route every transaction intelligently with flexible rules designed to improve "
                 "success, reduce costs, and optimize payment performance."
             ),
-            "cards": [
-                {
+                "cards": [
+                    {
                     "title": "Least Cost Routing",
-                    "body": (
+                        "body": (
                         "Adapt the checkout across devices and customer journeys for a seamless, "
                         "intuitive payment experience."
                     ),
                     "image": "/images/figma-orchestration/routing/least-cost.svg",
                     "image_alt": (
                         "A payment routed to the lowest-cost gateway among three providers"
-                    ),
-                },
-                {
+                        ),
+                    },
+                    {
                     "title": "Priority Based Routing",
-                    "body": (
+                        "body": (
                         "Handle growing transaction volumes with infrastructure designed for "
                         "high-throughput payment environments."
                     ),
                     "image": "/images/figma-orchestration/routing/priority-based.svg",
                     "image_alt": (
                         "A payment request of 25000 rupees routed by gateway priority"
-                    ),
-                },
-                {
+                        ),
+                    },
+                    {
                     "title": "MID Cascading",
-                    "body": (
+                        "body": (
                         "Monitor transaction activity and payment performance through a "
                         "centralized view."
                     ),
                     "image": "/images/figma-orchestration/routing/mid-cascading.svg",
                     "image_alt": (
                         "A payment cascading across merchant IDs until one succeeds"
-                    ),
-                },
-                {
+                        ),
+                    },
+                    {
                     "title": "Rule Based Routing",
-                    "body": (
+                        "body": (
                         "Direct transactions through configured routes to support better payment "
                         "performance."
                     ),
                     "image": "/images/figma-orchestration/routing/rule-based.svg",
                     "image_alt": (
                         "A cost rule sending a payment to a fallback gateway after a failure"
-                    ),
-                },
-            ],
-        },
+                        ),
+                    },
+                ],
+            },
         "control": {
             "title": "More Control Over Every Transaction",
-            "body": (
+                "body": (
                 "Payment orchestration acts as a centralized layer between your business and "
                 "payment providers, helping you connect, manage, route, and optimize payments "
                 "through a single integration."
-            ),
+                ),
             "steps": [
-                {
+            {
                     "num": "01",
                     "title": "Increase Payment Success Rates",
-                    "body": (
+                "body": (
                         "Route transactions intelligently to improve authorization and approval "
                         "rates."
-                    ),
-                },
-                {
+                ),
+            },
+            {
                     "num": "02",
                     "title": "One Unified Payment Platform",
-                    "body": (
+                "body": (
                         "Manage multiple providers and payment methods through one integration, "
                         "giving you greater control."
-                    ),
-                },
-                {
+                ),
+            },
+            {
                     "num": "03",
                     "title": "Simplify Your Payment Infrastructure",
-                    "body": (
+                "body": (
                         "Connect and manage multiple payment providers through a centralized "
                         "orchestration layer."
-                    ),
-                },
-                {
+                ),
+            },
+            {
                     "num": "04",
                     "title": "Smarter Payment Gateway Routing",
-                    "body": (
+                "body": (
                         "Route every transaction through the most suitable gateway based on "
                         "performance and business rules."
-                    ),
-                },
-            ],
+                ),
+            },
+        ],
         },
     },
     "payout-portal": {
@@ -2724,47 +2724,47 @@ PAGES = {
             {
                 "id": "third-party-providers",
                 "title": "Third-Party Providers",
-                "body": (
+                        "body": (
                     "Certain services may depend on banks, payment gateways, acquiring institutions, "
                     "UPI partners, technology vendors, or other third-party providers. Urbanrupee "
                     "is not liable for failures, delays, or interruptions caused solely by such "
                     "third-party systems."
-                ),
-            },
-            {
+                        ),
+                    },
+                    {
                 "id": "fees",
                 "title": "Fees and Commercial Terms",
-                "body": (
+                        "body": (
                     "Use of certain Urbanrupee services may be subject to separate commercial "
                     "agreements, pricing schedules, onboarding documents, or service orders. Users "
                     "and merchants agree to pay all applicable fees, charges, taxes, and levies "
                     "associated with the use of the services."
-                ),
-            },
-            {
+                        ),
+                    },
+                    {
                 "id": "compliance",
                 "title": "Compliance and Verification",
-                "body": (
+                        "body": (
                     "Urbanrupee may request documents, KYC details, business verification records, "
                     "and related compliance information as required by law, internal risk controls, "
                     "or partner obligations. Urbanrupee may suspend or restrict services if required "
                     "information is not provided or if suspicious or prohibited activity is identified."
-                ),
-            },
-            {
+                        ),
+                    },
+                    {
                 "id": "intellectual-property",
                 "title": "Intellectual Property",
-                "body": (
+                        "body": (
                     "All content, software, branding, trademarks, designs, interfaces, technology, "
                     "and materials made available by Urbanrupee are the intellectual property of "
                     "Urbanrupee or its licensors. Users may not copy, reproduce, modify, distribute, "
                     "reverse engineer, or exploit any part of the services without prior written permission."
-                ),
-            },
-            {
+                        ),
+                    },
+                    {
                 "id": "data-and-privacy",
                 "title": "Data and Privacy",
-                "body": (
+                        "body": (
                     "Use of Urbanrupee is also governed by our Privacy Policy. By using the services, "
                     "you acknowledge that Urbanrupee may collect, process, and use information in "
                     "accordance with that policy."
@@ -2799,7 +2799,7 @@ PAGES = {
             {
                 "id": "liability",
                 "title": "Limitation of Liability",
-                "body": (
+                        "body": (
                     "To the maximum extent permitted by law, Urbanrupee shall not be liable for any "
                     "indirect, incidental, special, punitive, or consequential damages, including "
                     "loss of profits, revenue, business, goodwill, or data, arising out of or "
@@ -2809,22 +2809,22 @@ PAGES = {
                     "Urbanrupee's aggregate liability shall be limited to the amount paid by the "
                     "user or merchant for the specific services giving rise to the claim, subject "
                     "to applicable law and any separate contractual agreement."
-                ),
-            },
-            {
+                        ),
+                    },
+                    {
                 "id": "indemnity",
                 "title": "Indemnity",
-                "body": (
+                        "body": (
                     "You agree to indemnify and hold harmless Urbanrupee, its affiliates, officers, "
                     "employees, partners, and service providers from any claims, damages, liabilities, "
                     "losses, or expenses arising from your misuse of the services, violation of "
                     "these Terms, breach of law, or infringement of any third-party rights."
-                ),
-            },
-            {
+                        ),
+                    },
+                    {
                 "id": "governing-law",
                 "title": "Governing Law and Jurisdiction",
-                "body": (
+                        "body": (
                     "These Terms and Conditions shall be governed by the laws of India. Any disputes "
                     "arising out of or relating to these Terms shall be subject to the exclusive "
                     "jurisdiction of the courts located in Greater Noida, Uttar Pradesh."
@@ -2846,7 +2846,7 @@ PAGES = {
                     "Urbanrupee Techsolution Private Limited\n"
                     "Email: it.support@urbanrupee.com\n"
                     "Website: www.urbanrupee.com\n"
-                    "Address: A01 & A03, UG, Tower 3, NX–One, Techzone 4, Greater Noida, "
+                    "Address: A01 & A03, UG, Tower 3, NX-One, Techzone 4, Greater Noida, "
                     "Uttar Pradesh, India, 201301"
                 ),
             },
@@ -2890,37 +2890,37 @@ PAGES = {
             "cards": [
                 {
                     "title": "Unified UPI API",
-                    "body": (
+                "body": (
                         "Connect merchant payment flows to UPI acceptance through one "
                         "simplified integration layer."
-                    ),
+                ),
                     "icon": "/images/figma-upi/icons/api.svg",
                     "icon_width": 28,
                     "icon_height": 28,
-                },
-                {
+            },
+            {
                     "title": "Routing Engine",
-                    "body": (
+                "body": (
                         "Apply business rules and routing intelligence to guide UPI "
                         "transactions through the most suitable path."
-                    ),
+                ),
                     "icon": "/images/figma-upi/icons/routing.svg",
                     "icon_width": 28,
                     "icon_height": 28,
-                },
-                {
+            },
+            {
                     "title": "Intent & QR Support",
-                    "body": (
+                "body": (
                         "Support different UPI payment experiences through seamless intent "
                         "and QR based journeys."
-                    ),
+                ),
                     "icon": "/images/figma-upi/icons/qr.svg",
                     "icon_width": 28,
                     "icon_height": 28,
-                },
-                {
+            },
+            {
                     "title": "Reconciliation Support",
-                    "body": (
+                "body": (
                         "Improve operational control with better visibility into settlement "
                         "and transaction outcome status."
                     ),
@@ -2982,7 +2982,7 @@ PAGES = {
         },
         "capabilities": {
             "title": "Built to keep every UPI payment moving",
-            "body": (
+                "body": (
                 "Simplify UPI connectivity and intelligently manage transaction flows "
                 "through a single switching layer."
             ),
@@ -3002,7 +3002,7 @@ PAGES = {
                 },
                 {
                     "title": "Intelligent Routing",
-                    "body": (
+                "body": (
                         "Direct transactions through configured routes to support better "
                         "payment performance."
                     ),
@@ -3208,7 +3208,7 @@ PAGES = {
         "title": "Urbanrupee Payment Products",
         "intro": (
             "Urbanrupee is a payment solutions platform that enables businesses to accept, process, "
-            "route, and manage payments across UPI, cards, net banking, wallets, and EMI — with "
+            "route, and manage payments across UPI, cards, net banking, wallets, and EMI, with "
             "orchestration, checkout, payouts, and analytics in one suite."
         ),
         "sections": [
@@ -3242,7 +3242,7 @@ PAGES = {
                     {
                         "title": "Custom Checkout",
                         "body": (
-                            "Branded on-site checkout with UPI, cards, net banking, wallets, and EMI — "
+                            "Branded on-site checkout with UPI, cards, net banking, wallets, and EMI, "
                             "designed to reduce drop-offs."
                         ),
                         "href": "/products/custom-checkout",
@@ -3327,7 +3327,7 @@ PAGES = {
                     {
                         "title": "Blog",
                         "body": (
-                            "Payment and fintech insights — gateways, UPI, compliance, and growth "
+                            "Payment and fintech insights on gateways, UPI, compliance, and growth "
                             "strategies."
                         ),
                         "href": "/blog",
@@ -3364,7 +3364,7 @@ PAGES = {
         "phone": "+91 9305697870",
         "email": "it.support@urbanrupee.com",
         "address": (
-            "A01 & A03, UG, Tower 3, NX–One, Techzone 4, Greater Noida, "
+            "A01 & A03, UG, Tower 3, NX-One, Techzone 4, Greater Noida, "
             "Uttar Pradesh, India, 201301"
         ),
         "faq_title": "Got any questions? We've got you covered.",
@@ -3417,10 +3417,10 @@ PAGES = {
         "cta_title": "Ready to Build a Better Payment Infrastructure?",
         "cta_body": (
             "Bring payments, routing, payouts, reconciliation, and analytics together on one "
-            "unified platform—built to scale with your business."
+            "unified platform, built to scale with your business."
         ),
         "cta_label": "Talk to an Expert",
-        "catalogue_note": "As listed in the Urbanrupee Product Catalogue — NX-One, Gaur City.",
+        "catalogue_note": "As listed in the Urbanrupee Product Catalogue: NX-One, Gaur City.",
     },
 }
 

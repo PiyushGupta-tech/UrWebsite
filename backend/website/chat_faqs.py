@@ -141,7 +141,7 @@ CHAT_FAQS = [
         "question": "What kind of reports can I access?",
         "answer": (
             "You can access detailed reports on transactions, settlements, success rates, failures, "
-            "and reconciliation—all from a single dashboard."
+            "and reconciliation, all from a single dashboard."
         ),
         "href": "/products/orchestration",
     },
@@ -348,7 +348,7 @@ CHAT_FAQS = [
     {
         "question": "How do these products work together?",
         "answer": (
-            "Urbanrupee's products are designed to work seamlessly together—Hyper Checkout enhances the "
+            "Urbanrupee's products are designed to work seamlessly together: Hyper Checkout enhances the "
             "user experience, orchestration improves backend efficiency, and white label solutions provide "
             "branding and ownership."
         ),

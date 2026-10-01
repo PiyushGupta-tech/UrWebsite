@@ -658,7 +658,7 @@ onBeforeUnmount(() => {
           <div class="hc-stage__card-text">
             <p class="hc-stage__card-title">{{ psp.name }}</p>
             <p class="hc-stage__card-body">
-              Success Rate -
+              Success Rate:
               <span
                 class="hc-stage__rate"
                 :class="{ 'hc-stage__rate--best': index === bestProvider }"

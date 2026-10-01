@@ -14,6 +14,7 @@ import {
   formatStatValue,
   parseStatValue,
 } from "@/composables/useCountUp.js";
+import { useSingleLineFit } from "@/composables/useSingleLineFit.js";
 import { scheduleScrollRestore } from "@/utils/scrollRestoration.js";
 
 defineProps({
@@ -40,6 +41,10 @@ const hasAnimatedStats = ref(false);
 const statDisplays = ref([]);
 let statsObserver = null;
 let cancelStatAnimation = null;
+
+useSingleLineFit(trustStatsRef, ".home-trust__stat-label", {
+  watchSource: () => (data.value?.stats || []).map((stat) => stat.label).join("|"),
+});
 
 const parsedStats = computed(() =>
   (data.value?.stats || []).map((stat) => parseStatValue(stat.value)),
@@ -311,11 +316,15 @@ onUnmounted(() => {
   white-space: nowrap;
 }
 
+/* One line always: the row shrinks every label by the same --fit-scale (useSingleLineFit). */
 .home-trust__stat-label {
+  --label-size: 16px;
   display: block;
-  font-size: 16px;
+  align-self: stretch;
+  font-size: calc(var(--label-size) * var(--fit-scale, 1));
   font-weight: 600;
   line-height: 32px;
+  white-space: nowrap;
   color: #414651;
 }
 
@@ -463,14 +472,13 @@ onUnmounted(() => {
     flex-wrap: nowrap;
     justify-content: space-between;
     align-items: flex-start;
-    gap: clamp(32px, 8vw, 120px);
+    gap: clamp(24px, 4vw, 64px);
     width: 100%;
     max-width: 868px;
   }
 
   .home-trust__stat {
     flex: 0 1 auto;
-    max-width: 137px;
   }
 
   .home-trust__stat-value {
@@ -480,9 +488,7 @@ onUnmounted(() => {
   }
 
   .home-trust__stat-label {
-    font-size: 16px;
     line-height: 24px;
-    font-weight: 600;
   }
 }
 
@@ -539,7 +545,7 @@ onUnmounted(() => {
   .home-trust__stats {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    max-width: 327px;
+    max-width: 480px;
     gap: 26px 36px;
   }
 
@@ -574,8 +580,28 @@ onUnmounted(() => {
   }
 
   .home-trust__stat-label {
-    font-size: 14px;
+    --label-size: 14px;
     line-height: 1.5;
+  }
+}
+
+/* Four across gets too narrow for one-line labels below here. */
+@media (min-width: 701px) and (max-width: 900px) {
+  .home-trust__stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    justify-content: center;
+    max-width: 560px;
+    gap: 26px 48px;
+  }
+}
+
+/* Two columns get too narrow for one-line labels below here. */
+@media (max-width: 480px) {
+  .home-trust__stats {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 327px;
+    gap: 20px;
   }
 }
 </style>

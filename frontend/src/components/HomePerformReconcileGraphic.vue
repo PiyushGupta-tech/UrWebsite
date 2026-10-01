@@ -37,8 +37,8 @@ const MOBILE_CONNECTORS = {
 
 const mainCardBody = computed(() =>
   isMobile.value
-    ? "All transactions, settlements, refunds & payouts - accurate, matched, complete."
-    : "All transactions, settlements, refunds & payouts - accurate, matched, complete.",
+    ? "All transactions, settlements, refunds & payouts: accurate, matched, complete."
+    : "All transactions, settlements, refunds & payouts: accurate, matched, complete.",
 );
 
 function startCycle() {

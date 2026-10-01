@@ -1,7 +1,7 @@
 /** Hero copy synced to CustomCheckoutHeroGraphic payment tabs. */
 export const CUSTOM_CHECKOUT_METHOD_HERO = {
   upi: {
-    headline: "UPI — Fast, Familiar & Frictionless",
+    headline: "UPI: Fast, Familiar & Frictionless",
     body:
       "Deliver instant UPI payment experiences through optimized payment flows, smart routing, and seamless user interactions.",
     bullets_heading: "Key Features",
@@ -14,7 +14,7 @@ export const CUSTOM_CHECKOUT_METHOD_HERO = {
     ],
   },
   cards: {
-    headline: "Cards — Branded & Secure",
+    headline: "Cards: Branded & Secure",
     body:
       "Offer a premium card payment experience through tokenized transactions, secure authentication, and fully customized interfaces.",
     bullets_heading: "Key Features",
@@ -27,7 +27,7 @@ export const CUSTOM_CHECKOUT_METHOD_HERO = {
     ],
   },
   card: {
-    headline: "Cards — Branded & Secure",
+    headline: "Cards: Branded & Secure",
     body:
       "Offer a premium card payment experience through tokenized transactions, secure authentication, and fully customized interfaces.",
     bullets_heading: "Key Features",
@@ -40,7 +40,7 @@ export const CUSTOM_CHECKOUT_METHOD_HERO = {
     ],
   },
   netbanking: {
-    headline: "Net Banking — Trusted Banking Payments",
+    headline: "Net Banking: Trusted Banking Payments",
     body:
       "Provide secure bank-based payment options through seamless banking integrations and intelligent transaction handling.",
     bullets_heading: "Key Features",
@@ -53,7 +53,7 @@ export const CUSTOM_CHECKOUT_METHOD_HERO = {
     ],
   },
   wallets: {
-    headline: "Wallets — Convenient One-Tap Payments",
+    headline: "Wallets: Convenient One-Tap Payments",
     body:
       "Enable customers to complete transactions quickly through popular wallet integrations and simplified payment journeys.",
     bullets_heading: "Key Features",
@@ -66,7 +66,7 @@ export const CUSTOM_CHECKOUT_METHOD_HERO = {
     ],
   },
   emi: {
-    headline: "EMI — Flexible Payment Experiences",
+    headline: "EMI: Flexible Payment Experiences",
     body:
       "Increase affordability and encourage higher-value purchases through integrated EMI options directly within checkout.",
     bullets_heading: "Key Features",

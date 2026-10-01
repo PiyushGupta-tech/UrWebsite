@@ -43,15 +43,6 @@ const indiaGrowth = computed(() => props.section.india_growth || null);
             <h3>{{ indiaGrowth.side_title }}</h3>
             <p>{{ indiaGrowth.side_body }}</p>
           </div>
-          <ul class="home-close__india-points">
-            <li
-              v-for="item in indiaGrowth.points || []"
-              :key="item.title"
-            >
-              <strong>{{ item.title }}</strong>
-              <p>{{ item.body }}</p>
-            </li>
-          </ul>
         </div>
       </div>
     </section>
@@ -187,38 +178,6 @@ const indiaGrowth = computed(() => props.section.india_growth || null);
   font-size: 16px;
   line-height: 24px;
   letter-spacing: 0.64px;
-  color: var(--muted);
-}
-
-.home-close__india-points {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  max-width: 481px;
-}
-
-.home-close__india-points li {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.home-close__india-points strong {
-  font-size: 18px;
-  font-weight: 600;
-  line-height: 24px;
-  color: #414651;
-}
-
-.home-close__india-points p {
-  margin: 0;
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 24px;
-  letter-spacing: -0.16px;
   color: var(--muted);
 }
 
@@ -662,27 +621,6 @@ const indiaGrowth = computed(() => props.section.india_growth || null);
     letter-spacing: 0.48px;
   }
 
-  .home-close__india-points {
-    gap: 18px;
-    max-width: 358px;
-    align-items: flex-start;
-  }
-
-  .home-close__india-points li {
-    align-items: flex-start;
-    gap: 6px;
-  }
-
-  .home-close__india-points strong {
-    font-size: 16px;
-    line-height: 28px;
-  }
-
-  .home-close__india-points p {
-    font-size: 12px;
-    line-height: 20px;
-  }
-
   .home-close__faq,
   .home-close__cta {
     padding-left: 40px;
@@ -718,14 +656,8 @@ const indiaGrowth = computed(() => props.section.india_growth || null);
     text-align: center;
   }
 
-  .home-close__india-side,
-  .home-close__india-points,
-  .home-close__india-points li {
+  .home-close__india-side {
     align-items: center;
-  }
-
-  .home-close__india-points {
-    max-width: 100%;
   }
 
   .home-close__faq,
