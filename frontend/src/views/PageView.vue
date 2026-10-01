@@ -147,7 +147,7 @@ watch(() => route.path, loadPage);
       v-if="payload.common_closing"
       :section="payload.common_closing"
       :show-india-growth="false"
-      :show-audiences="slug !== 'unified-dashboard'"
+      :show-audiences="false"
       :show-faq="slug !== 'faq'"
       :show-cta="slug !== 'contact'"
     />
