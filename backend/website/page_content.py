@@ -97,11 +97,23 @@ PAGES = {
                 "name": "Nakul Kushwaha",
                 "role": "Founder",
                 "image": "/images/2.png",
+                "bio": (
+                    "He brings 10+ years of experience in payments, fintech, and business "
+                    "development, with professional experience at Aurionpro, Vodafone Idea, and "
+                    "Technopnow Technology. His expertise spans payment processing, client "
+                    "solutions, and strategic business development."
+                ),
             },
             {
                 "name": "Jay Chaudhary",
                 "role": "CEO",
                 "image": "/images/1.png",
+                "bio": (
+                    "He brings 12+ years of diverse industry experience, having worked with leading "
+                    "companies including Pine Labs, Paytm, and BharatEarns. His expertise spans "
+                    "digital payments, cards, EMI, BNPL, offline payments, embedded finance, and "
+                    "strategic partnerships."
+                ),
             },
         ],
         "values_title": "Our Core Values",

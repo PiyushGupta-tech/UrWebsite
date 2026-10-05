@@ -34,6 +34,14 @@ function updatePartnersZoom() {
   partnersZoom.value = Math.min(1, el.clientWidth / PARTNERS_STAGE_WIDTH);
 }
 
+const openLeader = ref(null);
+
+/* Touch and pen have no hover, so a tap toggles the bio; mouse users get it on hover. */
+function onLeaderTap(event, leader) {
+  if (event.pointerType === "mouse" || !leader.bio) return;
+  openLeader.value = openLeader.value === leader.name ? null : leader.name;
+}
+
 const STATS_DURATION = 1800;
 const statsEl = ref(null);
 const statDisplays = ref([]);
@@ -249,7 +257,14 @@ onBeforeUnmount(() => {
         </div>
 
         <div class="about-leaders__grid">
-          <article v-for="leader in page.leaders || []" :key="leader.name" class="about-leaders__card">
+          <article
+            v-for="leader in page.leaders || []"
+            :key="leader.name"
+            class="about-leaders__card"
+            :class="{ 'about-leaders__card--open': openLeader === leader.name }"
+            :tabindex="leader.bio ? 0 : undefined"
+            @pointerup="onLeaderTap($event, leader)"
+          >
             <img
               class="about-leaders__photo"
               :src="leader.image"
@@ -259,9 +274,19 @@ onBeforeUnmount(() => {
               loading="lazy"
               decoding="async"
             />
-            <div class="about-leaders__caption">
-              <h3 class="about-leaders__name">{{ leader.name }}</h3>
-              <p class="about-leaders__role">{{ leader.role }}</p>
+            <div class="about-leaders__caption" :class="{ 'about-leaders__caption--bio': leader.bio }">
+              <span class="about-leaders__spacer" aria-hidden="true" />
+              <div class="about-leaders__person">
+                <h3 class="about-leaders__name">{{ leader.name }}</h3>
+                <p class="about-leaders__role">
+                  <span class="about-leaders__role-text">{{ leader.role }}</span>
+                  <span v-if="leader.bio" class="about-leaders__role-text about-leaders__role-text--caps" aria-hidden="true">
+                    {{ leader.role }}
+                  </span>
+                </p>
+              </div>
+              <p v-if="leader.bio" class="about-leaders__bio">{{ leader.bio }}</p>
+              <span class="about-leaders__spacer about-leaders__spacer--end" aria-hidden="true" />
             </div>
           </article>
         </div>
@@ -508,8 +533,8 @@ onBeforeUnmount(() => {
 
 .about-overview__body {
   margin: 0;
-  font-size: 20px;
-  line-height: 28px;
+  font-size: 16px;
+  line-height: 24px;
   color: var(--about-muted);
 }
 
@@ -837,11 +862,29 @@ onBeforeUnmount(() => {
 }
 
 .about-leaders__card {
+  --open: 0;
+  --leader-ease: cubic-bezier(0.22, 1, 0.36, 1);
   position: relative;
   aspect-ratio: 406 / 424;
   border-radius: 24px;
   overflow: hidden;
   background: #d4d4d8;
+}
+
+@media (hover: hover) {
+  .about-leaders__card:hover {
+    --open: 1;
+  }
+}
+
+.about-leaders__card:focus-visible,
+.about-leaders__card--open {
+  --open: 1;
+}
+
+.about-leaders__card:focus-visible {
+  outline: 2px solid var(--about-ink);
+  outline-offset: 4px;
 }
 
 .about-leaders__photo {
@@ -851,23 +894,48 @@ onBeforeUnmount(() => {
   object-fit: cover;
 }
 
+/* Full-card glass panel parked so only its 82px strip shows; --open slides it up over the photo (Figma 1003:9116). */
 .about-leaders__caption {
   position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  min-height: 82px;
+  inset: 0;
   box-sizing: border-box;
-  padding: 12px 24px;
+  padding: 16px 24px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  gap: 4px;
   border: 1px solid rgba(255, 255, 255, 0.25);
   border-radius: 0 0 24px 24px;
   background: rgba(255, 255, 255, 0.2);
   -webkit-backdrop-filter: blur(28.5px);
   backdrop-filter: blur(28.5px);
+  transform: translateY(calc(100% - 82px));
+}
+
+.about-leaders__caption--bio {
+  border-radius: calc(var(--open) * 24px) calc(var(--open) * 24px) 24px 24px;
+  transform: translateY(calc((1 - var(--open)) * (100% - 82px)));
+  transition:
+    transform 0.6s var(--leader-ease),
+    border-radius 0.6s var(--leader-ease);
+}
+
+.about-leaders__spacer {
+  flex: 0 0 0;
+}
+
+.about-leaders__spacer--end {
+  flex-grow: 1;
+}
+
+.about-leaders__caption--bio .about-leaders__spacer:not(.about-leaders__spacer--end) {
+  flex-grow: var(--open);
+  transition: flex-grow 0.6s var(--leader-ease);
+}
+
+.about-leaders__person {
+  display: flex;
+  flex-direction: column;
+  gap: calc(4px + var(--open) * 4px);
+  transition: gap 0.6s var(--leader-ease);
 }
 
 .about-leaders__name {
@@ -879,12 +947,52 @@ onBeforeUnmount(() => {
 }
 
 .about-leaders__role {
+  display: grid;
   margin: 0;
   font-size: 16px;
   font-weight: 500;
   line-height: 22px;
   color: #ffffff;
   opacity: 0.8;
+}
+
+.about-leaders__role-text {
+  grid-area: 1 / 1;
+}
+
+.about-leaders__caption--bio .about-leaders__role-text {
+  opacity: calc(1 - var(--open));
+  transition: opacity 0.3s ease;
+}
+
+.about-leaders__caption--bio .about-leaders__role-text--caps {
+  font-size: 15px;
+  text-transform: uppercase;
+  opacity: var(--open);
+}
+
+.about-leaders__bio {
+  margin: 24px 0 0;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 22px;
+  color: #ffffff;
+  opacity: calc(var(--open) * 0.8);
+  transform: translateY(calc((1 - var(--open)) * 12px));
+  transition:
+    opacity 0.4s ease,
+    transform 0.6s var(--leader-ease);
+  transition-delay: calc(var(--open) * 0.15s);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-leaders__caption--bio,
+  .about-leaders__caption--bio .about-leaders__spacer,
+  .about-leaders__person,
+  .about-leaders__role-text,
+  .about-leaders__bio {
+    transition: none;
+  }
 }
 
 /* Core values */
@@ -1103,9 +1211,13 @@ onBeforeUnmount(() => {
   }
 }
 
-/* ---------- Desktop: values panel compact enough to fit a laptop viewport ---------- */
+/* ---------- Desktop: fixed overview title size; values panel compact enough to fit a laptop viewport ---------- */
 
 @media (min-width: 1025px) {
+  .about-overview__title {
+    font-size: 40px;
+  }
+
   .about-values {
     min-height: 0;
     padding-block: 48px;
@@ -1154,11 +1266,6 @@ onBeforeUnmount(() => {
 
   .about-overview__title {
     max-width: 640px;
-  }
-
-  .about-overview__body {
-    font-size: 18px;
-    line-height: 28px;
   }
 
   .about-mission {
