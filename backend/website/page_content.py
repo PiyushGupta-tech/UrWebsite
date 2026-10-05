@@ -14,7 +14,7 @@ PAGES = {
             "at scale."
         ),
         "merchant_partners": content.MERCHANT_PARTNERS,
-        "overview_title": "Building smarter payment experiences for a digitally connected world.",
+        "overview_title": "Building Smarter Payment Experiences For A Digitally Connected World.",
         "overview_body": (
             "Urbanrupee is a leading payment technology company providing a comprehensive "
             "technology stack for modern digital payments. We help businesses simplify complex "

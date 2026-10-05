@@ -16,6 +16,9 @@ const props = defineProps({
 
 const ASSETS = "/images/figma-about-v2";
 const PARTNERS_STAGE_WIDTH = 866;
+const PARTNERS_STAGE_HEIGHT = 806;
+const PARTNERS_STAGE_PAD = 10;
+const PARTNERS_MIN_ZOOM = 0.3;
 
 const valueIcons = {
   users: `${ASSETS}/icon-users.svg`,
@@ -28,11 +31,98 @@ const partnersSection = ref(null);
 const partnersZoom = ref(1);
 let partnersObserver = null;
 
+function pageNavOffset() {
+  const page = partnersSection.value?.closest(".page-view");
+  const n = page ? Number.parseFloat(getComputedStyle(page).getPropertyValue("--page-nav-offset")) : NaN;
+  return Number.isFinite(n) ? n : 129;
+}
+
+/* Tablet and up: the graphic also fits the band between the navbar and the viewport bottom, with 10px above and below. */
 function updatePartnersZoom() {
   const el = partnersSection.value;
   if (!el) return;
-  partnersZoom.value = Math.min(1, el.clientWidth / PARTNERS_STAGE_WIDTH);
+  let zoom = Math.min(1, el.clientWidth / PARTNERS_STAGE_WIDTH);
+  if (window.matchMedia("(min-width: 768px)").matches) {
+    const band = document.documentElement.clientHeight - pageNavOffset() - PARTNERS_STAGE_PAD * 2;
+    zoom = Math.min(zoom, Math.max(PARTNERS_MIN_ZOOM, band / PARTNERS_STAGE_HEIGHT));
+  }
+  partnersZoom.value = zoom;
 }
+
+/* Journey timeline fills like a progress bar as a reading line (60% down the viewport) passes each step. */
+const JOURNEY_READ_LINE = 0.6;
+const journeyTimeline = ref(null);
+let journeyFrame = 0;
+let journeyObserver = null;
+let journeyListening = false;
+let journeyMotionQuery = null;
+
+function paintJourney() {
+  journeyFrame = 0;
+  const list = journeyTimeline.value;
+  if (!list) return;
+  const steps = [...list.querySelectorAll(".about-journey__step")];
+  const reduceMotion = journeyMotionQuery?.matches;
+  const line = window.innerHeight * JOURNEY_READ_LINE;
+  const centres = steps.map((step) => {
+    const node = step.querySelector(".about-journey__node");
+    const r = node.getBoundingClientRect();
+    return r.top + r.height / 2;
+  });
+  steps.forEach((step, i) => {
+    const next = centres[i + 1];
+    const fill = reduceMotion
+      ? 1
+      : next === undefined
+        ? 0
+        : Math.min(1, Math.max(0, (line - centres[i]) / (next - centres[i] || 1)));
+    step.style.setProperty("--fill", fill.toFixed(4));
+    step.classList.toggle("about-journey__step--active", reduceMotion || line >= centres[i]);
+  });
+}
+
+function queueJourneyPaint() {
+  if (!journeyFrame) journeyFrame = requestAnimationFrame(paintJourney);
+}
+
+function listenJourney(on) {
+  if (on === journeyListening) return;
+  journeyListening = on;
+  const method = on ? "addEventListener" : "removeEventListener";
+  window[method]("scroll", queueJourneyPaint, { passive: true });
+  window[method]("resize", queueJourneyPaint);
+  if (on) queueJourneyPaint();
+}
+
+function setupJourneyProgress() {
+  journeyMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+  journeyMotionQuery.addEventListener("change", queueJourneyPaint);
+  paintJourney();
+  if (typeof IntersectionObserver === "undefined" || !journeyTimeline.value) {
+    listenJourney(true);
+    return;
+  }
+  journeyObserver = new IntersectionObserver(([entry]) => listenJourney(entry.isIntersecting), {
+    rootMargin: "50% 0px",
+  });
+  journeyObserver.observe(journeyTimeline.value);
+}
+
+function teardownJourneyProgress() {
+  listenJourney(false);
+  journeyObserver?.disconnect();
+  journeyMotionQuery?.removeEventListener("change", queueJourneyPaint);
+  if (journeyFrame) cancelAnimationFrame(journeyFrame);
+  journeyFrame = 0;
+}
+
+watch(
+  () => (props.page.journey || []).map((s) => s.title).join("|"),
+  async () => {
+    await nextTick();
+    paintJourney();
+  },
+);
 
 const openLeader = ref(null);
 
@@ -115,14 +205,18 @@ onMounted(() => {
     partnersObserver = new ResizeObserver(updatePartnersZoom);
     partnersObserver.observe(partnersSection.value);
   }
+  window.addEventListener("resize", updatePartnersZoom);
   setupStatsCountUp();
+  setupJourneyProgress();
 });
 
 onBeforeUnmount(() => {
   partnersObserver?.disconnect();
   partnersObserver = null;
+  window.removeEventListener("resize", updatePartnersZoom);
   statsObserver?.disconnect();
   cancelStats?.();
+  teardownJourneyProgress();
 });
 </script>
 
@@ -223,7 +317,7 @@ onBeforeUnmount(() => {
           />
         </div>
 
-        <ol class="about-journey__timeline">
+        <ol ref="journeyTimeline" class="about-journey__timeline">
           <li v-for="(step, index) in page.journey || []" :key="step.title" class="about-journey__step">
             <span class="about-journey__node" aria-hidden="true">{{ index + 1 }}</span>
             <h3 class="about-journey__step-title">{{ step.title }}</h3>
@@ -726,7 +820,12 @@ onBeforeUnmount(() => {
   top: 37px;
   width: 3px;
   height: calc(100% + var(--journey-gap) - 33px);
-  background: var(--about-teal);
+  border-radius: 3px;
+  background: linear-gradient(
+    to bottom,
+    var(--about-teal) 0 calc(var(--fill, 0) * 100%),
+    rgba(9, 116, 149, 0.16) calc(var(--fill, 0) * 100%) 100%
+  );
 }
 
 .about-journey__node {
@@ -737,14 +836,31 @@ onBeforeUnmount(() => {
   width: 41px;
   height: 41px;
   border-radius: 8px;
-  background: var(--about-teal);
+  background: #e2eff3;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 24px;
   font-weight: 700;
   line-height: 1;
+  color: var(--about-teal);
+  transform: scale(0.92);
+  transition:
+    background-color 0.35s ease,
+    color 0.35s ease,
+    transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.about-journey__step--active .about-journey__node {
+  background: var(--about-teal);
   color: #ffffff;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-journey__node {
+    transition: none;
+  }
 }
 
 .about-journey__step-title {
@@ -823,6 +939,16 @@ onBeforeUnmount(() => {
   line-height: 24px;
   letter-spacing: 0.64px;
   color: var(--about-muted);
+}
+
+@media (min-width: 768px) {
+  .about-partners__stage {
+    padding-block: 10px;
+  }
+
+  .about-partners__copy-layer {
+    inset: 10px 0;
+  }
 }
 
 /* Leaders */
