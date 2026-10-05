@@ -1,38 +1,120 @@
 <script setup>
-import { computed, onMounted, ref } from "vue";
+import { nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { RouterLink } from "vue-router";
 import PartnersMarquee from "@/components/PartnersMarquee.vue";
-import AboutHeroGraphic from "@/components/pages/AboutHeroGraphic.vue";
-import AboutEcoPanel from "@/components/pages/AboutEcoPanel.vue";
-import { provideAboutEco } from "@/composables/useAboutEco.js";
+import AboutPartnersGraphic from "@/components/pages/AboutPartnersGraphic.vue";
+import {
+  animateStatValues,
+  formatStatValue,
+  parseStatValue,
+} from "@/composables/useCountUp.js";
 
 const props = defineProps({
   page: { type: Object, required: true },
   relatedLinks: { type: Array, default: () => [] },
 });
-const heroParagraphs = computed(() => props.page.hero_paragraphs || [props.page.intro]);
 
-const pillarIcons = {
-  handshake: "/images/figma-about/icon-handshake.svg",
-  performance: "/images/figma-about/icon-performance.svg",
-  link: "/images/figma-about/icon-link.svg",
-  growth: "/images/figma-about/icon-growth.svg",
+const ASSETS = "/images/figma-about-v2";
+const PARTNERS_STAGE_WIDTH = 866;
+
+const valueIcons = {
+  users: `${ASSETS}/icon-users.svg`,
+  star: `${ASSETS}/icon-star.svg`,
+  "shield-check": `${ASSETS}/icon-shield-check.svg`,
+  zap: `${ASSETS}/icon-zap.svg`,
 };
 
-const openPrinciple = ref(0);
-const openFaq = ref(0);
-const aboutEcoReady = ref(false);
-provideAboutEco(aboutEcoReady);
+const partnersSection = ref(null);
+const partnersZoom = ref(1);
+let partnersObserver = null;
 
-const leftPillars = computed(() => (props.page.pillars || []).slice(0, 2));
-const rightPillars = computed(() => (props.page.pillars || []).slice(2, 4));
-
-function togglePrinciple(index) {
-  openPrinciple.value = openPrinciple.value === index ? -1 : index;
+function updatePartnersZoom() {
+  const el = partnersSection.value;
+  if (!el) return;
+  partnersZoom.value = Math.min(1, el.clientWidth / PARTNERS_STAGE_WIDTH);
 }
 
+const STATS_DURATION = 1800;
+const statsEl = ref(null);
+const statDisplays = ref([]);
+let statsObserver = null;
+let cancelStats = null;
+
+/* Single-digit whole values ("1Cr") count through tenths so they visibly grow; the last frame is exact. */
+function statsForCounting() {
+  return (props.page.stats || []).map((stat) => {
+    const parsed = parseStatValue(stat.value);
+    if (parsed.fixed === undefined && parsed.decimals === 0 && parsed.target < 10) {
+      return { ...parsed, decimals: 1, tenths: true };
+    }
+    return parsed;
+  });
+}
+
+function formatFrame(value, parsed) {
+  return parsed.tenths ? value.replace(/\.0(?=\D*$)/, "") : value;
+}
+
+function showFinalStats() {
+  statDisplays.value = (props.page.stats || []).map((stat) => stat.value);
+}
+
+function setupStatsCountUp() {
+  statsObserver?.disconnect();
+  statsObserver = null;
+  cancelStats?.();
+  cancelStats = null;
+
+  const stats = props.page.stats || [];
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (!stats.length || reduceMotion || typeof IntersectionObserver === "undefined" || !statsEl.value) {
+    showFinalStats();
+    return;
+  }
+
+  const parsed = statsForCounting();
+  statDisplays.value = parsed.map((p) => formatFrame(formatStatValue(p, 0), p));
+
+  statsObserver = new IntersectionObserver(
+    ([entry]) => {
+      if (!entry?.isIntersecting) return;
+      statsObserver?.disconnect();
+      statsObserver = null;
+      cancelStats = animateStatValues(parsed, {
+        duration: STATS_DURATION,
+        onFrame: (values) => {
+          statDisplays.value = values.map((value, i) => formatFrame(value, parsed[i]));
+        },
+        onComplete: showFinalStats,
+      });
+    },
+    { threshold: 0.25, rootMargin: "0px 0px -8% 0px" },
+  );
+  statsObserver.observe(statsEl.value);
+}
+
+watch(
+  () => (props.page.stats || []).map((s) => `${s.label}:${s.value}`).join("|"),
+  async () => {
+    await nextTick();
+    setupStatsCountUp();
+  },
+);
+
 onMounted(() => {
-  aboutEcoReady.value = true;
+  updatePartnersZoom();
+  if (typeof ResizeObserver !== "undefined" && partnersSection.value) {
+    partnersObserver = new ResizeObserver(updatePartnersZoom);
+    partnersObserver.observe(partnersSection.value);
+  }
+  setupStatsCountUp();
+});
+
+onBeforeUnmount(() => {
+  partnersObserver?.disconnect();
+  partnersObserver = null;
+  statsObserver?.disconnect();
+  cancelStats?.();
 });
 </script>
 
@@ -51,18 +133,12 @@ onMounted(() => {
 
       <div class="about-hero__inner">
         <div class="about-hero__copy">
-          <h1 class="about-hero__title">{{ page.title }}</h1>
-          <div class="about-hero__intros">
-            <p
-              v-for="(paragraph, index) in heroParagraphs"
-              :key="index"
-              class="about-hero__intro"
-            >
-              {{ paragraph }}
-            </p>
+          <div class="about-hero__text">
+            <h1 class="about-hero__title">{{ page.hero_title || page.title }}</h1>
+            <p class="about-hero__intro">{{ page.intro }}</p>
           </div>
           <RouterLink to="/contact" class="about-hero__cta">
-            <span>{{ page.cta_label || "Talk to an Expert" }}</span>
+            <span>{{ page.cta_label || "Talk to Expert" }}</span>
             <img
               src="/images/figma-contact/nav-arrow.svg"
               alt=""
@@ -73,157 +149,146 @@ onMounted(() => {
           </RouterLink>
         </div>
 
-        <div class="about-hero__visual" aria-label="Payments ecosystem overview">
-          <AboutHeroGraphic class="about-hero__graphic" />
-          <AboutEcoPanel class="about-hero__panel" />
+        <div class="about-trust">
+          <PartnersMarquee
+            title="Trusted by Leading Businesses"
+            :partners="page.merchant_partners || []"
+            variant="merchants"
+          />
         </div>
       </div>
     </section>
 
-    <section class="about-trust">
-      <PartnersMarquee
-        title="Trusted by Leading Businesses"
-        :partners="page.merchant_partners || []"
-        variant="merchants"
-      />
-    </section>
+    <div class="about-body">
+      <section class="about-overview">
+        <h2 class="about-overview__title">{{ page.overview_title }}</h2>
+        <div class="about-overview__copy">
+          <p class="about-overview__body">{{ page.overview_body }}</p>
+          <dl v-if="page.stats?.length" ref="statsEl" class="about-overview__stats">
+            <div v-for="(stat, i) in page.stats" :key="stat.label" class="about-overview__stat">
+              <dt>{{ stat.label }}</dt>
+              <dd>
+                <span aria-hidden="true">{{ statDisplays[i] ?? stat.value }}</span>
+                <span class="about-overview__sr">{{ stat.value }}</span>
+              </dd>
+            </div>
+          </dl>
+        </div>
+      </section>
 
-    <section class="about-purpose">
-      <div class="about-purpose__head">
-        <h2 class="about-purpose__title">{{ page.purpose_title }}</h2>
-        <p class="about-purpose__intro">{{ page.purpose_intro }}</p>
-      </div>
-
-      <div class="about-purpose__grid">
-        <div class="about-purpose__col">
-          <article
-            v-for="item in leftPillars"
-            :key="item.title"
-            class="about-purpose__card"
-          >
-            <span class="about-purpose__icon-wrap" aria-hidden="true">
-              <img
-                :src="pillarIcons[item.icon]"
-                alt=""
-                width="24"
-                height="24"
-                decoding="async"
-              />
+      <section v-if="page.mission || page.vision" class="about-mission">
+        <div class="about-mission__inner">
+          <div v-if="page.mission" class="about-mission__col about-mission__col--mission">
+            <span class="about-mission__icon" aria-hidden="true">
+              <img :src="`${ASSETS}/icon-mission.svg`" alt="" width="32" height="32" decoding="async" />
             </span>
-            <h3 class="about-purpose__card-title">{{ item.title }}</h3>
-            <p class="about-purpose__card-body">{{ item.body }}</p>
-          </article>
+            <h2 class="about-mission__title">{{ page.mission.title }}</h2>
+            <p class="about-mission__body">{{ page.mission.body }}</p>
+          </div>
+          <span class="about-mission__divider" aria-hidden="true">
+            <img :src="`${ASSETS}/mission-divider.svg`" alt="" width="223" height="1" decoding="async" />
+          </span>
+          <div v-if="page.vision" class="about-mission__col about-mission__col--vision">
+            <span class="about-mission__icon" aria-hidden="true">
+              <img :src="`${ASSETS}/icon-vision.svg`" alt="" width="32" height="32" decoding="async" />
+            </span>
+            <h2 class="about-mission__title">{{ page.vision.title }}</h2>
+            <p class="about-mission__body">{{ page.vision.body }}</p>
+          </div>
         </div>
+      </section>
 
-        <figure class="about-purpose__photo">
+      <section class="about-journey">
+        <div class="about-journey__intro">
+          <div class="about-journey__head">
+            <h2 class="about-journey__title">{{ page.journey_title }}</h2>
+            <p class="about-journey__lead">{{ page.journey_intro }}</p>
+          </div>
           <img
-            src="/images/figma-about/team-photo@2x.png"
-            alt="Urbanrupee team collaborating in the office"
-            width="347"
-            height="424"
+            class="about-journey__photo"
+            :src="`${ASSETS}/journey-handshake.png`"
+            alt="Business partners shaking hands over a laptop showing payment reports"
+            width="1200"
+            height="630"
             loading="lazy"
             decoding="async"
           />
-        </figure>
-
-        <div class="about-purpose__col">
-          <article
-            v-for="item in rightPillars"
-            :key="item.title"
-            class="about-purpose__card"
-          >
-            <span class="about-purpose__icon-wrap" aria-hidden="true">
-              <img
-                :src="pillarIcons[item.icon]"
-                alt=""
-                width="24"
-                height="24"
-                decoding="async"
-              />
-            </span>
-            <h3 class="about-purpose__card-title">{{ item.title }}</h3>
-            <p class="about-purpose__card-body">{{ item.body }}</p>
-          </article>
         </div>
-      </div>
-    </section>
 
-    <section class="about-leaders" aria-label="Leadership team">
-      <div class="about-leaders__head">
-        <h2 class="about-leaders__title">{{ page.leaders_title }}</h2>
-        <p class="about-leaders__intro">{{ page.leaders_intro }}</p>
-      </div>
+        <ol class="about-journey__timeline">
+          <li v-for="(step, index) in page.journey || []" :key="step.title" class="about-journey__step">
+            <span class="about-journey__node" aria-hidden="true">{{ index + 1 }}</span>
+            <h3 class="about-journey__step-title">{{ step.title }}</h3>
+            <p class="about-journey__step-body">{{ step.body }}</p>
+          </li>
+        </ol>
+      </section>
 
-      <div class="about-leaders__grid">
-        <article
-          v-for="leader in page.leaders || []"
-          :key="leader.name"
-          class="about-leaders__card"
-        >
-          <div class="about-leaders__photo-wrap">
+      <section
+        ref="partnersSection"
+        class="about-partners"
+        :style="{ '--partners-zoom': partnersZoom }"
+      >
+        <div class="about-partners__stage">
+          <AboutPartnersGraphic class="about-partners__graphic" />
+        </div>
+        <div class="about-partners__copy-layer">
+          <div class="about-partners__copy-frame">
+            <div class="about-partners__copy">
+              <h2 class="about-partners__title">{{ page.partnerships_title }}</h2>
+              <p class="about-partners__intro">{{ page.partnerships_intro }}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="about-leaders" aria-labelledby="about-leaders-title">
+        <div class="about-leaders__head">
+          <h2 id="about-leaders-title" class="about-leaders__title">{{ page.leaders_title }}</h2>
+          <p class="about-leaders__intro">{{ page.leaders_intro }}</p>
+        </div>
+
+        <div class="about-leaders__grid">
+          <article v-for="leader in page.leaders || []" :key="leader.name" class="about-leaders__card">
             <img
               class="about-leaders__photo"
               :src="leader.image"
               :alt="leader.name"
-              width="204"
-              height="240"
+              width="406"
+              height="424"
               loading="lazy"
               decoding="async"
             />
-          </div>
-          <div class="about-leaders__copy">
-            <h3 class="about-leaders__name">{{ leader.name }}</h3>
-            <p class="about-leaders__role">{{ leader.role }}</p>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <section class="about-principles" aria-label="Core principles">
-      <div class="about-principles__head">
-        <h2 class="about-principles__title">{{ page.principles_title }}</h2>
-        <p class="about-principles__intro">{{ page.principles_intro }}</p>
-      </div>
-
-      <div class="about-principles__body">
-        <div class="about-principles__list">
-          <div
-            v-for="(item, index) in page.principles || []"
-            :key="item.number"
-            class="about-principles__item"
-            :class="{ 'about-principles__item--open': openPrinciple === index }"
-          >
-            <button
-              type="button"
-              class="about-principles__trigger"
-              :aria-expanded="openPrinciple === index"
-              @click="togglePrinciple(index)"
-            >
-              <span class="about-principles__num">[{{ item.number }}]</span>
-              <span class="about-principles__label">{{ item.title }}</span>
-              <span class="about-principles__icon" aria-hidden="true">
-                {{ openPrinciple === index ? "−" : "+" }}
-              </span>
-            </button>
-            <div v-show="openPrinciple === index" class="about-principles__answer">
-              <p>{{ item.body }}</p>
+            <div class="about-leaders__caption">
+              <h3 class="about-leaders__name">{{ leader.name }}</h3>
+              <p class="about-leaders__role">{{ leader.role }}</p>
             </div>
-          </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="about-values" aria-labelledby="about-values-title">
+        <div class="about-values__head">
+          <h2 id="about-values-title" class="about-values__title">{{ page.values_title }}</h2>
+          <p class="about-values__intro">{{ page.values_intro }}</p>
         </div>
 
-        <figure class="about-principles__photo">
-          <img
-            src="/images/figma-about/principles-photo@2x.png"
-            alt="Urbanrupee team at work"
-            width="508"
-            height="422"
-            loading="lazy"
-            decoding="async"
-          />
-        </figure>
-      </div>
-    </section>
-
+        <div class="about-values__row">
+          <div v-for="value in page.values || []" :key="value.title" class="about-values__col">
+            <span class="about-values__letter" aria-hidden="true">{{ value.letter }}</span>
+            <article class="about-values__card">
+              <span class="about-values__icon" aria-hidden="true">
+                <img :src="valueIcons[value.icon]" alt="" width="32" height="32" decoding="async" />
+              </span>
+              <div class="about-values__copy">
+                <h3 class="about-values__card-title">{{ value.title }}</h3>
+                <p class="about-values__card-body">{{ value.body }}</p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+    </div>
   </main>
 </template>
 
@@ -232,7 +297,10 @@ onMounted(() => {
   --about-ink: #252b37;
   --about-muted: #535862;
   --about-teal: #097495;
+  --about-gradient: linear-gradient(180deg, #0292b8 0%, #134e66 100%);
   --about-font: "Manrope", "DM Sans", system-ui, sans-serif;
+  --about-gutter: 56px;
+  --about-gap: 100px;
   font-family: var(--about-font);
   background: #ffffff;
   color: var(--about-ink);
@@ -241,19 +309,18 @@ onMounted(() => {
   max-width: 100%;
 }
 
+/* ---------- Hero ---------- */
+
+/* the background runs past the hero box so its fade isn't cut off; .about-page clips sideways */
 .about-hero {
   position: relative;
   width: 100%;
-  max-width: none;
-  margin: 0;
-  overflow: hidden;
 }
 
 .about-hero__bg {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0 0 auto;
+  height: 680px;
   pointer-events: none;
   z-index: 0;
   overflow: hidden;
@@ -265,9 +332,8 @@ onMounted(() => {
   left: 50%;
   top: 0;
   width: 100%;
-  min-width: 100%;
+  min-width: 1440px;
   height: 100%;
-  min-height: 100%;
   transform: translateX(-50%);
   object-fit: cover;
   object-position: center top;
@@ -276,54 +342,46 @@ onMounted(() => {
 .about-hero__inner {
   position: relative;
   z-index: 1;
-  width: 100%;
   max-width: var(--ur-page-max, 1440px);
   margin: 0 auto;
-  min-height: 100vh;
-  padding: 148px var(--ur-gutter) 40px;
+  padding: 209px var(--about-gutter) 0;
   box-sizing: border-box;
-  display: grid;
-  grid-template-columns: minmax(0, 611px) minmax(340px, 1fr);
-  align-items: stretch;
-  gap: clamp(32px, 4vw, 56px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 100px;
 }
 
 .about-hero__copy {
-  position: relative;
-  z-index: 1;
-  width: 611px;
+  width: 789px;
   max-width: 100%;
-  margin: 0;
-  text-align: left;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  min-height: 100%;
-  gap: 24px;
+  align-items: center;
+  gap: 32px;
+  text-align: center;
+}
+
+.about-hero__text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
 }
 
 .about-hero__title {
   margin: 0;
   font-size: var(--ur-heading-lg, 42px);
   font-weight: 700;
-  line-height: 1.2;
+  line-height: 56px;
   letter-spacing: -1.26px;
 }
 
-.about-hero__intros {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  width: 100%;
-}
-
 .about-hero__intro {
+  max-width: 611px;
   margin: 0;
   font-size: 14px;
-  font-family: "Manrope", "DM Sans", system-ui, sans-serif;
-  font-weight: 400;
-  line-height: 22px;
+  line-height: normal;
   letter-spacing: 0.56px;
   color: var(--about-muted);
 }
@@ -336,7 +394,7 @@ onMounted(() => {
   height: 52px;
   padding: 16px;
   border-radius: 8px;
-  background: #097495;
+  background: var(--about-teal);
   color: #ffffff;
   font-size: 16px;
   font-weight: 700;
@@ -356,31 +414,10 @@ onMounted(() => {
   filter: brightness(1.05);
 }
 
-.about-hero__visual {
-  position: relative;
-  z-index: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-  padding-top: 30px;
-}
-
-.about-hero__graphic {
-  width: min(100%, 360px);
-  margin-bottom: 28px;
-}
-
-.about-hero__panel {
-  width: min(100%, 420px);
-}
-
 .about-trust {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 0 80px 100px;
+  width: 1051px;
+  max-width: 100%;
+  min-height: 141px;
 }
 
 .about-trust :deep(.partners) {
@@ -394,7 +431,7 @@ onMounted(() => {
   margin: 0 0 32px;
   text-align: center;
   font-size: 24px;
-  font-weight: 700;
+  font-weight: 500;
   line-height: 32px;
   text-transform: none;
   letter-spacing: normal;
@@ -425,29 +462,204 @@ onMounted(() => {
   object-position: center;
 }
 
-.about-purpose {
-  max-width: 1081px;
-  margin: 0 auto;
-  padding: 0 24px 120px;
-}
+/* ---------- Body ---------- */
 
-.about-purpose__head {
-  max-width: 671px;
-  margin: 0 auto 56px;
-  text-align: center;
+.about-body {
+  position: relative;
+  z-index: 1;
+  width: min(1328px, calc(100% - 2 * var(--about-gutter)));
+  margin: 0 auto;
+  padding-top: var(--about-gap);
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--about-gap);
 }
 
-.about-purpose__title {
+.about-overview__title,
+.about-journey__title,
+.about-partners__title,
+.about-leaders__title,
+.about-values__title {
   margin: 0;
   font-size: var(--ur-heading-md, 40px);
   font-weight: 700;
-  line-height: 1.4;
+  line-height: 56px;
+  letter-spacing: -1.2px;
+  color: var(--about-ink);
 }
 
-.about-purpose__intro {
+/* Overview */
+
+.about-overview {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 486fr) minmax(0, 612fr);
+  gap: clamp(48px, 7vw, 102px);
+  align-items: start;
+}
+
+.about-overview__copy {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.about-overview__body {
+  margin: 0;
+  font-size: 20px;
+  line-height: 28px;
+  color: var(--about-muted);
+}
+
+.about-overview__stats {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 46px;
+}
+
+.about-overview__stat {
+  min-width: 160px;
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 4px;
+}
+
+.about-overview__stat dd {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 56px;
+  letter-spacing: -0.96px;
+  color: var(--about-ink);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.about-overview__sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.about-overview__stat dt {
+  font-size: 16px;
+  line-height: 28px;
+  letter-spacing: 0.64px;
+  color: var(--about-muted);
+  white-space: nowrap;
+}
+
+/* Mission & vision */
+
+.about-mission {
+  min-height: 395px;
+  padding: 66px 48px;
+  box-sizing: border-box;
+  border-radius: 24px;
+  background: var(--about-gradient);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.about-mission__inner {
+  width: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 1px minmax(0, 1fr);
+  gap: clamp(40px, 5.35vw, 77px);
+  align-items: start;
+}
+
+.about-mission__col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.about-mission__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 62px;
+  height: 62px;
+  border-radius: 31px;
+  background: #f5f5f5;
+}
+
+.about-mission__icon img {
+  width: 32px;
+  height: 32px;
+}
+
+.about-mission__title {
+  margin: 0;
+  font-size: var(--ur-heading-md, 40px);
+  font-weight: 700;
+  line-height: 56px;
+  color: #ffffff;
+}
+
+.about-mission__body {
+  margin: 0;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.64px;
+  color: #ffffff;
+}
+
+.about-mission__divider {
+  position: relative;
+  align-self: center;
+  width: 1px;
+  height: 223px;
+}
+
+.about-mission__divider img {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 223px;
+  height: 1px;
+  max-width: none;
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+
+/* Journey */
+
+.about-journey {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 476fr) minmax(0, 556fr);
+  gap: clamp(56px, 12.4vw, 178px);
+  align-items: start;
+}
+
+.about-journey__intro {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.about-journey__head {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.about-journey__lead {
   margin: 0;
   font-size: 16px;
   line-height: 24px;
@@ -455,114 +667,161 @@ onMounted(() => {
   color: var(--about-muted);
 }
 
-.about-purpose__grid {
-  display: grid;
-  grid-template-columns: 315px 347px 315px;
-  gap: 52px;
-  align-items: center;
-  justify-content: center;
-}
-
-.about-purpose__col {
-  display: flex;
-  flex-direction: column;
-  gap: 39px;
-}
-
-.about-purpose__card {
-  background: #ffffff;
-  border-radius: 14.141px;
-  padding: 20px;
-  /* Figma 722:7669 — default soft shadow */
-  box-shadow:
-    0 1px 2px -1px rgba(0, 0, 0, 0.1),
-    0 1px 3px 0 rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.25s ease;
-}
-
-.about-purpose__card:hover {
-  /* Figma 722:7640 — elevated 4-layer hover shadow */
-  box-shadow:
-    0 0.904px 0.904px 0 rgba(0, 0, 0, 0.05),
-    0 1.807px 2.711px 0 rgba(0, 0, 0, 0.04),
-    0 3.614px 5.422px 0 rgba(34, 42, 53, 0.04),
-    0 21.686px 61.444px 0 rgba(47, 48, 55, 0.05);
-}
-
-.about-purpose__icon-wrap {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 50px;
-  height: 50px;
-  margin-bottom: 16px;
-  border-radius: 6.642px;
-  background: rgba(9, 116, 149, 0.1);
-}
-
-.about-purpose__icon-wrap img {
-  width: 24px;
-  height: 24px;
-}
-
-.about-purpose__card-title {
-  margin: 0 0 7px;
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 22px;
-  letter-spacing: 0.48px;
-}
-
-.about-purpose__card-body {
-  margin: 0;
-  font-size: 14px;
-  line-height: 20px;
-  letter-spacing: 0.42px;
-  color: var(--about-muted);
-}
-
-.about-purpose__photo {
-  margin: 0;
-}
-
-.about-purpose__photo img {
+.about-journey__photo {
   display: block;
-  width: 347px;
-  height: 424px;
-  border-radius: 16px;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1920 / 918;
+  border-radius: 12px;
   object-fit: cover;
 }
 
-.about-leaders {
-  max-width: 1081px;
-  margin: 0 auto;
-  padding: 0 24px 120px;
+.about-journey__timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 65px;
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
 }
 
-.about-leaders__head {
-  width: 363px;
-  max-width: 100%;
-  margin: 0 auto 56px;
-  text-align: center;
+.about-journey__step {
+  --journey-gap: 60px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* rail runs from just inside this node to just inside the next one */
+.about-journey__step:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  left: -46px;
+  top: 37px;
+  width: 3px;
+  height: calc(100% + var(--journey-gap) - 33px);
+  background: var(--about-teal);
+}
+
+.about-journey__node {
+  position: absolute;
+  z-index: 1;
+  left: -65px;
+  top: 0;
+  width: 41px;
+  height: 41px;
+  border-radius: 8px;
+  background: var(--about-teal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1;
+  color: #ffffff;
+}
+
+.about-journey__step-title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 32px;
+  color: var(--about-ink);
+}
+
+.about-journey__step-body {
+  margin: 0;
+  font-size: 14px;
+  line-height: 22px;
+  color: var(--about-muted);
+  opacity: 0.8;
+}
+
+/* Partnerships */
+
+.about-partners {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.about-partners__stage {
+  display: flex;
+  justify-content: center;
+}
+
+.about-partners__graphic {
+  flex-shrink: 0;
+  zoom: var(--partners-zoom, 1);
+}
+
+.about-partners__copy-layer {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.about-partners__copy-frame {
+  position: relative;
+  flex-shrink: 0;
+  width: 866px;
+  height: 806px;
+  zoom: var(--partners-zoom, 1);
+}
+
+.about-partners__copy {
+  position: absolute;
+  left: calc(50% - 4.04px);
+  top: 297px;
+  width: 478px;
+  transform: translateX(-50%);
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 12px;
+  text-align: center;
+  pointer-events: auto;
 }
 
-.about-leaders__title {
+.about-partners__title {
+  width: 351px;
+  max-width: 100%;
+}
+
+.about-partners__intro {
   margin: 0;
-  width: 100%;
-  font-size: var(--ur-heading-md, 40px);
-  font-weight: 700;
-  line-height: 1.4;
-  letter-spacing: -1.2px;
-  color: var(--about-ink);
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.64px;
+  color: var(--about-muted);
+}
+
+/* Leaders */
+
+.about-leaders {
+  width: min(872px, 100%);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 36px;
+}
+
+.about-leaders__head {
+  max-width: 738px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
 }
 
 .about-leaders__intro {
   margin: 0;
-  width: 100%;
   font-size: 16px;
   line-height: 24px;
   letter-spacing: 0.64px;
@@ -570,26 +829,18 @@ onMounted(() => {
 }
 
 .about-leaders__grid {
-  display: flex;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 406px));
   justify-content: center;
-  gap: 62px;
-  flex-wrap: wrap;
+  gap: 60px;
 }
 
 .about-leaders__card {
-  width: 204px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 31px;
-  text-align: center;
-}
-
-.about-leaders__photo-wrap {
-  width: 204px;
-  height: 240px;
+  position: relative;
+  aspect-ratio: 406 / 424;
+  border-radius: 24px;
   overflow: hidden;
-  border-radius: 3000px;
   background: #d4d4d8;
 }
 
@@ -600,741 +851,578 @@ onMounted(() => {
   object-fit: cover;
 }
 
-.about-leaders__copy {
-  width: 203px;
+.about-leaders__caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  min-height: 82px;
+  box-sizing: border-box;
+  padding: 12px 24px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 7px;
+  justify-content: center;
+  gap: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 0 0 24px 24px;
+  background: rgba(255, 255, 255, 0.2);
+  -webkit-backdrop-filter: blur(28.5px);
+  backdrop-filter: blur(28.5px);
 }
 
 .about-leaders__name {
   margin: 0;
-  width: 100%;
   font-size: 20px;
   font-weight: 600;
-  line-height: 22px;
-  letter-spacing: 0.6px;
-  color: var(--about-ink);
+  line-height: 24px;
+  color: #fafafa;
 }
 
 .about-leaders__role {
   margin: 0;
-  width: 100%;
-  font-size: 14px;
-  line-height: 20px;
-  letter-spacing: 0.42px;
-  color: var(--about-muted);
-}
-
-.about-principles {
-  max-width: 1198px;
-  margin: 0 auto;
-  padding: 0 24px 120px;
-}
-
-.about-principles__head {
-  display: grid;
-  grid-template-columns: 608px 508px;
-  gap: 82px;
-  align-items: center;
-  margin-bottom: 56px;
-}
-
-.about-principles__title {
-  margin: 0;
-  font-size: var(--ur-heading-md, 40px);
-  font-weight: 700;
-  line-height: 1.4;
-  letter-spacing: -1.2px;
-}
-
-.about-principles__intro {
-  margin: 0;
   font-size: 16px;
-  line-height: 24px;
-  letter-spacing: 0.64px;
-  color: var(--about-muted);
-}
-
-.about-principles__body {
-  display: grid;
-  grid-template-columns: 627px 508px;
-  gap: 63px;
-  align-items: start;
-}
-
-.about-principles__item {
-  border-bottom: 2px solid #f0f9f3;
-}
-
-.about-principles__trigger {
-  display: grid;
-  grid-template-columns: auto 1fr 30px;
-  align-items: center;
-  gap: 16px;
-  width: 100%;
-  padding: 24px 0;
-  border: 0;
-  background: transparent;
-  text-align: left;
-  cursor: pointer;
-  font-family: inherit;
-  color: var(--about-ink);
-}
-
-.about-principles__num,
-.about-principles__label {
-  font-size: 24px;
-  font-weight: 700;
-  line-height: 28px;
-}
-
-.about-principles__icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 30px;
-  height: 30px;
-  border-radius: 24px;
-  background: var(--about-teal);
-  color: #ffffff;
-  font-size: 18px;
-  line-height: 1;
-}
-
-.about-principles__item--open .about-principles__icon {
-  background: transparent;
-  color: var(--about-ink);
-  font-size: 24px;
-}
-
-.about-principles__answer {
-  padding: 0 46px 24px 0;
-}
-
-.about-principles__answer p {
-  margin: 0;
-  max-width: 584px;
-  font-size: 16px;
+  font-weight: 500;
   line-height: 22px;
-  letter-spacing: 0.64px;
-  color: var(--about-muted);
+  color: #ffffff;
+  opacity: 0.8;
 }
 
-.about-principles__photo {
-  margin: 0;
-}
+/* Core values */
 
-.about-principles__photo img {
-  display: block;
-  width: 508px;
-  height: 422px;
-  border-radius: 16px;
-  object-fit: cover;
-}
-
-.about-testimonials {
-  max-width: none;
-  margin: 0;
-  padding: 0 0 120px;
-  text-align: center;
-  overflow: hidden;
-}
-
-.about-testimonials__title {
-  max-width: 1240px;
-  margin: 0 auto 56px;
-  padding: 0 24px;
-  font-size: 40px;
-  font-weight: 600;
-  line-height: 56px;
-  letter-spacing: -1.2px;
-}
-
-.about-testimonials__track-wrap {
-  overflow: hidden;
-  width: 100%;
-}
-
-.about-testimonials__track {
-  --card-w: 612px;
-  --gap: 24px;
-  --active: 0;
-  display: flex;
-  gap: var(--gap);
-  align-items: flex-start;
-  width: max-content;
-  min-height: 276px;
-  position: relative;
-  left: 50%;
-  transform: translateX(
-    calc(-1 * (var(--active) * (var(--card-w) + var(--gap)) + var(--card-w) / 2))
-  );
-  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.about-testimonials__track--snap {
-  transition: none;
-}
-
-.about-testimonials__card {
-  flex: 0 0 var(--card-w);
-  width: var(--card-w);
+.about-values {
+  min-height: 860px;
+  padding: 60px 70px;
   box-sizing: border-box;
+  border-radius: 24px;
+  background: var(--about-gradient);
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  gap: 24px;
-  min-height: 252px;
-  padding: 32px;
-  border-radius: 16px;
-  background: #f8fafc;
-  opacity: 0.4;
-  transform: translateY(24px);
-  transition:
-    opacity 0.35s ease,
-    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
-  cursor: pointer;
-}
-
-.about-testimonials__card--active {
-  opacity: 1;
-  transform: translateY(0);
-  cursor: default;
-}
-
-.about-testimonials__card--inactive {
-  opacity: 0.4;
-}
-
-.about-testimonials__quote {
-  margin: 0;
-  font-size: 16px;
-  line-height: 24px;
-  letter-spacing: -0.48px;
-  color: #020617;
-}
-
-.about-testimonials__author {
-  display: flex;
   align-items: center;
   justify-content: center;
+  gap: 36px;
+  overflow: hidden;
 }
 
-.about-testimonials__meta {
-  margin: 0;
-  font-size: 18px;
-  line-height: 26px;
-  letter-spacing: -0.54px;
-  color: #020617;
-}
-
-.about-testimonials__meta strong {
-  font-weight: 700;
-}
-
-.about-testimonials__dots {
+.about-values__head {
   display: flex;
-  justify-content: center;
-  gap: 8px;
-  margin-top: 36px;
-}
-
-.about-testimonials__dot {
-  width: 12px;
-  height: 12px;
-  padding: 0;
-  border: 0;
-  border-radius: 50%;
-  background: #cbd5e1;
-  cursor: pointer;
-}
-
-.about-testimonials__dot--active {
-  background: var(--about-teal);
-}
-
-.about-audiences {
-  max-width: 1328px;
-  margin: 0 auto;
-  padding: 0 24px 180px;
-}
-
-.about-audiences__panel {
-  padding: 70px 44px;
-  border-radius: 24px;
-  background: linear-gradient(180deg, #0292b8 0%, #134e66 100%);
-}
-
-.about-audiences__title {
-  margin: 0 auto 56px;
-  max-width: 517px;
+  flex-direction: column;
+  gap: 12px;
   text-align: center;
-  font-size: 40px;
-  font-weight: 700;
-  line-height: 56px;
-  letter-spacing: -1.2px;
+}
+
+.about-values__title {
   color: #ffffff;
 }
 
-.about-audiences__grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 17px;
-}
-
-.about-audiences__card {
-  min-height: 212px;
-  padding: 16px 20px;
-  border-radius: 18px;
-  border: 1px solid rgba(200, 200, 200, 0.19);
-  background: rgba(255, 255, 255, 0.06);
-  transform: translateY(0) scale(1);
-  transition:
-    transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
-    background 0.25s ease,
-    border-color 0.25s ease,
-    box-shadow 0.25s ease;
-  cursor: default;
-}
-
-.about-audiences__card:hover {
-  transform: translateY(-8px) scale(1.03);
-  background: rgba(255, 255, 255, 0.12);
-  border-color: rgba(255, 255, 255, 0.35);
-  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.18);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .about-purpose__card,
-  .about-audiences__card {
-    transition: none;
-  }
-
-  .about-audiences__card:hover {
-    transform: none;
-  }
-}
-
-.about-audiences__num {
-  display: block;
-  margin-bottom: 20px;
-  font-size: 68px;
-  font-weight: 700;
-  line-height: 72px;
-  letter-spacing: -2.059px;
-  background: linear-gradient(180deg, #636363 0%, #ffffff 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-.about-audiences__copy h3 {
-  margin: 0 0 6px;
-  font-size: 22px;
-  font-weight: 700;
-  line-height: 30px;
-  letter-spacing: -0.66px;
-  color: #ffffff;
-}
-
-.about-audiences__copy p {
+.about-values__intro {
   margin: 0;
-  font-size: 14px;
-  line-height: 19px;
-  letter-spacing: 0.56px;
+  font-size: 20px;
+  line-height: 28px;
+  letter-spacing: 0.8px;
   color: rgba(255, 255, 255, 0.8);
 }
 
-.about-faq {
-  max-width: 1440px;
-  margin: 0 auto;
-  padding: 0 100px 180px;
-  box-sizing: border-box;
-}
-
-.about-faq__inner {
+.about-values__row {
   display: grid;
-  grid-template-columns: 501px 627px;
-  gap: 94px;
-  width: 1240px;
-  max-width: 100%;
-  margin: 0 auto;
-  align-items: start;
-}
-
-.about-faq__intro {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  padding-top: 118px;
-}
-
-.about-faq__title {
-  margin: 0;
-  font-size: 40px;
-  font-weight: 700;
-  line-height: 56px;
-  text-transform: capitalize;
-}
-
-.about-faq__body {
-  margin: 0;
-  max-width: 510px;
-  font-size: 16px;
-  line-height: 24px;
-  letter-spacing: 0.64px;
-  color: var(--about-muted);
-}
-
-.about-faq__item {
-  border-bottom: 1px solid #f0f9f3;
-}
-
-.about-faq__trigger {
-  display: grid;
-  grid-template-columns: 36px 1fr 24px;
-  align-items: center;
-  gap: 16px;
+  grid-template-columns: 282px 316px 313px 291px;
+  justify-content: center;
+  gap: 12px;
   width: 100%;
-  min-height: 76px;
-  padding: 24px;
-  box-sizing: border-box;
-  border: 0;
-  background: transparent;
-  text-align: left;
-  cursor: pointer;
-  font-family: inherit;
 }
 
-.about-faq__num,
-.about-faq__question {
-  font-size: 18px;
-  font-weight: 600;
-  line-height: 28px;
-}
-
-.about-faq__icon {
-  font-size: 22px;
-  line-height: 1;
-  text-align: center;
-}
-
-.about-faq__answer {
-  padding: 0 24px 24px 76px;
-}
-
-.about-faq__answer p {
-  margin: 0;
-  font-size: 14px;
-  line-height: 22px;
-  letter-spacing: 0.56px;
-  color: var(--about-muted);
-}
-
-.about-cta {
-  max-width: 1440px;
-  margin: 0 auto;
-  padding: 0 100px 94px;
-  box-sizing: border-box;
-}
-
-.about-cta__panel {
+.about-values__col {
+  --letter-x: 50%;
+  --card-x: 0px;
   position: relative;
-  width: 1240px;
-  max-width: 100%;
-  height: 331px;
-  margin: 0 auto;
-  border-radius: 16px;
-  overflow: hidden;
+  height: 548px;
 }
 
-.about-cta__bg {
+.about-values__col:nth-child(1) {
+  --letter-x: 140px;
+}
+
+.about-values__col:nth-child(2) {
+  --letter-x: 153px;
+  --card-x: 21px;
+}
+
+.about-values__col:nth-child(3) {
+  --letter-x: 156.5px;
+  --card-x: 16px;
+}
+
+.about-values__col:nth-child(4) {
+  --letter-x: 151.5px;
+  --card-x: 11px;
+}
+
+.about-values__letter {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  left: var(--letter-x);
+  top: 181.5px;
+  height: 363px;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Arimo", Arial, sans-serif;
+  font-size: 480px;
+  font-weight: 400;
+  line-height: normal;
+  color: transparent;
+  -webkit-text-stroke: 3px #ffffff;
+  opacity: 0.08;
+  pointer-events: none;
+  user-select: none;
 }
 
-.about-cta__content {
-  position: relative;
-  z-index: 1;
+.about-values__card {
+  position: absolute;
+  left: var(--card-x);
+  top: 248px;
+  width: 280px;
+  height: 300px;
+  box-sizing: border-box;
+  padding: 64px 24px 40px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 16px;
-  height: 100%;
-  padding: 52px 24px;
-  text-align: center;
+  gap: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 140px 140px 12px 12px;
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
 }
 
-.about-cta__title {
-  margin: 0;
-  max-width: 728px;
-  font-size: 40px;
-  font-weight: 500;
-  line-height: 52px;
-  letter-spacing: 1.6px;
-  color: #ffffff;
-}
-
-.about-cta__body {
-  margin: 0;
-  max-width: 728px;
-  font-size: 14px;
-  line-height: 22px;
-  letter-spacing: 0.56px;
-  color: rgba(255, 255, 255, 0.8);
-}
-
-.about-cta__btn {
+.about-values__icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 4px;
-  min-height: 52px;
-  padding: 16px;
-  border-radius: 8px;
-  background: #ffffff;
-  color: var(--about-teal);
-  font-size: 16px;
+  width: 56px;
+  height: 56px;
+  padding: 12px;
+  box-sizing: border-box;
+}
+
+.about-values__icon img {
+  width: 32px;
+  height: 32px;
+}
+
+.about-values__copy {
+  width: 220.713px;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+
+.about-values__card-title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: normal;
+  letter-spacing: -0.24px;
+  color: #ffffff;
+}
+
+.about-values__card-body {
+  margin: 0;
+  font-size: 14px;
   font-weight: 500;
-  text-decoration: none;
+  line-height: 22px;
+  color: rgba(255, 255, 255, 0.8);
 }
 
-.about-cta__btn img {
-  width: 18px;
-  height: 18px;
+/* ---------- Narrow laptop: the four value cards share the row evenly ---------- */
+
+@media (max-width: 1367px) {
+  .about-overview__stats {
+    column-gap: 40px;
+  }
+
+  .about-overview__stat {
+    min-width: 0;
+  }
+
+  .about-values {
+    padding-inline: 32px;
+  }
+
+  .about-values__row {
+    grid-template-columns: repeat(4, minmax(0, 280px));
+  }
+
+  .about-values__col {
+    --letter-x: 50%;
+    --card-x: 0px;
+  }
+
+  .about-values__col:nth-child(n) {
+    --letter-x: 50%;
+    --card-x: 0px;
+  }
+
+  .about-values__card {
+    width: 100%;
+    padding-inline: 20px;
+  }
+
+  .about-values__letter {
+    font-size: clamp(300px, 35vw, 480px);
+  }
 }
 
 @media (max-width: 1200px) {
-  .about-hero__inner {
-    min-height: auto;
-    grid-template-columns: 1fr;
-    gap: 40px;
-  }
-
-  .about-hero__copy {
-    width: 100%;
-    max-width: 640px;
-    margin: 0 auto;
-    text-align: center;
-    align-items: center;
-  }
-
-  .about-hero__visual {
-    padding-top: 0;
-  }
-
-  .about-principles__head,
-  .about-principles__body {
-    grid-template-columns: 1fr;
-  }
-
-  .about-principles__head {
-    text-align: center;
-    justify-items: center;
-  }
-
-  .about-principles__photo {
-    order: -1;
-  }
-
-  .about-principles__photo img,
-  .about-purpose__photo img {
-    width: 100%;
-    height: auto;
-  }
-
-  .about-audiences__grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .about-faq__inner {
-    grid-template-columns: 1fr;
-  }
-
-  .about-faq__intro {
-    padding-top: 0;
-  }
-}
-
-@media (max-width: 1100px) {
   .about-page {
-    margin-top: -82px;
-  }
-
-  .about-purpose__grid {
-    grid-template-columns: 1fr;
-    max-width: 420px;
-    margin: 0 auto;
-  }
-
-  .about-purpose__photo {
-    order: -1;
-  }
-
-  .about-leaders__grid {
-    gap: 32px;
-  }
-}
-
-
-@media (max-width: 1200px) {
-  .about-page {
+    --about-gutter: var(--ur-gutter, 48px);
     margin-top: -82px;
   }
 
   .about-hero__inner {
-    padding: 120px var(--ur-gutter) 40px;
-    gap: 40px;
+    padding-top: 160px;
   }
 
-  .about-hero__copy {
-    gap: 24px;
-    max-width: min(var(--ur-stack-max), 100%);
-    margin-inline: auto;
-    text-align: center;
-    align-items: center;
+  .about-hero__title,
+  .about-overview__title,
+  .about-journey__title,
+  .about-partners__title,
+  .about-leaders__title,
+  .about-values__title,
+  .about-mission__title {
+    line-height: 1.3;
+  }
+
+  .about-values__card-title {
+    font-size: 20px;
+  }
+}
+
+/* ---------- Desktop: values panel compact enough to fit a laptop viewport ---------- */
+
+@media (min-width: 1025px) {
+  .about-values {
+    min-height: 0;
+    padding-block: 48px;
+    gap: 28px;
+  }
+
+  .about-values__col {
+    height: 446px;
+  }
+
+  .about-values__letter {
+    top: 148px;
+    height: 296px;
+    font-size: clamp(300px, 35vw, 400px);
+  }
+
+  .about-values__card {
+    top: 196px;
+    height: 250px;
+    padding-top: 56px;
+    padding-bottom: 32px;
+    gap: 16px;
+  }
+}
+
+/* ---------- Tablet ---------- */
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .about-page {
+    --about-gap: 86px;
+  }
+
+  .about-hero__inner {
+    padding-top: 162px;
+    gap: 86px;
   }
 
   .about-hero__title {
-    font-size: var(--ur-heading-stack, 28px);
+    letter-spacing: -1.08px;
+  }
+
+  .about-overview {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .about-overview__title {
+    max-width: 640px;
+  }
+
+  .about-overview__body {
+    font-size: 18px;
+    line-height: 28px;
+  }
+
+  .about-mission {
+    min-height: 0;
+    padding: 48px 32px;
+  }
+
+  .about-mission__inner {
+    grid-template-columns: minmax(0, 1fr) 1px minmax(0, 1fr);
+    gap: 32px;
+  }
+
+  .about-journey {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+    gap: 40px;
+  }
+
+  .about-journey__timeline,
+  .about-journey__step {
+    --journey-gap: 40px;
+  }
+
+  .about-journey__timeline {
+    gap: 40px;
+  }
+
+  .about-journey__step-title {
+    font-size: 20px;
+    line-height: 28px;
+  }
+
+  .about-leaders__grid {
+    gap: clamp(24px, calc(-48px + 9.375vw), 48px);
+  }
+
+  .about-values {
+    min-height: 0;
+    padding: 48px 32px;
+  }
+
+  .about-values__row {
+    grid-template-columns: repeat(2, minmax(0, 280px));
+    row-gap: 24px;
+    column-gap: clamp(24px, calc(-72px + 12.5vw), 56px);
+  }
+
+  .about-values__letter {
+    font-size: 480px;
+  }
+
+  .about-values__card-title {
+    font-size: 24px;
+  }
+}
+
+/* ---------- Phone ---------- */
+
+@media (max-width: 767px) {
+  .about-page {
+    --about-gap: 56px;
+  }
+
+  .about-hero__inner {
+    padding-top: 128px;
+    gap: 48px;
+  }
+
+  .about-hero__title {
     line-height: 1.25;
     letter-spacing: -1.08px;
   }
 
-  .about-purpose__title,
-  .about-leaders__title,
-  .about-principles__title,
-  .about-testimonials__title,
-  .about-audiences__title,
-  .about-faq__title,
-  .about-cta__title {
-    font-size: var(--ur-heading-stack, 28px);
-    line-height: 1.2;
-  }
-
-  .about-hero__intros {
-    gap: 0;
-  }
-
-  .about-hero__intro {
-    font-size: 12px;
-    line-height: 20px;
-    letter-spacing: 0;
-  }
-
   .about-hero__cta {
-    height: 40px;
-    min-width: 142px;
-    margin-top: 16px;
-    margin-bottom: 8px;
-    padding: 10px 16px;
+    height: 44px;
+    padding: 12px 16px;
     font-size: 14px;
-    letter-spacing: -0.28px;
   }
 
-  .about-hero__visual {
-    width: 100%;
-    max-width: 354px;
-    margin: 0 auto;
-    gap: 24px;
-    overflow: visible;
+  .about-trust :deep(.partners__title) {
+    margin-bottom: 16px;
+    font-size: 20px;
+    line-height: 28px;
   }
 
-  .about-hero__graphic {
-    width: min(100%, 320px);
-    margin-bottom: 36px;
+  .about-overview {
+    grid-template-columns: 1fr;
+    gap: 16px;
   }
 
-  .about-hero__panel {
-    width: min(100%, 338px);
-  }
-
-  .about-trust {
-    padding: 0 16px 48px;
-  }
-
-  .about-purpose,
-  .about-leaders,
-  .about-principles {
-    padding-left: 16px;
-    padding-right: 16px;
-    padding-bottom: 72px;
-  }
-
-  .about-purpose__head,
-  .about-leaders__head,
-  .about-principles__head {
-    margin-bottom: 28px;
-    gap: 12px;
-  }
-
-  .about-purpose__grid,
-  .about-principles__body {
-    gap: 20px;
-  }
-
-  .about-purpose__col {
-    gap: 20px;
-  }
-
-  .about-purpose__card {
-    padding: 16px;
-  }
-
-  .about-principles__trigger {
-    grid-template-columns: auto 1fr 24px;
-    gap: 12px;
-    padding: 18px 0;
-  }
-
-  .about-principles__num,
-  .about-principles__label {
-    font-size: 18px;
+  .about-overview__body {
+    font-size: 16px;
     line-height: 24px;
   }
 
-  .about-principles__icon {
-    width: 24px;
-    height: 24px;
-    font-size: 16px;
+  .about-overview__stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
   }
 
-  .about-principles__answer {
-    padding: 0 0 18px;
+  .about-overview__stat {
+    min-width: 0;
+    gap: 0;
+    justify-content: flex-end;
   }
 
-  .about-leaders__card,
-  .about-leaders__photo-wrap {
-    width: min(204px, 56vw);
+  .about-overview__stat dd {
+    font-size: 24px;
+    line-height: 36px;
   }
 
-  .about-leaders__photo-wrap {
-    height: auto;
-    aspect-ratio: 204 / 240;
+  .about-overview__stat dt {
+    font-size: 13px;
+    line-height: 18px;
+    letter-spacing: 0.2px;
+    white-space: normal;
   }
 
-  .about-leaders__copy {
+  .about-mission {
+    min-height: 0;
+    padding: 32px 20px;
+  }
+
+  .about-mission__inner {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .about-mission__divider {
     width: 100%;
+    height: 1px;
+  }
+
+  .about-mission__divider img {
+    width: 100%;
+    transform: translate(-50%, -50%);
+  }
+
+  .about-mission__body {
+    font-size: 14px;
+    line-height: 22px;
+  }
+
+  .about-journey {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .about-journey__timeline,
+  .about-journey__step {
+    --journey-gap: 32px;
+  }
+
+  .about-journey__timeline {
+    gap: 32px;
+    padding-left: 56px;
+  }
+
+  .about-journey__step:not(:last-child)::after {
+    left: -38.5px;
+    top: 33px;
+    height: calc(100% + var(--journey-gap) - 29px);
+  }
+
+  .about-journey__node {
+    left: -56px;
+    width: 36px;
+    height: 36px;
+    font-size: 20px;
+  }
+
+  .about-journey__step-title {
+    font-size: 18px;
+    line-height: 26px;
+  }
+
+  .about-journey__step {
+    gap: 6px;
+  }
+
+  .about-partners {
+    gap: 20px;
+  }
+
+  .about-partners__copy-layer {
+    position: static;
+    display: block;
+    order: -1;
+    pointer-events: auto;
+  }
+
+  .about-partners__copy-frame {
+    width: 100%;
+    height: auto;
+    zoom: 1;
+  }
+
+  .about-partners__copy {
+    position: static;
+    width: auto;
+    transform: none;
+  }
+
+  .about-partners__title {
+    width: auto;
+  }
+
+  .about-partners__intro {
+    font-size: 14px;
+    line-height: 22px;
+  }
+
+  .about-leaders {
+    gap: 28px;
+  }
+
+  .about-leaders__intro,
+  .about-journey__lead {
+    font-size: 14px;
+    line-height: 22px;
   }
 
   .about-leaders__grid {
-    justify-content: center;
+    grid-template-columns: minmax(0, 406px);
+    gap: 24px;
+  }
+
+  .about-values {
+    min-height: 0;
+    padding: 40px 20px;
+    gap: 28px;
+  }
+
+  .about-values__intro {
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: 0.4px;
+  }
+
+  .about-values__row {
+    grid-template-columns: minmax(0, 280px);
+    gap: 16px;
+  }
+
+  .about-values__col {
+    height: 420px;
+  }
+
+  .about-values__letter {
+    top: 130px;
+    height: 260px;
+    font-size: 340px;
+  }
+
+  .about-values__card {
+    top: 150px;
+    height: 270px;
+    padding: 56px 20px 32px;
   }
 }
 
 @media (max-width: 480px) {
   .about-page {
     margin-top: -88px;
-  }
-
-  .about-hero__copy {
-    max-width: 354px;
   }
 }
 </style>

@@ -1150,6 +1150,53 @@ async function onSubmit() {
   }
 }
 
+/* Tablet (Figma 931:18733): 714px heading over a two-column card, 888px wide at 1024 */
+@media (min-width: 768px) and (max-width: 1024px) {
+  /* The bg layer clips itself; letting the hero overflow keeps the card shadow from being cut flat. */
+  .contact-hero {
+    overflow: visible;
+  }
+
+  .contact-hero__inner {
+    /* gutter: 40@768 → 68@1024 */
+    padding: 162px clamp(40px, calc(-44px + 10.9375vw), 68px) 0;
+  }
+
+  .contact-hero__copy {
+    max-width: 714px;
+    gap: 20px;
+  }
+
+  .contact-hero__title {
+    font-size: 36px;
+    line-height: 44px;
+    letter-spacing: -1.08px;
+  }
+
+  .contact-hero__intro {
+    font-size: 16px;
+    line-height: 20px;
+    letter-spacing: 0.64px;
+  }
+
+  .contact-card {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+    width: 100%;
+    max-width: 888px;
+    margin-top: 24px;
+  }
+
+  .contact-card__info-body,
+  .contact-card__form {
+    padding: 24px;
+  }
+
+  .contact-card__photo {
+    min-height: 220px;
+  }
+}
+
 @media (max-width: 480px) {
   .contact-page {
     margin-top: -88px;

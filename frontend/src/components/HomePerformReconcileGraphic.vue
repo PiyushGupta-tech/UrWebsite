@@ -74,7 +74,7 @@ function layerClass(index) {
 
 onMounted(() => {
   reduceMotion.value = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  mobileMediaQuery = window.matchMedia("(max-width: 1200px)");
+  mobileMediaQuery = window.matchMedia("(max-width: 767px), (min-width: 1025px) and (max-width: 1200px)");
   isMobile.value = mobileMediaQuery.matches;
   handleMobileQueryChange = (event) => {
     isMobile.value = event.matches;
@@ -567,7 +567,7 @@ onUnmounted(() => {
   }
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 767px), (min-width: 1025px) and (max-width: 1200px) {
   .reconcile-graphic {
     width: 336px;
     max-width: 100%;

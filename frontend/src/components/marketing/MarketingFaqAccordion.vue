@@ -311,6 +311,44 @@ function toggle(index) {
   }
 }
 
+/* Tablet (Figma 931:18852): centered 714px column, 36px title */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .marketing-faq--split .marketing-faq__inner {
+    max-width: min(714px, 100%);
+    gap: 39px;
+  }
+
+  .marketing-faq--split .marketing-faq__title {
+    max-width: none;
+    font-size: 36px;
+    line-height: 45px;
+    letter-spacing: 0;
+  }
+
+  .marketing-faq--split .marketing-faq__body {
+    letter-spacing: 0.64px;
+  }
+
+  .marketing-faq--split .marketing-faq__item {
+    border-bottom-width: 2px;
+  }
+
+  .marketing-faq--split .marketing-faq__num,
+  .marketing-faq--split .marketing-faq__question {
+    line-height: 22px;
+  }
+
+  .marketing-faq--split .marketing-faq__item--open .marketing-faq__trigger {
+    padding-bottom: 16px;
+  }
+
+  .marketing-faq--split .marketing-faq__answer p {
+    font-size: 16px;
+    line-height: 20px;
+    letter-spacing: 0.64px;
+  }
+}
+
 @media (max-width: 700px) {
   .marketing-faq--split {
     padding-left: 19px;

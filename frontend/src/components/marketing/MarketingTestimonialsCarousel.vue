@@ -397,6 +397,24 @@ onUnmounted(stopTestimonialAutoplay);
   }
 }
 
+/* Tablet (Figma 931:18828): 36px heading, 43px above the active card */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .marketing-testimonials--home .marketing-testimonials__title {
+    max-width: min(714px, calc(100vw - 80px));
+    margin-bottom: 43px;
+    padding: 0;
+    font-size: 36px !important;
+    font-weight: 600;
+    line-height: 45px !important;
+    letter-spacing: -1.08px !important;
+  }
+
+  /* 35px below the lowest card; the track's min-height already adds 18px */
+  .marketing-testimonials--home .marketing-testimonials__dots {
+    margin-top: 17px;
+  }
+}
+
 @media (max-width: 700px) {
   .marketing-testimonials--about .marketing-testimonials__title,
   .marketing-testimonials--home .marketing-testimonials__title {

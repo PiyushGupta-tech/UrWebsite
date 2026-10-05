@@ -322,8 +322,8 @@ const copyrightText = computed(() => {
   }
 }
 
-/* Tablet: room for long link labels + 2×2 social */
-@media (min-width: 768px) and (max-width: 1200px) {
+/* Small laptop: room for long link labels + 2×2 social */
+@media (min-width: 1025px) and (max-width: 1200px) {
   .footer__inner {
     padding: 0 70px;
   }
@@ -342,18 +342,42 @@ const copyrightText = computed(() => {
   }
 }
 
-@media (min-width: 768px) and (max-width: 1023px) {
+/* Tablet (Figma 931:18780): the brand column takes whatever the link columns leave,
+   so long link labels never run into the blurb. */
+@media (min-width: 768px) and (max-width: 1024px) {
   .footer__inner {
-    padding: 0 40px;
+    /* gutter: 40@768 → 70@1024 */
+    padding: 0 clamp(40px, calc(-50px + 11.72vw), 70px);
   }
 
   .footer__brand {
+    flex: 1 1 auto;
     width: auto;
-    max-width: 240px;
+    min-width: 0;
+    max-width: 358px;
   }
 
   .footer__cols {
-    gap: 20px;
+    flex: 0 0 auto;
+    gap: 24px;
+  }
+}
+
+/* Narrow tablet: too tight for the blurb beside four columns, so stack them */
+@media (min-width: 768px) and (max-width: 999.98px) {
+  .footer__top {
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .footer__brand {
+    flex: none;
+    width: 100%;
+  }
+
+  .footer__cols {
+    width: 100%;
+    justify-content: space-between;
   }
 }
 

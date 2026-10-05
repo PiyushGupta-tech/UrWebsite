@@ -83,6 +83,14 @@ onBeforeUnmount(() => observer?.disconnect());
         >
           <h2>{{ section.title }}</h2>
           <p v-if="section.body" class="privacy-content__body">{{ section.body }}</p>
+          <div
+            v-for="sub in section.subsections || []"
+            :key="sub.title"
+            class="privacy-content__sub"
+          >
+            <h3>{{ sub.title }}</h3>
+            <p class="privacy-content__body">{{ sub.body }}</p>
+          </div>
           <ul v-if="section.bullets?.length" class="privacy-content__bullets">
             <li v-for="bullet in section.bullets" :key="bullet">{{ bullet }}</li>
           </ul>
@@ -184,6 +192,18 @@ onBeforeUnmount(() => observer?.disconnect());
 .privacy-content__body + .privacy-content__body,
 .privacy-content__bullets + .privacy-content__body {
   margin-top: 12px;
+}
+
+.privacy-content__sub {
+  margin-top: 20px;
+}
+
+.privacy-content__sub h3 {
+  margin: 0 0 6px;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--rs-ink);
 }
 
 .privacy-content__bullets {

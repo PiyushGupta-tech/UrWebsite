@@ -1,4 +1,5 @@
 <script setup>
+import { onBeforeUnmount, onMounted, ref } from "vue";
 import { RouterLink } from "vue-router";
 import HomePerformControlGraphic from "@/components/HomePerformControlGraphic.vue";
 import HomePerformReconcileGraphic from "@/components/HomePerformReconcileGraphic.vue";
@@ -6,6 +7,37 @@ import HomePerformSuccessGraphic from "@/components/HomePerformSuccessGraphic.vu
 
 defineProps({
   section: { type: Object, required: true },
+});
+
+/* Desktop width at which the reconcile card's copy fits; tablet scales the graphic down from it as a whole */
+const RECONCILE_DESIGN_WIDTH = 652;
+
+const reconcileCard = ref(null);
+const reconcileZoom = ref(1);
+let reconcileObserver = null;
+
+function updateReconcileZoom() {
+  const card = reconcileCard.value;
+  if (!card) return;
+  const styles = window.getComputedStyle(card);
+  const inner =
+    card.clientWidth - parseFloat(styles.paddingLeft) - parseFloat(styles.paddingRight);
+  if (inner > 0) {
+    reconcileZoom.value = Math.min(1, inner / RECONCILE_DESIGN_WIDTH);
+  }
+}
+
+onMounted(() => {
+  updateReconcileZoom();
+  if (typeof ResizeObserver !== "undefined" && reconcileCard.value) {
+    reconcileObserver = new ResizeObserver(updateReconcileZoom);
+    reconcileObserver.observe(reconcileCard.value);
+  }
+});
+
+onBeforeUnmount(() => {
+  reconcileObserver?.disconnect();
+  reconcileObserver = null;
 });
 </script>
 
@@ -34,7 +66,11 @@ defineProps({
           <HomePerformSuccessGraphic class="home-perform__graphic home-perform__graphic--success" />
         </article>
 
-        <article class="home-perform__card home-perform__card--reconcile">
+        <article
+          ref="reconcileCard"
+          class="home-perform__card home-perform__card--reconcile"
+          :style="{ '--reconcile-zoom': reconcileZoom }"
+        >
           <div class="home-perform__copy home-perform__copy--reconcile">
             <h3>{{ section.cards[2].title }}</h3>
             <p>{{ section.cards[2].body }}</p>
@@ -253,8 +289,8 @@ defineProps({
   }
 }
 
-/* Tablet: Figma 208:3641 — stacked full-width cards + vertical graphics */
-@media (max-width: 1200px) {
+/* Stacked full-width cards + vertical graphics (Figma 208:3641); 768–1024 keeps the desktop grid */
+@media (max-width: 767px), (min-width: 1025px) and (max-width: 1200px) {
   .home-perform {
     padding: 0 70px;
     gap: 24px;
@@ -389,6 +425,34 @@ defineProps({
     padding: 10px 16px;
     font-size: 14px;
     letter-spacing: -0.28px;
+  }
+}
+
+/* Tablet: desktop grid with proportional columns */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .home-perform__grid {
+    grid-template-columns: minmax(0, 300fr) minmax(0, 630fr);
+  }
+
+  .home-perform__card--success {
+    height: auto;
+    padding: 20px;
+    gap: 16px;
+  }
+
+  .home-perform__card--reconcile {
+    padding: 20px;
+    gap: 12px;
+  }
+
+  .home-perform__copy h3 {
+    line-height: 28px;
+  }
+
+  .home-perform__graphic--reconcile {
+    width: 652px;
+    max-width: none;
+    zoom: var(--reconcile-zoom, 1);
   }
 }
 

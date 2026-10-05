@@ -592,10 +592,11 @@ PAGE_FAQS = {
                 "links": [{"label": "All products", "href": "/products"}],
             },
             {
-                "question": "What principles guide the platform?",
+                "question": "What values guide Urbanrupee?",
                 "answer": (
-                    "We build around trust, intelligence, seamless experiences, and scalable "
-                    "infrastructure, with businesses and their customers at the center."
+                    "Our core values are Leadership, Excellence, Accountability, and Drive: we lead "
+                    "by example, raise the standard in what we build, own outcomes, and keep "
+                    "moving forward."
                 ),
             },
             {
@@ -646,37 +647,41 @@ PAGE_FAQS = {
             {
                 "question": "What information does Urbanrupee collect?",
                 "answer": (
-                    "We may collect your name and contact details, company information, details you "
-                    "submit through forms, and technical data such as IP address, browser, and device."
+                    "Depending on how you interact with us, we may collect contact details, merchant and "
+                    "business information, KYC and compliance documents, transaction and payment "
+                    "information, and technical data such as IP address, browser, and device."
                 ),
             },
             {
-                "question": "Does Urbanrupee store my card details?",
+                "question": "How does Urbanrupee protect payment information?",
                 "answer": (
-                    "No. We do not store sensitive cardholder data such as CVV, PIN data, or full card "
-                    "numbers."
+                    "Urbanrupee maintains PCI DSS and ISO 27001-related security controls applicable to "
+                    "its operations and scope, along with safeguards such as access controls, encryption, "
+                    "monitoring, and security testing."
                 ),
             },
             {
-                "question": "Does Urbanrupee sell my personal information?",
+                "question": "How long does Urbanrupee retain data?",
                 "answer": (
-                    "No. We do not sell or rent personal information. It is shared only with trusted "
-                    "service providers, payment partners where necessary, or authorities when required "
-                    "by law."
+                    "Urbanrupee generally follows a 90-day retention period for standard operational "
+                    "data. Certain information may remain in backend systems for a minimum of one year "
+                    "as part of system and service operations."
+                ),
+            },
+            {
+                "question": "Does Urbanrupee sell merchant or personal information?",
+                "answer": (
+                    "No. We do not sell, rent, or commercially exploit merchant information. Access is "
+                    "limited to authorised personnel, systems, and service providers with a legitimate "
+                    "need, or where required by law or regulation."
                 ),
             },
             {
                 "question": "How can I access, correct, or delete my data?",
                 "answer": (
-                    "Depending on applicable laws, you can request access, correction, or deletion of "
-                    "your data by emailing it.support@urbanrupee.com."
-                ),
-            },
-            {
-                "question": "How does Urbanrupee use cookies?",
-                "answer": (
-                    "Cookies help improve website performance and analyze traffic. You can manage "
-                    "cookie preferences in your browser settings."
+                    "Subject to applicable laws, you can request access, correction, updates, or deletion "
+                    "by emailing it.support@urbanrupee.com. Some information may need to be retained for "
+                    "legal, regulatory, or security purposes, and we may verify your identity first."
                 ),
             },
         ],

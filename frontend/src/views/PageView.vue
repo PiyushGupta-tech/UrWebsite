@@ -168,6 +168,14 @@ watch(() => route.path, loadPage);
   margin-top: 100px;
 }
 
+/* Tablet (Figma 931:18733): 86px between the page body and each closing section */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .page-view > .site-closing {
+    --ur-section-gap: 86px;
+    margin-top: var(--ur-section-gap);
+  }
+}
+
 .page-view--solutions {
   font-family: "Manrope", "DM Sans", system-ui, sans-serif;
 }

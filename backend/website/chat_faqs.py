@@ -74,10 +74,40 @@ CHAT_FAQS = [
         "href": "/services/financial-operations",
     },
     {
-        "question": "Does Urbanrupee store cardholder data (CHD)?",
+        "question": "How does Urbanrupee handle and store cardholder data (CHD)?",
         "answer": (
-            "No, Urbanrupee does not store sensitive cardholder data. We follow strict data "
-            "protection and encryption practices aligned with PCI DSS standards."
+            "Urbanrupee maintains PCI DSS and ISO 27001-related security controls applicable to "
+            "its operations and scope. Where hosted or redirected payment interfaces are used, "
+            "payment information is handled according to the applicable service architecture "
+            "and security controls."
+        ),
+        "href": "/privacy-policy",
+    },
+    {
+        "question": "How long does Urbanrupee retain data?",
+        "answer": (
+            "Urbanrupee generally follows a 90-day data retention period for standard operational "
+            "data. Certain information may remain stored in backend systems for a minimum period "
+            "of one year as part of system and service operations."
+        ),
+        "href": "/privacy-policy",
+    },
+    {
+        "question": "How can I access, correct, or delete my data?",
+        "answer": (
+            "Subject to applicable laws, you can request access, correction, updates, or deletion "
+            "by emailing it.support@urbanrupee.com. Some information may need to be retained for "
+            "legal, regulatory, or security purposes, and we may verify your identity first."
+        ),
+        "href": "/privacy-policy",
+    },
+    {
+        "question": "What does the Urbanrupee Privacy Policy cover?",
+        "answer": (
+            "It explains how Urbanrupee collects, uses, stores, and protects information across "
+            "our website, services, merchant onboarding, and payment solutions, including data "
+            "security, retention, cookies, your rights, and how to contact us at "
+            "it.support@urbanrupee.com."
         ),
         "href": "/privacy-policy",
     },

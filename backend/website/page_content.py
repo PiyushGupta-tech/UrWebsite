@@ -7,59 +7,91 @@ PAGES = {
     "about": {
         "type": "about",
         "title": "About Urbanrupee",
-        "hero_paragraphs": [
-            (
-                "At Urbanrupee, we're transforming how businesses manage digital payments through "
-                "a secure, scalable, and intelligent payment ecosystem. Our platform helps "
-                "businesses accept, process, route, and manage transactions seamlessly."
-            ),
-            (
-                "Our solutions simplify payment operations, improve transaction success, and "
-                "enable seamless checkout and payout experiences. With reliable technology and "
-                "innovative payment infrastructure, we help businesses grow confidently and "
-                "scale sustainably."
-            ),
-        ],
+        "hero_title": "Powering the Future of Digital Payments",
         "intro": (
-            "At Urbanrupee, we're transforming how businesses manage digital payments through "
-            "a secure, scalable, and intelligent payment ecosystem."
+            "Urbanrupee brings intelligent payment technology, secure infrastructure, and "
+            "seamless experiences together to help businesses move money smarter, faster, and "
+            "at scale."
         ),
         "merchant_partners": content.MERCHANT_PARTNERS,
-        "stats": [
-            {"value": "10M+", "label": "Transactions Processed"},
-            {"value": "91%", "label": "Payment Success Rate"},
-            {"value": "₹70CR+", "label": "Transaction Value Processed"},
-            {"value": "<90ms", "label": "Average Processing Time"},
-        ],
-        "purpose_title": "Powering Payments with Purpose",
-        "purpose_intro": (
-            "We combine secure infrastructure, intelligent payment technology, and seamless "
-            "experiences to make digital transactions simpler, smarter, and built for scale."
+        "overview_title": "Building smarter payment experiences for a digitally connected world.",
+        "overview_body": (
+            "Urbanrupee is a leading payment technology company providing a comprehensive "
+            "technology stack for modern digital payments. We help businesses simplify complex "
+            "transaction challenges while enabling fast, secure, seamless, and reliable payment "
+            "journeys for customers and businesses."
         ),
-        "pillars": [
+        "stats": [
+            {"value": "10+", "label": "Partners"},
+            {"value": "100+", "label": "Clients Served"},
+            {"value": "1Cr", "label": "Transactions Processed"},
+        ],
+        "mission": {
+            "title": "Our Mission",
+            "body": (
+                "To achieve RBI PA-PG (Payment Aggregator and Payment Gateway) authorization by "
+                "2027 while delivering seamless, secure, and technology-driven payment solutions "
+                "that help businesses simplify transactions, enhance customer experiences, and "
+                "scale with confidence."
+            ),
+        },
+        "vision": {
+            "title": "Our Vision",
+            "body": (
+                "To become a trusted leader in digital payment infrastructure by empowering "
+                "businesses of every size and sector with secure, scalable, and innovative payment "
+                "solutions that drive sustainable growth and advance financial inclusion for "
+                "more people and communities."
+            ),
+        },
+        "journey_title": "Our Journey",
+        "journey_intro": (
+            "From a vision to a growing fintech ecosystem, our journey is driven by innovation, "
+            "meaningful connections, and a commitment to simplifying digital payments."
+        ),
+        "journey": [
             {
-                "title": "Trust in Every Transaction",
-                "body": "Secure and reliable payment infrastructure businesses can depend on.",
-                "icon": "handshake",
+                "title": "2023 | STARTED",
+                "body": "Founded as a bank referral partner, providing SaaS solutions.",
             },
             {
-                "title": "Intelligence that Performs",
-                "body": "Smart routing and payment insights that optimize transaction performance.",
-                "icon": "performance",
+                "title": "2024 | BUILT",
+                "body": (
+                    "Launched payment orchestration and customized checkout solutions, onboarding "
+                    "100+ MSME merchants."
+                ),
             },
             {
-                "title": "Frictionless by Design",
-                "body": "Seamless payment journeys that reduce friction and improve conversions.",
-                "icon": "link",
+                "title": "2025 | SECURED",
+                "body": (
+                    "Achieved PCI DSS compliance and strengthened our customized checkout "
+                    "technology."
+                ),
             },
             {
-                "title": "Infrastructure for Growth",
-                "body": "Scalable fintech solutions built to adapt as businesses grow.",
-                "icon": "growth",
+                "title": "2026 | SCALED",
+                "body": (
+                    "Entered the ₹100 Crore processing volume club, serving Education, Travel, "
+                    "and E-commerce."
+                ),
+            },
+            {
+                "title": "2027 | NEXT MILESTONE",
+                "body": (
+                    "Targeting PPI and PAG licenses to strengthen our regulated payments ecosystem."
+                ),
             },
         ],
-        "leaders_title": "Meet the Leaders",
-        "leaders_intro": "The visionaries driving innovation and shaping our journey forward.",
+        "partnerships_title": "Partnerships That Power Progress",
+        "partnerships_intro": (
+            "Collaborating with industry leaders to strengthen payment connectivity and create "
+            "smarter financial solutions."
+        ),
+        "leaders_title": "Leaders Behind Urbanrupee",
+        "leaders_intro": (
+            "Our leaders bring together expertise in fintech, technology, product development, "
+            "and business operations to build payment solutions that help businesses move forward."
+        ),
         "leaders": [
             {
                 "name": "Nakul Kushwaha",
@@ -72,52 +104,35 @@ PAGES = {
                 "image": "/images/1.png",
             },
         ],
-        "principles_title": "The Principles Behind Every Payment We Power",
-        "principles_intro": (
-            "We build fintech solutions around trust, intelligence, seamless experiences, and "
-            "scalable infrastructure, keeping businesses and their customers at the heart of "
-            "every transaction."
+        "values_title": "Our Core Values",
+        "values_intro": (
+            "The principles that drive us forward, shape our decisions, and define how we build "
+            "the future of digital payments."
         ),
-        "principles": [
+        "values": [
             {
-                "number": "01",
-                "title": "Security First",
-                "body": (
-                    "We prioritize secure payment infrastructure, data protection, and compliant "
-                    "transaction processing at every touchpoint."
-                ),
+                "letter": "L",
+                "title": "Leadership",
+                "body": "Lead by action, ownership, and strong example.",
+                "icon": "users",
             },
             {
-                "number": "02",
-                "title": "Customer-Centric Payments",
-                "body": (
-                    "Every product decision starts with the payer and payee experience, reducing "
-                    "friction while keeping transactions fast and dependable."
-                ),
+                "letter": "E",
+                "title": "Excellence",
+                "body": "Raise the standard in everything we consistently build.",
+                "icon": "star",
             },
             {
-                "number": "03",
-                "title": "Intelligence by Design",
-                "body": (
-                    "Smart routing, analytics, and automation are built into the platform so "
-                    "businesses can optimize performance without adding operational complexity."
-                ),
+                "letter": "A",
+                "title": "Accountability",
+                "body": "Own the outcome, not just the assigned task.",
+                "icon": "shield-check",
             },
             {
-                "number": "04",
-                "title": "Built to Scale",
-                "body": (
-                    "Infrastructure that grows with transaction volume, new payment methods, and "
-                    "expanding merchant needs, without re-architecting from scratch."
-                ),
-            },
-            {
-                "number": "05",
-                "title": "Continuous Innovation",
-                "body": (
-                    "We iterate on orchestration, checkout, payouts, and reconciliation so "
-                    "partners stay ahead of market and regulatory change."
-                ),
+                "letter": "D",
+                "title": "Drive",
+                "body": "Move faster, think bigger, keep forward momentum.",
+                "icon": "zap",
             },
         ],
         "testimonials_title": "Trusted by Businesses. Proven in Practice.",
@@ -251,7 +266,7 @@ PAGES = {
             "Bring payments, routing, payouts, reconciliation, and analytics together on one "
             "unified platform, built to scale with your business."
         ),
-        "cta_label": "Talk to an Expert",
+        "cta_label": "Talk to Expert",
     },
     "collections": {
         "type": "collections",
@@ -2515,119 +2530,262 @@ PAGES = {
     "privacy-policy": {
         "type": "privacy",
         "title": "Privacy Policy",
-        "intro": (
-            "At Urbanrupee, we value your privacy and are committed to protecting the information "
-            "you share with us. This Privacy Policy explains how we collect, use, disclose, and "
-            "safeguard your information when you visit our website or use our services."
-        ),
+        "intro": "Last Updated: 28 September 2026",
         "sections": [
+            {
+                "id": "scope",
+                "title": "Scope",
+                "body": (
+                    "This Privacy Policy explains how Urbanrupee Techsolution Private Limited "
+                    "(\u201cUrbanrupee\u201d, \u201cwe\u201d, \u201cus\u201d, or \u201cour\u201d) collects, uses, "
+                    "stores, and protects information when you visit our website, use our services, "
+                    "communicate with us, or otherwise interact with Urbanrupee.\n\n"
+                    "This Privacy Policy applies to our website, products, services, merchant onboarding "
+                    "processes, payment and financial technology solutions, and related business "
+                    "interactions.\n\n"
+                    "By accessing or using our website or services, you acknowledge that you have read "
+                    "and understood this Privacy Policy."
+                ),
+            },
             {
                 "id": "information-we-collect",
                 "title": "Information We Collect",
-                "body": "We may collect the following information when you interact with our website:",
-                "bullets": [
-                    "Name and contact details (such as email address and phone number)",
-                    "Company or business information",
-                    "Information submitted through contact forms, demo requests, or inquiries",
-                    (
-                        "Technical information such as IP address, browser type, device information, "
-                        "and website usage data"
-                    ),
+                "body": (
+                    "Urbanrupee may collect information that is necessary to provide our services, "
+                    "establish and maintain merchant relationships, comply with applicable legal and "
+                    "regulatory requirements, and maintain the security of our platform."
+                ),
+                "subsections": [
+                    {
+                        "title": "Personal and Contact Information",
+                        "body": (
+                            "We may collect information such as your name, business email address, phone "
+                            "number, designation, communication details, and other information you "
+                            "voluntarily provide when you contact us, register with us, or communicate "
+                            "with our team."
+                        ),
+                    },
+                    {
+                        "title": "Merchant and Business Information",
+                        "body": (
+                            "For merchants and business users, we may collect information such as business "
+                            "or company name, registered address, business type, website or application "
+                            "details, business registration information, nature of business, ownership or "
+                            "authorised representative details, and other information required to "
+                            "understand and support the merchant relationship."
+                        ),
+                    },
+                    {
+                        "title": "KYC and Compliance Information",
+                        "body": (
+                            "Where required for onboarding, verification, risk management, or regulatory "
+                            "compliance, we may collect KYC, business verification, beneficial ownership, "
+                            "identification, financial, and other compliance-related information and "
+                            "documents."
+                        ),
+                    },
+                    {
+                        "title": "Transaction and Payment Information",
+                        "body": (
+                            "Depending on the services used, we may process information related to "
+                            "transactions, payment activity, settlement details, payment status, refunds, "
+                            "reconciliation, and other information required to provide and manage our "
+                            "services."
+                        ),
+                    },
+                    {
+                        "title": "Technical and Website Information",
+                        "body": (
+                            "When you use our website, we may automatically collect technical information "
+                            "such as IP address, browser type, device information, operating system, pages "
+                            "visited, access times, and other usage information. This information helps us "
+                            "maintain website functionality, security, and performance."
+                        ),
+                    },
                 ],
             },
             {
                 "id": "how-we-use",
-                "title": "How We Use Your Information",
-                "body": "We use the information we collect to:",
-                "bullets": [
-                    "Respond to inquiries and support requests",
-                    "Provide information about our products and services",
-                    "Improve website functionality and user experience",
-                    "Facilitate merchant onboarding and business communications",
-                    "Ensure security and prevent fraudulent activities",
-                    "Comply with applicable legal and regulatory requirements",
-                ],
-            },
-            {
-                "id": "payment-security",
-                "title": "Payment Security",
+                "title": "How Urbanrupee Uses Personal Information",
                 "body": (
-                    "Urbanrupee is committed to maintaining high standards of payment security.\n\n"
-                    "We do not store sensitive cardholder data, including CVV, PIN data, or full card "
-                    "numbers. Payment-related transactions are processed through secure and compliant "
-                    "payment infrastructure and authorized partners."
+                    "Urbanrupee may use personal and business information to provide and manage our "
+                    "services, onboard and verify merchants, communicate with users and merchants, "
+                    "process and support transactions, manage settlements and reconciliation, conduct "
+                    "risk and fraud monitoring, meet applicable KYC and compliance requirements, maintain "
+                    "platform security, respond to enquiries, improve our services, and comply with "
+                    "applicable legal and regulatory obligations.\n\n"
+                    "We use information only for legitimate business, service, security, compliance, and "
+                    "operational purposes connected with our relationship with you."
                 ),
             },
             {
-                "id": "cookies-analytics",
-                "title": "Cookies and Analytics",
-                "body": "Our website may use cookies and similar technologies to:",
-                "bullets": [
-                    "Improve website performance",
-                    "Analyze visitor behavior and website traffic",
-                    "Enhance user experience",
-                ],
-                "closing": (
-                    "You may manage cookie preferences through your browser settings."
-                ),
-            },
-            {
-                "id": "information-sharing",
-                "title": "Information Sharing",
+                "id": "merchant-information",
+                "title": "Protection of Merchant and Business Information",
                 "body": (
-                    "Urbanrupee does not sell or rent your personal information.\n\n"
-                    "We may share information with:"
+                    "Urbanrupee respects the confidentiality of merchant and business information. We do "
+                    "not sell, rent, or commercially exploit merchant information, and we do not disclose "
+                    "merchant information to unrelated third parties for their independent commercial "
+                    "purposes.\n\n"
+                    "Access to merchant information is limited to authorised personnel, systems, and "
+                    "service providers who require access for legitimate business, operational, security, "
+                    "compliance, or service-related purposes.\n\n"
+                    "Merchant information may be processed or disclosed where necessary to provide "
+                    "requested services, meet legal or regulatory requirements, prevent fraud or security "
+                    "incidents, or comply with a lawful request."
                 ),
-                "bullets": [
-                    "Trusted service providers and technology partners",
-                    "Financial institutions and payment partners, where necessary",
-                    "Regulatory authorities and law enforcement agencies when required by law",
-                ],
             },
             {
                 "id": "data-security",
                 "title": "Data Security",
                 "body": (
-                    "We implement appropriate technical and organizational measures to protect your "
-                    "information from unauthorized access, disclosure, alteration, or destruction."
+                    "Urbanrupee uses appropriate technical, organisational, and administrative safeguards "
+                    "to protect information against unauthorised access, use, alteration, disclosure, "
+                    "loss, or destruction.\n\n"
+                    "Our security practices may include access controls, authentication mechanisms, "
+                    "encryption, monitoring, vulnerability management, security testing, system "
+                    "segregation, and other appropriate security measures.\n\n"
+                    "While we take reasonable measures to protect information, no method of transmission "
+                    "or electronic storage can be guaranteed to be completely secure."
                 ),
             },
             {
-                "id": "third-party-links",
-                "title": "Third-Party Links",
+                "id": "pci-dss",
+                "title": "PCI DSS and Information Security",
                 "body": (
-                    "Our website may contain links to third-party websites. Urbanrupee is not "
-                    "responsible for the privacy practices or content of such websites."
+                    "Urbanrupee follows applicable information security and payment security practices "
+                    "and maintains controls aligned with relevant industry and regulatory requirements.\n\n"
+                    "Urbanrupee maintains PCI DSS and ISO 27001-related security controls applicable to "
+                    "its operations and scope. Our security environment is designed to protect sensitive "
+                    "information and support the confidentiality, integrity, and availability of our "
+                    "systems and services.\n\n"
+                    "Where hosted or redirected payment interfaces are used, payment information is "
+                    "handled according to the applicable service architecture and security controls."
+                ),
+            },
+            {
+                "id": "data-retention",
+                "title": "Data Retention",
+                "body": (
+                    "Urbanrupee generally follows a 90-day data retention period for standard operational "
+                    "data.\n\n"
+                    "Certain information may also remain stored in backend systems for a minimum period "
+                    "of one year as part of system and service operations."
+                ),
+            },
+            {
+                "id": "cookies",
+                "title": "Cookies and Similar Technologies",
+                "body": (
+                    "Urbanrupee may use cookies and similar technologies to improve website "
+                    "functionality, remember preferences, maintain security, and understand how visitors "
+                    "use our website.\n\n"
+                    "Cookies may be session-based or may remain on your device for a certain period. You "
+                    "may manage or disable cookies through your browser settings. Disabling certain "
+                    "cookies may affect some website functionality."
+                ),
+            },
+            {
+                "id": "analytics",
+                "title": "Analytics and Website Usage",
+                "body": (
+                    "Urbanrupee may use analytics and website usage information to understand how "
+                    "visitors interact with our website, monitor performance, identify technical issues, "
+                    "improve user experience, and maintain security and functionality.\n\n"
+                    "Where analytics tools are used, the information collected will be handled in "
+                    "accordance with applicable privacy and security requirements."
                 ),
             },
             {
                 "id": "your-rights",
-                "title": "Your Rights",
-                "body": "Depending on applicable laws, you may have the right to:",
-                "bullets": [
-                    "Access your personal information",
-                    "Request correction of inaccurate information",
-                    "Request deletion of your information, subject to legal obligations",
-                    "Opt out of marketing communications",
-                ],
+                "title": "Users\u2019 Rights and Requests",
+                "body": (
+                    "Subject to applicable laws and regulatory requirements, you may contact Urbanrupee to "
+                    "request access to, correction of, or updates to your personal information. Where "
+                    "applicable, you may also request deletion of your personal information or withdrawal "
+                    "of consent.\n\n"
+                    "Certain information may need to be retained for legal, regulatory, security, "
+                    "contractual, or other legitimate purposes. We may require reasonable verification "
+                    "before processing your request."
+                ),
+            },
+            {
+                "id": "merchant-responsibility",
+                "title": "Merchant Responsibility",
+                "body": (
+                    "Merchants are responsible for ensuring that the information they provide to "
+                    "Urbanrupee is accurate, complete, lawful, and up to date.\n\n"
+                    "Merchants are also responsible for obtaining any necessary permissions or consents "
+                    "before providing personal information of their customers, employees, "
+                    "representatives, beneficial owners, or other individuals to Urbanrupee."
+                ),
+            },
+            {
+                "id": "data-accuracy",
+                "title": "Data Accuracy",
+                "body": (
+                    "We rely on information provided by users and merchants to provide our services "
+                    "effectively. You are responsible for ensuring that the information you provide "
+                    "remains accurate and updated.\n\n"
+                    "If your information changes, you should notify Urbanrupee or update the information "
+                    "through the applicable service or communication channel."
+                ),
+            },
+            {
+                "id": "security-incidents",
+                "title": "Data Breach and Security Incidents",
+                "body": (
+                    "Urbanrupee maintains security measures designed to identify, prevent, investigate, "
+                    "and respond to security incidents.\n\n"
+                    "If Urbanrupee becomes aware of a security incident involving personal information, "
+                    "we will take appropriate steps to investigate, contain, and address the incident and "
+                    "make any notifications required under applicable laws or regulations."
+                ),
+            },
+            {
+                "id": "confidentiality",
+                "title": "Confidentiality",
+                "body": (
+                    "Urbanrupee treats confidential business and personal information with appropriate "
+                    "care. Access to such information is restricted to authorised personnel and service "
+                    "providers who require it for legitimate business or service-related purposes.\n\n"
+                    "We expect our employees, representatives, contractors, and relevant service providers "
+                    "to maintain the confidentiality of information accessed in connection with their work."
+                ),
             },
             {
                 "id": "changes",
-                "title": "Changes to This Policy",
+                "title": "Changes to This Privacy Policy",
                 "body": (
-                    "Urbanrupee reserves the right to update this Privacy Policy at any time. Any "
-                    "changes will be posted on this page with an updated effective date."
+                    "Urbanrupee may update this Privacy Policy from time to time to reflect changes in our "
+                    "services, technology, business practices, legal requirements, or regulatory "
+                    "requirements.\n\n"
+                    "Any updated version will be published on our website with the revised \u201cLast "
+                    "Updated\u201d date. We encourage users and merchants to review this Privacy Policy "
+                    "periodically."
                 ),
             },
             {
                 "id": "contact-us",
-                "title": "Contact Us",
+                "title": "Grievance and Privacy Contact",
                 "body": (
-                    "For any questions regarding this Privacy Policy or our data practices, "
-                    "please contact us:\n\n"
+                    "If you have any questions, concerns, requests, or complaints regarding this Privacy "
+                    "Policy or the handling of your personal information, you may contact us using the "
+                    "details below:\n\n"
                     "Urbanrupee Techsolution Private Limited\n"
+                    "Registered Office: A01 & A03, UG, Tower 3, NX-One, Techzone 4, Greater Noida, "
+                    "Uttar Pradesh, India\n"
+                    "Website: urbanrupee.com\n"
                     "Email: it.support@urbanrupee.com\n"
-                    "Website: www.urbanrupee.com"
+                    "Phone: +91 9305697870"
+                ),
+            },
+            {
+                "id": "governing-law",
+                "title": "Governing Law",
+                "body": (
+                    "This Privacy Policy shall be governed by and interpreted in accordance with the laws "
+                    "of India. Any disputes arising in connection with this Privacy Policy shall be "
+                    "subject to the jurisdiction of the competent courts in India."
                 ),
             },
         ],

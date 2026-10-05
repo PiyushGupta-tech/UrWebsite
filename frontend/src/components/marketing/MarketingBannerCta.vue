@@ -207,6 +207,39 @@ const usesLink = computed(() => !!props.to && !props.href);
   }
 }
 
+/* Tablet (Figma 931:18681): 884×288 panel, 36px title */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .marketing-banner-cta {
+    /* gutter: 40@768 → 70@1024 */
+    padding-left: clamp(40px, calc(-50px + 11.71875vw), 70px);
+    padding-right: clamp(40px, calc(-50px + 11.71875vw), 70px);
+  }
+
+  .marketing-banner-cta__panel {
+    min-height: 288px;
+  }
+
+  .marketing-banner-cta__content {
+    gap: 20px;
+    max-width: 762px;
+    padding: 30px 24px 36px;
+  }
+
+  .marketing-banner-cta__title {
+    max-width: 586px;
+    font-size: 36px;
+    line-height: 45px;
+    letter-spacing: 1.44px;
+  }
+
+  .marketing-banner-cta__body {
+    max-width: 714px;
+    font-size: 16px;
+    line-height: 20px;
+    letter-spacing: 0.64px;
+  }
+}
+
 @media (max-width: 700px) {
   .marketing-banner-cta {
     padding-left: 19px;

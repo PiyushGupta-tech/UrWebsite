@@ -753,6 +753,13 @@ onUnmounted(() => {
   }
 }
 
+/* Tablet: a vw-based gap pushed the CTA past the bar edge; space-between spreads the rest */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .nav__bar {
+    gap: 16px;
+  }
+}
+
 /* Phone: hamburger + hide-on-scroll */
 @media (max-width: 700px) {
   .nav {
