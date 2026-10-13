@@ -816,10 +816,21 @@ onUnmounted(() => {
     border-radius: 8.428px;
     box-shadow: 0 12px 32px rgba(15, 23, 42, 0.12);
     backdrop-filter: blur(12px);
+    /* The bar is fixed, so page scroll never reaches a tall menu: it scrolls itself between the
+       bar (16px top + 64px bar + 8px gap) and the sticky CTA, with 12px to spare. */
+    max-height: calc(100vh - 100px - var(--ur-sticky-cta, 0px));
+    max-height: calc(100dvh - 100px - var(--ur-sticky-cta, 0px));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
   }
 
   .nav__links--open {
     display: flex;
+  }
+
+  .nav__links > * {
+    flex-shrink: 0;
   }
 
   .nav__actions {

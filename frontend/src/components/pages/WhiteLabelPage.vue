@@ -1337,4 +1337,261 @@ watch(
     min-height: 0;
   }
 }
+
+/* —— Phone — Figma 931:8367 —— */
+@media (max-width: 767px) {
+  .wl-page {
+    margin-bottom: -44px;
+  }
+
+  /* Hero: chip 41px under the navbar, metrics 56px below the CTA; bottom padding keeps the card shadows unclipped */
+  .wl-hero__inner {
+    padding: 33px 16px 24px;
+    gap: 56px;
+  }
+
+  .wl-hero__copy {
+    gap: 0;
+  }
+
+  .wl-hero__eyebrow {
+    margin-bottom: 24px;
+  }
+
+  .wl-hero__title,
+  .wl-platform__title,
+  .wl-steps__title,
+  .wl-benefits__title {
+    font-size: 28px;
+    line-height: 36px;
+    letter-spacing: -0.84px;
+  }
+
+  .wl-hero__intro,
+  .wl-platform__body,
+  .wl-steps__body,
+  .wl-benefits__body {
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0;
+  }
+
+  .wl-hero__intro {
+    margin-top: 12px;
+  }
+
+  .wl-hero__cta {
+    width: auto;
+    max-width: none;
+    height: 40px;
+    margin-top: 24px;
+    padding: 0 16px;
+    font-size: 14px;
+    letter-spacing: -0.28px;
+  }
+
+  .wl-hero .wl-hero__metrics {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 144px));
+    justify-content: center;
+    gap: 18px 40px;
+  }
+
+  .wl-hero__metrics :deep(.ur-metrics__card) {
+    height: auto;
+    min-height: 115px;
+    padding: 12px;
+    gap: 8px;
+    border: 0;
+    border-radius: 8px;
+    box-shadow:
+      0 12px 16px -4px rgba(10, 13, 18, 0.1),
+      0 4px 6px -2px rgba(10, 13, 18, 0.05);
+  }
+
+  .wl-hero__metrics :deep(.ur-metrics__value) {
+    min-height: 40px;
+    font-size: 32px;
+    line-height: 40px;
+    letter-spacing: -0.96px;
+    color: #252b37;
+  }
+
+  /* Two-line label box so every value sits at the same height */
+  .wl-hero__metrics :deep(.ur-metrics__label) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0;
+    white-space: normal;
+  }
+
+  /* Shared section rhythm */
+  .wl-platform,
+  .wl-steps,
+  .wl-benefits {
+    margin-top: 56px;
+    padding: 0 16px;
+  }
+
+  .wl-platform {
+    margin-top: 32px;
+    gap: 36px;
+  }
+
+  .wl-platform__head,
+  .wl-steps__head,
+  .wl-benefits__copy {
+    gap: 12px;
+  }
+
+  .wl-platform__visual {
+    width: calc(100% - 8px);
+  }
+
+  /* Badges keep their desktop proportions inside the scaled diagram. */
+  .wl-platform__stage {
+    container-type: inline-size;
+  }
+
+  .wl-platform__badge {
+    padding: calc(16 / 1291 * 100cqw) calc(20 / 1291 * 100cqw);
+    border-radius: calc(12 / 1291 * 100cqw);
+  }
+
+  .wl-platform__badge span {
+    font-size: calc(16 / 1291 * 100cqw);
+  }
+
+  /* Steps: copy over a full-width graphic */
+  .wl-steps__head {
+    margin-bottom: 36px;
+  }
+
+  .wl-steps__flow {
+    gap: 36px;
+  }
+
+  .wl-steps__wires {
+    display: none;
+  }
+
+  .wl-steps__row,
+  .wl-steps__row--reverse {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .wl-steps__row--reverse .wl-steps__copy,
+  .wl-steps__row--reverse .wl-steps__visual {
+    order: initial;
+  }
+
+  /* Configure art bleeds 16px left and 29px right of its box; shrink it so the cards sit inside the gutters. */
+  .wl-steps__visual :deep(.wl-cfg) {
+    width: 88.9%;
+    margin-left: 4.8%;
+    margin-right: 0;
+  }
+
+  /* "01." sits inline with the title; the description runs the full width under both. */
+  .wl-steps__copy {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 8px 4px;
+  }
+
+  .wl-steps__text {
+    display: contents;
+  }
+
+  .wl-steps__num,
+  .wl-steps__name {
+    min-width: 0;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 20px;
+    letter-spacing: 0;
+  }
+
+  .wl-steps__desc {
+    grid-column: 1 / -1;
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: 0.48px;
+  }
+
+  /* Benefits: centred heading over one column of cards in data order */
+  .wl-benefits {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 36px;
+  }
+
+  .wl-benefits__copy {
+    max-width: none;
+    text-align: center;
+  }
+
+  .wl-benefits__cards {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .wl-benefits__col {
+    display: contents;
+  }
+
+  .wl-benefits__col--offset .wl-benefits__card:nth-child(1) {
+    order: 1;
+  }
+
+  .wl-benefits__col:not(.wl-benefits__col--offset) .wl-benefits__card:nth-child(1) {
+    order: 2;
+  }
+
+  .wl-benefits__col--offset .wl-benefits__card:nth-child(2) {
+    order: 3;
+  }
+
+  .wl-benefits__col:not(.wl-benefits__col--offset) .wl-benefits__card:nth-child(2) {
+    order: 4;
+  }
+
+  .wl-benefits__card {
+    min-height: 0;
+    gap: 12px;
+    border-radius: 12px;
+  }
+
+  .wl-benefits__icon {
+    width: 52px;
+    height: 52px;
+  }
+
+  .wl-benefits__card-text {
+    gap: 8px;
+  }
+
+  .wl-benefits__card-title {
+    line-height: 20px;
+  }
+
+  .wl-benefits__card-body {
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: 0.36px;
+  }
+}
+</style>
+
+<style>
+/* Shared closing sits outside this component; only this page's phone rhythm uses Figma's 56px gaps. */
+@media (max-width: 767px) {
+  .page-view:has(> .wl-page) > .site-closing > * + * {
+    margin-top: 56px;
+  }
+}
 </style>

@@ -15,6 +15,10 @@ LEGACY_REDIRECTS: dict[str, str] = {
     "pricing-tables": "/contact",
     "team": "/about",
     "services": "/products",
+    # Retired SPA routes (the Vue router also redirects these client-side).
+    "products/collections": "/services/collections",
+    "services/aml": "/services/risk-fraud-management",
+    "products/payout": "/services/payouts",
 }
 
 # Retired WordPress sitemaps — no longer valid XML endpoints

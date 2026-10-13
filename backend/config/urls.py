@@ -6,7 +6,7 @@ from django.views.generic.base import RedirectView
 
 from website.legacy_redirects import LEGACY_GONE_PATHS, LEGACY_REDIRECTS, LegacyGoneView
 from website.seo_discovery import RobotsTxtView, SitemapXmlView
-from website.static_serve import cached_serve
+from website.static_serve import ROOT_PUBLIC_FILES, cached_serve, public_root_file
 from website.spa_views import SpaIndexView
 
 urlpatterns = [
@@ -14,6 +14,16 @@ urlpatterns = [
     path("robots.txt", RobotsTxtView.as_view(), name="robots-txt"),
     path("sitemap.xml", SitemapXmlView.as_view(), name="sitemap-xml"),
 ]
+
+for _root_file in sorted(ROOT_PUBLIC_FILES):
+    urlpatterns.append(
+        path(
+            _root_file,
+            public_root_file,
+            {"filename": _root_file},
+            name=f"public-{_root_file.replace('.', '-')}",
+        )
+    )
 
 for _legacy, _target in LEGACY_REDIRECTS.items():
     urlpatterns.append(
@@ -44,7 +54,7 @@ if (frontend_dist / "index.html").exists():
                 re_path(
                     rf"^{folder}/(?P<path>.*)$",
                     cached_serve,
-                    {"document_root": document_root},
+                    {"document_root": document_root, "immutable": folder == "assets"},
                 )
             )
     urlpatterns.append(

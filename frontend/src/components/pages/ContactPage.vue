@@ -1,12 +1,16 @@
 <script setup>
-import { computed, nextTick, ref } from "vue";
+import { computed, ref } from "vue";
+import { useRouter } from "vue-router";
 import { submitContactForm } from "@/api/client.js";
+import { trackEvent } from "@/utils/analytics.js";
 import { contactFieldSchemas, contactSchema } from "@/validation/contactSchema.js";
 
 defineProps({
   page: { type: Object, required: true },
   relatedLinks: { type: Array, default: () => [] },
 });
+
+const router = useRouter();
 
 const form = ref({
   name: "",
@@ -211,8 +215,8 @@ async function onSubmit() {
     const { value } = contactSchema.validate(form.value, { abortEarly: false });
     await submitContactForm({ ...value });
     submitted.value = true;
-    await nextTick();
-    successHeading.value?.focus();
+    trackEvent("generate_lead", { form_name: "contact" });
+    await router.push({ name: "thank-you" });
   } catch (e) {
     if (e.fieldErrors && Object.keys(e.fieldErrors).length) {
       fieldErrors.value = { ...fieldErrors.value, ...e.fieldErrors };

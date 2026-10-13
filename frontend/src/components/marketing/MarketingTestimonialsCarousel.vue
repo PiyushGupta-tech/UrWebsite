@@ -443,4 +443,61 @@ onUnmounted(stopTestimonialAutoplay);
     line-height: 22px;
   }
 }
+
+/* Phone (Figma 931:31173): one 361px card, 36px under the heading, dots 32px below */
+@media (max-width: 767px) {
+  .marketing-testimonials--about .marketing-testimonials__title,
+  .marketing-testimonials--home .marketing-testimonials__title {
+    width: auto;
+    max-width: none;
+    margin: 0 0 36px;
+    padding: 0 16px;
+    font-size: 28px !important;
+    font-weight: 600;
+    line-height: 36px !important;
+    letter-spacing: -0.84px !important;
+    text-transform: capitalize;
+    white-space: normal;
+  }
+
+  /* Equal-height cards keep the dots 32px under whichever card is active. */
+  .marketing-testimonials__track {
+    --card-w: calc(100vw - 32px);
+    --gap: 16px;
+    align-items: stretch;
+    min-height: 0;
+  }
+
+  .marketing-testimonials__card {
+    align-items: center;
+    gap: 24px;
+    min-height: 0;
+    padding: 20px;
+    border-radius: 12px;
+  }
+
+  .marketing-testimonials__quote {
+    max-width: 300px;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: -0.42px;
+    text-align: center;
+  }
+
+  .marketing-testimonials__avatar {
+    width: 32px;
+    height: 32px;
+  }
+
+  .marketing-testimonials__meta {
+    font-size: 14px;
+    line-height: 22px;
+    letter-spacing: -0.42px;
+    text-align: center;
+  }
+
+  .marketing-testimonials--home .marketing-testimonials__dots {
+    margin-top: 32px;
+  }
+}
 </style>

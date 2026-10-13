@@ -892,7 +892,14 @@ const connectors = [
   white-space: nowrap;
 }
 
-@media (max-width: 900px) {
+/* Phone keeps the full artboard scaled to width (Figma 931:16894); only narrow tablets stack. */
+@media (max-width: 767px) {
+  .csd__scaler {
+    border-radius: 6.38px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 900px) {
   .csd__artboard {
     width: 100%;
     height: auto;

@@ -37,8 +37,8 @@ PAGES = {
         },
         "vision": {
             "title": "Our Vision",
-            "body": (
-                "To become a trusted leader in digital payment infrastructure by empowering "
+                "body": (
+                    "To become a trusted leader in digital payment infrastructure by empowering "
                 "businesses of every size and sector with secure, scalable, and innovative payment "
                 "solutions that drive sustainable growth and advance financial inclusion for "
                 "more people and communities."
@@ -533,7 +533,7 @@ PAGES = {
                 },
                 {
                     "title": "Operational Visibility",
-                    "body": (
+                "body": (
                         "Get real-time visibility into payout activity, track transaction status, "
                         "and quickly identify issues to keep operations running smoothly."
                     ),
@@ -2589,25 +2589,25 @@ PAGES = {
                     },
                     {
                         "title": "KYC and Compliance Information",
-                        "body": (
+                "body": (
                             "Where required for onboarding, verification, risk management, or regulatory "
                             "compliance, we may collect KYC, business verification, beneficial ownership, "
                             "identification, financial, and other compliance-related information and "
                             "documents."
-                        ),
-                    },
-                    {
+                ),
+            },
+            {
                         "title": "Transaction and Payment Information",
                         "body": (
                             "Depending on the services used, we may process information related to "
                             "transactions, payment activity, settlement details, payment status, refunds, "
                             "reconciliation, and other information required to provide and manage our "
                             "services."
-                        ),
-                    },
-                    {
+                ),
+            },
+            {
                         "title": "Technical and Website Information",
-                        "body": (
+                "body": (
                             "When you use our website, we may automatically collect technical information "
                             "such as IP address, browser type, device information, operating system, pages "
                             "visited, access times, and other usage information. This information helps us "
@@ -3113,6 +3113,13 @@ PAGES = {
                     "With intelligent routing, real-time visibility and reliable transaction "
                     "management, businesses can deliver smoother UPI payment experiences while "
                     "staying ready to scale."
+                ),
+            ],
+            "phone_body": [
+                (
+                    "Urbanrupee’s Seamless UPI Switch connects your business to the wider UPI "
+                    "ecosystem through one unified layer, with intelligent routing, real-time "
+                    "visibility and smoother payments that scale."
                 ),
             ],
             "icons": [

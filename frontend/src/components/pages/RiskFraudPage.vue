@@ -1,6 +1,7 @@
 <script setup>
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { RouterLink } from "vue-router";
+import { useLoopSlider } from "@/composables/useLoopSlider.js";
 import RfDetectIpGraphic from "./RfDetectIpGraphic.vue";
 import RfDetectLocationsGraphic from "./RfDetectLocationsGraphic.vue";
 import RfDetectPatternsGraphic from "./RfDetectPatternsGraphic.vue";
@@ -47,6 +48,12 @@ const saferItems = computed(() => {
   }));
 });
 const saferOthers = computed(() => Math.max(saferItems.value.length - 1, 0));
+const saferCount = computed(() => saferItems.value.length);
+const {
+  slide: saferSlide,
+  snapping: saferSnapping,
+  onTrackTransitionEnd: onSaferTrackEnd,
+} = useLoopSlider(saferActive, saferCount);
 
 function stopSaferCycle() {
   if (saferTimer) clearInterval(saferTimer);
@@ -157,6 +164,13 @@ function selectSafer(index, { fromUser = true } = {}) {
   ensureSaferNumTop(index);
   saferActive.value = index;
   if (!fromUser) startSaferCycle();
+}
+
+/** Phone arrows: step through the cards, wrapping at either end. */
+function stepSafer(dir) {
+  const count = saferItems.value.length;
+  if (count < 2) return;
+  selectSafer((saferActive.value + dir + count) % count);
 }
 
 function pauseSafer() {
@@ -356,8 +370,11 @@ watch(saferItems, async () => {
       <div
         ref="saferRowRef"
         class="rf-safer__row"
+        :class="{ 'rf-safer__row--snap': saferSnapping }"
+        :style="{ '--rf-slide': String(saferSlide) }"
         role="tablist"
         aria-label="Safer financial operations"
+        @transitionend="onSaferTrackEnd"
       >
         <button
           v-for="(step, index) in saferItems"
@@ -383,6 +400,51 @@ watch(saferItems, async () => {
               <span class="rf-safer__step-body">{{ step.body }}</span>
             </span>
           </span>
+        </button>
+        <!-- Phone slider only: copy of the first card so wrapping keeps sliding forward. -->
+        <div
+          v-if="saferItems.length > 2"
+          class="rf-safer__step rf-safer__step--active rf-safer__step--clone"
+          aria-hidden="true"
+        >
+          <span class="rf-safer__num">{{ saferItems[0].num }}</span>
+          <span class="rf-safer__cluster">
+            <span class="rf-safer__num-slot" />
+            <span class="rf-safer__step-text">
+              <span class="rf-safer__step-title">{{ saferItems[0].title }}</span>
+              <span class="rf-safer__step-body">{{ saferItems[0].body }}</span>
+            </span>
+          </span>
+        </div>
+      </div>
+      <div v-if="saferItems.length > 1" class="rf-safer__nav">
+        <button
+          type="button"
+          class="rf-safer__arrow rf-safer__arrow--prev"
+          aria-label="Previous step"
+          @click="stepSafer(-1)"
+        >
+          <img
+            src="/images/figma-collections/experiences/arrow-up-dark.svg"
+            alt=""
+            width="12"
+            height="13"
+            decoding="async"
+          />
+        </button>
+        <button
+          type="button"
+          class="rf-safer__arrow rf-safer__arrow--next"
+          aria-label="Next step"
+          @click="stepSafer(1)"
+        >
+          <img
+            src="/images/figma-collections/experiences/arrow-up-white.svg"
+            alt=""
+            width="14"
+            height="14"
+            decoding="async"
+          />
         </button>
       </div>
     </section>
@@ -1062,6 +1124,15 @@ watch(saferItems, async () => {
   text-wrap: balance;
 }
 
+/* Phone only: the row shows one card, so arrows step through the rest. */
+.rf-safer__nav {
+  display: none;
+}
+
+.rf-safer__step.rf-safer__step--clone {
+  display: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .rf-safer__step,
   .rf-safer__step-text,
@@ -1265,6 +1336,310 @@ watch(saferItems, async () => {
 
   .rf-safer__step-body {
     font-size: 14px;
+  }
+}
+
+/* —— Phone 931:31252 (393 frame, 16px gutters, 56px between sections) —— */
+@media (max-width: 767px) {
+  /* PageView's 100px gap above the closing collapses with this to 56px. */
+  .rf-page {
+    margin-bottom: -44px;
+  }
+
+  .rf-hero__title,
+  .rf-section__title,
+  .rf-growth__title,
+  .rf-safer__heading {
+    font-size: 28px;
+    line-height: 36px;
+  }
+
+  .rf-hero__title,
+  .rf-section__title,
+  .rf-growth__title {
+    letter-spacing: -0.84px;
+  }
+
+  .rf-hero__intro,
+  .rf-section__body,
+  .rf-growth__body {
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0;
+    color: #535862;
+  }
+
+  .rf-hero {
+    min-height: 0;
+  }
+
+  .rf-hero__inner {
+    padding: 80px 16px 0;
+    gap: 24px;
+  }
+
+  .rf-hero__copy {
+    align-items: center;
+    max-width: none;
+    text-align: center;
+  }
+
+  .rf-hero__eyebrow {
+    margin-bottom: 24px;
+    padding: 8px 16px;
+    font-weight: 700;
+  }
+
+  .rf-hero__title {
+    margin-bottom: 12px;
+  }
+
+  .rf-hero__intro {
+    margin-bottom: 24px;
+  }
+
+  .rf-hero__cta {
+    height: 40px;
+    padding: 0 16px;
+    font-size: 14px;
+    letter-spacing: -0.28px;
+  }
+
+  .rf-hero__graphic {
+    max-width: none;
+  }
+
+  .rf-section,
+  .rf-section--growth {
+    padding: 0 16px;
+  }
+
+  .rf-section__head,
+  .rf-section__head--secure,
+  .rf-section__head--detect {
+    gap: 12px;
+  }
+
+  .rf-section--secure {
+    margin-top: 56px;
+    gap: 36px;
+  }
+
+  .rf-section--secure :deep(.rf-engine) {
+    width: calc(100% - 8px);
+  }
+
+  .rf-section--growth {
+    margin-top: 56px;
+  }
+
+  .rf-growth {
+    align-items: center;
+    gap: 36px;
+  }
+
+  .rf-growth__copy {
+    align-items: center;
+    gap: 12px;
+    text-align: center;
+  }
+
+  .rf-growth__cards {
+    width: 100%;
+    gap: 20px;
+  }
+
+  .rf-growth__card {
+    justify-content: center;
+    gap: 8px;
+    padding: 20px;
+    box-shadow: none;
+  }
+
+  .rf-growth__icon {
+    margin-bottom: 4px;
+  }
+
+  .rf-growth__card-title,
+  .rf-detect__title {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 20px;
+    letter-spacing: 0;
+  }
+
+  .rf-growth__card-body,
+  .rf-detect__body {
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: 0.48px;
+  }
+
+  .rf-section--detect {
+    margin-top: 56px;
+    gap: 36px;
+  }
+
+  .rf-detect {
+    gap: 24px;
+  }
+
+  .rf-detect__card {
+    gap: 12px;
+    padding: 16px;
+  }
+
+  .rf-detect__visual {
+    width: 246px;
+    max-width: 100%;
+  }
+
+  .rf-detect__text {
+    gap: 8px;
+  }
+
+  /* Head → card 36px (24 gap + 12 margin), card → arrows 24px. */
+  .rf-safer {
+    margin-top: 56px;
+    padding: 0 16px;
+    gap: 24px;
+    overflow-x: hidden;
+    overflow-x: clip;
+  }
+
+  .rf-safer__head {
+    margin-bottom: 12px;
+    gap: 12px;
+  }
+
+  .rf-safer__intro {
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0.56px;
+  }
+
+  /* One card wide track that slides like the testimonials carousel. */
+  .rf-safer__row {
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: stretch;
+    gap: 16px;
+    transform: translateX(calc(-1 * var(--rf-slide, 0) * (100% + 16px)));
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform;
+  }
+
+  .rf-safer__row--snap {
+    transition: none;
+  }
+
+  /* Every card wears the active look so neighbours slide in already styled. */
+  .rf-safer__row .rf-safer__step {
+    display: flex;
+    flex: 0 0 100% !important;
+    width: 100% !important;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 160px;
+    padding: 10px;
+    gap: 8px;
+    border-radius: 24px;
+    background: #097495;
+    color: #ffffff;
+    box-shadow:
+      0 0.523px 1.046px -0.523px rgba(0, 0, 0, 0.1),
+      0 0.523px 1.57px 0 rgba(0, 0, 0, 0.1);
+    transition: none;
+  }
+
+  .rf-safer__row .rf-safer__step .rf-safer__cluster {
+    display: flex;
+    width: min(321px, 100%);
+  }
+
+  .rf-safer__row .rf-safer__step .rf-safer__step-text {
+    display: flex;
+  }
+
+  .rf-safer__row .rf-safer__step .rf-safer__num {
+    width: 28px;
+    height: 28px;
+    border-radius: 16px;
+    background: #00b7db;
+    font-size: 12px;
+    line-height: 15px;
+  }
+
+  .rf-safer__step-title {
+    font-size: 16px;
+    line-height: 20px;
+  }
+
+  .rf-safer__row .rf-safer__step .rf-safer__step-body {
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: 0.48px;
+    color: #e9eaeb;
+  }
+
+  .rf-safer__nav {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .rf-safer__arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 28px;
+    padding: 0;
+    border: 0;
+    border-radius: 14px;
+    cursor: pointer;
+  }
+
+  .rf-safer__arrow--prev {
+    border: 0.5px solid #e5e7eb;
+    background: #ffffff;
+  }
+
+  .rf-safer__arrow--prev img {
+    width: 11.9px;
+    height: 13.03px;
+    transform: rotate(-90deg);
+  }
+
+  .rf-safer__arrow--next {
+    background: #097495;
+  }
+
+  .rf-safer__arrow--next img {
+    width: 13.54px;
+    height: 13.54px;
+    transform: rotate(90deg);
+  }
+
+  .rf-safer__arrow:focus-visible {
+    outline: 2px solid #097495;
+    outline-offset: 2px;
+  }
+}
+
+@media (max-width: 767px) and (prefers-reduced-motion: reduce) {
+  .rf-safer__row {
+    transition: none;
+  }
+}
+</style>
+
+<style>
+/* Shared closing sits outside this component; only this page's phone rhythm uses Figma's 56px gaps. */
+@media (max-width: 767px) {
+  .page-view:has(> .rf-page) > .site-closing > * + * {
+    margin-top: 56px;
   }
 }
 </style>

@@ -8,7 +8,7 @@ from django.conf import settings
 from django.http import HttpResponse
 from django.views import View
 
-from .page_content import ROUTE_SLUGS
+from .page_content import ROUTE_SLUGS, SLUG_TO_ROUTE
 from .page_seo import PRODUCT_SLUGS, RESOURCE_SLUGS
 
 SITE_BASE_URL = getattr(settings, "SITE_BASE_URL", "https://urbanrupee.com").rstrip("/")
@@ -52,6 +52,9 @@ def sitemap_urls() -> list[dict]:
 
     for path in sorted(ROUTE_SLUGS.keys()):
         slug = ROUTE_SLUGS[path]
+        # Skip aliases that redirect to another URL, so each page is listed once.
+        if SLUG_TO_ROUTE.get(slug) != path:
+            continue
         entries.append({
             "loc": f"{SITE_BASE_URL}{path}",
             "changefreq": _changefreq_for_slug(slug),

@@ -4,10 +4,27 @@ import { fetchSite } from "@/api/client";
 import SiteNav from "@/components/SiteNav.vue";
 import SiteFooter from "@/components/SiteFooter.vue";
 import ChatWidget from "@/components/ChatWidget.vue";
+import CookieBanner from "@/components/CookieBanner.vue";
+import MobileStickyCta from "@/components/MobileStickyCta.vue";
 import { startResponsiveBand } from "@/composables/useResponsiveBand.js";
 import { scheduleScrollRestore } from "@/utils/scrollRestoration.js";
 
 const SITE_CACHE_KEY = "ur:site-bootstrap";
+
+function readJsonScript(id) {
+  const el = document.getElementById(id);
+  if (!el?.textContent) return null;
+  try {
+    return JSON.parse(el.textContent);
+  } catch {
+    return null;
+  }
+}
+
+function readEmbeddedSite() {
+  const data = readJsonScript("site-bootstrap");
+  return data?.site && data?.nav && data?.footer ? data : null;
+}
 
 function readSiteCache() {
   try {
@@ -25,7 +42,7 @@ function writeSiteCache(data) {
   }
 }
 
-const cached = readSiteCache();
+const cached = readEmbeddedSite() || readSiteCache();
 const site = ref(cached?.site ?? null);
 const nav = ref(cached?.nav ?? null);
 const footer = ref(cached?.footer ?? null);
@@ -63,8 +80,7 @@ onUnmounted(() => {
   </div>
 
   <div v-else-if="error" class="loading-screen loading-screen--error">
-    <p>Could not load site. Is the Django API running?</p>
-    <code>{{ error }}</code>
+    <p>Urbanrupee is temporarily unavailable. Please refresh the page.</p>
   </div>
 
   <div v-else class="app-shell">
@@ -74,6 +90,8 @@ onUnmounted(() => {
     </RouterView>
     <SiteFooter :footer="footer" :site="site" />
     <ChatWidget />
+    <CookieBanner />
+    <MobileStickyCta />
   </div>
 </template>
 
@@ -81,6 +99,7 @@ onUnmounted(() => {
 .app-shell {
   overflow-x: clip;
   max-width: 100%;
+  padding-bottom: var(--ur-sticky-cta, 0px);
 }
 .loading-screen {
   min-height: 100vh;

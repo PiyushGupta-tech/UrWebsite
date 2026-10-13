@@ -853,6 +853,14 @@ watch(
             height="24"
             decoding="async"
           />
+          <img
+            class="col-exp__nav-arrow"
+            src="/images/figma-collections/experiences/arrow-up-dark.svg"
+            alt=""
+            width="11.8991"
+            height="13.0275"
+            decoding="async"
+          />
         </button>
         <button
           type="button"
@@ -865,6 +873,14 @@ watch(
             alt=""
             width="24"
             height="24"
+            decoding="async"
+          />
+          <img
+            class="col-exp__nav-arrow"
+            src="/images/figma-collections/experiences/arrow-up-white.svg"
+            alt=""
+            width="13.5413"
+            height="13.5413"
             decoding="async"
           />
         </button>
@@ -1596,6 +1612,10 @@ watch(
   filter: brightness(0) invert(1);
 }
 
+.col-exp__nav-btn .col-exp__nav-arrow {
+  display: none;
+}
+
 @media (min-width: 1101px) {
   .col-exp {
     padding: 60px 80px 100px;
@@ -1728,9 +1748,324 @@ watch(
   }
 }
 
+/* —— Phone — Figma 931:16775 (393 frame: 16px gutters, 56px between sections) —— */
+@media (max-width: 767px) {
+  .col-page {
+    /* Pulls the shared closing (100px top margin) up to the 56px section gap. */
+    margin-bottom: -44px;
+  }
+
+  .col-hero__title,
+  .col-smarter__title,
+  .col-flow__title,
+  .col-journey__title,
+  .col-exp__title {
+    font-size: 28px;
+    line-height: 36px;
+    letter-spacing: -0.84px;
+  }
+
+  .col-hero__intro,
+  .col-smarter__body,
+  .col-flow__body,
+  .col-journey__body,
+  .col-exp__body {
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0;
+  }
+
+  /* Hero */
+  .col-hero__inner {
+    padding: 32px 16px 24px;
+    gap: 56px;
+  }
+
+  .col-hero__copy {
+    gap: 24px;
+    width: 100%;
+  }
+
+  .col-hero__eyebrow {
+    font-weight: 700;
+  }
+
+  .col-hero__cta-block {
+    gap: 24px;
+  }
+
+  /* Wraps the title on Figma's four lines ("Collect Payments." / … / "Single API."). */
+  .col-hero__title {
+    max-width: 320px;
+  }
+
+  .col-hero__cta {
+    height: 40px;
+    padding: 0 16px;
+    font-size: 14px;
+    letter-spacing: -0.28px;
+  }
+
+  .col-hero :deep(.ur-metrics) {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 144px));
+    justify-content: center;
+    gap: 18px 40px;
+  }
+
+  .col-hero :deep(.ur-metrics__card) {
+    height: auto;
+    min-height: 115px;
+    padding: 12px;
+    gap: 8px;
+    border: 0;
+    border-radius: 8px;
+    box-shadow:
+      0 12px 16px -4px rgba(10, 13, 18, 0.1),
+      0 4px 6px -2px rgba(10, 13, 18, 0.05);
+  }
+
+  .col-hero :deep(.ur-metrics__value) {
+    min-height: 40px;
+    font-size: 32px;
+    line-height: 40px;
+    letter-spacing: -0.96px;
+    color: #252b37;
+  }
+
+  .col-hero :deep(.ur-metrics__label) {
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0;
+    white-space: normal;
+  }
+
+  /* Smarter diagram */
+  .col-smarter {
+    padding: 32px 16px 0;
+    gap: 36px;
+  }
+
+  .col-smarter__visual {
+    padding-inline: 4px;
+    box-sizing: border-box;
+  }
+
+  /* Flow */
+  .col-flow {
+    padding: 56px 16px 0;
+  }
+
+  .col-flow__head {
+    max-width: none;
+    margin-bottom: 36px;
+  }
+
+  .col-flow__list {
+    gap: 36px;
+  }
+
+  .col-flow__row {
+    gap: 24px;
+    min-height: 0;
+  }
+
+  .col-flow__copy {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 8px 4px;
+    max-width: none;
+  }
+
+  .col-flow__text {
+    display: contents;
+  }
+
+  .col-flow__num,
+  .col-flow__name {
+    grid-row: 1;
+    min-width: 0;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 20px;
+    letter-spacing: 0;
+    color: #252b37;
+  }
+
+  .col-flow__desc {
+    grid-column: 1 / -1;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 18px;
+    letter-spacing: 0.48px;
+  }
+
+  .col-flow__visual {
+    min-height: 0;
+  }
+
+  /* Experiences */
+  .col-exp {
+    padding: 56px 16px 0;
+    gap: 0;
+  }
+
+  .col-exp__head {
+    margin-bottom: 36px;
+  }
+
+  .col-exp__viewport {
+    padding: 0;
+  }
+
+  .col-exp__track {
+    align-items: stretch;
+  }
+
+  .col-exp__slide {
+    align-items: stretch;
+    width: calc(100vw - 32px);
+  }
+
+  .col-exp__panel {
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    min-height: 188px;
+    padding: 11.544px;
+    border: 0.481px solid rgba(213, 215, 218, 0.6);
+    border-radius: 7.696px;
+    background: rgba(250, 250, 250, 0.5);
+  }
+
+  .col-exp__visual {
+    flex: 171 1 0;
+    align-self: center;
+    width: auto;
+    min-width: 0;
+    min-height: 0;
+    height: 139px;
+    padding: 0;
+    background: transparent;
+    border-radius: 0;
+  }
+
+  .col-exp__media {
+    width: 100%;
+    height: 100%;
+    max-height: none;
+  }
+
+  .col-exp__card-text {
+    flex: 159 1 0;
+    padding: 0;
+    gap: 8px;
+  }
+
+  .col-exp__card-title {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 20px;
+    letter-spacing: 0;
+    color: #252b37;
+  }
+
+  .col-exp__card-body {
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: 0.48px;
+    color: #535862;
+  }
+
+  .col-exp__nav {
+    gap: 20px;
+    margin-top: 24px;
+  }
+
+  .col-exp__nav-btn {
+    width: 50px;
+    height: 28px;
+    border-radius: 14px;
+  }
+
+  .col-exp__nav-btn--prev {
+    border: 0.5px solid #e5e7eb;
+  }
+
+  .col-exp__nav-btn--next {
+    border-color: #097495;
+    background: #097495;
+  }
+
+  .col-exp__nav-btn img:not(.col-exp__nav-arrow) {
+    display: none;
+  }
+
+  .col-exp__nav-btn .col-exp__nav-arrow {
+    display: block;
+    width: auto;
+    height: auto;
+    filter: none;
+  }
+
+  .col-exp__nav-btn--prev .col-exp__nav-arrow {
+    transform: rotate(-90deg);
+  }
+
+  .col-exp__nav-btn--next .col-exp__nav-arrow {
+    transform: rotate(90deg);
+  }
+
+  /* Journey */
+  .col-journey {
+    padding: 56px 16px 0;
+    gap: 36px;
+  }
+
+  .col-journey__copy {
+    text-align: center;
+  }
+
+  .col-journey__grid {
+    gap: 24px;
+  }
+
+  .col-journey__card {
+    justify-content: center;
+    gap: 8px;
+    min-height: 191px;
+    box-shadow: none;
+  }
+
+  .col-journey__icon {
+    margin-bottom: 4px;
+  }
+
+  .col-journey__card-title {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 20px;
+  }
+
+  .col-journey__card-body {
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: 0.48px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .col-hero__copy {
     transition: none;
+  }
+}
+</style>
+
+<style>
+/* Shared closing sits outside this component; only this page's phone rhythm uses Figma's 56px gaps. */
+@media (max-width: 767px) {
+  .page-view:has(> .col-page) > .site-closing > * + * {
+    margin-top: 56px;
   }
 }
 </style>

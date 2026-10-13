@@ -1629,7 +1629,8 @@ onBeforeUnmount(() => {
   }
 }
 
-@media (max-width: 900px) {
+/* Phones (below 768px) keep the full stage; the page scales it down as a whole. */
+@media (min-width: 768px) and (max-width: 900px) {
   .hc-stage {
     aspect-ratio: auto !important;
     min-height: 0;
@@ -1695,6 +1696,72 @@ onBeforeUnmount(() => {
   .hc-stage__card-body {
     font-size: 10px;
     white-space: normal;
+  }
+}
+
+/* Phones draw the stage at its desktop width and scale it down, so the vw clamps keep their desktop values. */
+@media (max-width: 767px) {
+  .hc-stage__hub {
+    width: 70px;
+  }
+
+  .hc-stage__brand-mark {
+    width: 25px;
+    height: 25px;
+  }
+
+  .hc-stage__brand-name {
+    font-size: 12.6px;
+  }
+
+  .hc-stage__secure,
+  .hc-stage__amount-label,
+  .hc-stage__section-label,
+  .hc-stage__mode,
+  .hc-stage__badge,
+  .hc-stage__upi-sub {
+    font-size: 8px;
+  }
+
+  .hc-stage__amount-value {
+    font-size: 20px;
+  }
+
+  .hc-stage__details,
+  .hc-stage__upi-title,
+  .hc-stage__upi-input,
+  .hc-stage__verify {
+    font-size: 12px;
+  }
+
+  .hc-stage__section-label--apps,
+  .hc-stage__app,
+  .hc-stage__phone-foot p {
+    font-size: 10px;
+  }
+
+  .hc-stage__mode {
+    height: 27px;
+    padding: 0 6px;
+  }
+
+  .hc-stage__upi-icon {
+    width: 31px;
+    height: 31px;
+  }
+
+  .hc-stage__upi-input {
+    height: 33px;
+  }
+
+  .hc-stage__verify {
+    min-width: 63px;
+    height: 33px;
+  }
+
+  .hc-stage__pay {
+    height: 38px;
+    font-size: 11px;
   }
 }
 </style>

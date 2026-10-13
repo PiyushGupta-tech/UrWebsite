@@ -167,6 +167,16 @@ const routes = [
         component: () => import("@/views/PageView.vue"),
         meta: { slug: "contact" },
       },
+      {
+        path: "thank-you",
+        name: "thank-you",
+        component: () => import("@/views/ThankYouView.vue"),
+      },
+      {
+        path: ":pathMatch(.*)*",
+        name: "not-found",
+        component: () => import("@/views/NotFoundView.vue"),
+      },
     ],
   },
 ];

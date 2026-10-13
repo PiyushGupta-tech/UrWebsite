@@ -1,6 +1,7 @@
 <script setup>
 import { computed } from "vue";
 import { RouterLink } from "vue-router";
+import { useScaledArt } from "@/composables/useScaledArt.js";
 import CustomCheckoutShowcaseGraphic from "./CustomCheckoutShowcaseGraphic.vue";
 import CustomCheckoutFeatureBranding from "./CustomCheckoutFeatureBranding.vue";
 import CustomCheckoutFeatureMethods from "./CustomCheckoutFeatureMethods.vue";
@@ -27,6 +28,9 @@ const benefitsRight = computed(() => {
   const cards = props.page?.benefits?.cards || [];
   return [cards[1], cards[3]].filter(Boolean);
 });
+
+/** Phones draw each graphic at its desktop width and scale it to the column. */
+const registerArtFrame = useScaledArt("cc");
 </script>
 
 <template>
@@ -73,8 +77,10 @@ const benefitsRight = computed(() => {
         <h2 class="cc-showcase__title">{{ page.showcase.title }}</h2>
         <p class="cc-showcase__body">{{ page.showcase.body }}</p>
       </div>
-      <div class="cc-showcase__visual">
-        <CustomCheckoutShowcaseGraphic />
+      <div :ref="registerArtFrame" class="cc-showcase__visual">
+        <div class="cc-showcase__art">
+          <CustomCheckoutShowcaseGraphic />
+        </div>
       </div>
     </section>
 
@@ -93,11 +99,15 @@ const benefitsRight = computed(() => {
           :class="{ 'cc-features__row--reverse': item.reverse }"
         >
           <div class="cc-features__visual">
-            <component
-              :is="featureGraphics[item.graphic]"
+            <div
               v-if="item.graphic && featureGraphics[item.graphic]"
-              :aria-label="item.title"
-            />
+              :ref="registerArtFrame"
+              class="cc-features__frame"
+            >
+              <div class="cc-features__art">
+                <component :is="featureGraphics[item.graphic]" :aria-label="item.title" />
+              </div>
+            </div>
             <img
               v-else
               :src="item.image"
@@ -684,6 +694,192 @@ const benefitsRight = computed(() => {
 
   .cc-benefits {
     padding-bottom: 24px;
+  }
+}
+
+@media (max-width: 767px) {
+  .cc-page {
+    margin-bottom: -44px;
+  }
+
+  /* Hero: chip 88px under the navbar */
+  .cc-hero__inner {
+    min-height: 0;
+    padding: 80px 16px 0;
+  }
+
+  .cc-hero__copy {
+    gap: 24px;
+    width: 100%;
+  }
+
+  .cc-hero__cta-block {
+    gap: 24px;
+  }
+
+  .cc-hero__title,
+  .cc-showcase__title,
+  .cc-features__title,
+  .cc-benefits__title {
+    font-size: 28px;
+    line-height: 36px;
+    letter-spacing: -0.84px;
+  }
+
+  .cc-hero__intro,
+  .cc-showcase__body,
+  .cc-features__body,
+  .cc-benefits__body {
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0;
+  }
+
+  .cc-hero__cta {
+    height: 40px;
+    padding: 0 16px;
+    font-size: 14px;
+    letter-spacing: -0.28px;
+  }
+
+  /* Shared section rhythm */
+  .cc-showcase,
+  .cc-features,
+  .cc-benefits {
+    margin-top: 56px;
+    padding: 0 16px;
+    gap: 36px;
+  }
+
+  .cc-showcase__head,
+  .cc-features__head,
+  .cc-benefits__copy {
+    gap: 12px;
+  }
+
+  /* Graphics are drawn at their desktop width and scaled to the column (useScaledArt). */
+  .cc-showcase__visual {
+    height: var(--cc-art-height, auto);
+    border-radius: calc(14.141px * var(--cc-art-scale, 1));
+  }
+
+  .cc-showcase__art,
+  .cc-features__art {
+    transform: scale(var(--cc-art-scale, 1));
+    transform-origin: 0 0;
+  }
+
+  .cc-showcase__art {
+    width: 1142px;
+  }
+
+  .cc-features__frame {
+    height: var(--cc-art-height, auto);
+  }
+
+  .cc-features__art {
+    width: 572px;
+  }
+
+  /* Features: graphic over copy */
+  .cc-features__row,
+  .cc-features__row--reverse {
+    gap: 24px;
+  }
+
+  .cc-features__copy {
+    gap: 8px;
+  }
+
+  .cc-features__name {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 20px;
+    letter-spacing: -0.48px;
+    color: #252b37;
+  }
+
+  .cc-features__desc {
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: 0.48px;
+    opacity: 1;
+  }
+
+  /* Benefits: centred heading over one column of cards in data order */
+  .cc-benefits {
+    padding-bottom: 0;
+  }
+
+  .cc-benefits__copy {
+    max-width: none;
+    text-align: center;
+  }
+
+  .cc-benefits__cards {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    width: calc(100% - 2px);
+    justify-self: center;
+  }
+
+  .cc-benefits__col {
+    display: contents;
+  }
+
+  .cc-benefits__col--offset .cc-benefits__card:nth-child(1) {
+    order: 1;
+  }
+
+  .cc-benefits__col:not(.cc-benefits__col--offset) .cc-benefits__card:nth-child(1) {
+    order: 2;
+  }
+
+  .cc-benefits__col--offset .cc-benefits__card:nth-child(2) {
+    order: 3;
+  }
+
+  .cc-benefits__col:not(.cc-benefits__col--offset) .cc-benefits__card:nth-child(2) {
+    order: 4;
+  }
+
+  .cc-benefits__card {
+    justify-content: center;
+    gap: 12px;
+    min-height: 0;
+    border-radius: 12px;
+  }
+
+  .cc-benefits__icon {
+    align-items: center;
+    width: 52px;
+    height: 52px;
+    padding: 12px;
+    border-radius: 4px;
+  }
+
+  .cc-benefits__card-text {
+    gap: 8px;
+  }
+
+  .cc-benefits__card-title {
+    line-height: 20px;
+  }
+
+  .cc-benefits__card-body {
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: 0.36px;
+  }
+}
+</style>
+
+<style>
+/* Shared closing sits outside this component; only this page's phone rhythm uses Figma's 56px gaps. */
+@media (max-width: 767px) {
+  .page-view:has(> .cc-page) > .site-closing > * + * {
+    margin-top: 56px;
   }
 }
 </style>

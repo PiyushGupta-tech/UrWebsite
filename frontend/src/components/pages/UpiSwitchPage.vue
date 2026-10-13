@@ -1,6 +1,7 @@
 <script setup>
 import { computed, onMounted, ref } from "vue";
 import { RouterLink } from "vue-router";
+import { useScaledArt } from "@/composables/useScaledArt.js";
 import UpiArchitectureDiagram from "./UpiArchitectureDiagram.vue";
 import UpiPathSection from "./UpiPathSection.vue";
 import UpiCapsConnectivityGraphic from "./UpiCapsConnectivityGraphic.vue";
@@ -32,6 +33,9 @@ onMounted(() => {
     heroReady.value = true;
   });
 });
+
+/** Phones draw each capability graphic on its 466×373 artboard and scale it to the card. */
+const registerArtFrame = useScaledArt("upi");
 </script>
 
 <template>
@@ -130,33 +134,35 @@ onMounted(() => {
           :key="card.title"
           class="upi-caps__card"
         >
-          <div class="upi-caps__visual">
-            <UpiCapsConnectivityGraphic
-              v-if="capGraphic(card) === 'connectivity'"
-              :alt="card.image_alt || card.title"
-            />
-            <UpiCapsRoutingGraphic
-              v-else-if="capGraphic(card) === 'routing'"
-              :alt="card.image_alt || card.title"
-            />
-            <UpiCapsVisibilityGraphic
-              v-else-if="capGraphic(card) === 'visibility'"
-              :alt="card.image_alt || card.title"
-            />
-            <UpiCapsScaleGraphic
-              v-else-if="capGraphic(card) === 'scale'"
-              :alt="card.image_alt || card.title"
-            />
-            <img
-              v-else
-              class="upi-caps__media"
-              :src="card.image"
-              :alt="card.image_alt || card.title"
-              :width="card.image_width || 466"
-              :height="card.image_height || 373"
-              decoding="async"
-              loading="lazy"
-            />
+          <div :ref="registerArtFrame" class="upi-caps__visual">
+            <div class="upi-caps__art">
+              <UpiCapsConnectivityGraphic
+                v-if="capGraphic(card) === 'connectivity'"
+                :alt="card.image_alt || card.title"
+              />
+              <UpiCapsRoutingGraphic
+                v-else-if="capGraphic(card) === 'routing'"
+                :alt="card.image_alt || card.title"
+              />
+              <UpiCapsVisibilityGraphic
+                v-else-if="capGraphic(card) === 'visibility'"
+                :alt="card.image_alt || card.title"
+              />
+              <UpiCapsScaleGraphic
+                v-else-if="capGraphic(card) === 'scale'"
+                :alt="card.image_alt || card.title"
+              />
+              <img
+                v-else
+                class="upi-caps__media"
+                :src="card.image"
+                :alt="card.image_alt || card.title"
+                :width="card.image_width || 466"
+                :height="card.image_height || 373"
+                decoding="async"
+                loading="lazy"
+              />
+            </div>
           </div>
           <div class="upi-caps__card-text">
             <h3 class="upi-caps__card-title">{{ card.title }}</h3>
@@ -503,6 +509,11 @@ onMounted(() => {
   isolation: isolate;
 }
 
+.upi-caps__art {
+  width: 100%;
+  height: 100%;
+}
+
 .upi-caps__visual :deep(.upi-conn),
 .upi-caps__visual :deep(.upi-route),
 .upi-caps__visual :deep(.upi-vis),
@@ -615,6 +626,184 @@ onMounted(() => {
 
   .upi-caps__grid {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 767px) {
+  .upi-page {
+    margin-bottom: -44px;
+  }
+
+  /* Hero: chip 88px under the navbar */
+  .upi-hero__inner {
+    padding: 80px 16px 0;
+  }
+
+  .upi-hero__copy {
+    gap: 24px;
+  }
+
+  .upi-hero__cta-block {
+    gap: 24px;
+  }
+
+  .upi-hero__title,
+  .upi-arch__title,
+  .upi-features__title,
+  .upi-caps__title {
+    font-size: 28px;
+    line-height: 36px;
+    letter-spacing: -0.84px;
+  }
+
+  .upi-hero__intro,
+  .upi-arch__body,
+  .upi-features__body,
+  .upi-caps__body {
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0;
+  }
+
+  .upi-hero__cta {
+    height: 40px;
+    padding: 0 16px;
+    font-size: 14px;
+    letter-spacing: -0.28px;
+  }
+
+  /* Shared section rhythm */
+  .upi-arch,
+  .upi-features,
+  .upi-caps {
+    margin-top: 56px;
+    padding: 0 16px;
+    gap: 36px;
+  }
+
+  .upi-arch__visual :deep(.uad) {
+    padding-block: 0;
+  }
+
+  /* Features: a 298px column of left-aligned cards */
+  .upi-features__grid {
+    max-width: 298px;
+  }
+
+  .upi-features__card {
+    gap: 12px;
+  }
+
+  .upi-features__card-text {
+    gap: 8px;
+  }
+
+  .upi-features__card-title,
+  .upi-caps__card-title {
+    font-size: 16px;
+    line-height: 20px;
+  }
+
+  .upi-features__card-body,
+  .upi-caps__card-body {
+    font-size: 12px;
+    line-height: 18px;
+  }
+
+  /* Path: Figma's frame is the full 355px orbit; the code stage crops 62px off its top and 83px off its bottom. */
+  .upi-page :deep(.upi-path) {
+    margin-top: 118px;
+    padding: 0 16px;
+  }
+
+  .upi-page :deep(.upi-path__stage) {
+    overflow: visible;
+    container-type: inline-size;
+  }
+
+  /* Below Figma's 361px stage the copy shrinks with the orbit (cqw = 1% of the stage) so it stays inside the inner ring; the floors still fit at 320px. */
+  .upi-page :deep(.upi-path__copy) {
+    top: 55%;
+    width: 70.4%;
+    gap: 8px;
+    gap: min(8px, 2.216cqw);
+    transform: translate(-50%, -50%);
+  }
+
+  .upi-page :deep(.upi-path__title) {
+    font-size: 16px;
+    font-size: clamp(13px, 4.432cqw, 16px);
+    font-weight: 600;
+    line-height: 20px;
+    line-height: clamp(16px, 5.54cqw, 20px);
+    color: #252b37;
+  }
+
+  .upi-page :deep(.upi-path__body) {
+    font-size: 12px;
+    font-size: clamp(10px, 3.324cqw, 12px);
+    line-height: 18px;
+    line-height: clamp(15px, 4.986cqw, 18px);
+    color: #535862;
+  }
+
+  .upi-page :deep(.upi-path__body + .upi-path__body) {
+    margin-top: 10px;
+    margin-top: min(10px, 2.77cqw);
+  }
+
+  .upi-page :deep(.upi-path__badge) {
+    width: 16px;
+    border-width: 0.5px;
+  }
+
+  .upi-caps {
+    margin-top: 139px;
+    margin-bottom: 0;
+  }
+
+  /* Capabilities: one column of cards, graphic centred over the copy */
+  .upi-caps__grid {
+    gap: 24px;
+  }
+
+  .upi-caps__card {
+    padding: 16px;
+    border-width: 0.702px;
+    box-shadow: none;
+  }
+
+  .upi-caps__visual {
+    width: min(260px, 100%);
+    height: var(--upi-art-height, auto);
+  }
+
+  .upi-caps__art {
+    width: 466px;
+    height: 373.02px;
+    transform: scale(var(--upi-art-scale, 1));
+    transform-origin: 0 0;
+  }
+
+  .upi-caps__card-text {
+    gap: 8px;
+  }
+
+  .upi-caps__card-title {
+    font-weight: 700;
+  }
+
+  .upi-caps__card-body {
+    letter-spacing: 0.48px;
+  }
+}
+</style>
+
+<style>
+/* Shared closing sits outside this component; only this page's phone rhythm uses Figma's 56px gaps. */
+@media (max-width: 767px) {
+  .page-view:has(> .upi-page) > .site-closing > * + * {
+    margin-top: 56px;
   }
 }
 </style>

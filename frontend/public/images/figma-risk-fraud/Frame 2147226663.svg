@@ -15,10 +15,10 @@
 <circle cx="100.671" cy="91.8396" r="9.58376" fill="#059669" stroke="#20BE92" stroke-width="6"/>
 <circle cx="188.759" cy="104.422" r="9.58376" fill="white" stroke="#20BE92" stroke-width="6"/>
 <circle cx="302.012" cy="41.5037" r="9.43782" fill="white" stroke="#991B1B" stroke-width="6.29188"/>
-<g filter="url(#filter0_d_434_2638)">
+<g><use href="#ur-sh-1" filter="url(#filter0_d_434_2638-ur-sh)"/><g id="ur-sh-1">
 <rect x="354.433" y="53.9863" width="37.7513" height="37.7513" rx="18" fill="#991B1B" shape-rendering="crispEdges"/>
 <path d="M375.107 65.2184L374.778 75.3784H371.839L371.51 65.2184H375.107ZM373.305 80.0687C372.795 80.0687 372.356 79.8875 371.989 79.5253C371.627 79.163 371.446 78.7245 371.446 78.2097C371.446 77.7045 371.627 77.2731 371.989 76.9156C372.356 76.5533 372.795 76.3722 373.305 76.3722C373.796 76.3722 374.227 76.5533 374.599 76.9156C374.976 77.2731 375.164 77.7045 375.164 78.2097C375.164 78.5529 375.076 78.8651 374.899 79.1463C374.728 79.4276 374.501 79.6516 374.22 79.8184C373.944 79.9853 373.639 80.0687 373.305 80.0687Z" fill="white"/>
-</g>
+</g></g>
 <defs>
 <filter id="filter0_d_434_2638" x="344.366" y="48.9528" width="57.885" height="57.886" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
 <feFlood flood-opacity="0" result="BackgroundImageFix"/>
@@ -58,5 +58,14 @@
 <stop stop-color="#BDE7FF"/>
 <stop offset="1" stop-color="#79C8FF"/>
 </linearGradient>
+<filter id="filter0_d_434_2638-ur-sh" x="344.366" y="48.9528" width="57.885" height="57.886" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="5.0335"/>
+<feGaussianBlur stdDeviation="5.0335"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.937255 0 0 0 0 0.266667 0 0 0 0 0.266667 0 0 0 0.25098 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_434_2638"/>
+</filter>
 </defs>
 </svg>

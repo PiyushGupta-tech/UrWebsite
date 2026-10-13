@@ -1,6 +1,7 @@
 <script setup>
 import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import { RouterLink } from "vue-router";
+import { useScaledArt } from "@/composables/useScaledArt.js";
 import HyperCheckoutShowcaseGraphic from "./HyperCheckoutShowcaseGraphic.vue";
 import HyperCheckoutSmarterGraphic from "./HyperCheckoutSmarterGraphic.vue";
 import HyperCheckoutTrustGraphic from "./HyperCheckoutTrustGraphic.vue";
@@ -59,6 +60,9 @@ onMounted(() => {
 });
 
 onBeforeUnmount(stopTrustCycle);
+
+/** Phones draw the showcase stage at its desktop width and scale it to the column. */
+const registerArtFrame = useScaledArt("hc");
 </script>
 
 <template>
@@ -105,8 +109,10 @@ onBeforeUnmount(stopTrustCycle);
         <h2 class="hc-showcase__title">{{ page.showcase.title }}</h2>
         <p class="hc-showcase__body">{{ page.showcase.body }}</p>
       </div>
-      <div class="hc-showcase__visual">
-        <HyperCheckoutShowcaseGraphic />
+      <div :ref="registerArtFrame" class="hc-showcase__visual">
+        <div class="hc-showcase__art">
+          <HyperCheckoutShowcaseGraphic />
+        </div>
       </div>
     </section>
 
@@ -409,7 +415,7 @@ onBeforeUnmount(stopTrustCycle);
   overflow: hidden;
 }
 
-.hc-showcase__visual > :deep(.hc-stage) {
+.hc-showcase__art > :deep(.hc-stage) {
   display: block;
   width: 100%;
 }
@@ -929,6 +935,155 @@ onBeforeUnmount(stopTrustCycle);
 
   .hc-trust__tab {
     min-height: 0;
+  }
+}
+
+@media (max-width: 767px) {
+  .hc-page {
+    margin-bottom: -44px;
+  }
+
+  /* Hero: chip 88px under the navbar */
+  .hc-hero__inner {
+    padding: 80px 16px 0;
+  }
+
+  .hc-hero__copy {
+    gap: 24px;
+    width: 100%;
+  }
+
+  .hc-hero__cta-block {
+    gap: 24px;
+  }
+
+  .hc-hero__title,
+  .hc-showcase__title,
+  .hc-smarter__title,
+  .hc-journey__title,
+  .hc-trust__title {
+    font-size: 28px;
+    line-height: 36px;
+    letter-spacing: -0.84px;
+  }
+
+  .hc-hero__intro,
+  .hc-showcase__body,
+  .hc-smarter__body,
+  .hc-journey__body,
+  .hc-trust__body {
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0;
+  }
+
+  .hc-hero__cta {
+    height: 40px;
+    padding: 0 16px;
+    font-size: 14px;
+    letter-spacing: -0.28px;
+  }
+
+  /* Shared section rhythm */
+  .hc-showcase,
+  .hc-smarter,
+  .hc-journey,
+  .hc-trust {
+    margin-top: 56px;
+    padding: 0 16px;
+    gap: 36px;
+  }
+
+  /* Showcase stage is drawn at its desktop width and scaled to the column (useScaledArt). */
+  .hc-showcase__visual {
+    height: var(--hc-art-height, auto);
+    border-radius: calc(14.141px * var(--hc-art-scale, 1));
+  }
+
+  .hc-showcase__art {
+    width: 1142px;
+    transform: scale(var(--hc-art-scale, 1));
+    transform-origin: 0 0;
+  }
+
+  /* Smarter: cards first, then the phone graphic */
+  .hc-smarter__row {
+    gap: 56px;
+  }
+
+  .hc-smarter__cards {
+    order: -1;
+    gap: 16px;
+  }
+
+  .hc-smarter__visual {
+    width: 100%;
+    max-width: none;
+  }
+
+  .hc-smarter__card {
+    gap: 20px;
+    padding: 19px 16px;
+  }
+
+  .hc-smarter__card-title,
+  .hc-journey__card-title,
+  .hc-trust__tab-title {
+    font-size: 16px;
+    line-height: 20px;
+    letter-spacing: 0.48px;
+  }
+
+  .hc-smarter__card-body,
+  .hc-trust__tab-body {
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: 0.36px;
+  }
+
+  /* Journey: one centred card per row */
+  .hc-journey {
+    gap: 56px;
+  }
+
+  .hc-journey__card {
+    padding: 20px 0;
+  }
+
+  .hc-journey__card-body {
+    font-size: 12px;
+    line-height: 20px;
+    letter-spacing: 0.36px;
+  }
+
+  /* Trust: graphic first, then the tabs */
+  .hc-trust {
+    padding-bottom: 0;
+  }
+
+  .hc-trust__row {
+    gap: 24px;
+  }
+
+  .hc-trust__visual {
+    order: -1;
+  }
+
+  .hc-trust__tabs {
+    gap: 24px;
+  }
+
+  .hc-trust__tab {
+    min-height: 125px;
+  }
+}
+</style>
+
+<style>
+/* Shared closing sits outside this component; only this page's phone rhythm uses Figma's 56px gaps. */
+@media (max-width: 767px) {
+  .page-view:has(> .hc-page) > .site-closing > * + * {
+    margin-top: 56px;
   }
 }
 </style>

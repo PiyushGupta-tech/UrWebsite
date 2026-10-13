@@ -1122,54 +1122,6 @@ onUnmounted(() => {
   color: #fff;
 }
 
-@media (max-width: 480px) {
-  .viz__pipeline {
-    min-height: 100px;
-  }
-
-  .viz__bubble {
-    width: 58px;
-    height: 58px;
-  }
-
-  .viz__bubble--hub {
-    width: 64px;
-    height: 64px;
-  }
-
-  .viz__hub-logo {
-    width: 30px;
-    height: 30px;
-  }
-
-  .viz__bubble--psp {
-    width: 72px;
-    height: 72px;
-  }
-
-  .viz__glyph {
-    width: 44px;
-    height: 44px;
-  }
-
-  .viz__partners {
-    grid-template-columns: repeat(3, 1fr);
-    min-height: 0;
-  }
-
-  .viz__partner {
-    min-height: 0;
-  }
-
-  .viz__card {
-    min-height: 0;
-  }
-
-  .viz__chevron {
-    font-size: 16px;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .viz--ready .viz__flow-path,
   .viz--ready .viz__hub-ring,

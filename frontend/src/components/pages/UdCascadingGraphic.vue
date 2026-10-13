@@ -62,6 +62,14 @@ const rows = computed(() => PERIODS[selected.value] || PERIODS["Last 30 Days"]);
 
 let timers = [];
 let loopTimer = null;
+let resizeObserver = null;
+
+/** Artboard → rendered width ratio; the phone layout scales the live layer by it. */
+function syncScale() {
+  const root = rootRef.value;
+  if (!root) return;
+  root.style.setProperty("--ud-casc-scale", String(root.clientWidth / ART_W));
+}
 
 function setOptionRef(el, i) {
   if (el) optionRefs.value[i] = el;
@@ -155,13 +163,21 @@ onMounted(() => {
   reduceMotion.value =
     typeof window !== "undefined" &&
     window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  syncScale();
+  if (typeof ResizeObserver !== "undefined" && rootRef.value) {
+    resizeObserver = new ResizeObserver(syncScale);
+    resizeObserver.observe(rootRef.value);
+  }
   nextTick(() => {
     if (!reduceMotion.value) runSequence();
     else selected.value = "Last 30 Days";
   });
 });
 
-onBeforeUnmount(clearTimers);
+onBeforeUnmount(() => {
+  clearTimers();
+  resizeObserver?.disconnect();
+});
 </script>
 
 <template>
@@ -181,82 +197,84 @@ onBeforeUnmount(clearTimers);
       decoding="async"
     />
 
-    <!-- Live Transaction Volume card — covers static card in backdrop -->
-    <article class="ud-casc__card" aria-hidden="true">
-      <div class="ud-casc__header">
-        <p class="ud-casc__title">Transaction Volume</p>
-        <button
-          ref="dropdownRef"
-          type="button"
-          class="ud-casc__dropdown"
-          tabindex="-1"
+    <div class="ud-casc__layer">
+      <!-- Live Transaction Volume card — covers static card in backdrop -->
+      <article class="ud-casc__card" aria-hidden="true">
+        <div class="ud-casc__header">
+          <p class="ud-casc__title">Transaction Volume</p>
+          <button
+            ref="dropdownRef"
+            type="button"
+            class="ud-casc__dropdown"
+            tabindex="-1"
+          >
+            <span>{{ selected }}</span>
+            <img :src="`${ASSET}/chevron.svg`" alt="" width="12" height="12" />
+          </button>
+        </div>
+
+        <div
+          v-show="menuOpen"
+          class="ud-casc__menu"
         >
-          <span>{{ selected }}</span>
-          <img :src="`${ASSET}/chevron.svg`" alt="" width="12" height="12" />
-        </button>
-      </div>
+          <div
+            v-for="(opt, i) in MENU"
+            :key="opt"
+            :ref="(el) => setOptionRef(el, i)"
+            class="ud-casc__menu-item"
+            :class="{ 'ud-casc__menu-item--hover': hoverOption === opt }"
+          >
+            {{ opt }}
+          </div>
+        </div>
+
+        <div class="ud-casc__rows" :class="{ 'ud-casc__rows--flash': valuesFlash }">
+          <div
+            v-for="row in rows"
+            :key="row.id"
+            class="ud-casc__row"
+          >
+            <div class="ud-casc__row-left">
+              <span
+                class="ud-casc__icon"
+                :class="`ud-casc__icon--${row.tone}`"
+              >
+                <img :src="`${ASSET}/${row.icon}`" alt="" width="12" height="12" />
+              </span>
+              <span
+                class="ud-casc__label"
+                :class="{ 'ud-casc__label--strong': row.id === 'parent' }"
+              >
+                {{ row.label }}
+              </span>
+            </div>
+            <div class="ud-casc__row-right">
+              <span class="ud-casc__value">{{ row.value }}</span>
+              <span class="ud-casc__change">
+                <img :src="`${ASSET}/arrow-up.svg`" alt="" width="8" height="8" />
+                {{ row.change }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="ud-casc__banner">
+          <span class="ud-casc__banner-icon">
+            <img :src="`${ASSET}/eye.svg`" alt="" width="12" height="12" />
+          </span>
+          <p>Drill down from parent to merchant in seconds.</p>
+        </div>
+      </article>
 
       <div
-        v-show="menuOpen"
-        class="ud-casc__menu"
+        v-show="!reduceMotion"
+        class="ud-casc__cursor"
+        :class="{ 'ud-casc__cursor--click': clicking }"
+        :style="{ left: `${cursor.x}px`, top: `${cursor.y}px` }"
       >
-        <div
-          v-for="(opt, i) in MENU"
-          :key="opt"
-          :ref="(el) => setOptionRef(el, i)"
-          class="ud-casc__menu-item"
-          :class="{ 'ud-casc__menu-item--hover': hoverOption === opt }"
-        >
-          {{ opt }}
-        </div>
+        <img :src="`${ASSET}/cursor.svg`" alt="" width="18" height="18" />
+        <span v-show="clicking" class="ud-casc__click-ring" />
       </div>
-
-      <div class="ud-casc__rows" :class="{ 'ud-casc__rows--flash': valuesFlash }">
-        <div
-          v-for="row in rows"
-          :key="row.id"
-          class="ud-casc__row"
-        >
-          <div class="ud-casc__row-left">
-            <span
-              class="ud-casc__icon"
-              :class="`ud-casc__icon--${row.tone}`"
-            >
-              <img :src="`${ASSET}/${row.icon}`" alt="" width="12" height="12" />
-            </span>
-            <span
-              class="ud-casc__label"
-              :class="{ 'ud-casc__label--strong': row.id === 'parent' }"
-            >
-              {{ row.label }}
-            </span>
-          </div>
-          <div class="ud-casc__row-right">
-            <span class="ud-casc__value">{{ row.value }}</span>
-            <span class="ud-casc__change">
-              <img :src="`${ASSET}/arrow-up.svg`" alt="" width="8" height="8" />
-              {{ row.change }}
-            </span>
-          </div>
-        </div>
-      </div>
-
-      <div class="ud-casc__banner">
-        <span class="ud-casc__banner-icon">
-          <img :src="`${ASSET}/eye.svg`" alt="" width="12" height="12" />
-        </span>
-        <p>Drill down from parent to merchant in seconds.</p>
-      </div>
-    </article>
-
-    <div
-      v-show="!reduceMotion"
-      class="ud-casc__cursor"
-      :class="{ 'ud-casc__cursor--click': clicking }"
-      :style="{ left: `${cursor.x}px`, top: `${cursor.y}px` }"
-    >
-      <img :src="`${ASSET}/cursor.svg`" alt="" width="18" height="18" />
-      <span v-show="clicking" class="ud-casc__click-ring" />
     </div>
   </div>
 </template>
@@ -281,6 +299,23 @@ onBeforeUnmount(clearTimers);
   object-position: center;
   pointer-events: none;
   user-select: none;
+}
+
+.ud-casc__layer {
+  position: absolute;
+  inset: 0;
+  container-type: size;
+}
+
+/* Card and cursor are sized in artboard px, so on phones they render at 709×357 and shrink with the backdrop. */
+@media (max-width: 767px) {
+  .ud-casc__layer {
+    inset: 0 auto auto 0;
+    width: 709px;
+    height: 357px;
+    transform: scale(var(--ud-casc-scale, 1));
+    transform-origin: 0 0;
+  }
 }
 
 /* Exact cover of baked-in card in cascading-graphic.svg (rect 399 78.36 307×274.78) */

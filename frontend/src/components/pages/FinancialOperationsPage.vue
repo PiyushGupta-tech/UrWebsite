@@ -1083,6 +1083,200 @@ onBeforeUnmount(() => {
   }
 }
 
+/* —— Phone 931:29810 (393 frame, 16px gutters, 56px between sections) —— */
+@media (max-width: 767px) {
+  /* PageView's 100px gap above the closing collapses with this to 56px. */
+  .foi-page {
+    margin-bottom: -44px;
+  }
+
+  .foi-hero__title,
+  .foi-section__title,
+  .foi-advantages__title {
+    font-size: 28px;
+    line-height: 36px;
+    letter-spacing: -0.84px;
+  }
+
+  .foi-section__title {
+    white-space: normal;
+  }
+
+  .foi-showcase .foi-section__title {
+    max-width: 300px;
+  }
+
+  .foi-section__body,
+  .foi-advantages__body {
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0;
+    color: var(--foi-muted);
+  }
+
+  .foi-hero__inner {
+    width: calc(100% - 32px);
+    padding-top: 32px;
+  }
+
+  .foi-hero__eyebrow {
+    margin-bottom: 24px;
+    font-weight: 700;
+  }
+
+  .foi-hero__title {
+    max-width: 100%;
+  }
+
+  .foi-hero__intro {
+    max-width: 100%;
+    line-height: 20px;
+    letter-spacing: 0;
+  }
+
+  .foi-hero__cta,
+  .foi-mid__cta {
+    height: 40px;
+    padding: 0 16px;
+    font-size: 14px;
+    letter-spacing: -0.28px;
+  }
+
+  .foi-hero__cta {
+    margin-top: 24px;
+  }
+
+  .foi-section,
+  .foi-section--advantages,
+  .foi-section--showcase {
+    width: calc(100% - 32px);
+  }
+
+  .foi-section--infra,
+  .foi-section--advantages,
+  .foi-section--showcase {
+    margin-top: 56px;
+  }
+
+  .foi-section--diagram {
+    margin-top: 36px;
+    padding-inline: 0;
+  }
+
+  .foi-section--diagram :deep(.foi-baas) {
+    width: 100%;
+  }
+
+  .foi-section--diagram :deep(.foi-baas__img) {
+    width: 100%;
+    max-width: 100%;
+    max-height: none;
+  }
+
+  .foi-advantages,
+  .foi-showcase {
+    gap: 36px;
+  }
+
+  .foi-advantages__head {
+    align-items: center;
+    gap: 12px;
+    text-align: center;
+  }
+
+  .foi-advantages__title {
+    width: 100%;
+  }
+
+  .foi-advantages__grid {
+    gap: 48px;
+    padding: 24px 20px;
+  }
+
+  .foi-advantages__card + .foi-advantages__card::before {
+    content: "";
+    position: absolute;
+    top: -25px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, #f5f5f5 0%, #cbcbcb 45.36%, #f5f5f5 100%);
+  }
+
+  .foi-advantages__bullet {
+    margin-bottom: 16px;
+  }
+
+  .foi-advantages__card-title {
+    font-weight: 700;
+    line-height: 20px;
+  }
+
+  .foi-advantages__card-body {
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: 0.48px;
+  }
+
+  /* Keeps the mid CTA glow behind the last showcase card. */
+  .foi-section--showcase {
+    position: relative;
+    z-index: 1;
+  }
+
+  .foi-carousel__stage {
+    min-height: 0;
+  }
+
+  .foi-mid {
+    margin-top: 56px;
+    overflow-x: clip;
+  }
+
+  .foi-mid__frame {
+    padding: 0 16px;
+  }
+
+  .foi-mid__stage {
+    gap: 0;
+    padding: 0;
+  }
+
+  .foi-mid__card {
+    display: none;
+  }
+
+  .foi-mid__glow--left {
+    display: block;
+    left: 50%;
+    top: 62px;
+    bottom: auto;
+    width: 400px;
+    height: 400px;
+    transform: translate(-50%, -50%);
+  }
+
+  .foi-mid__copy {
+    max-width: none;
+    gap: 16px;
+  }
+
+  .foi-mid__copy-text {
+    gap: 8px;
+  }
+
+  .foi-mid__title {
+    font-size: 16px;
+    line-height: 20px;
+  }
+
+  .foi-mid__body {
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: 0.48px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .foi-hero__inner {
     opacity: 1;
@@ -1092,6 +1286,15 @@ onBeforeUnmount(() => {
 
   .foi-mid__progress-fill {
     animation: none;
+  }
+}
+</style>
+
+<style>
+/* Shared closing sits outside this component; only this page's phone rhythm uses Figma's 56px gaps. */
+@media (max-width: 767px) {
+  .page-view:has(> .foi-page) > .site-closing > * + * {
+    margin-top: 56px;
   }
 }
 </style>

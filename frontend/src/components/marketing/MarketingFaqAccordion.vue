@@ -392,4 +392,73 @@ function toggle(index) {
     padding: 0 0 20px;
   }
 }
+
+/* Phone (Figma 931:17597): full-width column inside 16px gutters, centred intro */
+@media (max-width: 767px) {
+  .marketing-faq--split {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .marketing-faq--split .marketing-faq__inner {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 36px;
+    width: auto;
+    max-width: none;
+  }
+
+  .marketing-faq--split .marketing-faq__intro {
+    gap: 12px;
+  }
+
+  .marketing-faq--split .marketing-faq__title {
+    max-width: none;
+    font-size: 28px;
+    line-height: 36px;
+    letter-spacing: 0;
+  }
+
+  .marketing-faq--split .marketing-faq__body {
+    max-width: none;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0;
+    color: #717680;
+  }
+
+  .marketing-faq--split .marketing-faq__item {
+    border-bottom-width: 2px;
+  }
+
+  .marketing-faq--split .marketing-faq__trigger {
+    grid-template-columns: auto minmax(0, 1fr) 20px;
+    gap: 16px;
+    padding: 24px 12px;
+  }
+
+  .marketing-faq--split .marketing-faq__item--open .marketing-faq__trigger {
+    padding-bottom: 16px;
+  }
+
+  .marketing-faq--split .marketing-faq__num,
+  .marketing-faq--split .marketing-faq__question {
+    font-size: 16px;
+    line-height: 20px;
+  }
+
+  .marketing-faq--split .marketing-faq__question {
+    font-weight: 500;
+  }
+
+  .marketing-faq--split .marketing-faq__answer {
+    padding: 0 12px 24px;
+  }
+
+  .marketing-faq--split .marketing-faq__answer p {
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: 0;
+    color: #717680;
+  }
+}
 </style>

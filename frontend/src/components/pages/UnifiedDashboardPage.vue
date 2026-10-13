@@ -166,6 +166,7 @@ onMounted(() => {
     <UpiPathSection
       v-if="page.path"
       :path="page.path"
+      :phone-home-offsets="{ trend: 0.2 }"
       aria-label="Unified dashboard operations path"
     />
   </main>
@@ -626,6 +627,197 @@ onMounted(() => {
   .ud-section--control,
   .ud-section--features {
     width: calc(100% - 32px);
+  }
+}
+
+/* —— Phone — Figma 931:5011 —— */
+@media (max-width: 767px) {
+  .ud-page {
+    margin-bottom: -44px;
+  }
+
+  /* Hero: chip 88px under the navbar */
+  .ud-hero {
+    min-height: 0;
+  }
+
+  .ud-hero__inner {
+    width: calc(100% - 32px);
+    padding: 80px 0 0;
+  }
+
+  .ud-hero__eyebrow {
+    margin-bottom: 24px;
+  }
+
+  .ud-hero__title,
+  .ud-section__title {
+    font-size: 28px;
+    line-height: 36px;
+    letter-spacing: -0.84px;
+  }
+
+  .ud-hero__intro,
+  .ud-section__body {
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0;
+  }
+
+  .ud-hero__cta {
+    height: 40px;
+    margin-top: 24px;
+    padding: 0 16px;
+    font-size: 14px;
+    letter-spacing: -0.28px;
+  }
+
+  .ud-section,
+  .ud-section--control,
+  .ud-section--features {
+    width: calc(100% - 32px);
+  }
+
+  .ud-section--platform {
+    margin-top: 56px;
+  }
+
+  .ud-section--control,
+  .ud-section--features {
+    margin-top: 56px;
+  }
+
+  .ud-section--platform,
+  .ud-section--control,
+  .ud-section--features {
+    gap: 36px;
+  }
+
+  .ud-platform {
+    width: calc(100% - 8px);
+    margin-inline: auto;
+  }
+
+  /* Control: stacked cards, 44px icons */
+  .ud-control {
+    gap: 24px;
+  }
+
+  .ud-control__card {
+    height: auto;
+    padding: 19px;
+    gap: 16px;
+  }
+
+  .ud-control__icon,
+  .ud-control__card--active .ud-control__icon {
+    width: 44px;
+    height: 44px;
+    transform: none;
+  }
+
+  .ud-control__card--active .ud-control__icon {
+    border-radius: 5.779px;
+  }
+
+  .ud-control__icon-img {
+    max-width: 20px;
+    max-height: 20px;
+  }
+
+  .ud-control__text {
+    gap: 8px;
+  }
+
+  .ud-control__title,
+  .ud-features__title {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 20px;
+  }
+
+  .ud-control__body {
+    height: auto;
+    font-size: 12px;
+    line-height: 18px;
+  }
+
+  /* Features: graphic over copy */
+  .ud-section--features {
+    padding-bottom: 0;
+  }
+
+  .ud-features {
+    gap: 36px;
+  }
+
+  .ud-features__row,
+  .ud-features__row--reverse {
+    gap: 24px;
+  }
+
+  .ud-features__visual,
+  .ud-features__copy {
+    flex: none;
+  }
+
+  .ud-features__copy {
+    gap: 8px;
+  }
+
+  .ud-features__title {
+    letter-spacing: -0.48px;
+  }
+
+  .ud-features__body {
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: 0.48px;
+    opacity: 1;
+  }
+
+  /* Path: Figma's ring frame starts 56px under the features; the cropped stage begins 62px into it. */
+  .ud-page :deep(.upi-path) {
+    margin-top: 118px;
+    padding: 0 16px;
+  }
+
+  /* Copy is taller than the stage at narrow widths, so let it run into the gap below. */
+  .ud-page :deep(.upi-path__stage) {
+    overflow: visible;
+  }
+
+  .ud-page :deep(.upi-path__copy) {
+    top: 0;
+    width: max(234px, 64.8%);
+    gap: 12px;
+  }
+
+  .ud-page :deep(.upi-path__title) {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 20px;
+    color: #252b37;
+  }
+
+  .ud-page :deep(.upi-path__body) {
+    font-size: 12px;
+    line-height: 18px;
+    color: #535862;
+  }
+
+  .ud-page :deep(.upi-path__badge) {
+    width: 16px;
+    border-width: 0.5px;
+  }
+}
+</style>
+
+<style>
+/* Shared closing sits outside this component; only this page's phone rhythm uses Figma's 56px gaps. */
+@media (max-width: 767px) {
+  .page-view:has(> .ud-page) > .site-closing > * + * {
+    margin-top: 56px;
   }
 }
 </style>

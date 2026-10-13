@@ -574,4 +574,15 @@ function isOn(id) {
     animation: none;
   }
 }
+
+/* Phones draw this at its desktop width and scale it down, so the vw clamps keep their desktop values. */
+@media (max-width: 767px) {
+  .cfm__title {
+    font-size: 15px;
+  }
+
+  .cfm__left {
+    font-size: 11px;
+  }
+}
 </style>

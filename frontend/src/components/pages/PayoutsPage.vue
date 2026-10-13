@@ -20,6 +20,7 @@ const controlRef = ref(null);
 const controlStackRef = ref(null);
 const controlProgress = ref(0);
 const controlReduceMotion = ref(false);
+const controlStackWidth = ref(0);
 let controlRaf = 0;
 
 const stats = computed(() => props.page?.stats || []);
@@ -100,6 +101,16 @@ function onControlScroll() {
   controlRaf = requestAnimationFrame(syncControlProgress);
 }
 
+/** Phone CSS zooms each control graphic from its design width to this column width. */
+function measureControlStack() {
+  controlStackWidth.value = controlStackRef.value?.clientWidth || 0;
+}
+
+function onControlResize() {
+  measureControlStack();
+  onControlScroll();
+}
+
 onMounted(async () => {
   requestAnimationFrame(() => {
     heroReady.value = true;
@@ -109,23 +120,26 @@ onMounted(async () => {
     typeof window !== "undefined" &&
     window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   await nextTick();
+  measureControlStack();
   syncControlProgress();
   window.addEventListener("scroll", onControlScroll, { passive: true });
-  window.addEventListener("resize", onControlScroll);
+  window.addEventListener("resize", onControlResize);
 });
 
 onBeforeUnmount(() => {
   cancelAnimationFrame(controlRaf);
   window.removeEventListener("scroll", onControlScroll);
-  window.removeEventListener("resize", onControlScroll);
+  window.removeEventListener("resize", onControlResize);
 });
 
 watch([controlRef, controlStackRef], () => {
+  measureControlStack();
   syncControlProgress();
 });
 
 watch(controlCount, async () => {
   await nextTick();
+  measureControlStack();
   syncControlProgress();
 });
 </script>
@@ -220,7 +234,11 @@ watch(controlCount, async () => {
     </section>
 
     <!-- Path — Figma 385:6824 -->
-    <UpiPathSection v-if="page.path" :path="page.path" />
+    <UpiPathSection
+      v-if="page.path"
+      :path="page.path"
+      :phone-home-offsets="{ trend: 0.2 }"
+    />
 
     <!-- Control — Figma 413:6482 — normal scrolling title + Skiper16 card stack -->
     <section
@@ -242,6 +260,7 @@ watch(controlCount, async () => {
       <div
         ref="controlStackRef"
         class="po-control-stack"
+        :style="controlStackWidth ? { '--po-stack-w': controlStackWidth } : undefined"
         aria-label="Payout control capabilities"
       >
         <template v-for="(card, i) in controlCards" :key="card.title">
@@ -917,6 +936,268 @@ watch(controlCount, async () => {
   .po-section__title--control {
     font-size: 32px;
     line-height: 42px;
+  }
+}
+
+/* —— Phone — Figma 931:18926 (393 frame: 16px gutters, 36px between sections) —— */
+@media (max-width: 767px) {
+  .po-page {
+    /* Pulls the shared closing (100px top margin) up to the 36px section gap. */
+    margin-bottom: -64px;
+  }
+
+  .po-hero__title,
+  .po-platform-head__title,
+  .po-section__title,
+  .po-section__title--control {
+    font-size: 28px;
+    line-height: 36px;
+    letter-spacing: -0.84px;
+    color: #252b37;
+  }
+
+  .po-hero__intro,
+  .po-platform-head__body,
+  .po-section__body,
+  .po-section__body--control {
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0;
+    color: #535862;
+  }
+
+  /* Hero */
+  .po-hero__inner {
+    row-gap: 48px;
+    padding: 32px 16px 0;
+  }
+
+  .po-hero__copy {
+    align-items: center;
+    text-align: center;
+  }
+
+  .po-hero__eyebrow {
+    margin-bottom: 24px;
+    font-weight: 700;
+  }
+
+  /* Breaks on Figma's three lines: "…Faster" (320px) fits, "…Control And" (321.4px) wraps. */
+  .po-hero__title {
+    max-width: 321px;
+  }
+
+  .po-hero__intro {
+    margin-bottom: 24px;
+  }
+
+  .po-hero__cta {
+    height: 40px;
+    padding: 0 16px;
+    font-size: 14px;
+    letter-spacing: -0.28px;
+  }
+
+  /* Metrics */
+  .po-stats {
+    padding: 36px 16px 0;
+  }
+
+  .po-stats :deep(.ur-metrics) {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 144px));
+    justify-content: center;
+    gap: 18px 40px;
+  }
+
+  .po-stats :deep(.ur-metrics__card) {
+    height: auto;
+    min-height: 115px;
+    padding: 12px;
+    gap: 8px;
+    border: 0;
+    border-radius: 8px;
+    box-shadow:
+      0 12px 16px -4px rgba(10, 13, 18, 0.1),
+      0 4px 6px -2px rgba(10, 13, 18, 0.05);
+  }
+
+  .po-stats :deep(.ur-metrics__value) {
+    min-height: 40px;
+    font-size: 32px;
+    line-height: 40px;
+    letter-spacing: -0.96px;
+    color: #252b37;
+  }
+
+  .po-stats :deep(.ur-metrics__label) {
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0;
+    white-space: normal;
+  }
+
+  /* Shared section rhythm */
+  .po-section,
+  .po-section--platform,
+  .po-section--control {
+    margin-top: 36px;
+    padding: 0 16px;
+    gap: 36px;
+  }
+
+  .po-platform-head,
+  .po-section__head {
+    width: 100%;
+    gap: 12px;
+  }
+
+  /* Platform diagram: Figma insets it 4px each side */
+  .po-section--platform .po-platform {
+    width: calc(100% - 8px);
+  }
+
+  /* Features */
+  .po-features {
+    gap: 24px;
+  }
+
+  .po-features__card {
+    gap: 8px;
+    min-height: 0;
+    padding: 20px;
+    border: 0;
+    border-radius: 12px;
+  }
+
+  .po-features__icon {
+    margin-bottom: 8px;
+  }
+
+  .po-features__title {
+    font-size: 16px;
+    line-height: 20px;
+    color: #252b37;
+  }
+
+  .po-features__body {
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: 0.48px;
+    color: #535862;
+  }
+
+  /* Path: same orbit artwork scaled to the column */
+  .po-page :deep(.upi-path) {
+    margin-top: 36px;
+    padding: 24px 16px;
+  }
+
+  /* Centred on the orbit centre (design y ≈ 512 of the 180–790 crop), width scales with the rings. */
+  .po-page :deep(.upi-path__copy) {
+    top: 54.5%;
+    width: max(254px, 70.4%);
+    gap: 8px;
+    transform: translate(-50%, -50%);
+  }
+
+  .po-page :deep(.upi-path__title) {
+    font-size: 16px;
+    line-height: 20px;
+    color: #252b37;
+  }
+
+  .po-page :deep(.upi-path__body) {
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: 0.48px;
+    color: #535862;
+  }
+
+  .po-page :deep(.upi-path__badge) {
+    width: 16px;
+    border-width: 0.5px;
+  }
+
+  /* Control: graphic above copy, no card chrome */
+  .po-section__head--control {
+    margin: 0;
+    padding: 0;
+  }
+
+  .po-control-stack {
+    gap: 36px;
+  }
+
+  .po-control__card,
+  .po-control__card--reverse {
+    flex-direction: column-reverse;
+    gap: 24px;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    overflow: visible;
+  }
+
+  .po-control__copy {
+    gap: 8px;
+  }
+
+  .po-control__title {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 20px;
+  }
+
+  .po-control__body {
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: 0.48px;
+  }
+
+  .po-control__visual {
+    height: auto;
+  }
+
+  /* Graphics clamp their type to desktop minimums, so render at design width and zoom to the column. */
+  .po-control__visual :deep(.po-ben),
+  .po-control__visual :deep(.po-trk),
+  .po-control__visual :deep(.po-mc) {
+    flex-shrink: 0;
+    max-width: none;
+    max-height: none;
+  }
+
+  .po-control__visual :deep(.po-ben) {
+    width: 765px;
+    zoom: 0.4719;
+    zoom: calc(var(--po-stack-w, 361) / 765);
+  }
+
+  .po-control__visual :deep(.po-trk) {
+    width: 704px;
+    zoom: 0.5128;
+    zoom: calc(var(--po-stack-w, 361) / 704);
+  }
+
+  .po-control__visual :deep(.po-mc) {
+    width: 800px;
+    zoom: 0.4513;
+    zoom: calc(var(--po-stack-w, 361) / 800);
+  }
+
+  .po-control__visual:has(.po-trk) {
+    padding-top: 0;
+  }
+}
+</style>
+
+<style>
+/* Shared closing sits outside this component; only this page's phone rhythm uses Figma's 36px gaps. */
+@media (max-width: 767px) {
+  .page-view:has(> .po-page) > .site-closing > * + * {
+    margin-top: 36px;
   }
 }
 </style>

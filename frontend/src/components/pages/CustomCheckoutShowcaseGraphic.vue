@@ -1250,7 +1250,8 @@ onBeforeUnmount(stopCycle);
   }
 }
 
-@media (max-width: 900px) {
+/* Phones (below 768px) keep the full stage; the page scales it down as a whole. */
+@media (min-width: 768px) and (max-width: 900px) {
   .cc-stage__card--brand,
   .cc-stage__card--design,
   .cc-stage__card--methods,
@@ -1258,22 +1259,6 @@ onBeforeUnmount(stopCycle);
   .cc-stage__badge,
   .cc-stage__wires {
     display: none;
-  }
-
-  .cc-stage__hint {
-    bottom: 12px;
-    font-size: 11px;
-    white-space: normal;
-    text-align: center;
-    max-width: calc(100% - 32px);
-  }
-
-  .cc-stage__hint-desktop {
-    display: none;
-  }
-
-  .cc-stage__hint-mobile {
-    display: inline;
   }
 
   .cc-stage__browser {
@@ -1294,6 +1279,24 @@ onBeforeUnmount(stopCycle);
     left: auto;
     top: auto;
     transform: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .cc-stage__hint {
+    bottom: 12px;
+    font-size: 11px;
+    white-space: normal;
+    text-align: center;
+    max-width: calc(100% - 32px);
+  }
+
+  .cc-stage__hint-desktop {
+    display: none;
+  }
+
+  .cc-stage__hint-mobile {
+    display: inline;
   }
 }
 </style>

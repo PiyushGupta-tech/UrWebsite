@@ -2,6 +2,8 @@
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { RouterLink } from "vue-router";
 import MetricCards from "@/components/MetricCards.vue";
+import { useLoopSlider } from "@/composables/useLoopSlider.js";
+import { useScaledArt } from "@/composables/useScaledArt.js";
 import OrchestrationLayerVisual from "./OrchestrationLayerVisual.vue";
 import PaymentOrchestrationHeroGraphic from "./PaymentOrchestrationHeroGraphic.vue";
 
@@ -22,12 +24,19 @@ const controlReady = ref(false);
 let controlTimer = null;
 
 const controlRowRef = ref(null);
+const registerArtFrame = useScaledArt("po");
 
 const growthCards = computed(() => props.page?.growth?.cards || []);
 const growthLeft = computed(() => [growthCards.value[0], growthCards.value[1]].filter(Boolean));
 const growthRight = computed(() => [growthCards.value[2], growthCards.value[3]].filter(Boolean));
 const controlSteps = computed(() => props.page?.control?.steps || []);
 const controlOthers = computed(() => Math.max(controlSteps.value.length - 1, 0));
+const controlCount = computed(() => controlSteps.value.length);
+const {
+  slide: controlSlide,
+  snapping: controlSnapping,
+  onTrackTransitionEnd: onControlTrackEnd,
+} = useLoopSlider(activeControl, controlCount);
 const pageStats = computed(() => props.page?.stats || []);
 
 function startControlCycle() {
@@ -57,6 +66,13 @@ function selectControl(index, { fromUser = true } = {}) {
   }
   activeControl.value = index;
   if (!fromUser) startControlCycle();
+}
+
+/** Phone arrows: step through the cards, wrapping at either end. */
+function stepControl(dir) {
+  const count = controlSteps.value.length;
+  if (count < 2) return;
+  selectControl((activeControl.value + dir + count) % count);
 }
 
 function pauseControl() {
@@ -98,7 +114,7 @@ watch(controlSteps, async () => {
 </script>
 
 <template>
-  <main class="po-page">
+  <main class="po-page po-page--orchestration">
     <!-- Hero + stats — Figma 330:1482 -->
     <section class="po-hero">
       <div class="po-hero__bg" aria-hidden="true">
@@ -133,13 +149,16 @@ watch(controlSteps, async () => {
               </RouterLink>
             </div>
           </div>
-          <div class="po-hero__graphic">
-            <PaymentOrchestrationHeroGraphic :ready="heroReady" />
+          <div :ref="registerArtFrame" class="po-hero__graphic">
+            <div class="po-hero__art">
+              <PaymentOrchestrationHeroGraphic :ready="heroReady" />
+            </div>
           </div>
         </div>
 
         <MetricCards
           v-if="pageStats.length"
+          class="po-hero__metrics"
           :items="pageStats"
           :ready="heroReady"
           aria-label="Orchestration outcomes"
@@ -265,8 +284,11 @@ watch(controlSteps, async () => {
       <div
         ref="controlRowRef"
         class="po-control__row"
+        :class="{ 'po-control__row--snap': controlSnapping }"
+        :style="{ '--po-slide': String(controlSlide) }"
         role="tablist"
         aria-label="Transaction control"
+        @transitionend="onControlTrackEnd"
       >
         <button
           v-for="(step, index) in controlSteps"
@@ -290,6 +312,50 @@ watch(controlSteps, async () => {
               <span class="po-control__step-body">{{ step.body }}</span>
             </span>
           </span>
+        </button>
+        <!-- Phone slider only: copy of the first card so wrapping keeps sliding forward. -->
+        <div
+          v-if="controlSteps.length > 2"
+          class="po-control__step po-control__step--active po-control__step--clone"
+          aria-hidden="true"
+        >
+          <span class="po-control__num">{{ controlSteps[0].num }}</span>
+          <span class="po-control__stack">
+            <span class="po-control__step-text">
+              <span class="po-control__step-title">{{ controlSteps[0].title }}</span>
+              <span class="po-control__step-body">{{ controlSteps[0].body }}</span>
+            </span>
+          </span>
+        </div>
+      </div>
+      <div v-if="controlSteps.length > 1" class="po-control__nav">
+        <button
+          type="button"
+          class="po-control__arrow po-control__arrow--prev"
+          aria-label="Previous step"
+          @click="stepControl(-1)"
+        >
+          <img
+            src="/images/figma-collections/experiences/arrow-up-dark.svg"
+            alt=""
+            width="12"
+            height="13"
+            decoding="async"
+          />
+        </button>
+        <button
+          type="button"
+          class="po-control__arrow po-control__arrow--next"
+          aria-label="Next step"
+          @click="stepControl(1)"
+        >
+          <img
+            src="/images/figma-collections/experiences/arrow-up-white.svg"
+            alt=""
+            width="14"
+            height="14"
+            decoding="async"
+          />
         </button>
       </div>
     </section>
@@ -453,6 +519,10 @@ watch(controlSteps, async () => {
   width: min(520px, 100%);
   max-width: 520px;
   min-width: 0;
+}
+
+.po-hero__art {
+  width: 100%;
 }
 
 /* —— One layer — Figma 330:1521 —— */
@@ -939,6 +1009,15 @@ watch(controlSteps, async () => {
   color: #e9eaeb;
 }
 
+/* Phone only: the row shows one card, so arrows step through the rest. */
+.po-control__nav {
+  display: none;
+}
+
+.po-control__step.po-control__step--clone {
+  display: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .po-growth__card,
   .po-control__step,
@@ -1137,6 +1216,389 @@ watch(controlSteps, async () => {
 
   .po-control__step-body {
     font-size: 14px;
+  }
+}
+
+/* —— Phone — Figma 1149:6639 (393 frame, 16px gutters, 100px between sections) —— */
+@media (max-width: 767px) {
+  .po-hero__title,
+  .po-layer__title,
+  .po-growth__title,
+  .po-routing__title,
+  .po-control__title {
+    font-size: 28px;
+    line-height: 36px;
+  }
+
+  .po-hero__title,
+  .po-layer__title,
+  .po-growth__title,
+  .po-routing__title {
+    letter-spacing: -0.84px;
+  }
+
+  .po-hero__intro,
+  .po-layer__body,
+  .po-growth__body,
+  .po-routing__body,
+  .po-control__body {
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0;
+  }
+
+  .po-control__body {
+    letter-spacing: 0.56px;
+  }
+
+  .po-layer__head,
+  .po-routing__head,
+  .po-control__head,
+  .po-growth__copy {
+    gap: 12px;
+  }
+
+  /* Hero: chip 91px under the navbar; bottom padding keeps the metric card shadows unclipped */
+  .po-hero__inner {
+    padding: 91px 16px 24px;
+    gap: 100px;
+  }
+
+  .po-hero__row {
+    flex-direction: column;
+    gap: 24px;
+    min-height: 0;
+  }
+
+  .po-hero__copy {
+    flex: none;
+    align-items: center;
+    gap: 24px;
+    text-align: center;
+  }
+
+  .po-hero__cta-block {
+    align-items: center;
+    gap: 24px;
+  }
+
+  .po-hero__cta {
+    height: 40px;
+    padding: 0 16px;
+    font-size: 14px;
+    letter-spacing: -0.28px;
+  }
+
+  /* Graphic is drawn at its desktop width and scaled to the column (useScaledArt). */
+  .po-hero__graphic {
+    flex: none;
+    width: calc(100% - 4px);
+    max-width: none;
+    height: var(--po-art-height, auto);
+  }
+
+  .po-hero__art {
+    width: 520px;
+    transform: scale(var(--po-art-scale, 1));
+    transform-origin: 0 0;
+  }
+
+  .po-hero .po-hero__metrics {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 144px));
+    justify-content: center;
+    gap: 18px 40px;
+  }
+
+  .po-hero__metrics :deep(.ur-metrics__card) {
+    height: auto;
+    min-height: 115px;
+    padding: 12px;
+    gap: 8px;
+    border: 0;
+    border-radius: 8px;
+    box-shadow:
+      0 12px 16px -4px rgba(10, 13, 18, 0.1),
+      0 4px 6px -2px rgba(10, 13, 18, 0.05);
+  }
+
+  .po-hero__metrics :deep(.ur-metrics__value) {
+    min-height: 40px;
+    font-size: 32px;
+    line-height: 40px;
+    letter-spacing: -0.96px;
+    color: #252b37;
+  }
+
+  /* Two-line label box so every value sits at the same height */
+  .po-hero__metrics :deep(.ur-metrics__label) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0;
+    white-space: normal;
+  }
+
+  /* Metrics → layer is 64px; 24px of it is the hero's shadow padding. */
+  .po-layer {
+    margin-top: 40px;
+    padding: 0 16px;
+    gap: 36px;
+  }
+
+  .po-layer__visual {
+    width: calc(100% - 8px);
+    border-radius: 6.38px;
+  }
+
+  .po-growth,
+  .po-routing,
+  .po-control {
+    margin-top: 100px;
+    padding: 0 16px;
+  }
+
+  .po-growth {
+    flex-direction: column;
+    gap: 36px;
+  }
+
+  .po-growth__copy {
+    flex: none;
+    text-align: center;
+  }
+
+  .po-growth__cols {
+    flex: none;
+    flex-direction: column;
+    width: min(322px, 100%);
+    gap: 24px;
+  }
+
+  /* Columns dissolve so the cards read row by row, as in Figma. */
+  .po-growth__col {
+    display: contents;
+  }
+
+  .po-growth__col--left .po-growth__card:nth-child(1) {
+    order: 1;
+  }
+
+  .po-growth__col:not(.po-growth__col--left) .po-growth__card:nth-child(1) {
+    order: 2;
+  }
+
+  .po-growth__col--left .po-growth__card:nth-child(2) {
+    order: 3;
+  }
+
+  .po-growth__col:not(.po-growth__col--left) .po-growth__card:nth-child(2) {
+    order: 4;
+  }
+
+  .po-growth__card {
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+    min-height: 197px;
+    border-radius: 12px;
+  }
+
+  .po-growth__icon {
+    padding: 12px;
+    border-radius: 4px;
+  }
+
+  .po-growth__card-text {
+    gap: 8px;
+  }
+
+  .po-growth__card-title {
+    line-height: 20px;
+  }
+
+  .po-growth__card-body {
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: 0.36px;
+  }
+
+  .po-routing {
+    gap: 36px;
+  }
+
+  .po-routing__card {
+    width: 100%;
+    min-height: 410px;
+    padding: 20px;
+    box-shadow:
+      inset 0 0 0 1px #f4f4f4,
+      0 1px 1px rgba(0, 0, 0, 0.1),
+      0 1px 1.5px rgba(0, 0, 0, 0.1);
+  }
+
+  .po-routing__visual {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 466 / 373;
+  }
+
+  .po-routing__card-text,
+  .po-control__step-text {
+    gap: 8px;
+  }
+
+  .po-routing__card-title,
+  .po-control__step-title {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 20px;
+  }
+
+  .po-routing__card-body {
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: 0.48px;
+  }
+
+  /* Head → card 36px (24 gap + 12 margin), card → arrows 24px. */
+  .po-control {
+    padding-bottom: 0;
+    gap: 24px;
+    overflow-x: hidden;
+    overflow-x: clip;
+  }
+
+  .po-control__head {
+    margin-bottom: 12px;
+  }
+
+  /* One card wide track that slides like the testimonials carousel. */
+  .po-control__row {
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: stretch;
+    gap: 16px;
+    transform: translateX(calc(-1 * var(--po-slide, 0) * (100% + 16px)));
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform;
+  }
+
+  .po-control__row--snap {
+    transition: none;
+  }
+
+  /* Every card wears the active look so neighbours slide in already styled. */
+  .po-control__row .po-control__step {
+    display: flex;
+    flex: 0 0 100% !important;
+    width: 100% !important;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 160px;
+    padding: 10px;
+    gap: 8px;
+    border-radius: 24px;
+    background: #097495;
+    color: #ffffff;
+    box-shadow:
+      0 0.523px 1.046px -0.523px rgba(0, 0, 0, 0.1),
+      0 0.523px 1.57px 0 rgba(0, 0, 0, 0.1);
+    transition: none;
+  }
+
+  .po-control__row .po-control__step .po-control__stack {
+    display: flex;
+    width: 100%;
+    margin-top: 0;
+  }
+
+  .po-control__row .po-control__step .po-control__step-text {
+    display: flex;
+  }
+
+  .po-control__row .po-control__step .po-control__num {
+    width: 28px;
+    height: 28px;
+    border-radius: 16px;
+    background: #00b7db;
+    font-size: 12px;
+    line-height: 15px;
+  }
+
+  .po-control__step-title {
+    height: auto;
+  }
+
+  .po-control__row .po-control__step .po-control__step-body {
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: 0.48px;
+    color: #e9eaeb;
+  }
+
+  .po-control__nav {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .po-control__arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 28px;
+    padding: 0;
+    border: 0;
+    border-radius: 14px;
+    cursor: pointer;
+  }
+
+  .po-control__arrow--prev {
+    border: 0.5px solid #e5e7eb;
+    background: #ffffff;
+  }
+
+  .po-control__arrow--prev img {
+    width: 11.9px;
+    height: 13.03px;
+    transform: rotate(-90deg);
+  }
+
+  .po-control__arrow--next {
+    background: #097495;
+  }
+
+  .po-control__arrow--next img {
+    width: 13.54px;
+    height: 13.54px;
+    transform: rotate(90deg);
+  }
+
+  .po-control__arrow:focus-visible {
+    outline: 2px solid #097495;
+    outline-offset: 2px;
+  }
+}
+
+@media (max-width: 767px) and (prefers-reduced-motion: reduce) {
+  .po-control__row {
+    transition: none;
+  }
+}
+</style>
+
+<style>
+/* Shared closing sits outside this component; only this page's phone rhythm uses Figma's 100px gaps.
+   Payouts also roots at .po-page, hence the modifier. */
+@media (max-width: 767px) {
+  .page-view:has(> .po-page.po-page--orchestration) > .site-closing > * + * {
+    margin-top: 100px;
   }
 }
 </style>

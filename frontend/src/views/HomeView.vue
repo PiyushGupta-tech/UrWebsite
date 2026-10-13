@@ -596,12 +596,19 @@ onUnmounted(() => {
   }
 }
 
-/* Two columns get too narrow for one-line labels below here. */
+/* Two columns are too narrow for one-line labels below here, so labels wrap instead of shrinking. */
 @media (max-width: 480px) {
   .home-trust__stats {
-    grid-template-columns: minmax(0, 1fr);
-    max-width: 327px;
-    gap: 20px;
+    gap: 24px 16px;
+  }
+
+  .home-trust__stat-value {
+    font-size: clamp(26px, 8.4vw, 36px);
+  }
+
+  .home-trust__stat-label {
+    font-size: var(--label-size);
+    white-space: normal;
   }
 }
 </style>

@@ -612,4 +612,29 @@ onBeforeUnmount(stop);
     transform: none;
   }
 }
+
+/* Phones draw this at its desktop width and scale it down, so the vw clamps keep their desktop values. */
+@media (max-width: 767px) {
+  .cfd__settings-title,
+  .cfd__preview-title {
+    font-size: 12px;
+  }
+
+  .cfd__field,
+  .cfd__preview-steps {
+    font-size: 9px;
+  }
+
+  .cfd__input {
+    font-size: 10px;
+  }
+
+  .cfd__preview-head {
+    font-size: 13px;
+  }
+
+  .cfd__pay {
+    font-size: 11px;
+  }
+}
 </style>

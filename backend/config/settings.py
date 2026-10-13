@@ -23,6 +23,8 @@ ALLOWED_HOSTS = [
 
 SITE_BASE_URL = os.environ.get("SITE_BASE_URL", "https://urbanrupee.com").rstrip("/")
 GSC_SITE_VERIFICATION = os.environ.get("GSC_SITE_VERIFICATION", "").strip()
+# Google Analytics 4 Measurement ID (G-XXXXXXXXXX). Empty keeps analytics and the cookie banner off.
+GA_MEASUREMENT_ID = os.environ.get("GA_MEASUREMENT_ID", "").strip().upper()
 
 # Admin payout micro-dashboard (session auth + server-side payout proxy)
 ADMIN_DASHBOARD_USERNAME = os.environ.get("ADMIN_DASHBOARD_USERNAME", "").strip()

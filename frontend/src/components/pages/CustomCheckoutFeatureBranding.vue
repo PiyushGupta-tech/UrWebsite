@@ -433,4 +433,31 @@ const { rateLabel, rateOpacity, chartOffset, chartOpacity } = useRateCycle(72.6)
     animation: none;
   }
 }
+
+/* Phones draw this at its desktop width and scale it down, so the vw clamps keep their desktop values. */
+@media (max-width: 767px) {
+  .cfb__flow-title {
+    font-size: 11px;
+  }
+
+  .cfb__step,
+  .cfb__phone-label,
+  .cfb__phone-foot {
+    font-size: 8px;
+  }
+
+  .cfb__rate-copy p,
+  .cfb__phone-row,
+  .cfb__phone-cta {
+    font-size: 9px;
+  }
+
+  .cfb__rate-value {
+    font-size: 18px !important;
+  }
+
+  .cfb__phone-brand {
+    font-size: 15px;
+  }
+}
 </style>

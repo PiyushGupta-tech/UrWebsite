@@ -264,4 +264,53 @@ const usesLink = computed(() => !!props.to && !props.href);
     letter-spacing: 0.2px;
   }
 }
+
+/* Phone (Figma 931:17619): panel fills the 16px gutters, 307px copy column */
+@media (max-width: 767px) {
+  .marketing-banner-cta {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .marketing-banner-cta__panel {
+    height: auto;
+    min-height: 0;
+    border-radius: 12px;
+  }
+
+  .marketing-banner-cta__content {
+    gap: 24px;
+    max-width: 339px;
+    margin-inline: auto;
+    padding: 24px 16px 30px;
+  }
+
+  .marketing-banner-cta__title {
+    max-width: 303px;
+    font-size: 28px;
+    line-height: 36px;
+    letter-spacing: -0.84px;
+    text-transform: capitalize;
+  }
+
+  .marketing-banner-cta__body {
+    max-width: 307px;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0.56px;
+  }
+
+  .marketing-banner-cta__btn {
+    gap: 4.11px;
+    min-height: 52px;
+    padding: 0 16.44px;
+    font-size: 16.44px;
+    letter-spacing: -0.33px;
+  }
+
+  .marketing-banner-cta__btn img {
+    width: 18.49px;
+    height: 18.49px;
+  }
+}
 </style>

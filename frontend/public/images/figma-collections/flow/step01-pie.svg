@@ -3,7 +3,7 @@
 
 
 <g id="Collections">
-<g id="Img lib/Metric/Pie chart 2" filter="url(#filter0_dddd_0_1)">
+<g id="Img lib/Metric/Pie chart 2"><use href="#ur-sh-1" filter="url(#filter0_dddd_0_1-ur-sh)"/><g id="ur-sh-1">
 <path d="M17.8672 16.0508C17.8672 10.2701 22.5533 5.58398 28.334 5.58398H204.4C210.181 5.58398 214.867 10.2701 214.867 16.0508V164.117C214.867 169.898 210.181 174.584 204.4 174.584H28.334C22.5533 174.584 17.8672 169.898 17.8672 164.117V16.0508Z" fill="white"/>
 <path d="M28.334 5.86328H204.4C210.027 5.86329 214.588 10.4243 214.588 16.0508V164.117C214.588 169.744 210.027 174.305 204.4 174.305H28.334C22.7075 174.305 18.1465 169.744 18.1465 164.117V16.0508C18.1465 10.4243 22.7075 5.86329 28.334 5.86328Z" stroke="#ECEEF4" stroke-width="0.558336"/>
 <g id="Frame">
@@ -29,7 +29,7 @@
 <path id="}" d="M43.6912 147.328H43.2152V146.764H43.6632C43.7805 146.764 43.8792 146.724 43.9592 146.644C44.0392 146.564 44.0792 146.468 44.0792 146.356V143.772C44.0792 143.567 44.1379 143.38 44.2552 143.212L44.4792 142.904L44.2552 142.596C44.1379 142.428 44.0792 142.241 44.0792 142.036V139.46C44.0792 139.343 44.0392 139.244 43.9592 139.164C43.8792 139.084 43.7805 139.044 43.6632 139.044H43.2152V138.48H43.6912C43.9685 138.48 44.1965 138.569 44.3752 138.748C44.5539 138.927 44.6432 139.155 44.6432 139.432V142.036C44.6432 142.113 44.6672 142.191 44.7152 142.268L45.0552 142.744C45.0899 142.792 45.1072 142.845 45.1072 142.904C45.1072 142.963 45.0899 143.016 45.0552 143.064L44.7152 143.54C44.6672 143.612 44.6432 143.689 44.6432 143.772V146.38C44.6432 146.655 44.5539 146.881 44.3752 147.06C44.1965 147.239 43.9685 147.328 43.6912 147.328Z" fill="#334155"/>
 </g>
 </g>
-</g>
+</g></g>
 </g>
 </g>
 <defs>
@@ -56,6 +56,29 @@
 <feColorMatrix type="matrix" values="0 0 0 0 0.170868 0 0 0 0 0.225854 0 0 0 0 0.445799 0 0 0 0.05 0"/>
 <feBlend mode="normal" in2="effect3_dropShadow_0_1" result="effect4_dropShadow_0_1"/>
 <feBlend mode="normal" in="SourceGraphic" in2="effect4_dropShadow_0_1" result="shape"/>
+</filter>
+<filter id="filter0_dddd_0_1-ur-sh" x="0.000450134" y="0.000628471" width="232.733" height="204.733" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="12.2834"/>
+<feGaussianBlur stdDeviation="8.93337"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.170868 0 0 0 0 0.225854 0 0 0 0 0.445799 0 0 0 0.05 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_0_1"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="10.05"/>
+<feGaussianBlur stdDeviation="5.58336"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.170868 0 0 0 0 0.225854 0 0 0 0 0.445799 0 0 0 0.05 0"/>
+<feBlend mode="normal" in2="effect1_dropShadow_0_1" result="effect2_dropShadow_0_1"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="3.35001"/>
+<feGaussianBlur stdDeviation="2.23334"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.170868 0 0 0 0 0.225854 0 0 0 0 0.445799 0 0 0 0.05 0"/>
+<feBlend mode="normal" in2="effect2_dropShadow_0_1" result="effect3_dropShadow_0_1"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset/>
+<feGaussianBlur stdDeviation="0.279168"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.170868 0 0 0 0 0.225854 0 0 0 0 0.445799 0 0 0 0.05 0"/>
+<feBlend mode="normal" in2="effect3_dropShadow_0_1" result="effect4_dropShadow_0_1"/>
 </filter>
 </defs>
 </svg>

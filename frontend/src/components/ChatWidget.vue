@@ -152,7 +152,7 @@ function onKeydown(e) {
 .chat-widget {
   position: fixed;
   right: 20px;
-  bottom: 20px;
+  bottom: calc(20px + var(--ur-sticky-cta, 0px));
   z-index: 1000;
   display: flex;
   flex-direction: column;
@@ -372,7 +372,7 @@ function onKeydown(e) {
 @media (max-width: 480px) {
   .chat-widget {
     right: 12px;
-    bottom: 12px;
+    bottom: calc(12px + var(--ur-sticky-cta, 0px));
   }
 }
 </style>

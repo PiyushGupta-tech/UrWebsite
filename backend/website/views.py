@@ -6,13 +6,9 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from . import content
-from . import page_content
 from .homepage import homepage_payload
-from .page_faqs import closing_for_slug
-from .page_seo import page_context_for_slug
+from .page_api import page_detail_payload, site_payload
 from .seo_audit import run_seo_audit
-from .seo_schema import structured_data_graph
 from .contact import send_contact_email
 from .knowledge import answer_query
 
@@ -21,7 +17,7 @@ class SiteAPIView(APIView):
     """Shared site metadata and navigation."""
 
     def get(self, request):
-        return Response({"site": content.SITE, "nav": content.NAV, "footer": content.FOOTER})
+        return Response(site_payload())
 
 
 class HomepageAPIView(APIView):
@@ -112,25 +108,10 @@ class PageDetailAPIView(APIView):
     """Single inner page by slug."""
 
     def get(self, request, slug):
-        page = page_content.PAGES.get(slug)
-        if not page:
+        payload = page_detail_payload(slug)
+        if not payload:
             return Response({"detail": "Page not found."}, status=404)
-        ctx = page_context_for_slug(slug, page)
-        return Response(
-            {
-                "slug": slug,
-                "route": page_content.SLUG_TO_ROUTE.get(slug),
-                **ctx,
-                "structured_data": structured_data_graph(slug, page, ctx["seo"]),
-                "page": page,
-                "site": content.SITE,
-                "nav": content.NAV,
-                "footer": content.FOOTER,
-                "common_closing": closing_for_slug(slug),
-                "checkout_demo": content.CHECKOUT_DEMO,
-                "dashboard_preview": content.DASHBOARD_PREVIEW,
-            }
-        )
+        return Response(payload)
 
 
 class SeoAuditAPIView(APIView):

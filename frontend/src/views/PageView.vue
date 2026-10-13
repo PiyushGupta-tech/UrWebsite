@@ -68,6 +68,17 @@ function pageCacheKey(pageSlug) {
   return `ur:page-bootstrap:${pageSlug}`;
 }
 
+function readEmbeddedPage(pageSlug) {
+  const el = document.getElementById("page-bootstrap");
+  if (!el?.textContent) return null;
+  try {
+    const data = JSON.parse(el.textContent);
+    return data?.slug === pageSlug ? data : null;
+  } catch {
+    return null;
+  }
+}
+
 function readPageCache(pageSlug) {
   try {
     return JSON.parse(sessionStorage.getItem(pageCacheKey(pageSlug)) || "null");
@@ -86,7 +97,7 @@ function writePageCache(pageSlug, data) {
 
 async function loadPage() {
   const pageSlug = slug.value;
-  const cached = readPageCache(pageSlug);
+  const cached = readEmbeddedPage(pageSlug) || readPageCache(pageSlug);
   error.value = null;
 
   if (cached) {

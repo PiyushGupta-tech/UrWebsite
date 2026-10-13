@@ -13,6 +13,8 @@ const props = defineProps({
 });
 
 const TRANSITION_MS = 900;
+/** Phones show every card stacked, so the carousel stops cycling there. */
+const PHONE_QUERY = "(max-width: 767px)";
 
 /**
  * Cards whose static image is replaced by an animated Figma graphic. Each
@@ -34,6 +36,8 @@ const slides = computed(() => props.cards || []);
 const count = computed(() => slides.value.length);
 const activeIndex = ref(0);
 const hovered = ref(false);
+const isPhone = ref(false);
+let phoneMql = null;
 /** Park unused cards on this side so the next enter is always a short slide */
 const parkSide = ref("back-right");
 const snapIds = ref(new Set());
@@ -75,7 +79,7 @@ function remainingHold() {
 
 function scheduleAdvance(delay) {
   stopAutoplay();
-  if (reduceMotion || hovered.value || count.value < 2) return;
+  if (reduceMotion || hovered.value || isPhone.value || count.value < 2) return;
   timer = window.setTimeout(() => {
     timer = null;
     if (busy) scheduleAdvance(TRANSITION_MS);
@@ -180,8 +184,16 @@ function onCenterLeave() {
   startAutoplay();
 }
 
+function onPhoneChange(e) {
+  isPhone.value = e.matches;
+  startAutoplay();
+}
+
 onMounted(() => {
   playStartedAt = performance.now();
+  phoneMql = window.matchMedia(PHONE_QUERY);
+  isPhone.value = phoneMql.matches;
+  phoneMql.addEventListener("change", onPhoneChange);
   clampInitial();
   startAutoplay();
 });
@@ -202,6 +214,7 @@ watch(
 );
 
 onBeforeUnmount(() => {
+  phoneMql?.removeEventListener("change", onPhoneChange);
   stopAutoplay();
   if (settleTimer) clearTimeout(settleTimer);
 });
@@ -231,7 +244,8 @@ onBeforeUnmount(() => {
           `foi-coverflow__card--${slotFor(index)}`,
           { 'foi-coverflow__card--snap': snapIds.has(index) },
         ]"
-        :aria-hidden="slotFor(index) !== 'center'"
+        :data-card="card.id"
+        :aria-hidden="!isPhone && slotFor(index) !== 'center'"
       >
         <component
           :is="ANIMATED_GRAPHICS[card.id].default"
@@ -464,6 +478,52 @@ onBeforeUnmount(() => {
 
   .foi-coverflow__nav--next {
     right: 4px;
+  }
+}
+
+@media (max-width: 767px) {
+  .foi-coverflow__stage {
+    height: auto;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 24px;
+  }
+
+  .foi-coverflow__stage .foi-coverflow__card {
+    position: relative;
+    top: auto;
+    left: auto;
+    z-index: auto;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 361 / 322;
+    border-radius: 20px;
+    opacity: 1;
+    pointer-events: auto;
+    box-shadow: none;
+    transform: none;
+    transition: none;
+  }
+
+  .foi-coverflow__card[data-card="collections"] {
+    order: 1;
+  }
+
+  .foi-coverflow__card[data-card="payout"] {
+    order: 2;
+  }
+
+  .foi-coverflow__card[data-card="visibility"] {
+    order: 3;
+  }
+
+  .foi-coverflow__card[data-card="reconciliation"] {
+    order: 4;
+  }
+
+  .foi-coverflow__nav,
+  .foi-coverflow__hover-zone {
+    display: none;
   }
 }
 

@@ -125,6 +125,7 @@ onMounted(() => {
     <UpiPathSection
       v-if="page.path"
       :path="page.path"
+      :phone-home-offsets="{ trend: 0.2 }"
       aria-label="Reconciliation path"
     />
 
@@ -629,6 +630,180 @@ onMounted(() => {
 
   .rc-features__cards {
     grid-template-columns: 1fr;
+  }
+}
+
+/* —— Phone — Figma 931:28742 —— */
+@media (max-width: 767px) {
+  .rc-page {
+    margin-bottom: -44px;
+  }
+
+  /* Hero: centred stack, chip 109px under the navbar */
+  .rc-hero__inner {
+    padding: 101px 16px 0;
+    row-gap: 48px;
+  }
+
+  .rc-hero__copy {
+    align-items: center;
+    max-width: none;
+    text-align: center;
+  }
+
+  .rc-hero__eyebrow {
+    margin-bottom: 24px;
+  }
+
+  .rc-hero__title,
+  .rc-section__title,
+  .rc-features__title {
+    font-size: 28px;
+    line-height: 36px;
+    letter-spacing: -0.84px;
+  }
+
+  .rc-hero__intro,
+  .rc-section__body,
+  .rc-features__body {
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0;
+  }
+
+  .rc-hero__intro {
+    margin-bottom: 24px;
+  }
+
+  .rc-hero__cta {
+    height: 40px;
+    padding: 0 16px;
+    font-size: 14px;
+    letter-spacing: -0.28px;
+  }
+
+  .rc-hero__graphic {
+    max-width: none;
+  }
+
+  .rc-section,
+  .rc-section--features {
+    padding-inline: 16px;
+  }
+
+  .rc-section--clarity,
+  .rc-section--features {
+    margin-top: 56px;
+  }
+
+  .rc-section--clarity,
+  .rc-section--showcase {
+    gap: 36px;
+  }
+
+  /* Features: centred heading over one column of cards */
+  .rc-features {
+    align-items: stretch;
+    gap: 36px;
+  }
+
+  .rc-features__copy {
+    width: 100%;
+    align-items: center;
+    text-align: center;
+  }
+
+  .rc-features__cards {
+    gap: 24px;
+  }
+
+  .rc-features__card,
+  .rc-features__card:hover {
+    min-height: 0;
+    padding: 20px;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: none;
+  }
+
+  .rc-features__icon {
+    margin-bottom: 4px;
+  }
+
+  .rc-features__card-title,
+  .rc-showcase__title {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 20px;
+  }
+
+  .rc-features__card-body,
+  .rc-showcase__body {
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: 0.48px;
+  }
+
+  /* Path: same orbit artwork scaled to the column, outer ring top meets the cards */
+  .rc-page :deep(.upi-path) {
+    margin-top: 36px;
+    padding: 24px 16px;
+  }
+
+  /* Centred on the orbit centre (design y ≈ 512 of the 180–790 crop), width scales with the rings. */
+  .rc-page :deep(.upi-path__copy) {
+    top: 54.5%;
+    width: max(254px, 70.4%);
+    gap: 8px;
+    transform: translate(-50%, -50%);
+  }
+
+  .rc-page :deep(.upi-path__title) {
+    font-size: 16px;
+    line-height: 20px;
+    color: #252b37;
+  }
+
+  .rc-page :deep(.upi-path__body) {
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: 0.48px;
+    color: #535862;
+  }
+
+  .rc-page :deep(.upi-path__badge) {
+    width: 16px;
+    border-width: 0.5px;
+  }
+
+  /* Figma leaves 56px under the full 316px orbit frame; the cropped stage ends 78px earlier. */
+  .rc-section--showcase {
+    margin-top: 78px;
+    margin-bottom: 0;
+  }
+
+  .rc-showcase,
+  .rc-showcase__row,
+  .rc-showcase__row--right {
+    gap: 24px;
+  }
+
+  .rc-showcase__img {
+    max-width: none;
+  }
+
+  .rc-showcase__copy {
+    max-width: none;
+    gap: 8px;
+  }
+}
+</style>
+
+<style>
+/* Shared closing sits outside this component; only this page's phone rhythm uses Figma's 56px gaps. */
+@media (max-width: 767px) {
+  .page-view:has(> .rc-page) > .site-closing > * + * {
+    margin-top: 56px;
   }
 }
 </style>

@@ -9,6 +9,7 @@ const ARTBOARD_H = 813;
 const V_PAD = 24;
 /** Bump fitted scale up 10% for presence while keeping uniform scaling */
 const SCALE_BOOST = 1.1;
+const PHONE_QUERY = "(max-width: 767px)";
 
 defineProps({
   ready: { type: Boolean, default: true },
@@ -46,7 +47,9 @@ function updateScale() {
 
   // Uniform scale only — preserves aspect ratio / text readability (no Y-squash).
   // Container width stays full; diagram centers if height limits scale.
-  scale.value = Math.min(widthScale, heightScale, 1) * SCALE_BOOST;
+  const boosted = Math.min(widthScale, heightScale, 1) * SCALE_BOOST;
+  // Phones have no side room for the boost; it would push the artboard past the column.
+  scale.value = window.matchMedia(PHONE_QUERY).matches ? Math.min(boosted, widthScale) : boosted;
   offsetX.value = Math.max(0, (el.clientWidth - ARTBOARD_W * scale.value) / 2);
 }
 

@@ -4,7 +4,11 @@ import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
 const props = defineProps({
   path: { type: Object, required: true },
   ariaLabel: { type: String, default: "UPI transaction path" },
+  /** Radians added to a badge's resting angle on phones, keyed by icon id (positive = clockwise). */
+  phoneHomeOffsets: { type: Object, default: () => ({}) },
 });
+
+const PHONE_QUERY = "(max-width: 767px)";
 
 /** Full Figma artboard — orbits live in this space */
 const DESIGN_W = 1048;
@@ -32,9 +36,11 @@ const TIMING = {
 };
 
 const reduceMotion = ref(false);
+const isPhone = ref(false);
 const badgePos = ref({});
 let raf = 0;
 let motion = [];
+let phoneMql = null;
 
 const icons = computed(() => props.path?.icons || []);
 
@@ -92,7 +98,8 @@ function buildMotion(list) {
     }
 
     const o = ORBITS[key];
-    const home = Math.atan2(by - o.cy, bx - o.cx);
+    const offset = isPhone.value ? Number(props.phoneHomeOffsets?.[icon.id]) || 0 : 0;
+    const home = Math.atan2(by - o.cy, bx - o.cx) + offset;
     const t = TIMING[icon.id] || { speed: 0.4 + i * 0.04, phase: i };
     const desiredAmp = ARC_TRAVEL_PX / o.r;
 
@@ -102,11 +109,19 @@ function buildMotion(list) {
       cy: o.cy,
       r: o.r,
       home,
+      shifted: offset !== 0,
       amp: fitAmplitude(home, o.cx, o.cy, o.r, desiredAmp),
       speed: t.speed,
       phase: t.phase,
     };
   });
+}
+
+function restStyle(m) {
+  return toStageStyle(
+    m.cx + m.r * Math.cos(m.home) - BADGE_HALF,
+    m.cy + m.r * Math.sin(m.home) - BADGE_HALF,
+  );
 }
 
 function badgeStyle(icon) {
@@ -137,8 +152,16 @@ function startMotion() {
   if (!reduceMotion.value && motion.length) {
     raf = requestAnimationFrame(tick);
   } else {
-    badgePos.value = {};
+    // Static badges rest at their data position unless a phone offset moved them.
+    badgePos.value = Object.fromEntries(
+      motion.filter((m) => m.shifted).map((m) => [m.id, restStyle(m)]),
+    );
   }
+}
+
+function onPhoneChange(e) {
+  isPhone.value = e.matches;
+  startMotion();
 }
 
 watch(icons, startMotion, { deep: true });
@@ -147,11 +170,17 @@ onMounted(() => {
   reduceMotion.value =
     typeof window !== "undefined" &&
     window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (typeof window !== "undefined") {
+    phoneMql = window.matchMedia(PHONE_QUERY);
+    isPhone.value = phoneMql.matches;
+    phoneMql.addEventListener("change", onPhoneChange);
+  }
   startMotion();
 });
 
 onBeforeUnmount(() => {
   if (raf) cancelAnimationFrame(raf);
+  phoneMql?.removeEventListener("change", onPhoneChange);
 });
 </script>
 
@@ -226,10 +255,19 @@ onBeforeUnmount(() => {
 
       <div class="upi-path__copy">
         <h2 class="upi-path__title">{{ path.title }}</h2>
+        <!-- Phone copy comes first so adjacent-paragraph spacing never counts a hidden paragraph. -->
+        <p
+          v-for="(para, i) in path.phone_body || []"
+          :key="`phone-${i}`"
+          class="upi-path__body upi-path__body--phone"
+        >
+          {{ para }}
+        </p>
         <p
           v-for="(para, i) in path.body || []"
           :key="i"
           class="upi-path__body"
+          :class="{ 'upi-path__body--full': path.phone_body?.length }"
         >
           {{ para }}
         </p>
@@ -339,6 +377,20 @@ onBeforeUnmount(() => {
   font-weight: 400;
   line-height: 21px;
   color: #475569;
+}
+
+.upi-path__body--phone {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .upi-path__body--phone {
+    display: block;
+  }
+
+  .upi-path__body--full {
+    display: none;
+  }
 }
 
 @media (max-width: 1200px) {

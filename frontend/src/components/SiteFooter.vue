@@ -1,6 +1,7 @@
 <script setup>
 import { computed } from "vue";
 import { SOCIAL_LINKS } from "@/constants/socialLinks.js";
+import { analyticsAvailable, openConsentSettings } from "@/utils/analytics.js";
 
 const props = defineProps({
   footer: { type: Object, required: true },
@@ -133,8 +134,16 @@ const copyrightText = computed(() => {
 
       <div class="footer__divider" />
 
-      <div class="footer__bottom">
+      <div class="footer__bottom" :class="{ 'footer__bottom--split': analyticsAvailable }">
         <p>{{ copyrightText }}</p>
+        <button
+          v-if="analyticsAvailable"
+          type="button"
+          class="footer__cookie-btn"
+          @click="openConsentSettings"
+        >
+          Cookie settings
+        </button>
       </div>
     </div>
   </footer>
@@ -313,6 +322,33 @@ const copyrightText = computed(() => {
 
 .footer__bottom p {
   margin: 0;
+}
+
+.footer__bottom--split {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 24px;
+}
+
+.footer__cookie-btn {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.footer__cookie-btn:hover {
+  color: #ffffff;
+}
+
+.footer__cookie-btn:focus-visible {
+  outline: 2px solid #0ea2c7;
+  outline-offset: 2px;
 }
 
 /* Laptop+ wider gutters */
