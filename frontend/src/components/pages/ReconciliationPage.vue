@@ -639,9 +639,9 @@ onMounted(() => {
     margin-bottom: -44px;
   }
 
-  /* Hero: centred stack, chip 109px under the navbar */
+  /* Hero: centred stack, chip 41px under the navbar */
   .rc-hero__inner {
-    padding: 101px 16px 0;
+    padding: 33px 16px 0;
     row-gap: 48px;
   }
 

@@ -1116,7 +1116,7 @@ onBeforeUnmount(() => {
 
   .foi-hero__inner {
     width: calc(100% - 32px);
-    padding-top: 32px;
+    padding-top: 33px;
   }
 
   .foi-hero__eyebrow {

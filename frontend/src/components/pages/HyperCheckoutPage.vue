@@ -943,9 +943,9 @@ const registerArtFrame = useScaledArt("hc");
     margin-bottom: -44px;
   }
 
-  /* Hero: chip 88px under the navbar */
+  /* Hero: chip 41px under the navbar */
   .hc-hero__inner {
-    padding: 80px 16px 0;
+    padding: 33px 16px 0;
   }
 
   .hc-hero__copy {

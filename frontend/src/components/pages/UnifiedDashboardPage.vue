@@ -636,14 +636,14 @@ onMounted(() => {
     margin-bottom: -44px;
   }
 
-  /* Hero: chip 88px under the navbar */
+  /* Hero: chip 41px under the navbar */
   .ud-hero {
     min-height: 0;
   }
 
   .ud-hero__inner {
     width: calc(100% - 32px);
-    padding: 80px 0 0;
+    padding: 33px 0 0;
   }
 
   .ud-hero__eyebrow {

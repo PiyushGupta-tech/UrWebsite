@@ -969,7 +969,7 @@ watch(controlCount, async () => {
   /* Hero */
   .po-hero__inner {
     row-gap: 48px;
-    padding: 32px 16px 0;
+    padding: 33px 16px 0;
   }
 
   .po-hero__copy {

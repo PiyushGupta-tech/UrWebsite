@@ -1777,7 +1777,7 @@ watch(
 
   /* Hero */
   .col-hero__inner {
-    padding: 32px 16px 24px;
+    padding: 33px 16px 24px;
     gap: 56px;
   }
 

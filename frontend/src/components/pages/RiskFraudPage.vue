@@ -1374,7 +1374,7 @@ watch(saferItems, async () => {
   }
 
   .rf-hero__inner {
-    padding: 80px 16px 0;
+    padding: 33px 16px 0;
     gap: 24px;
   }
 

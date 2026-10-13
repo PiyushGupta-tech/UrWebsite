@@ -1258,9 +1258,9 @@ watch(controlSteps, async () => {
     gap: 12px;
   }
 
-  /* Hero: chip 91px under the navbar; bottom padding keeps the metric card shadows unclipped */
+  /* Hero: chip 41px under the navbar; bottom padding keeps the metric card shadows unclipped */
   .po-hero__inner {
-    padding: 91px 16px 24px;
+    padding: 33px 16px 24px;
     gap: 100px;
   }
 
