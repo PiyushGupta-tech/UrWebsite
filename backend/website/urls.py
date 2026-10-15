@@ -1,6 +1,8 @@
 from django.urls import path
 
 from .admin_views import (
+    AdminChatDetailAPIView,
+    AdminChatListAPIView,
     AdminLoginAPIView,
     AdminLogoutAPIView,
     AdminMeAPIView,
@@ -9,6 +11,7 @@ from .admin_views import (
 )
 from .views import (
     ChatAPIView,
+    ChatLeadAPIView,
     ContactSubmitAPIView,
     HomepageAPIView,
     PageDetailAPIView,
@@ -20,6 +23,7 @@ urlpatterns = [
     path("site/", SiteAPIView.as_view(), name="site"),
     path("homepage/", HomepageAPIView.as_view(), name="homepage"),
     path("chat/", ChatAPIView.as_view(), name="chat"),
+    path("chat/lead/", ChatLeadAPIView.as_view(), name="chat-lead"),
     path("contact/", ContactSubmitAPIView.as_view(), name="contact-submit"),
     path("pages/<slug:slug>/", PageDetailAPIView.as_view(), name="page-detail"),
     path("seo/", SeoAuditAPIView.as_view(), name="seo-audit"),
@@ -36,4 +40,6 @@ urlpatterns = [
         AdminPayinDashboardAPIView.as_view(),
         name="admin-payin-dashboard",
     ),
+    path("admin/chats/", AdminChatListAPIView.as_view(), name="admin-chats"),
+    path("admin/chats/<uuid:chat_id>/", AdminChatDetailAPIView.as_view(), name="admin-chat-detail"),
 ]

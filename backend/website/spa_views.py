@@ -19,7 +19,7 @@ from .page_seo import normalize_path, seo_for_path, slug_for_path
 from .seo_schema import structured_data_script
 
 # Paths the Vue router renders that are not content pages.
-APP_ONLY_PATHS = frozenset({"/admin", "/admin/dashboard", "/thank-you"})
+APP_ONLY_PATHS = frozenset({"/admin", "/admin/dashboard", "/admin/chats", "/thank-you"})
 NOT_FOUND_TITLE = "Page not found | Urbanrupee"
 THANK_YOU_PATH = "/thank-you"
 THANK_YOU_TITLE = "Thank you | Urbanrupee"

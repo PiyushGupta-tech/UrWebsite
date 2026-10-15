@@ -55,6 +55,41 @@ PAYIN_DASHBOARD_HTTP_TIMEOUT = int(os.environ.get("PAYIN_DASHBOARD_HTTP_TIMEOUT"
 PAYIN_DASHBOARD_REFRESH_INTERVAL = int(os.environ.get("PAYIN_DASHBOARD_REFRESH_INTERVAL", "10"))
 PAYIN_DASHBOARD_CACHE_TTL = int(os.environ.get("PAYIN_DASHBOARD_CACHE_TTL", "30"))
 
+# Website chat assistant. Gemini is used when GEMINI_API_KEY is set, otherwise OpenAI when
+# OPENAI_API_KEY is set; with neither, the bot falls back to keyword answers.
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "").strip()
+GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-3.5-flash").strip()
+# Tried in order when the main model is overloaded, rate limited, or retired.
+GEMINI_FALLBACK_MODELS = [
+    model.strip()
+    for model in os.environ.get("GEMINI_FALLBACK_MODELS", "gemini-3.5-flash-lite,gemini-3.1-flash-lite,gemini-3.7-flash").split(",")
+    if model.strip()
+]
+GEMINI_BASE_URL = os.environ.get(
+    "GEMINI_BASE_URL", "https://generativelanguage.googleapis.com/v1beta/openai/"
+).strip()
+GEMINI_REASONING_EFFORT = os.environ.get("GEMINI_REASONING_EFFORT", "low").strip().lower()
+GEMINI_TIMEOUT = int(os.environ.get("GEMINI_TIMEOUT", "30"))
+OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "").strip()
+OPENAI_MODEL = os.environ.get("OPENAI_MODEL", "gpt-6-luna").strip()
+# One of none/minimal/low/medium/high; empty omits the parameter for models without reasoning.
+OPENAI_REASONING_EFFORT = os.environ.get("OPENAI_REASONING_EFFORT", "low").strip().lower()
+OPENAI_TIMEOUT = int(os.environ.get("OPENAI_TIMEOUT", "30"))
+# Includes reasoning tokens on reasoning models, so keep headroom above the visible reply.
+CHAT_MAX_OUTPUT_TOKENS = int(os.environ.get("CHAT_MAX_OUTPUT_TOKENS", "1500"))
+CHAT_HISTORY_MESSAGES = int(os.environ.get("CHAT_HISTORY_MESSAGES", "12"))
+CHAT_MAX_USER_MESSAGES = int(os.environ.get("CHAT_MAX_USER_MESSAGES", "40"))
+# Flood guard per IP: messages beyond this are refused until the short window ends.
+CHAT_RATE_LIMIT = int(os.environ.get("CHAT_RATE_LIMIT", "20"))
+CHAT_RATE_WINDOW_SECONDS = int(os.environ.get("CHAT_RATE_WINDOW_SECONDS", "60"))
+# AI replies per IP (many visitors can share a mobile carrier IP); beyond this, keyword answers.
+CHAT_AI_RATE_LIMIT = int(os.environ.get("CHAT_AI_RATE_LIMIT", "60"))
+CHAT_AI_RATE_WINDOW_SECONDS = int(os.environ.get("CHAT_AI_RATE_WINDOW_SECONDS", "3600"))
+# Site-wide AI replies per day; beyond this the bot answers from keyword search only.
+CHAT_DAILY_AI_LIMIT = int(os.environ.get("CHAT_DAILY_AI_LIMIT", "3000"))
+CHAT_LEAD_RATE_LIMIT = int(os.environ.get("CHAT_LEAD_RATE_LIMIT", "5"))
+CHAT_LOG_RETENTION_DAYS = int(os.environ.get("CHAT_LOG_RETENTION_DAYS", "90"))
+
 _redis_url = os.environ.get("REDIS_URL", "").strip()
 if _redis_url:
     CACHES = {

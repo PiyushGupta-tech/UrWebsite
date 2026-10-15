@@ -57,6 +57,7 @@ rm -rf backend/staticfiles/assets
 (cd backend && python manage.py collectstatic --noinput)
 (cd backend && python manage.py migrate --noinput)
 (cd backend && python manage.py createcachetable 2>/dev/null || true)
+(cd backend && python manage.py purge_chat_logs)
 # rsync from macOS resets ownership; gunicorn (www) must write sessions to sqlite.
 chown -R www:www backend
 chmod 775 backend

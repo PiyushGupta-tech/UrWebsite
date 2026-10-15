@@ -17,6 +17,12 @@ const routes = [
     meta: { requiresAdmin: true },
   },
   {
+    path: "/admin/chats",
+    name: "admin-chats",
+    component: () => import("@/views/admin/AdminChatsView.vue"),
+    meta: { requiresAdmin: true },
+  },
+  {
     path: "/",
     component: AppLayout,
     children: [

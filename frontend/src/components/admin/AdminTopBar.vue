@@ -30,9 +30,12 @@ const ago = computed(() => {
       </span>
     </div>
 
-    <button type="button" class="admin-topbar__logout" @click="emit('logout')">
-      Logout
-    </button>
+    <div class="admin-topbar__actions">
+      <RouterLink :to="{ name: 'admin-chats' }" class="admin-topbar__logout">Chats</RouterLink>
+      <button type="button" class="admin-topbar__logout" @click="emit('logout')">
+        Logout
+      </button>
+    </div>
   </header>
 </template>
 
@@ -97,7 +100,16 @@ const ago = computed(() => {
   animation: pulse 1s ease-in-out infinite;
 }
 
+.admin-topbar__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .admin-topbar__logout {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
   padding: 8px 14px;
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.2);

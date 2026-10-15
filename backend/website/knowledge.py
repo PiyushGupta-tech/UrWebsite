@@ -143,6 +143,22 @@ def _as_text(value) -> str:
     return str(value).strip() if value else ""
 
 
+# Content pages without their own SPA route link to the closest live page instead.
+UNROUTED_SLUG_ROUTES = {
+    "aml-detector": "/services/risk-fraud-management",
+    "automatic-reconciliation": "/services/reconciliation",
+    "payout-portal": "/services/payouts",
+}
+
+
+def page_route(slug: str) -> str:
+    return page_content.SLUG_TO_ROUTE.get(slug) or UNROUTED_SLUG_ROUTES.get(slug, "/")
+
+
+def valid_routes() -> frozenset[str]:
+    return frozenset(page_content.ROUTE_SLUGS) | {"/"}
+
+
 def _iter_chunks():
     for item in chat_faqs.CHAT_FAQS:
         q = item["question"]
@@ -165,7 +181,7 @@ def _iter_chunks():
         )
 
     for slug, page in page_content.PAGES.items():
-        route = page_content.SLUG_TO_ROUTE.get(slug, f"/{slug}")
+        route = page_route(slug)
         title = page.get("title", slug.replace("-", " ").title())
         intro = _as_text(page.get("intro", ""))
         if intro:

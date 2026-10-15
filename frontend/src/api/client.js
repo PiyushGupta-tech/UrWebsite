@@ -53,16 +53,83 @@ export function fetchPage(slug) {
   return getJson(`/pages/${slug}/`);
 }
 
-export async function submitChat(message) {
+function parseSseBlock(block) {
+  let event = "message";
+  const dataLines = [];
+  for (const line of block.split("\n")) {
+    if (line.startsWith("event:")) event = line.slice(6).trim();
+    else if (line.startsWith("data:")) dataLines.push(line.slice(5).trimStart());
+  }
+  if (!dataLines.length) return null;
+  try {
+    return { event, data: JSON.parse(dataLines.join("\n")) };
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Send a chat message and receive the reply as server-sent events.
+ * onEvent(name, data) fires for "meta", "delta", and "done".
+ */
+export async function streamChat({ message, conversationId, pagePath, language, signal, onEvent }) {
   const res = await fetch(`${API_BASE}/chat/`, {
     method: "POST",
+    headers: { "Content-Type": "application/json", Accept: "text/event-stream" },
+    body: JSON.stringify({
+      message,
+      conversation_id: conversationId || undefined,
+      page_path: pagePath || undefined,
+      language: language || undefined,
+    }),
+    signal,
+  });
+
+  if (!res.ok) {
+    const data = await res.json().catch(() => ({}));
+    const err = new Error(data.detail || `API error: ${res.status}`);
+    err.status = res.status;
+    err.code = data.code || "";
+    throw err;
+  }
+
+  const emitBlocks = (text) => {
+    const blocks = text.split("\n\n");
+    const rest = blocks.pop();
+    for (const block of blocks) {
+      const parsed = parseSseBlock(block);
+      if (parsed) onEvent(parsed.event, parsed.data);
+    }
+    return rest;
+  };
+
+  if (!res.body?.getReader) {
+    emitBlocks(`${await res.text()}\n\n`);
+    return;
+  }
+
+  const reader = res.body.getReader();
+  const decoder = new TextDecoder();
+  let buffer = "";
+  for (;;) {
+    const { value, done } = await reader.read();
+    if (done) break;
+    buffer = emitBlocks(buffer + decoder.decode(value, { stream: true }).replace(/\r\n/g, "\n"));
+  }
+  emitBlocks(`${buffer}${decoder.decode()}\n\n`);
+}
+
+export async function submitChatLead(payload) {
+  const res = await fetch(`${API_BASE}/chat/lead/`, {
+    method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ message }),
+    body: JSON.stringify(payload),
   });
   const data = await res.json().catch(() => ({}));
   if (!res.ok) {
     const err = new Error(data.detail || `API error: ${res.status}`);
     err.status = res.status;
+    err.fieldErrors = data.errors || {};
     throw err;
   }
   return data;
@@ -105,4 +172,13 @@ export function fetchPayoutDashboard() {
 
 export function fetchPayinDashboard() {
   return adminFetch("/admin/payin-dashboard/");
+}
+
+export function fetchAdminChats({ filter = "all", page = 1 } = {}) {
+  const params = new URLSearchParams({ filter, page: String(page) });
+  return adminFetch(`/admin/chats/?${params}`);
+}
+
+export function fetchAdminChat(id) {
+  return adminFetch(`/admin/chats/${encodeURIComponent(id)}/`);
 }

@@ -114,7 +114,7 @@ class SpaIndexRobotsTests(SimpleTestCase):
             return self.client.get(path).content.decode()
 
     def test_admin_pages_are_noindex(self):
-        for path in ("/admin", "/admin/dashboard"):
+        for path in ("/admin", "/admin/dashboard", "/admin/chats"):
             html = self._get(path)
             self.assertEqual(_meta(html, "name", "robots"), "noindex, nofollow", path)
 

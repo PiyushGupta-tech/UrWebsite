@@ -11,6 +11,8 @@ EnvironmentFile=/www/wwwroot/urbanrupeeHome/backend/.env
 ExecStart=/www/wwwroot/urbanrupeeHome/.venv/bin/gunicorn config.wsgi:application \
   --bind 127.0.0.1:8005 \
   --workers 3 \
+  --worker-class gthread \
+  --threads 8 \
   --timeout 120 \
   --access-logfile /www/wwwlogs/urbanrupee-gunicorn.access.log \
   --error-logfile /www/wwwlogs/urbanrupee-gunicorn.error.log

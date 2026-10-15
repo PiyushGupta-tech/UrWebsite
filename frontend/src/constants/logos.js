@@ -6,8 +6,8 @@ export const LOGO_PATHS = {
   onLight: "/logos/urbanrupee-nav.svg",
   /** Shield / favicon mark */
   icon: "/logos/favicon.svg",
-  /** Chat widget launcher */
-  chatBot: "/logos/bot.png",
+  /** Chat launcher and assistant avatar */
+  chatAssistant: "/logos/favicon.svg",
   /** Legacy alias kept for compatibility */
   glass: "/logos/favicon.svg",
 };
