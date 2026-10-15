@@ -12,6 +12,7 @@ export const CHAT_LANGUAGES = [
     greeting:
       "Hi! I'm the Urbanrupee Assistant. Ask me anything about our products, payments, UPI, payouts, or getting started, in English, Hindi, or your own language.",
     placeholder: "Ask a question…",
+    tryAsking: "You could ask",
     suggestions: [
       "What is Urbanrupee?",
       "How does payment orchestration improve success rates?",
@@ -25,6 +26,7 @@ export const CHAT_LANGUAGES = [
     greeting:
       "Hi! I'm the Urbanrupee Assistant. Ask me anything about our products, payments, UPI, payouts, or getting started.",
     placeholder: "Ask a question…",
+    tryAsking: "You could ask",
     suggestions: [
       "What is Urbanrupee?",
       "How does payment orchestration improve success rates?",
@@ -38,6 +40,7 @@ export const CHAT_LANGUAGES = [
     greeting:
       "नमस्ते! मैं Urbanrupee असिस्टेंट हूँ। हमारे प्रोडक्ट्स, पेमेंट्स, UPI, पेआउट्स या शुरुआत करने के बारे में कुछ भी पूछिए।",
     placeholder: "अपना सवाल लिखें…",
+    tryAsking: "आप यह पूछ सकते हैं",
     suggestions: [
       "Urbanrupee क्या है?",
       "पेमेंट ऑर्केस्ट्रेशन से सक्सेस रेट कैसे बढ़ता है?",
@@ -51,6 +54,7 @@ export const CHAT_LANGUAGES = [
     greeting:
       "Namaste! Main Urbanrupee Assistant hoon. Hamare products, payments, UPI, payouts ya shuruaat ke baare mein kuch bhi poochiye.",
     placeholder: "Apna sawaal likhiye…",
+    tryAsking: "Aap yeh pooch sakte hain",
     suggestions: [
       "Urbanrupee kya hai?",
       "Payment orchestration se success rate kaise badhta hai?",

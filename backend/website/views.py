@@ -236,8 +236,15 @@ class ChatLeadAPIView(APIView):
         try:
             send_chat_lead_email(conversation=conversation, transcript=transcript)
         except Exception:
-            # Details are already saved and visible on the admin chats page.
+            # The details stay saved on the admin chats page; the visitor is told so they can retry.
             logger.exception("Chat lead email failed for conversation %s", conversation.public_id)
+            return Response(
+                {
+                    "detail": "We could not send your details. Please try again or email us directly.",
+                    "conversation_id": str(conversation.public_id),
+                },
+                status=status.HTTP_503_SERVICE_UNAVAILABLE,
+            )
 
         first_name = payload["name"].split()[0]
         return Response(

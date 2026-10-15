@@ -130,6 +130,7 @@ export async function submitChatLead(payload) {
     const err = new Error(data.detail || `API error: ${res.status}`);
     err.status = res.status;
     err.fieldErrors = data.errors || {};
+    err.conversationId = data.conversation_id || "";
     throw err;
   }
   return data;

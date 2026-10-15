@@ -23,6 +23,10 @@ from .models import ChatConversation, ChatMessage
 logger = logging.getLogger(__name__)
 
 LEAD_MARKER = "[[LEAD]]"
+# Starts the trailing line of follow-up questions the AI adds when it cannot help.
+SUGGEST_MARKER = "[[ASK]]"
+MAX_SUGGESTIONS = 3
+MAX_SUGGESTION_LENGTH = 90
 MAX_MESSAGE_LENGTH = 500
 INTERRUPTED_NOTE = "Sorry, I was interrupted. Please ask that again."
 
@@ -157,7 +161,7 @@ SYSTEM_PROMPT_TEMPLATE = """You are the Urbanrupee Assistant, the chat assistant
 WHAT YOU ANSWER
 - Questions about Urbanrupee: the company, products, services, security, onboarding, support, and policies.
 - General payments and fintech questions, especially for India: UPI, cards, net banking, wallets, EMI and Pay Later, payment gateways vs aggregators, payment orchestration, payouts, settlements, refunds, chargebacks, reconciliation, KYC, PCI DSS, fraud and AML, RBI payment rules.
-- Anything else (coding, homework, politics, entertainment, other companies' internal details, and so on): politely say in one sentence that you can only help with Urbanrupee and payments, then offer a related topic.
+- Anything else (coding, homework, politics, entertainment, other companies' internal details, and so on): politely say in one sentence that you can only help with Urbanrupee and payments, then add the {suggest} line described under WHEN YOU CANNOT HELP.
 
 ACCURACY
 - For anything about Urbanrupee, use only the KNOWLEDGE section below. Never invent prices, fees, MDR, discounts, partner banks, client names, certifications, timelines, SLAs, or features that are not in it.
@@ -178,13 +182,21 @@ LANGUAGE AND STYLE
 LEADS AND HUMAN HELP
 - When the visitor shows buying interest (pricing, a demo, onboarding, integration, partnership, wanting to sign up) or asks to talk to a person, answer what you can, invite them to share their details in the form shown below your reply so the team can reach out, and put {marker} on its own line at the very end of the reply. Use {marker} only in that case, at most once.
 
+WHEN YOU CANNOT HELP
+- If the message is unclear, too vague, misspelled beyond recognition, outside what you answer, or asks for a detail you do not have, keep the reply to one or two sentences: say what you can help with, or ask what they meant.
+- Then end the reply with one line that starts with {suggest} followed by 3 questions the visitor can tap to ask instead, separated by " | ". Example: {suggest} What is payment orchestration? | How do UPI payouts work? | How do I contact support?
+- Make the questions as close as possible to what the visitor seemed to want, answerable from the KNOWLEDGE or as general payments questions, written the way the visitor would ask them, in the reply language, each under 10 words.
+- Never add {suggest} to a reply that answers the question.
+
 KNOWLEDGE
 {knowledge}
 """
 
 
 def build_system_prompt() -> str:
-    return SYSTEM_PROMPT_TEMPLATE.format(marker=LEAD_MARKER, knowledge=build_knowledge_text())
+    return SYSTEM_PROMPT_TEMPLATE.format(
+        marker=LEAD_MARKER, suggest=SUGGEST_MARKER, knowledge=build_knowledge_text()
+    )
 
 
 SYSTEM_PROMPT = build_system_prompt()
@@ -207,7 +219,7 @@ def language_instruction(code: str) -> str:
     return (
         f"CHAT LANGUAGE: the visitor chose {name}. Write every reply in {name}, even if their "
         "message is in another language. Keep brand and product names, page paths, and the "
-        f"{LEAD_MARKER} marker exactly as they are."
+        f"{LEAD_MARKER} and {SUGGEST_MARKER} markers exactly as they are."
     )
 
 
@@ -229,18 +241,70 @@ class MarkerFilter:
         if self.marker in self.pending:
             self.found = True
             self.pending = self.pending.replace(self.marker, "")
-        hold = 0
-        for size in range(min(len(self.marker) - 1, len(self.pending)), 0, -1):
-            if self.pending.endswith(self.marker[:size]):
-                hold = size
-                break
-        cut = len(self.pending) - hold
+        cut = len(self.pending) - _partial_marker_length(self.pending, self.marker)
         out, self.pending = self.pending[:cut], self.pending[cut:]
         return out
 
     def flush(self) -> str:
         out, self.pending = self.pending, ""
         return out
+
+
+class TailMarkerFilter:
+    """Stream text up to a marker and capture everything after it instead of streaming it.
+
+    Trailing whitespace is held back so the text before the marker does not end in a blank line.
+    """
+
+    def __init__(self, marker: str = SUGGEST_MARKER):
+        self.marker = marker
+        self.pending = ""
+        self.tail: str | None = None
+
+    def feed(self, text: str) -> str:
+        if self.tail is not None:
+            self.tail += text
+            return ""
+        self.pending += text
+        index = self.pending.find(self.marker)
+        if index >= 0:
+            self.tail = self.pending[index + len(self.marker) :]
+            out, self.pending = self.pending[:index].rstrip(), ""
+            return out
+        cut = len(self.pending) - _partial_marker_length(self.pending, self.marker)
+        out = self.pending[:cut].rstrip()
+        self.pending = self.pending[len(out) :]
+        return out
+
+    def flush(self) -> str:
+        out, self.pending = self.pending.rstrip(), ""
+        return out
+
+
+def _partial_marker_length(text: str, marker: str) -> int:
+    """Length of the longest end of ``text`` that could be the start of ``marker``."""
+    for size in range(min(len(marker) - 1, len(text)), 0, -1):
+        if text.endswith(marker[:size]):
+            return size
+    return 0
+
+
+_LIST_PREFIX_RE = re.compile(r"^\s*(?:[-•]|\d{1,2}[.)])\s+")
+
+
+def parse_suggestions(text: str) -> list[str]:
+    suggestions: list[str] = []
+    seen: set[str] = set()
+    for part in re.split(r"\||\n", text or ""):
+        question = _LIST_PREFIX_RE.sub("", part.replace("*", "")).strip().strip("\"'").strip()
+        key = question.casefold()
+        if not question or len(question) > MAX_SUGGESTION_LENGTH or key in seen:
+            continue
+        seen.add(key)
+        suggestions.append(question)
+        if len(suggestions) == MAX_SUGGESTIONS:
+            break
+    return suggestions
 
 
 def client_ip(request) -> str:
@@ -461,9 +525,11 @@ def _sources(query: str) -> list[dict]:
     valid = knowledge.valid_routes()
     seen, sources = set(), []
     for _, chunk in knowledge.search(query, top_k=4):
-        if chunk.href in valid and chunk.href not in seen:
-            seen.add(chunk.href)
-            sources.append({"title": chunk.title, "href": chunk.href})
+        href = knowledge.source_link(chunk.title, chunk.href)
+        keys = {href, chunk.title.casefold()}
+        if chunk.href in valid and not keys & seen:
+            seen |= keys
+            sources.append({"title": chunk.title, "href": href})
         if len(sources) == 2:
             break
     return sources
@@ -497,22 +563,25 @@ def stream_reply(
     yield sse("meta", {"conversation_id": str(conversation.public_id)})
 
     marker = MarkerFilter()
+    asks = TailMarkerFilter()
     reply_parts: list[str] = []
     sources = _sources(user_text)
+    suggestions: list[str] = []
     ai_generated = False
 
     try:
         if use_ai and ai_enabled() and _allow_ai_today():
             try:
                 for piece in _openai_stream(conversation, language):
-                    out = marker.feed(piece)
+                    out = asks.feed(marker.feed(piece))
                     if out:
                         reply_parts.append(out)
                         yield sse("delta", {"text": out})
-                tail = marker.flush()
-                if tail:
-                    reply_parts.append(tail)
-                    yield sse("delta", {"text": tail})
+                out = asks.feed(marker.flush()) + asks.flush()
+                if out:
+                    reply_parts.append(out)
+                    yield sse("delta", {"text": out})
+                suggestions = parse_suggestions(asks.tail or "")
                 ai_generated = True
             except ChatModelsUnavailable as error:
                 logger.warning("%s; using keyword answer", error)
@@ -527,11 +596,13 @@ def stream_reply(
             ai_generated = False
             fallback = knowledge.answer_query(user_text)
             reply_parts = [fallback["reply"]]
-            sources = [s for s in fallback["sources"] if s["href"] in knowledge.valid_routes()]
+            valid = knowledge.valid_routes()
+            sources = [s for s in fallback["sources"] if knowledge.route_of(s["href"]) in valid]
+            suggestions = fallback["suggestions"] or suggestions
             yield sse("delta", {"text": fallback["reply"]})
 
         offer_lead = marker.found and conversation.lead_submitted_at is None
-        yield sse("done", {"sources": sources, "offer_lead": offer_lead})
+        yield sse("done", {"sources": sources, "offer_lead": offer_lead, "suggestions": suggestions})
     finally:
         # Runs on normal completion and when the visitor disconnects mid-stream.
         reply = "".join(reply_parts).strip()

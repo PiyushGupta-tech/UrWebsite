@@ -16,6 +16,16 @@ function redactNumbers(text) {
   return text.replace(LONG_NUMBER_RE, (_match, before) => `${before}[number removed]`);
 }
 
+const MAX_FOLLOWUPS = 3;
+
+function cleanSuggestions(value) {
+  if (!Array.isArray(value)) return [];
+  return value
+    .filter((q) => typeof q === "string" && q.trim() && q.length <= 120)
+    .map((q) => q.trim())
+    .slice(0, MAX_FOLLOWUPS);
+}
+
 function loadLanguage() {
   try {
     return findChatLanguage(localStorage.getItem(LANGUAGE_KEY)).code;
@@ -101,6 +111,7 @@ function restore() {
           role: m.role,
           text: redactNumbers(m.text),
           sources: Array.isArray(m.sources) ? m.sources : [],
+          suggestions: m.role === "bot" ? cleanSuggestions(m.suggestions) : [],
         }));
       persist();
       return;
@@ -121,10 +132,11 @@ function persist() {
         messages: messages.value
           .filter((m) => !m.streaming && m.role !== "notice")
           .slice(-MAX_STORED_MESSAGES)
-          .map(({ role, text, sources }) => ({
+          .map(({ role, text, sources, suggestions }) => ({
             role,
             text: redactNumbers(text),
             sources,
+            ...(suggestions?.length ? { suggestions } : {}),
           })),
       }),
     );
@@ -136,6 +148,13 @@ function persist() {
 restore();
 
 const hasUserMessages = computed(() => messages.value.some((m) => m.role === "user"));
+// Follow-up chips only show under the latest reply, so older ones never pile up.
+const latestBotId = computed(() => {
+  for (let i = messages.value.length - 1; i >= 0; i -= 1) {
+    if (messages.value[i].role === "bot") return messages.value[i].id;
+  }
+  return null;
+});
 
 function displayText(text) {
   return text.replace(/\*\*/g, "").replace(/^#{1,6}\s+/gm, "").trim();
@@ -398,6 +417,7 @@ async function send(text) {
         } else if (name === "done") {
           reply.sources = Array.isArray(data.sources) ? data.sources : [];
           reply.offerLead = Boolean(data.offer_lead) && !leadSubmitted.value;
+          reply.suggestions = cleanSuggestions(data.suggestions);
         }
       },
     });
@@ -502,6 +522,10 @@ async function submitLead() {
     nextTick(() => leadDoneRef.value?.focus({ preventScroll: true }));
     leadSuccessTimer = setTimeout(closeLeadForm, LEAD_SUCCESS_MS);
   } catch (err) {
+    if (err.conversationId) {
+      conversationId.value = err.conversationId;
+      persist();
+    }
     lead.errors = err.fieldErrors || {};
     lead.error = err.message || "We could not send your details. Please try again.";
   } finally {
@@ -659,6 +683,33 @@ onBeforeUnmount(() => {
               >
                 Share my details with the team
               </button>
+              <div
+                v-if="msg.id === latestBotId && msg.suggestions?.length && !msg.streaming && !msg.revealing"
+                class="chat-widget__followups"
+                role="group"
+                :aria-label="currentLanguage.tryAsking"
+              >
+                <span class="chat-widget__followups-label" aria-hidden="true">
+                  <svg viewBox="0 0 16 16" width="12" height="12" fill="currentColor">
+                    <path d="M8 0l1.7 4.6L14.3 6l-4.6 1.7L8 12.3 6.3 7.7 1.7 6l4.6-1.4z" />
+                  </svg>
+                  {{ currentLanguage.tryAsking }}
+                </span>
+                <button
+                  v-for="(q, i) in msg.suggestions"
+                  :key="q"
+                  type="button"
+                  class="chat-widget__followup"
+                  :style="{ '--i': i }"
+                  :disabled="loading"
+                  @click="send(q)"
+                >
+                  <span>{{ q }}</span>
+                  <svg class="chat-widget__followup-arrow" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+                    <path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </button>
+              </div>
             </div>
           </div>
         </template>
@@ -1418,6 +1469,8 @@ onBeforeUnmount(() => {
   .chat-widget__bubble--shine::after,
   .chat-widget__sources,
   .chat-widget__cta,
+  .chat-widget__followups-label,
+  .chat-widget__followup,
   .chat-widget__sheet-item,
   .chat-widget__sheet-badge::after,
   .chat-widget__float--error,
@@ -1430,7 +1483,9 @@ onBeforeUnmount(() => {
   }
 
   .chat-widget__human-btn::before,
-  .chat-widget__human-arrow {
+  .chat-widget__human-arrow,
+  .chat-widget__followup,
+  .chat-widget__followup-arrow {
     transition: none;
   }
 
@@ -1487,6 +1542,79 @@ onBeforeUnmount(() => {
 .chat-widget__cta:hover {
   background: var(--accent-blue);
   color: #fff;
+}
+
+.chat-widget__followups {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.chat-widget__followups-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--text-secondary);
+  animation: chat-fade-up 0.25s ease-out both;
+}
+
+.chat-widget__followups-label svg {
+  color: var(--accent-blue);
+}
+
+.chat-widget__followup {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 100%;
+  min-height: 40px;
+  padding: 9px 12px 9px 14px;
+  border: 1px solid rgba(0, 152, 242, 0.3);
+  border: 1px solid color-mix(in srgb, var(--accent-blue) 28%, var(--border));
+  border-radius: var(--radius-pill);
+  background: rgba(0, 152, 242, 0.06);
+  background: color-mix(in srgb, var(--accent-blue) 6%, var(--bg-surface));
+  color: var(--accent-blue);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.3;
+  text-align: left;
+  cursor: pointer;
+  animation: chat-fade-up 0.28s ease-out both;
+  animation-delay: calc(80ms + var(--i, 0) * 70ms);
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease,
+    transform 0.18s ease;
+}
+
+.chat-widget__followup-arrow {
+  flex-shrink: 0;
+  transition: transform 0.18s ease;
+}
+
+.chat-widget__followup:hover:not(:disabled),
+.chat-widget__followup:focus-visible {
+  border-color: var(--accent-blue);
+  background: var(--accent-blue);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.chat-widget__followup:hover:not(:disabled) .chat-widget__followup-arrow,
+.chat-widget__followup:focus-visible .chat-widget__followup-arrow {
+  transform: translateX(3px);
+}
+
+.chat-widget__followup:disabled {
+  opacity: 0.55;
+  cursor: default;
 }
 
 .chat-widget__sheet-backdrop {
@@ -1549,6 +1677,8 @@ onBeforeUnmount(() => {
   position: absolute;
   top: 12px;
   right: 12px;
+  /* The animated sheet items form their own layers and would otherwise cover the button. */
+  z-index: 2;
   width: 36px;
   height: 36px;
   border: none;

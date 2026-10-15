@@ -1,6 +1,7 @@
 <script setup>
-import { ref, watch } from "vue";
-import { RouterLink } from "vue-router";
+import { nextTick, onMounted, ref, watch } from "vue";
+import { RouterLink, useRoute } from "vue-router";
+import { faqAnchor } from "@/utils/faqAnchor.js";
 
 const props = defineProps({
   title: { type: String, default: "" },
@@ -14,14 +15,34 @@ const props = defineProps({
   paddingBottom: { type: String, default: "0" },
 });
 
+const route = useRoute();
 const openIndex = ref(props.initialOpenIndex);
+
+/** Opens and scrolls to the question named in the URL hash (chat answers link to `/faq#faq-…`). */
+async function openFromHash() {
+  const id = route.hash.slice(1);
+  if (!id) return;
+  const index = props.items.findIndex((item) => faqAnchor(item.question) === id);
+  if (index < 0) return;
+  openIndex.value = index;
+  await nextTick();
+  const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+  document.getElementById(id)?.scrollIntoView({
+    behavior: reduceMotion ? "auto" : "smooth",
+    block: "start",
+  });
+}
 
 watch(
   () => props.items,
   () => {
     openIndex.value = props.initialOpenIndex;
+    openFromHash();
   },
 );
+
+watch(() => route.hash, openFromHash);
+onMounted(openFromHash);
 
 function toggle(index) {
   openIndex.value = openIndex.value === index ? -1 : index;
@@ -47,6 +68,7 @@ function toggle(index) {
       <div class="marketing-faq__list">
         <div
           v-for="(item, index) in items"
+          :id="faqAnchor(item.question)"
           :key="item.number || item.question || index"
           class="marketing-faq__item"
           :class="{ 'marketing-faq__item--open': openIndex === index }"
@@ -145,6 +167,8 @@ function toggle(index) {
 
 .marketing-faq__item {
   border-bottom: 1px solid #f0f9f3;
+  /* Keeps a linked question clear of the fixed site header. */
+  scroll-margin-top: 110px;
 }
 
 .marketing-faq--simple .marketing-faq__item {

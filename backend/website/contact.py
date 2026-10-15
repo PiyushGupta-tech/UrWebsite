@@ -45,9 +45,7 @@ def send_chat_lead_email(*, conversation, transcript):
         f"Started on page: {conversation.page_path or '-'}",
         f"Chat ID: {conversation.public_id}",
     ]
-    if conversation.lead_note:
-        lines += ["", "Note from visitor:", conversation.lead_note]
-    lines += ["", "Conversation:"]
+    lines += ["", "Message:", conversation.lead_note or "(No message)", "", "Conversation:"]
     if transcript:
         for message in transcript:
             speaker = "Visitor" if message.role == message.ROLE_USER else "Assistant"

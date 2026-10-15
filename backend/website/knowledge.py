@@ -1,9 +1,10 @@
 """Build and search a keyword index from site content (Phase 1 bot, no LLM)."""
 
+import difflib
 import re
 from dataclasses import dataclass
 
-from . import catalogue, chat_faqs, content, page_content
+from . import catalogue, chat_faqs, content, page_content, page_faqs
 
 STOPWORDS = frozenset(
     {
@@ -234,6 +235,55 @@ def build_index() -> list[Chunk]:
     return list(_iter_chunks())
 
 
+def faq_anchor(question: str) -> str:
+    """Element id of a question in the FAQ accordions; mirrors faqAnchor() in the frontend."""
+    return "faq-" + re.sub(r"[^a-z0-9]+", "-", question.lower()).strip("-")[:80]
+
+
+def _faq_routes() -> dict[str, list[str]]:
+    """Anchor -> routes whose page shows that question in an FAQ accordion (see PageView.vue)."""
+    shown: list[tuple[str, list[dict]]] = [
+        ("/faq", page_content.PAGES.get("faq", {}).get("items", [])),
+        ("/", content.HOME_CLOSING.get("faq_items", [])),
+    ]
+    for slug, route in page_content.SLUG_TO_ROUTE.items():
+        if slug != "faq" and slug in page_content.PAGES:
+            shown.append((route, page_faqs.closing_for_slug(slug).get("faq_items", [])))
+
+    routes: dict[str, list[str]] = {}
+    for route, items in shown:
+        for item in items:
+            question = item.get("question", "")
+            if not question:
+                continue
+            pages = routes.setdefault(faq_anchor(question), [])
+            if route not in pages:
+                pages.append(route)
+    return routes
+
+
+FAQ_ROUTES: dict[str, list[str]] = _faq_routes()
+
+
+def source_link(title: str, href: str) -> str:
+    """Link a source to the exact FAQ question when a page shows it, else to the page itself."""
+    anchor = faq_anchor(title)
+    pages = FAQ_ROUTES.get(anchor)
+    if not pages:
+        return href
+    if href in pages:
+        route = href
+    elif "/faq" in pages:
+        route = "/faq"
+    else:
+        route = pages[0]
+    return f"{route}#{anchor}"
+
+
+def route_of(href: str) -> str:
+    return href.split("#", 1)[0]
+
+
 INDEX: list[Chunk] = build_index()
 
 
@@ -276,13 +326,63 @@ def search(query: str, top_k: int = 3) -> list[tuple[float, Chunk]]:
     return scored[:top_k]
 
 
+DEFAULT_SUGGESTIONS = (
+    "What services does Urbanrupee offer?",
+    "What is Payment Orchestration?",
+    "How do I contact support?",
+)
+SUGGESTION_COUNT = 3
+
+
+def _question_chunks() -> list[Chunk]:
+    seen: set[str] = set()
+    chunks = []
+    for chunk in INDEX:
+        key = chunk.question.casefold()
+        if chunk.question and key not in seen:
+            seen.add(key)
+            chunks.append(chunk)
+    return chunks
+
+
+QUESTION_CHUNKS: list[Chunk] = _question_chunks()
+QUESTION_VOCABULARY: list[str] = sorted({t for c in QUESTION_CHUNKS for t in _tokenize(c.text)})
+QUESTION_VOCABULARY_SET = frozenset(QUESTION_VOCABULARY)
+# Fuzzy matching is the slow part, so only the start of a long message is spell-matched.
+MAX_FUZZY_TOKENS = 12
+
+
+def suggest_questions(query: str, count: int = SUGGESTION_COUNT) -> list[str]:
+    """FAQ questions closest to an unmatched message, topped up with popular questions.
+
+    Misspelled words are matched to the nearest FAQ word, so "pyment gatway" still finds
+    payment gateway questions.
+    """
+    tokens = _tokenize(query or "")[:MAX_FUZZY_TOKENS]
+    for token in list(tokens):
+        if token not in QUESTION_VOCABULARY_SET:
+            tokens.extend(difflib.get_close_matches(token, QUESTION_VOCABULARY, n=2, cutoff=0.8))
+
+    scored = [(_score(tokens, chunk), chunk.question) for chunk in QUESTION_CHUNKS]
+    ranked = [question for score, question in sorted(scored, key=lambda pair: -pair[0]) if score > 0]
+
+    suggestions: list[str] = []
+    for question in [*ranked, *DEFAULT_SUGGESTIONS]:
+        if question not in suggestions:
+            suggestions.append(question)
+        if len(suggestions) == count:
+            break
+    return suggestions
+
+
 def answer_query(query: str) -> dict:
-    """Return reply text and source links for a user message."""
+    """Return reply text, source links, and (when nothing matched) questions to try instead."""
     message = (query or "").strip()
     if not message:
         return {
             "reply": "Please type a question about Urbanrupee, our products, or services.",
             "sources": [],
+            "suggestions": list(DEFAULT_SUGGESTIONS),
         }
 
     if len(message) > 500:
@@ -292,18 +392,15 @@ def answer_query(query: str) -> dict:
     if not hits:
         return {
             "reply": (
-                "I couldn't find a match for that on our site. Try asking about payment "
-                "orchestration, Hyper Checkout, white label solutions, AML, reconciliation, "
-                "or security, or contact our team for help."
+                "I'm not sure I understood that. Try one of these questions, or contact our "
+                "team for help."
             ),
-            "sources": [
-                {"title": "FAQ", "href": "/faq"},
-                {"title": "Contact Us", "href": "/contact"},
-            ],
+            "sources": [{"title": "Contact Us", "href": "/contact"}],
+            "suggestions": suggest_questions(message),
         }
 
     _, best = hits[0]
-    sources = [{"title": best.title, "href": best.href}]
+    sources = [{"title": best.title, "href": source_link(best.title, best.href)}]
 
     if best.question:
         parts = best.text.split("\n", 1)
@@ -311,4 +408,4 @@ def answer_query(query: str) -> dict:
     else:
         reply = best.text[:800] + ("…" if len(best.text) > 800 else "")
 
-    return {"reply": reply, "sources": sources}
+    return {"reply": reply, "sources": sources, "suggestions": []}

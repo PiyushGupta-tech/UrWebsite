@@ -17,7 +17,7 @@ from django.test import SimpleTestCase, TestCase, override_settings
 from django.utils import timezone
 from rest_framework.test import APIClient
 
-from website import chatbot
+from website import chatbot, knowledge
 from website.models import ChatConversation, ChatMessage
 
 TEST_CACHES = {
@@ -62,6 +62,92 @@ class MarkerFilterTests(SimpleTestCase):
         out = f.feed("Use [[brackets") + f.feed(" freely") + f.flush()
         self.assertEqual(out, "Use [[brackets freely")
         self.assertFalse(f.found)
+
+
+class TailMarkerFilterTests(SimpleTestCase):
+    def feed_all(self, *pieces):
+        f = chatbot.TailMarkerFilter()
+        out = "".join(f.feed(p) for p in pieces) + f.flush()
+        return out, f.tail
+
+    def test_marker_split_across_chunks_captures_the_rest(self):
+        out, tail = self.feed_all("Not sure what you mean.\n[[A", "SK]] What is UPI? |", " How do payouts work?")
+        self.assertEqual(out, "Not sure what you mean.")
+        self.assertEqual(tail, " What is UPI? | How do payouts work?")
+
+    def test_text_resembling_marker_start_is_released(self):
+        out, tail = self.feed_all("Use [[A", "nother]] freely  ")
+        self.assertEqual(out, "Use [[Another]] freely")
+        self.assertIsNone(tail)
+
+    def test_spaces_between_words_are_kept(self):
+        out, _ = self.feed_all("Hello ", "there ", "friend")
+        self.assertEqual(out, "Hello there friend")
+
+
+class ParseSuggestionsTests(SimpleTestCase):
+    def test_splits_cleans_and_limits(self):
+        text = ' - **What is UPI?** | 2. "How do payouts work?" | what is upi? \n24x7 support kaise milega? | Extra one?'
+        self.assertEqual(
+            chatbot.parse_suggestions(text),
+            ["What is UPI?", "How do payouts work?", "24x7 support kaise milega?"],
+        )
+
+    def test_drops_empty_and_overlong_questions(self):
+        long_question = "Why " * 30
+        self.assertEqual(chatbot.parse_suggestions(f" | {long_question} | Ok?"), ["Ok?"])
+
+
+class KeywordSuggestionTests(SimpleTestCase):
+    def test_unmatched_message_suggests_close_faq_questions(self):
+        result = knowledge.answer_query("pyment gatway??")
+        self.assertIn("not sure I understood", result["reply"])
+        self.assertEqual(len(result["suggestions"]), 3)
+        self.assertIn("Is Urbanrupee a payment gateway?", result["suggestions"])
+
+    def test_gibberish_gets_popular_questions(self):
+        result = knowledge.answer_query("qwzx vbnm")
+        self.assertEqual(result["suggestions"], list(knowledge.DEFAULT_SUGGESTIONS))
+
+    def test_matched_answer_has_no_suggestions(self):
+        result = knowledge.answer_query("Is Urbanrupee a payment gateway?")
+        self.assertEqual(result["suggestions"], [])
+
+
+class FaqSourceLinkTests(SimpleTestCase):
+    def test_anchor_matches_frontend_slug_rule(self):
+        self.assertEqual(knowledge.faq_anchor("  What's UPI 2.0? "), "faq-what-s-upi-2-0")
+        self.assertEqual(len(knowledge.faq_anchor("x " * 100)), len("faq-") + 80)
+
+    def test_question_links_to_the_page_that_shows_it(self):
+        self.assertEqual(
+            knowledge.source_link("How can I add money to my Urbanrupee wallet?", "/faq"),
+            "/faq#faq-how-can-i-add-money-to-my-urbanrupee-wallet",
+        )
+
+    def test_prefers_the_sources_own_page_when_it_shows_the_question(self):
+        anchor = knowledge.faq_anchor("What is Payment Orchestration?")
+        pages = knowledge.FAQ_ROUTES[anchor]
+        for page in pages:
+            self.assertEqual(knowledge.source_link("What is Payment Orchestration?", page), f"{page}#{anchor}")
+
+    def test_title_not_shown_in_any_faq_keeps_plain_link(self):
+        self.assertEqual(knowledge.source_link("Payouts", "/services/payouts"), "/services/payouts")
+
+    def test_every_anchor_points_at_a_real_route(self):
+        valid = knowledge.valid_routes()
+        for pages in knowledge.FAQ_ROUTES.values():
+            for page in pages:
+                self.assertIn(page, valid)
+
+    def test_route_of_strips_the_anchor(self):
+        self.assertEqual(knowledge.route_of("/faq#faq-x"), "/faq")
+        self.assertEqual(knowledge.route_of("/about"), "/about")
+
+    def test_sources_drop_questions_that_differ_only_in_case(self):
+        titles = [s["title"].casefold() for s in chatbot._sources("What is payment orchestration?")]
+        self.assertEqual(len(titles), len(set(titles)))
+        self.assertEqual(titles.count("what is payment orchestration?"), 1)
 
 
 class RedactTests(SimpleTestCase):
@@ -142,6 +228,24 @@ class ChatEndpointTests(TestCase):
         self.assertEqual(conversation.user_message_count, 1)
         roles = list(conversation.messages.values_list("role", "ai_generated"))
         self.assertEqual(roles, [("user", False), ("assistant", False)])
+        self.assertEqual(events[-1][1]["suggestions"], [])
+
+    def test_unclear_question_without_ai_suggests_questions(self):
+        events = parse_events(self.post("pyment gatway??"))
+        done = events[-1][1]
+        self.assertIn("not sure I understood", reply_text(events))
+        self.assertIn("Is Urbanrupee a payment gateway?", done["suggestions"])
+        self.assertEqual(done["sources"], [{"title": "Contact Us", "href": "/contact"}])
+
+    def test_faq_answer_without_ai_links_to_the_question(self):
+        done = parse_events(self.post("How can I add money to my Urbanrupee wallet?"))[-1][1]
+        self.assertEqual(
+            done["sources"],
+            [{
+                "title": "How can I add money to my Urbanrupee wallet?",
+                "href": "/faq#faq-how-can-i-add-money-to-my-urbanrupee-wallet",
+            }],
+        )
 
     def test_browser_event_stream_accept_header(self):
         response = self.client.post(
@@ -217,10 +321,45 @@ class ChatAITests(TestCase):
             events = parse_events(self.post("I want a demo"))
 
         self.assertNotIn("[[", reply_text(events))
-        self.assertEqual(events[-1], ("done", {"sources": events[-1][1]["sources"], "offer_lead": True}))
+        self.assertEqual(
+            events[-1],
+            ("done", {"sources": events[-1][1]["sources"], "offer_lead": True, "suggestions": []}),
+        )
         assistant = ChatMessage.objects.get(role="assistant")
         self.assertEqual(assistant.content, "Sure, our team can help.")
         self.assertTrue(assistant.ai_generated)
+
+    def test_ai_suggestions_are_sent_separately_and_not_stored(self):
+        pieces = ["I'm not sure what you mean.\n[[AS", "K]] What is UPI? | How do payouts work? | Can I get a demo?"]
+        with patch.object(chatbot, "_openai_stream", return_value=iter(pieces)):
+            events = parse_events(self.post("asdf payment thing"))
+
+        self.assertEqual(reply_text(events), "I'm not sure what you mean.")
+        self.assertEqual(
+            events[-1][1]["suggestions"], ["What is UPI?", "How do payouts work?", "Can I get a demo?"]
+        )
+        self.assertEqual(ChatMessage.objects.get(role="assistant").content, "I'm not sure what you mean.")
+
+    def test_lead_marker_inside_suggestion_line_still_offers_lead(self):
+        pieces = ["Pricing depends on volume.\n[[LEAD]]\n[[ASK]] Can I get a demo? | How do I get started?"]
+        with patch.object(chatbot, "_openai_stream", return_value=iter(pieces)):
+            events = parse_events(self.post("price??"))
+        self.assertEqual(reply_text(events), "Pricing depends on volume.")
+        self.assertTrue(events[-1][1]["offer_lead"])
+        self.assertEqual(events[-1][1]["suggestions"], ["Can I get a demo?", "How do I get started?"])
+
+    def test_interrupted_ai_reply_has_no_suggestions(self):
+        def broken(*args):
+            yield "Partial answer [[ASK]] What is UPI?"
+            raise RuntimeError("connection reset")
+
+        with patch.object(chatbot, "_openai_stream", side_effect=broken):
+            events = parse_events(self.post("hello"))
+        self.assertEqual(events[-1][1]["suggestions"], [])
+
+    def test_prompt_explains_suggestion_marker(self):
+        self.assertIn("[[ASK]]", chatbot.SYSTEM_PROMPT)
+        self.assertIn("[[ASK]]", chatbot.language_instruction("hi"))
 
     def test_lead_not_offered_again_after_submission(self):
         conversation = ChatConversation.objects.create(lead_submitted_at=timezone.now())
@@ -558,8 +697,12 @@ class ChatLeadTests(TestCase):
         self.assertEqual(sent.subject, "[Urbanrupee Chat] New lead: Asha Rao")
         self.assertIn("Visitor: Need pricing", sent.body)
         self.assertIn("Assistant: Happy to help", sent.body)
-        self.assertIn("Call after 5pm", sent.body)
+        self.assertIn("Message:\nCall after 5pm\n", sent.body)
         self.assertIn("/products/orchestration", sent.body)
+
+    def test_email_without_message_says_so(self):
+        self.post(**LEAD, kind="handoff")
+        self.assertIn("Message:\n(No message)\n", mail.outbox[0].body)
 
     def test_handoff_without_chat_creates_conversation(self):
         response = self.post(**LEAD, kind="handoff", page_path="/contact")
@@ -583,12 +726,24 @@ class ChatLeadTests(TestCase):
         self.assertEqual(response.status_code, 400)
         self.assertIn("email", response.json()["detail"])
 
-    def test_email_failure_still_saves_lead(self):
+    def test_email_failure_is_reported_and_lead_still_saved(self):
         with patch("website.views.send_chat_lead_email", side_effect=OSError("smtp down")):
             response = self.post(**LEAD, conversation_id=str(self.conversation.public_id))
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 503)
+        self.assertIn("could not send", response.json()["detail"])
+        self.assertEqual(response.json()["conversation_id"], str(self.conversation.public_id))
         self.conversation.refresh_from_db()
         self.assertEqual(self.conversation.lead_email, "asha@example.com")
+
+    def test_retry_after_failure_reuses_the_new_conversation(self):
+        with patch("website.views.send_chat_lead_email", side_effect=OSError("smtp down")):
+            failed = self.post(**LEAD, kind="handoff")
+        retry = self.post(**LEAD, kind="handoff", conversation_id=failed.json()["conversation_id"])
+
+        self.assertEqual(retry.status_code, 200)
+        self.assertEqual(retry.json()["conversation_id"], failed.json()["conversation_id"])
+        self.assertEqual(ChatConversation.objects.filter(lead_kind="handoff").count(), 1)
+        self.assertEqual(len(mail.outbox), 1)
 
     @override_settings(CHAT_LEAD_RATE_LIMIT=1)
     def test_lead_rate_limit(self):
