@@ -9,6 +9,7 @@ from django.test import SimpleTestCase, TestCase, override_settings
 from rest_framework.test import APIClient
 
 from config import email_config
+from website.models import ContactInquiry
 
 VALID = {
     "name": "Asha Rao",
@@ -36,9 +37,10 @@ class EmailConfigTests(SimpleTestCase):
         _load_settings()
 
     def test_recipient_comes_from_config_file_not_env(self):
-        loaded = _load_settings(CONTACT_EMAIL_TO="it.support@urbanrupee.com")
-        self.assertEqual(email_config.CONTACT_EMAIL_TO, "rajeev@urbanrupee.com")
-        self.assertEqual(loaded.CONTACT_EMAIL_TO, "rajeev@urbanrupee.com")
+        loaded = _load_settings(CONTACT_EMAIL_TO="someone@example.com")
+        self.assertEqual(email_config.CONTACT_EMAIL_TO, "it.support@urbanrupee.com")
+        self.assertEqual(loaded.CONTACT_EMAIL_TO, "it.support@urbanrupee.com")
+        self.assertEqual(loaded.CONTACT_EMAIL_CC, ("rajeev@urbanrupee.com",))
         self.assertEqual(loaded.EMAIL_HOST, "smtp.gmail.com")
 
     def test_smtp_enabled_only_with_app_password(self):
@@ -54,24 +56,29 @@ class EmailConfigTests(SimpleTestCase):
 
 @override_settings(
     EMAIL_BACKEND="django.core.mail.backends.locmem.EmailBackend",
+    CONTACT_EMAIL_TO="it.support@urbanrupee.com",
+    CONTACT_EMAIL_CC=("rajeev@urbanrupee.com",),
     ALLOWED_HOSTS=["localhost"],
 )
 class ContactSubmitTests(TestCase):
     def setUp(self):
         self.client = APIClient(HTTP_HOST="localhost")
 
-    @override_settings(CONTACT_EMAIL_TO="rajeev@urbanrupee.com")
     def test_valid_submission_emails_recipient_with_reply_to(self):
         response = self.client.post("/api/contact/", VALID, format="json")
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(mail.outbox), 1)
         sent = mail.outbox[0]
-        self.assertEqual(sent.to, ["rajeev@urbanrupee.com"])
+        self.assertEqual(sent.to, ["it.support@urbanrupee.com"])
+        self.assertEqual(sent.cc, ["rajeev@urbanrupee.com"])
         self.assertEqual(sent.reply_to, ["asha@example.com"])
         self.assertEqual(sent.subject, "[Urbanrupee Contact] Payouts demo")
         self.assertIn("Phone: 9876543210", sent.body)
         self.assertIn("Please share pricing for bulk payouts.", sent.body)
+        inquiry = ContactInquiry.objects.get()
+        self.assertEqual(inquiry.email, "asha@example.com")
+        self.assertTrue(inquiry.email_sent)
 
     def test_missing_field_rejected_without_email(self):
         response = self.client.post("/api/contact/", {**VALID, "phone": ""}, format="json")
@@ -79,9 +86,14 @@ class ContactSubmitTests(TestCase):
         self.assertEqual(response.status_code, 400)
         self.assertIn("phone", response.json()["detail"])
         self.assertEqual(len(mail.outbox), 0)
+        self.assertEqual(ContactInquiry.objects.count(), 0)
 
-    def test_send_failure_returns_503(self):
+    def test_send_failure_still_saves_and_succeeds(self):
         with patch("website.views.send_contact_email", side_effect=OSError("smtp down")):
             response = self.client.post("/api/contact/", VALID, format="json")
 
-        self.assertEqual(response.status_code, 503)
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.json()["ok"])
+        inquiry = ContactInquiry.objects.get()
+        self.assertEqual(inquiry.name, "Asha Rao")
+        self.assertFalse(inquiry.email_sent)

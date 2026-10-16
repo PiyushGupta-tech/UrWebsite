@@ -194,6 +194,7 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 from .email_config import (  # noqa: E402
+    CONTACT_EMAIL_CC,
     CONTACT_EMAIL_TO,
     DEFAULT_FROM_EMAIL,
     EMAIL_HOST,

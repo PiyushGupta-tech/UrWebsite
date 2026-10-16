@@ -4,8 +4,10 @@ Edit these values here; environment variables no longer override them.
 The only secret, EMAIL_HOST_PASSWORD, stays in backend/.env (never commit it).
 """
 
-# Where contact form submissions are delivered.
-CONTACT_EMAIL_TO = "rajeev@urbanrupee.com"
+# Where contact form (and chat) submissions are delivered. Matches the address
+# shown on the Contact Us page, plus the sales inbox.
+CONTACT_EMAIL_TO = "it.support@urbanrupee.com"
+CONTACT_EMAIL_CC = ("rajeev@urbanrupee.com",)
 
 # Google Workspace SMTP. The sending mailbox must exist in Workspace, and
 # Gmail rewrites the From address to it unless it is a verified alias.

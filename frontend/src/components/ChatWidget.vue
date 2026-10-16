@@ -1,7 +1,7 @@
 <script setup>
-import { computed, nextTick, onBeforeUnmount, reactive, ref, watch } from "vue";
-import { useRoute } from "vue-router";
-import { streamChat, submitChatLead } from "@/api/client";
+import { computed, nextTick, onBeforeUnmount, ref, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { streamChat } from "@/api/client";
 import { CHAT_LANGUAGES, DEFAULT_CHAT_LANGUAGE, findChatLanguage } from "@/constants/chatLanguages";
 import { LOGO_PATHS } from "@/constants/logos";
 
@@ -34,35 +34,8 @@ function loadLanguage() {
   }
 }
 
-// Same rules and messages as the contact form (validation/contactSchema.js), without
-// pulling Joi into the bundle that every page loads.
-function validateLead(fields) {
-  const value = {
-    name: fields.name.trim(),
-    email: fields.email.trim(),
-    phone: fields.phone.trim(),
-    note: fields.note.trim(),
-  };
-  const errors = {};
-  if (!value.name) errors.name = "Full Name is required.";
-  else if (value.name.length < 2) errors.name = "Full Name must be at least 2 characters.";
-  else if (value.name.length > 50) errors.name = "Full Name must be at most 50 characters.";
-  else if (!/^[A-Za-z ]+$/.test(value.name)) errors.name = "Full Name can contain only letters and spaces.";
-
-  if (!value.email) errors.email = "Email Address is required.";
-  else if (value.email.length > 254) errors.email = "Email Address must be at most 254 characters.";
-  else if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(value.email)) errors.email = "Enter a valid email address.";
-
-  if (!value.phone) errors.phone = "Phone Number is required.";
-  else if (!/^[6-9][0-9]{9}$/.test(value.phone)) {
-    errors.phone = "Phone Number must be 10 digits and start with 6, 7, 8, or 9.";
-  }
-
-  if (value.note.length > 500) errors.note = "Message must be 500 characters or fewer.";
-  return { value, errors };
-}
-
 const route = useRoute();
+const router = useRouter();
 const open = ref(false);
 const input = ref("");
 const loading = ref(false);
@@ -72,7 +45,6 @@ let nextId = 1;
 let controller = null;
 
 const conversationId = ref("");
-const leadSubmitted = ref(false);
 const limitReached = ref(false);
 const messages = ref([]);
 
@@ -84,16 +56,6 @@ const langPickerRef = ref(null);
 const langButtonRef = ref(null);
 const langOptionRefs = [];
 
-const lead = reactive({
-  visible: false,
-  kind: "lead",
-  submitting: false,
-  success: "",
-  error: "",
-  fields: { name: "", email: "", phone: "", note: "" },
-  errors: {},
-});
-
 function greeting() {
   return { id: nextId++, role: "bot", text: currentLanguage.value.greeting, sources: [] };
 }
@@ -103,7 +65,6 @@ function restore() {
     const saved = JSON.parse(sessionStorage.getItem(STORAGE_KEY) || "null");
     if (saved && Array.isArray(saved.messages) && saved.messages.length) {
       conversationId.value = String(saved.conversationId || "");
-      leadSubmitted.value = Boolean(saved.leadSubmitted);
       messages.value = saved.messages
         .filter((m) => (m.role === "user" || m.role === "bot") && typeof m.text === "string")
         .map((m) => ({
@@ -128,7 +89,6 @@ function persist() {
       STORAGE_KEY,
       JSON.stringify({
         conversationId: conversationId.value,
-        leadSubmitted: leadSubmitted.value,
         messages: messages.value
           .filter((m) => !m.streaming && m.role !== "notice")
           .slice(-MAX_STORED_MESSAGES)
@@ -277,7 +237,7 @@ function toggle() {
   langOpen.value = false;
   if (open.value) {
     scrollToBottom();
-    nextTick(() => (lead.visible && !lead.success ? leadNameRef : inputRef).value?.focus());
+    nextTick(() => inputRef.value?.focus());
   }
 }
 
@@ -286,6 +246,16 @@ function closeOnNavigate(e) {
   if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
   langOpen.value = false;
   open.value = false;
+}
+
+/** Close the chat and open Contact Us so the visitor fills the website form. */
+function goToContact() {
+  langOpen.value = false;
+  open.value = false;
+  if (route.path === "/contact") return;
+  router.push({ name: "contact" }).catch(() => {
+    window.location.assign("/contact");
+  });
 }
 
 function focusLangOption(index) {
@@ -377,9 +347,7 @@ function newChat() {
   finishReveal();
   loading.value = false;
   conversationId.value = "";
-  leadSubmitted.value = false;
   limitReached.value = false;
-  closeLeadForm();
   messages.value = [greeting()];
   persist();
   nextTick(() => inputRef.value?.focus());
@@ -389,7 +357,6 @@ async function send(text) {
   const message = (text ?? input.value).trim();
   if (!message || loading.value || limitReached.value) return;
 
-  closeLeadForm();
   messages.value.push({ id: nextId++, role: "user", text: message, sources: [], fresh: true });
   messages.value.push({ id: nextId++, role: "bot", text: "", sources: [], streaming: true, fresh: true });
   const reply = messages.value[messages.value.length - 1];
@@ -416,7 +383,7 @@ async function send(text) {
           else scrollToBottom();
         } else if (name === "done") {
           reply.sources = Array.isArray(data.sources) ? data.sources : [];
-          reply.offerLead = Boolean(data.offer_lead) && !leadSubmitted.value;
+          reply.offerLead = Boolean(data.offer_lead);
           reply.suggestions = cleanSuggestions(data.suggestions);
         }
       },
@@ -454,89 +421,9 @@ function onKeydown(e) {
   }
 }
 
-const LEAD_SUCCESS_MS = 2600;
-const leadNameRef = ref(null);
-const leadDoneRef = ref(null);
-let leadTrigger = null;
-let leadSuccessTimer = 0;
-
-function openLeadForm(kind) {
-  langOpen.value = false;
-  // Safari does not focus buttons on click, leaving focus on <body>.
-  leadTrigger = document.activeElement === document.body ? null : document.activeElement;
-  lead.kind = kind;
-  lead.error = "";
-  lead.errors = {};
-  lead.success = "";
-  lead.visible = true;
-  nextTick(() => leadNameRef.value?.focus({ preventScroll: true }));
-}
-
-function closeLeadForm() {
-  clearTimeout(leadSuccessTimer);
-  leadSuccessTimer = 0;
-  const wasVisible = lead.visible;
-  lead.visible = false;
-  lead.error = "";
-  lead.errors = {};
-  lead.success = "";
-  if (wasVisible) {
-    nextTick(() => {
-      const target = leadTrigger?.isConnected ? leadTrigger : inputRef.value;
-      target?.focus({ preventScroll: true });
-      leadTrigger = null;
-    });
-  }
-}
-
-function onLeadKeydown(e) {
-  if (e.key === "Escape" && !lead.submitting) {
-    e.stopPropagation();
-    closeLeadForm();
-  }
-}
-
-async function submitLead() {
-  if (lead.submitting) return;
-  lead.error = "";
-  const { value, errors } = validateLead(lead.fields);
-  lead.errors = errors;
-  if (Object.keys(errors).length) return;
-
-  lead.submitting = true;
-  try {
-    const data = await submitChatLead({
-      ...value,
-      kind: lead.kind,
-      conversation_id: conversationId.value || undefined,
-      page_path: route.path,
-    });
-    conversationId.value = data.conversation_id || conversationId.value;
-    leadSubmitted.value = true;
-    for (const m of messages.value) m.offerLead = false;
-    messages.value.push({ id: nextId++, role: "bot", text: data.message, sources: [], fresh: true });
-    lead.fields = { name: "", email: "", phone: "", note: "" };
-    lead.success = data.message;
-    persist();
-    scrollToBottom();
-    nextTick(() => leadDoneRef.value?.focus({ preventScroll: true }));
-    leadSuccessTimer = setTimeout(closeLeadForm, LEAD_SUCCESS_MS);
-  } catch (err) {
-    if (err.conversationId) {
-      conversationId.value = err.conversationId;
-      persist();
-    }
-    lead.errors = err.fieldErrors || {};
-    lead.error = err.message || "We could not send your details. Please try again.";
-  } finally {
-    lead.submitting = false;
-  }
-}
-
 onBeforeUnmount(() => {
   controller?.abort();
   cancelRevealTick();
-  clearTimeout(leadSuccessTimer);
   document.removeEventListener("pointerdown", onOutsidePointer);
 });
 </script>
@@ -544,7 +431,7 @@ onBeforeUnmount(() => {
 <template>
   <div class="chat-widget" :class="{ 'chat-widget--open': open }">
     <div v-if="open" class="chat-widget__panel" role="dialog" aria-label="Urbanrupee assistant">
-      <header class="chat-widget__header" :inert="lead.visible">
+      <header class="chat-widget__header">
         <span class="chat-widget__brand" aria-hidden="true">
           <img :src="LOGO_PATHS.chatAssistant" alt="" width="20" height="24" />
         </span>
@@ -630,7 +517,6 @@ onBeforeUnmount(() => {
       <div
         ref="listRef"
         class="chat-widget__messages"
-        :inert="lead.visible"
         aria-live="polite"
         :aria-busy="loading || revealing ? 'true' : 'false'"
       >
@@ -676,12 +562,12 @@ onBeforeUnmount(() => {
                 </li>
               </ul>
               <button
-                v-if="msg.offerLead && !msg.revealing && !leadSubmitted && !lead.visible"
+                v-if="msg.offerLead && !msg.revealing"
                 type="button"
                 class="chat-widget__cta"
-                @click="openLeadForm('lead')"
+                @click="goToContact"
               >
-                Share my details with the team
+                Contact our team
               </button>
               <div
                 v-if="msg.id === latestBotId && msg.suggestions?.length && !msg.streaming && !msg.revealing"
@@ -715,7 +601,7 @@ onBeforeUnmount(() => {
         </template>
       </div>
 
-      <div v-if="!hasUserMessages" class="chat-widget__suggestions" :inert="lead.visible">
+      <div v-if="!hasUserMessages" class="chat-widget__suggestions">
         <button
           v-for="(q, i) in currentLanguage.suggestions"
           :key="`${language}-${i}`"
@@ -727,12 +613,12 @@ onBeforeUnmount(() => {
         </button>
       </div>
 
-      <div v-if="limitReached" class="chat-widget__limit" :inert="lead.visible">
+      <div v-if="limitReached" class="chat-widget__limit">
         <span>This chat is full.</span>
         <button type="button" class="chat-widget__link-btn" @click="newChat">Start a new chat</button>
       </div>
 
-      <form v-else class="chat-widget__form" :inert="lead.visible" @submit.prevent="send()">
+      <form v-else class="chat-widget__form" @submit.prevent="send()">
         <input
           ref="inputRef"
           v-model="input"
@@ -750,13 +636,8 @@ onBeforeUnmount(() => {
         </button>
       </form>
 
-      <footer class="chat-widget__footer" :inert="lead.visible">
-        <button
-          v-if="!leadSubmitted"
-          type="button"
-          class="chat-widget__human-btn"
-          @click="openLeadForm('handoff')"
-        >
+      <footer class="chat-widget__footer">
+        <button type="button" class="chat-widget__human-btn" @click="goToContact">
           <span class="chat-widget__human-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24">
               <path d="M4 14v-2a8 8 0 0116 0v2" />
@@ -769,184 +650,11 @@ onBeforeUnmount(() => {
             <path d="M9 6l6 6-6 6" />
           </svg>
         </button>
-        <span v-else class="chat-widget__footer-done">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>
-          Our team has your details
-        </span>
         <span class="chat-widget__notice">
           AI replies can be wrong. Chats are saved; never share card details or OTPs.
           <RouterLink to="/privacy-policy" @click="closeOnNavigate">Privacy</RouterLink>
         </span>
       </footer>
-
-      <Transition name="chat-sheet" :duration="{ enter: 420, leave: 240 }">
-        <div
-          v-if="lead.visible"
-          class="chat-widget__sheet-backdrop"
-          @click.self="lead.submitting || closeLeadForm()"
-          @keydown="onLeadKeydown"
-        >
-          <div
-            class="chat-widget__sheet"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="chat-widget-sheet-title"
-          >
-            <span class="chat-widget__sheet-grip" aria-hidden="true" />
-            <button
-              type="button"
-              class="chat-widget__sheet-close"
-              aria-label="Close form"
-              :disabled="lead.submitting"
-              @click="closeLeadForm"
-            >
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
-            </button>
-
-            <div v-if="lead.success" class="chat-widget__sheet-success" role="status">
-              <svg class="chat-widget__success-mark" viewBox="0 0 52 52" aria-hidden="true">
-                <circle class="chat-widget__success-circle" cx="26" cy="26" r="23" />
-                <path class="chat-widget__success-check" d="M15 27l7.5 7.5L37.5 19" />
-              </svg>
-              <span v-for="n in 8" :key="n" class="chat-widget__spark" :style="{ '--n': n }" aria-hidden="true" />
-              <p id="chat-widget-sheet-title" class="chat-widget__sheet-title">Request sent</p>
-              <p class="chat-widget__sheet-text">{{ lead.success }}</p>
-              <button ref="leadDoneRef" type="button" class="chat-widget__sheet-submit" @click="closeLeadForm">
-                Back to chat
-              </button>
-            </div>
-
-            <form v-else class="chat-widget__sheet-form" novalidate @submit.prevent="submitLead">
-              <div class="chat-widget__sheet-hero chat-widget__sheet-item" style="--i: 0">
-                <span class="chat-widget__sheet-badge" aria-hidden="true">
-                  <svg viewBox="0 0 24 24">
-                    <path d="M4 14v-2a8 8 0 0116 0v2" />
-                    <rect x="3" y="14" width="4" height="6" rx="1.5" />
-                    <rect x="17" y="14" width="4" height="6" rx="1.5" />
-                  </svg>
-                </span>
-                <div>
-                  <p id="chat-widget-sheet-title" class="chat-widget__sheet-title">
-                    {{ lead.kind === "handoff" ? "Talk to our team" : "Get in touch" }}
-                  </p>
-                  <p class="chat-widget__sheet-text">
-                    Share your details and our sales team will contact you. This chat will be shared with them.
-                  </p>
-                </div>
-              </div>
-
-              <div class="chat-widget__sheet-item" style="--i: 1">
-                <label class="chat-widget__float" :class="{ 'chat-widget__float--error': lead.errors.name }">
-                  <svg class="chat-widget__float-icon" viewBox="0 0 24 24" aria-hidden="true">
-                    <circle cx="12" cy="8" r="4" />
-                    <path d="M4 20c0-4 4-6 8-6s8 2 8 6" />
-                  </svg>
-                  <input
-                    ref="leadNameRef"
-                    v-model="lead.fields.name"
-                    type="text"
-                    autocomplete="name"
-                    maxlength="50"
-                    placeholder=" "
-                    :aria-invalid="Boolean(lead.errors.name)"
-                    :aria-describedby="lead.errors.name ? 'chat-lead-name-error' : undefined"
-                  />
-                  <span class="chat-widget__float-label">Full Name</span>
-                </label>
-                <small v-if="lead.errors.name" id="chat-lead-name-error" class="chat-widget__float-error">
-                  {{ lead.errors.name }}
-                </small>
-              </div>
-
-              <div class="chat-widget__sheet-item" style="--i: 2">
-                <label class="chat-widget__float" :class="{ 'chat-widget__float--error': lead.errors.email }">
-                  <svg class="chat-widget__float-icon" viewBox="0 0 24 24" aria-hidden="true">
-                    <rect x="3" y="5" width="18" height="14" rx="2" />
-                    <path d="M3 7l9 6 9-6" />
-                  </svg>
-                  <input
-                    v-model="lead.fields.email"
-                    type="email"
-                    autocomplete="email"
-                    maxlength="254"
-                    placeholder=" "
-                    :aria-invalid="Boolean(lead.errors.email)"
-                    :aria-describedby="lead.errors.email ? 'chat-lead-email-error' : undefined"
-                  />
-                  <span class="chat-widget__float-label">Email Address</span>
-                </label>
-                <small v-if="lead.errors.email" id="chat-lead-email-error" class="chat-widget__float-error">
-                  {{ lead.errors.email }}
-                </small>
-              </div>
-
-              <div class="chat-widget__sheet-item" style="--i: 3">
-                <label class="chat-widget__float" :class="{ 'chat-widget__float--error': lead.errors.phone }">
-                  <svg class="chat-widget__float-icon" viewBox="0 0 24 24" aria-hidden="true">
-                    <path
-                      d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2z"
-                    />
-                  </svg>
-                  <input
-                    v-model="lead.fields.phone"
-                    type="tel"
-                    inputmode="numeric"
-                    autocomplete="tel-national"
-                    maxlength="10"
-                    placeholder=" "
-                    :aria-invalid="Boolean(lead.errors.phone)"
-                    :aria-describedby="lead.errors.phone ? 'chat-lead-phone-error' : undefined"
-                  />
-                  <span class="chat-widget__float-label">Phone Number</span>
-                </label>
-                <small v-if="lead.errors.phone" id="chat-lead-phone-error" class="chat-widget__float-error">
-                  {{ lead.errors.phone }}
-                </small>
-              </div>
-
-              <div class="chat-widget__sheet-item" style="--i: 4">
-                <label
-                  class="chat-widget__float chat-widget__float--area"
-                  :class="{ 'chat-widget__float--error': lead.errors.note }"
-                >
-                  <svg class="chat-widget__float-icon" viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M4 5h16v11H8l-4 4z" />
-                  </svg>
-                  <textarea
-                    v-model="lead.fields.note"
-                    rows="2"
-                    maxlength="500"
-                    placeholder=" "
-                    :aria-invalid="Boolean(lead.errors.note)"
-                    :aria-describedby="lead.errors.note ? 'chat-lead-note-error' : undefined"
-                  />
-                  <span class="chat-widget__float-label">Message (optional)</span>
-                </label>
-                <small v-if="lead.errors.note" id="chat-lead-note-error" class="chat-widget__float-error">
-                  {{ lead.errors.note }}
-                </small>
-              </div>
-
-              <p v-if="lead.error" class="chat-widget__float-error chat-widget__sheet-alert" role="alert">
-                {{ lead.error }}
-              </p>
-
-              <button
-                type="submit"
-                class="chat-widget__sheet-submit chat-widget__sheet-item"
-                style="--i: 5"
-                :disabled="lead.submitting"
-              >
-                <span v-if="lead.submitting" class="chat-widget__spinner" aria-hidden="true" />
-                {{ lead.submitting ? "Sending…" : "Send details" }}
-                <svg v-if="!lead.submitting" class="chat-widget__submit-arrow" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M5 12h14M13 6l6 6-6 6" />
-                </svg>
-              </button>
-            </form>
-          </div>
-        </div>
-      </Transition>
     </div>
 
     <button
@@ -1471,10 +1179,6 @@ onBeforeUnmount(() => {
   .chat-widget__cta,
   .chat-widget__followups-label,
   .chat-widget__followup,
-  .chat-widget__sheet-item,
-  .chat-widget__sheet-badge::after,
-  .chat-widget__float--error,
-  .chat-widget__spark,
   .chat-widget__human-btn,
   .chat-widget__human-btn::after,
   .chat-widget__human-btn:hover .chat-widget__human-icon,
@@ -1489,22 +1193,8 @@ onBeforeUnmount(() => {
     transition: none;
   }
 
-  .chat-widget__bubble--shine::after,
-  .chat-widget__spark {
+  .chat-widget__bubble--shine::after {
     display: none;
-  }
-
-  .chat-widget__success-circle,
-  .chat-widget__success-check {
-    animation: none;
-    stroke-dashoffset: 0;
-  }
-
-  .chat-sheet-enter-active,
-  .chat-sheet-leave-active,
-  .chat-sheet-enter-active .chat-widget__sheet,
-  .chat-sheet-leave-active .chat-widget__sheet {
-    transition: none;
   }
 
   .chat-lang-enter-active,
@@ -1615,418 +1305,6 @@ onBeforeUnmount(() => {
 .chat-widget__followup:disabled {
   opacity: 0.55;
   cursor: default;
-}
-
-.chat-widget__sheet-backdrop {
-  position: absolute;
-  inset: 0;
-  z-index: 10;
-  display: flex;
-  align-items: flex-end;
-  background: rgba(15, 23, 42, 0.42);
-  backdrop-filter: blur(3px);
-}
-
-.chat-widget__sheet {
-  position: relative;
-  width: 100%;
-  max-height: calc(100% - 48px);
-  overflow-y: auto;
-  padding: 10px 18px 18px;
-  border-radius: 22px 22px 0 0;
-  background:
-    radial-gradient(120% 70% at 100% 0%, rgba(6, 182, 212, 0.14), transparent 60%),
-    radial-gradient(90% 60% at 0% 0%, rgba(37, 99, 235, 0.1), transparent 55%),
-    var(--bg-surface);
-  box-shadow: 0 -18px 40px rgba(15, 23, 42, 0.22);
-}
-
-.chat-sheet-enter-active,
-.chat-sheet-leave-active {
-  transition: opacity 0.22s ease;
-}
-
-.chat-sheet-enter-active .chat-widget__sheet {
-  transition: transform 0.42s cubic-bezier(0.2, 1.15, 0.32, 1);
-}
-
-.chat-sheet-leave-active .chat-widget__sheet {
-  transition: transform 0.24s cubic-bezier(0.4, 0, 1, 1);
-}
-
-.chat-sheet-enter-from,
-.chat-sheet-leave-to {
-  opacity: 0;
-}
-
-.chat-sheet-enter-from .chat-widget__sheet,
-.chat-sheet-leave-to .chat-widget__sheet {
-  transform: translateY(100%);
-}
-
-.chat-widget__sheet-grip {
-  display: block;
-  width: 40px;
-  height: 4px;
-  margin: 0 auto 10px;
-  border-radius: 2px;
-  background: var(--border);
-}
-
-.chat-widget__sheet-close {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  /* The animated sheet items form their own layers and would otherwise cover the button. */
-  z-index: 2;
-  width: 36px;
-  height: 36px;
-  border: none;
-  border-radius: 50%;
-  background: var(--bg-muted);
-  color: var(--text-secondary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition:
-    transform 0.2s ease,
-    background 0.2s ease;
-}
-
-.chat-widget__sheet-close:hover {
-  transform: rotate(90deg);
-  background: var(--border);
-}
-
-.chat-widget__sheet-close svg,
-.chat-widget__sheet-badge svg,
-.chat-widget__float-icon,
-.chat-widget__submit-arrow {
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.chat-widget__sheet-close svg {
-  width: 16px;
-  height: 16px;
-}
-
-.chat-widget__sheet-form {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.chat-widget__sheet-item {
-  animation: chat-sheet-item 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
-  animation-delay: calc(var(--i, 0) * 50ms + 120ms);
-}
-
-@keyframes chat-sheet-item {
-  from {
-    opacity: 0;
-    transform: translateY(14px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-.chat-widget__sheet-hero {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  padding-right: 36px;
-}
-
-.chat-widget__sheet-badge {
-  position: relative;
-  flex-shrink: 0;
-  width: 46px;
-  height: 46px;
-  border-radius: 14px;
-  background: linear-gradient(135deg, #06b6d4, #2563eb);
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.35);
-}
-
-.chat-widget__sheet-badge::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  border: 2px solid #06b6d4;
-  animation: chat-ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
-}
-
-@keyframes chat-ping {
-  75%,
-  100% {
-    transform: scale(1.45);
-    opacity: 0;
-  }
-}
-
-.chat-widget__sheet-badge svg {
-  width: 24px;
-  height: 24px;
-}
-
-.chat-widget__sheet-title {
-  margin: 0;
-  font-size: 18px;
-  font-weight: 800;
-  line-height: 1.25;
-  background: linear-gradient(90deg, #0e7490, #2563eb);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-.chat-widget__sheet-text {
-  margin: 4px 0 0;
-  font-size: 12.5px;
-  line-height: 1.5;
-  color: var(--text-secondary);
-}
-
-.chat-widget__float {
-  position: relative;
-  display: block;
-}
-
-.chat-widget__float input,
-.chat-widget__float textarea {
-  display: block;
-  width: 100%;
-  padding: 22px 12px 8px 42px;
-  border: 1.5px solid var(--border);
-  border-radius: 14px;
-  background: var(--bg-surface);
-  color: var(--text-primary);
-  font-size: 15px;
-  font-family: inherit;
-  resize: none;
-  transition:
-    border-color 0.18s ease,
-    box-shadow 0.18s ease;
-}
-
-.chat-widget__float input:focus,
-.chat-widget__float textarea:focus {
-  outline: none;
-  border-color: #06b6d4;
-  box-shadow: 0 0 0 4px rgba(6, 182, 212, 0.16);
-}
-
-.chat-widget__float-icon {
-  position: absolute;
-  left: 13px;
-  top: 17px;
-  width: 18px;
-  height: 18px;
-  color: var(--text-muted);
-  pointer-events: none;
-  transition: color 0.18s ease;
-}
-
-.chat-widget__float:focus-within .chat-widget__float-icon {
-  color: #06b6d4;
-}
-
-.chat-widget__float-label {
-  position: absolute;
-  left: 42px;
-  top: 16px;
-  font-size: 15px;
-  color: var(--text-muted);
-  pointer-events: none;
-  transform-origin: left top;
-  transition:
-    transform 0.18s ease,
-    color 0.18s ease;
-}
-
-.chat-widget__float input:focus + .chat-widget__float-label,
-.chat-widget__float input:not(:placeholder-shown) + .chat-widget__float-label,
-.chat-widget__float textarea:focus + .chat-widget__float-label,
-.chat-widget__float textarea:not(:placeholder-shown) + .chat-widget__float-label {
-  transform: translateY(-10px) scale(0.76);
-  color: #0891b2;
-  font-weight: 600;
-}
-
-.chat-widget__float--error input,
-.chat-widget__float--error textarea {
-  border-color: #dc2626;
-}
-
-.chat-widget__float--error {
-  animation: chat-shake 0.32s ease;
-}
-
-@keyframes chat-shake {
-  20%,
-  60% {
-    transform: translateX(-4px);
-  }
-  40%,
-  80% {
-    transform: translateX(4px);
-  }
-}
-
-.chat-widget__float-error {
-  display: block;
-  margin: 4px 0 0 4px;
-  color: #dc2626;
-  font-size: 12px;
-}
-
-.chat-widget__sheet-alert {
-  margin: 0;
-}
-
-.chat-widget__sheet-submit {
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  width: 100%;
-  min-height: 48px;
-  padding: 12px 18px;
-  border: none;
-  border-radius: 14px;
-  background: linear-gradient(135deg, #06b6d4, #2563eb);
-  color: #fff;
-  font-size: 15px;
-  font-weight: 700;
-  font-family: inherit;
-  box-shadow: 0 10px 24px rgba(37, 99, 235, 0.3);
-  transition:
-    transform 0.18s ease,
-    box-shadow 0.18s ease;
-}
-
-.chat-widget__sheet-submit::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(105deg, transparent 35%, rgba(255, 255, 255, 0.4) 50%, transparent 65%);
-  transform: translateX(-100%);
-  transition: transform 0.6s ease;
-}
-
-.chat-widget__sheet-submit:hover:not(:disabled) {
-  transform: translateY(-1px);
-  box-shadow: 0 14px 28px rgba(37, 99, 235, 0.38);
-}
-
-.chat-widget__sheet-submit:hover:not(:disabled)::before {
-  transform: translateX(100%);
-}
-
-.chat-widget__sheet-submit:disabled {
-  opacity: 0.75;
-  cursor: progress;
-}
-
-.chat-widget__submit-arrow {
-  width: 18px;
-  height: 18px;
-  transition: transform 0.18s ease;
-}
-
-.chat-widget__sheet-submit:hover .chat-widget__submit-arrow {
-  transform: translateX(3px);
-}
-
-.chat-widget__spinner {
-  width: 16px;
-  height: 16px;
-  border: 2px solid rgba(255, 255, 255, 0.4);
-  border-top-color: #fff;
-  border-radius: 50%;
-  animation: chat-spin 0.7s linear infinite;
-}
-
-.chat-widget__sheet-success {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  padding: 18px 8px 4px;
-  text-align: center;
-}
-
-.chat-widget__sheet-success .chat-widget__sheet-submit {
-  margin-top: 14px;
-}
-
-.chat-widget__success-mark {
-  width: 72px;
-  height: 72px;
-  margin-bottom: 8px;
-  fill: none;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.chat-widget__success-circle {
-  stroke: #06b6d4;
-  stroke-width: 3;
-  stroke-dasharray: 145;
-  stroke-dashoffset: 145;
-  animation: chat-draw 0.5s cubic-bezier(0.65, 0, 0.45, 1) forwards;
-}
-
-.chat-widget__success-check {
-  stroke: #2563eb;
-  stroke-width: 4;
-  stroke-dasharray: 40;
-  stroke-dashoffset: 40;
-  animation: chat-draw 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.45s forwards;
-}
-
-@keyframes chat-draw {
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-
-.chat-widget__spark {
-  position: absolute;
-  top: 54px;
-  left: 50%;
-  width: 6px;
-  height: 6px;
-  margin-left: -3px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #06b6d4, #8b5cf6);
-  opacity: 0;
-  transform: rotate(calc(var(--n) * 45deg)) translateY(0);
-  animation: chat-spark 0.6s ease-out 0.55s forwards;
-}
-
-@keyframes chat-spark {
-  0% {
-    opacity: 1;
-    transform: rotate(calc(var(--n) * 45deg)) translateY(-30px) scale(1);
-  }
-  100% {
-    opacity: 0;
-    transform: rotate(calc(var(--n) * 45deg)) translateY(-56px) scale(0.4);
-  }
 }
 
 .chat-widget__suggestions {
@@ -2220,8 +1498,7 @@ onBeforeUnmount(() => {
 }
 
 .chat-widget__human-icon svg,
-.chat-widget__human-arrow,
-.chat-widget__footer-done svg {
+.chat-widget__human-arrow {
   fill: none;
   stroke: currentColor;
   stroke-width: 2;
@@ -2270,30 +1547,6 @@ onBeforeUnmount(() => {
   75% {
     transform: rotate(-5deg);
   }
-}
-
-.chat-widget__footer-done {
-  align-self: flex-start;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  margin-bottom: 6px;
-  padding: 6px 12px 6px 8px;
-  border-radius: var(--radius-pill);
-  background: rgba(16, 185, 129, 0.1);
-  color: #047857;
-  font-size: 12px;
-  font-weight: 600;
-}
-
-.chat-widget__footer-done svg {
-  width: 16px;
-  height: 16px;
-  padding: 2px;
-  border-radius: 50%;
-  background: #10b981;
-  color: #fff;
-  stroke-width: 3;
 }
 
 .chat-widget__notice a {

@@ -694,15 +694,19 @@ class ChatLeadTests(TestCase):
         sent = mail.outbox[0]
         self.assertEqual(sent.to, ["sales@example.com"])
         self.assertEqual(sent.reply_to, ["asha@example.com"])
-        self.assertEqual(sent.subject, "[Urbanrupee Chat] New lead: Asha Rao")
+        # Same [Urbanrupee Contact] prefix as the Contact Us page.
+        self.assertEqual(sent.subject, "[Urbanrupee Contact] Chat lead: Asha Rao")
+        self.assertIn("Name: Asha Rao", sent.body)
+        self.assertIn("Email: asha@example.com", sent.body)
+        self.assertIn("Phone: 9876543210", sent.body)
         self.assertIn("Visitor: Need pricing", sent.body)
         self.assertIn("Assistant: Happy to help", sent.body)
-        self.assertIn("Message:\nCall after 5pm\n", sent.body)
+        self.assertIn("Visitor message:\nCall after 5pm\n", sent.body)
         self.assertIn("/products/orchestration", sent.body)
 
     def test_email_without_message_says_so(self):
         self.post(**LEAD, kind="handoff")
-        self.assertIn("Message:\n(No message)\n", mail.outbox[0].body)
+        self.assertIn("Visitor message:\n(No message)\n", mail.outbox[0].body)
 
     def test_handoff_without_chat_creates_conversation(self):
         response = self.post(**LEAD, kind="handoff", page_path="/contact")
@@ -711,7 +715,7 @@ class ChatLeadTests(TestCase):
         conversation = ChatConversation.objects.get(public_id=response.json()["conversation_id"])
         self.assertEqual(conversation.lead_kind, "handoff")
         self.assertEqual(conversation.page_path, "/contact")
-        self.assertTrue(mail.outbox[0].subject.startswith("[Urbanrupee Chat] Visitor asked for a human"))
+        self.assertEqual(mail.outbox[0].subject, "[Urbanrupee Contact] Talk to our team: Asha Rao")
         self.assertIn("had not sent any chat messages", mail.outbox[0].body)
 
     def test_invalid_fields_rejected(self):

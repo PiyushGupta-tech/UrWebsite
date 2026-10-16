@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref } from "vue";
+import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { submitContactForm } from "@/api/client.js";
 import { trackEvent } from "@/utils/analytics.js";
@@ -70,7 +70,11 @@ function sanitizeEmail(value) {
 }
 
 function sanitizePhone(value) {
-  return String(value || "").replace(/\D/g, "").slice(0, 10);
+  let digits = String(value || "").replace(/\D/g, "");
+  // Paste of +91XXXXXXXXXX / 0XXXXXXXXXX → keep the 10-digit mobile number.
+  if (digits.startsWith("91") && digits.length >= 12) digits = digits.slice(-10);
+  else if (digits.startsWith("0") && digits.length === 11) digits = digits.slice(1);
+  return digits.slice(0, 10);
 }
 
 function sanitizeMessage(value) {
@@ -193,10 +197,6 @@ function handlePhonePaste(event) {
   touched.value.phone = true;
   validateField("phone");
 }
-
-const canSubmit = computed(() => {
-  return contactSchema.validate(form.value, { abortEarly: false }).error == null;
-});
 
 async function onSubmit() {
   if (submitting.value) return;
@@ -377,6 +377,7 @@ async function onSubmit() {
                 inputmode="numeric"
                 autocomplete="tel"
                 maxlength="10"
+                placeholder="10-digit mobile"
                 :disabled="submitting"
                 @beforeinput="onPhoneBeforeInput"
                 @input="updateField('phone', $event, sanitizePhone)"
@@ -415,7 +416,7 @@ async function onSubmit() {
             <button
               type="submit"
               class="contact-card__submit"
-              :disabled="!canSubmit || submitting"
+              :disabled="submitting"
             >
               {{ submitting ? "Sending…" : "Submit Now" }}
               <img

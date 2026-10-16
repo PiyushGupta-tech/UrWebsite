@@ -13,7 +13,7 @@ from rest_framework.views import APIView
 
 from . import chatbot
 from .homepage import homepage_payload
-from .models import ChatConversation
+from .models import ChatConversation, ContactInquiry
 from .page_api import page_detail_payload, site_payload
 from .seo_audit import run_seo_audit
 from .contact import send_chat_lead_email, send_contact_email
@@ -115,13 +115,15 @@ class ContactSubmitAPIView(APIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
+        # Always store the enquiry so the team has it even if SMTP is down.
+        inquiry = ContactInquiry.objects.create(**payload)
         try:
             send_contact_email(**payload)
+            inquiry.email_sent = True
+            inquiry.save(update_fields=["email_sent"])
         except Exception:
-            return Response(
-                {"detail": "We could not send your message. Please try again or email us directly."},
-                status=status.HTTP_503_SERVICE_UNAVAILABLE,
-            )
+            logger.exception("Contact form email failed for inquiry %s", inquiry.pk)
+            # Details are already saved — visitor still gets a success response.
 
         return Response({"ok": True, "message": "Thank you! We'll get back to you shortly."})
 
@@ -190,7 +192,7 @@ class ChatAPIView(APIView):
 
 
 class ChatLeadAPIView(APIView):
-    """Save a chat visitor's contact details and email them to the sales inbox."""
+    """Save Talk to our team details and deliver them like the Contact Us form."""
 
     def post(self, request):
         data = _request_data(request)
@@ -232,11 +234,11 @@ class ChatLeadAPIView(APIView):
         conversation.lead_submitted_at = timezone.now()
         conversation.save()
 
+        # Same delivery as Contact Us: send_contact_email → CONTACT_EMAIL_TO.
         transcript = list(conversation.messages.order_by("-created_at", "-id")[:60])[::-1]
         try:
             send_chat_lead_email(conversation=conversation, transcript=transcript)
         except Exception:
-            # The details stay saved on the admin chats page; the visitor is told so they can retry.
             logger.exception("Chat lead email failed for conversation %s", conversation.public_id)
             return Response(
                 {
