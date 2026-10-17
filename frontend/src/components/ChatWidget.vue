@@ -399,7 +399,9 @@ async function send(text) {
       reply.text =
         err.status === 429 || err.status === 400
           ? err.message
-          : "Something went wrong. Please try again or contact us on the website.";
+          : err.status
+            ? "Something went wrong. Please try again or contact us on the website."
+            : "Couldn't reach the assistant. Please try again or contact us on the website.";
       reply.sources = err.status === 429 ? [] : [{ title: "Contact Us", href: "/contact" }];
     }
   } finally {

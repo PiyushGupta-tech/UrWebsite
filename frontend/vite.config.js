@@ -14,11 +14,16 @@ export default defineConfig(({ mode }) => {
       },
     },
     server: {
+      // Bind IPv4 so http://127.0.0.1:5173 works (default can be IPv6-only on macOS).
+      host: "127.0.0.1",
       port: 5173,
       proxy: {
         "/api": {
           target: apiTarget,
           changeOrigin: true,
+          // Chat uses SSE; do not abort while Gemini/keyword reply is still streaming.
+          timeout: 0,
+          proxyTimeout: 0,
         },
       },
     },

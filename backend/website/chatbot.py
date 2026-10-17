@@ -436,9 +436,16 @@ _FALLBACK_STATUS_CODES = frozenset({404, 429, 500, 502, 503, 504})
 # Overload spikes often clear within seconds, so every model gets a second try.
 _MODEL_PASSES = 2
 # No new attempt starts after this, so the visitor gets the keyword answer instead of a long wait.
-_MODEL_RETRY_BUDGET_SECONDS = 10
+_MODEL_RETRY_BUDGET_SECONDS = 8
 # Rate-limited (quota) and retired models are skipped by later chats for this long.
 _MODEL_COOLDOWN_SECONDS = {404: 3600, 429: 60}
+# Free-tier daily caps can last many hours; skip every model until then.
+_DAILY_QUOTA_COOLDOWN_CAP_SECONDS = 60 * 60 * 18
+_DAILY_QUOTA_MARKERS = (
+    "free_tier",
+    "GenerateRequestsPerDay",
+    "generate_content_free_tier",
+)
 
 
 class ChatModelsUnavailable(Exception):
@@ -457,6 +464,55 @@ def _can_fall_back(error: Exception) -> bool:
     return isinstance(error, openai.APIConnectionError)
 
 
+def _error_text(error: Exception) -> str:
+    parts = [str(error)]
+    body = getattr(error, "body", None)
+    if body is not None:
+        parts.append(str(body))
+    message = getattr(error, "message", None)
+    if message:
+        parts.append(str(message))
+    return "\n".join(parts)
+
+
+def _is_daily_quota_error(error: Exception) -> bool:
+    if getattr(error, "status_code", None) != 429:
+        return False
+    text = _error_text(error)
+    return any(marker in text for marker in _DAILY_QUOTA_MARKERS)
+
+
+def _retry_after_seconds(error: Exception) -> int | None:
+    """Best-effort parse of Gemini/OpenAI retry hints (seconds)."""
+    text = _error_text(error)
+    match = re.search(
+        r"retry in\s+(\d+)h\s*(\d+)m\s*([\d.]+)s",
+        text,
+        re.IGNORECASE,
+    )
+    if match:
+        hours, minutes, seconds = match.groups()
+        return int(hours) * 3600 + int(minutes) * 60 + int(float(seconds))
+    match = re.search(r"retryDelay['\":\s]+['\"]?(\d+)s?", text, re.IGNORECASE)
+    if match:
+        return int(match.group(1))
+    return None
+
+
+def _cooldown_seconds(error: Exception) -> int | None:
+    status = getattr(error, "status_code", None)
+    if status == 404:
+        return _MODEL_COOLDOWN_SECONDS[404]
+    if status != 429:
+        return None
+    if _is_daily_quota_error(error):
+        retry = _retry_after_seconds(error)
+        if retry is None:
+            return _DAILY_QUOTA_COOLDOWN_CAP_SECONDS
+        return max(60, min(retry, _DAILY_QUOTA_COOLDOWN_CAP_SECONDS))
+    return _MODEL_COOLDOWN_SECONDS[429]
+
+
 def _create_stream(client, provider: AIProvider, params: dict):
     deadline = time.monotonic() + _MODEL_RETRY_BUDGET_SECONDS
     keys = {model: _cooldown_key(provider, model) for model in provider.models}
@@ -471,19 +527,29 @@ def _create_stream(client, provider: AIProvider, params: dict):
             if model in skipped:
                 continue
             if last_error is not None and time.monotonic() > deadline:
-                raise last_error
+                raise ChatModelsUnavailable(
+                    f"{provider.name} chat models unavailable within retry budget"
+                ) from last_error
             try:
                 return client.chat.completions.create(model=model, **params)
             except Exception as error:
                 if not _can_fall_back(error):
                     raise
-                cooldown = _MODEL_COOLDOWN_SECONDS.get(getattr(error, "status_code", None))
+                cooldown = _cooldown_seconds(error)
                 if cooldown:
-                    cache.set(keys[model], True, cooldown)
-                    skipped.add(model)
+                    # Daily free-tier caps apply across aliases; cool every model so the
+                    # next visitor gets the keyword answer immediately.
+                    targets = provider.models if _is_daily_quota_error(error) else (model,)
+                    for name in targets:
+                        cache.set(keys[name], True, cooldown)
+                        skipped.add(name)
                 logger.warning("Chat model %s unavailable: %s", model, error)
                 last_error = error
-    raise last_error
+    if last_error is not None:
+        raise ChatModelsUnavailable(
+            f"All {provider.name} chat models failed"
+        ) from last_error
+    raise ChatModelsUnavailable(f"No {provider.name} chat models available")
 
 
 def _history(conversation: ChatConversation) -> list[dict]:

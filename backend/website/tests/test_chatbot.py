@@ -495,10 +495,12 @@ class ChatAITests(TestCase):
         self.assertEqual(len(captured["safety_identifier"]), 32)
 
 
-def status_error(cls, status_code):
+def status_error(cls, status_code, message="model error", body=None):
     error = cls.__new__(cls)
-    Exception.__init__(error, "model error")
+    Exception.__init__(error, message)
     error.status_code = status_code
+    error.body = body
+    error.message = message
     return error
 
 
@@ -601,6 +603,27 @@ class ChatGeminiTests(TestCase):
         self.assertEqual(models, ["gemini-main", "gemini-backup", "gemini-backup"])
         self.assertEqual(reply_text(first), "From backup")
         self.assertEqual(reply_text(second), "From backup")
+
+    def test_daily_free_tier_quota_cools_all_models(self):
+        models = []
+        daily = (
+            "You exceeded your current quota. Quota exceeded for metric: "
+            "generativelanguage.googleapis.com/generate_content_free_tier_requests, "
+            "limit: 20. Please retry in 2h10m5.0s."
+        )
+
+        def create(**params):
+            models.append(params["model"])
+            raise status_error(openai.RateLimitError, 429, message=daily, body=daily)
+
+        first, _ = self.run_with(create)
+        second, _ = self.run_with(create)
+
+        # One failed call is enough; every model is cooled for the daily free-tier cap.
+        self.assertEqual(models, ["gemini-main"])
+        self.assertTrue(reply_text(first))
+        self.assertTrue(reply_text(second))
+        self.assertFalse(ChatMessage.objects.filter(ai_generated=True).exists())
 
     def test_all_models_cooling_down_uses_keyword_answer_without_calls(self):
         models = []

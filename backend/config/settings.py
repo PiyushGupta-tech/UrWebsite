@@ -69,7 +69,8 @@ GEMINI_BASE_URL = os.environ.get(
     "GEMINI_BASE_URL", "https://generativelanguage.googleapis.com/v1beta/openai/"
 ).strip()
 GEMINI_REASONING_EFFORT = os.environ.get("GEMINI_REASONING_EFFORT", "low").strip().lower()
-GEMINI_TIMEOUT = int(os.environ.get("GEMINI_TIMEOUT", "30"))
+# Keep this short so a dead/quota-exhausted model fails over to keyword search quickly.
+GEMINI_TIMEOUT = int(os.environ.get("GEMINI_TIMEOUT", "12"))
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "").strip()
 OPENAI_MODEL = os.environ.get("OPENAI_MODEL", "gpt-6-luna").strip()
 # One of none/minimal/low/medium/high; empty omits the parameter for models without reasoning.
